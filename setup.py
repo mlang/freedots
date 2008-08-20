@@ -69,7 +69,7 @@ class doc(Command):
 setup(
     cmdclass = {'doc': doc},
     name = "freedots",
-    version = "0.4",
+    version = "0.5",
     url = "http://delysid.org/freedots.html",
     packages = find_packages(),
     install_requires = ['pygame'],

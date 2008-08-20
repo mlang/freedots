@@ -1,5 +1,4 @@
 from utils import midi
-from music import *
 
 class MidiWriter:
     def __init__(self, filename):

@@ -24,7 +24,7 @@ import zipfile
 
 from utils.rational import Rational, lcm
 try:
-    from xml.etree import <cElementTree as etree
+    from xml.etree import cElementTree as etree
 except:
     from utils import ElementTree as etree
 
@@ -49,13 +49,10 @@ class Score(object):
         self.document = None
         self.readOnly = False
         if not os.path.exists(filename):
-            try:
-                request = urllib2.Request(filename, None, {'User-Agent':
-                                                               'FreeDots/0.3'})
-                file = urllib2.urlopen(request)
-                self.readOnly = True
-            except e:
-                raise e
+            request = urllib2.Request(filename, None, {'User-Agent':
+                                                       'FreeDots/0.5'})
+            file = urllib2.urlopen(request)
+            self.readOnly = True
         else:
             file = open(filename, "r")
         # Compressed MusicXML (.mxl)
