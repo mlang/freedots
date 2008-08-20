@@ -1,7 +1,7 @@
 [Desktop Entry]
 Encoding=UTF-8
 Name=FreeDots
-Comment=Transcribe MusicXML to braille music code
+Comment=Transcribe MusicXML to braille music notation
 Exec=freedots --gui %u
 Terminal=false
 X-MultipleArgs=false
