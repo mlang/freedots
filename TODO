@@ -1,0 +1,14 @@
+List of things that should be implemented at some point:
+--------------------------------------------------------
+ * Fix accidental announcement to not print accidentals if they were already
+   stated in a previous measure.  Currently, we print accidentals as they
+   are present on the score according to the MusicXML file.  This can actually
+   be a feature, but for compliance with braille music, we should avoid
+   reprinting them.
+ * Detect repeated note groups in measures.  See next item.
+ * Support for note grouping according to the braille music standard.
+ * Support for chord symbols (harmony).
+ * A widget for rendering a Measure instance in visual notation on-screen (GTK).
+   This should be integrated into the braille music editing GUI, so that
+   changes in either format update the other representation.
+ 

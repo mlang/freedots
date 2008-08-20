@@ -1,0 +1,11 @@
+Metadata-Version: 1.0
+Name: freedots
+Version: 0.4
+Summary: MusicXML to Braille music translation
+Home-page: http://delysid.org/freedots.html
+Author: Mario Lang
+Author-email: mlang@delysid.org
+License: GPL
+Description: UNKNOWN
+Keywords: braille,music notation,musicxml,midi,gtk
+Platform: UNKNOWN

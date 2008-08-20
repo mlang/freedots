@@ -1,0 +1,15 @@
+<?xml version='1.0'?>
+<fop>
+  <base>doc</base>
+  <renderers>
+    <renderer mime="application/pdf">
+      <fonts>
+	<font metrics-url="DejaVuSerif.xml"
+              kerning="yes"
+	      embed-url="DejaVuSerif.ttf">
+	  <font-triplet name="DejaVu Serif" style="normal" weight="normal"/>
+	</font>
+      </fonts>
+    </renderer>
+  </renderers>
+</fop>

@@ -1,0 +1,32 @@
+Frequently asked questions:
+---------------------------
+
+Q: Why can't I read the default output of FreeDots on Linux with BRLTTY?
+A: FreeDots uses Unicode by default to output Braille and Text such that
+   sighted and blind users can read the output without major confusion.
+   However, the Unicode braille row is only supported by the braille display
+   driver BRLTTY on Linux since very recently.
+   You will have to get and compile the development version
+   of BRLTTY.  You will also need the braille fonts provided
+   on http://brl.thefreecats.org/
+
+Q: Why can't I read the default output of FreeDots on Windows with JAWS?
+A: JAWS apparently does not define the Braille Unicode row by default,
+   see the file README.JAWS for instructions on how to fix this.
+
+Q: Does FreeDots work on Windows:
+A: Yes.  You will need to install python, setuptools and pygame and their
+   associated dependencies.  A installer for FreeDots on Windows
+   is currently not available, but could be built.  Volunteers for
+   maintaining a Windows version of FreeDots are very welcome!
+
+Q: How do I convert the output of FreeDots to BRF?
+A: Write the output of FreeDots to a file, edit it in a UTF-8 compatible
+   text editor and remove the text heading (score title, composer and so on).
+   Save the file and use iconv like this:
+    $ iconv -f UTF-8 -t BRF filename >filename.brf
+   Please note this is only a temporary workaround, support for output
+   in various localized braille encodings will be added in the future
+   (patches welcome).  This is easy to do, but has a low priority at the
+   moment.
+

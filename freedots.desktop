@@ -1,0 +1,11 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=FreeDots
+Comment=Transcribe MusicXML to braille music code
+Exec=freedots --gui %u
+Terminal=false
+X-MultipleArgs=false
+Type=Application
+Categories=GTK;AudioVideo;Audio;
+MimeType=application/vnd.recordare.musicxml;application/vnd.recordare.musicxml+xml;
+StartupNotify=true

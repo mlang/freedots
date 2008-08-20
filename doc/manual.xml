@@ -1,0 +1,280 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+          "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY app "freedots">
+<!ENTITY App "FreeDots">
+<!ENTITY bmn "braille music notation">
+<!ENTITY omr "optical music recognition">
+<!ENTITY XML "<acronym>XML</acronym>">
+<!ENTITY email "mlang@delysid.org">
+
+<!ENTITY % unicode-braille
+    PUBLIC "-//delYsid//ENTITIES Unicode Braille v1.0//EN"
+    "unicode-braille-v10.ent">
+%unicode-braille;
+]>
+<book>
+  <bookinfo>
+    <title>&App; User Guide</title>
+
+    <productname>&App;</productname>
+    <author>
+      <firstname>Mario</firstname> <surname>Lang</surname>
+      <affiliation>
+	<address><email>&email;</email></address>
+      </affiliation>
+    </author>
+
+    <copyright>
+      <year>2008</year> <holder role="mailto:&email;">Mario Lang</holder>
+    </copyright>
+
+    <legalnotice>
+      <para>
+Permission to use, copy, modify and distribute this document
+for any purpose and without fee is hereby granted in perpetuity,
+provided that the above copyright notice and this paragraph appear
+in all copies.
+      </para>
+    </legalnotice>
+
+    <releaseinfo>$Id: manual.xml 233 2008-08-07 14:17:40Z mlang $</releaseinfo>
+
+    <abstract>
+      <para>
+<application>&App;</application> provides a way for blind individuals to access
+scanned sheet music in a convenient format (&bmn;).
+      </para>
+      <para>
+This book serves as an introduction to &bmn; for those readers that are not
+familiar with it yet.  It is also the User's Manual for
+<application>&App;</application>.
+      </para>
+    </abstract>
+  </bookinfo>
+
+  <part><title>Introduction to &bmn;</title>
+    <partintro>
+      <para>
+&bmn; is an internationally accepted standard for expressing musical ideas in
+tactile readable form.
+      </para>
+      <para>
+Since <application>&App;</application> is mostly useless to a user who does not
+know &bmn;, the first part of this book is dedicated to teaching the very
+basics of &bmn;.  If you are already familiar with the international &bmn;
+standard, you can saves skip over this section.
+      </para>
+    </partintro>
+
+    <chapter><title>Simple monophonic melodies</title>
+      <sect1><title>Notes and rests</title>
+        <para>
+In &bmn; pitch and duration of a musical event are encoded into a single
+character.
+        </para>
+	<table><title>Note and rest symbols</title>
+	<tgroup cols='8'>
+	  <thead><row><entry>Note value</entry>
+	         <entry>C</entry><entry>D</entry><entry>E</entry>
+		 <entry>F</entry><entry>G</entry><entry>A</entry>
+		 <entry>B</entry></row>
+	  </thead>
+	  <tbody>
+	    <row><entry>whole</entry>
+  	         <entry><symbol role="symbolfont">&brl13456;</symbol></entry>
+		 <entry><symbol role="symbolfont">&brl1356;</symbol></entry>
+		 <entry><symbol role="symbolfont">&brl12346;</symbol></entry>
+		 <entry><symbol role="symbolfont">&brl123456;</symbol></entry>
+		 <entry><symbol role="symbolfont">&brl12356;</symbol></entry>
+		 <entry><symbol role="symbolfont">&brl2346;</symbol></entry>
+		 <entry><symbol role="symbolfont">&brl23456;</symbol></entry>
+	    </row>
+	    <row><entry>half</entry>
+  	         <entry><symbol role="symbolfont">&brl1345;</symbol></entry>
+		 <entry><symbol role="symbolfont">&brl135;</symbol></entry>
+		 <entry><symbol role="symbolfont">&brl1234;</symbol></entry>
+		 <entry><symbol role="symbolfont">&brl12345;</symbol></entry>
+		 <entry><symbol role="symbolfont">&brl1235;</symbol></entry>
+		 <entry><symbol role="symbolfont">&brl234;</symbol></entry>
+		 <entry><symbol role="symbolfont">&brl2345;</symbol></entry>
+	    </row>
+	    <row><entry>quarter</entry>
+  	         <entry><symbol role="symbolfont">&brl1456;</symbol></entry>
+		 <entry><symbol role="symbolfont">&brl156;</symbol></entry>
+		 <entry><symbol role="symbolfont">&brl1246;</symbol></entry>
+		 <entry><symbol role="symbolfont">&brl12456;</symbol></entry>
+		 <entry><symbol role="symbolfont">&brl1256;</symbol></entry>
+		 <entry><symbol role="symbolfont">&brl246;</symbol></entry>
+		 <entry><symbol role="symbolfont">&brl2456;</symbol></entry>
+	    </row>
+	    <row><entry>eight</entry>
+  	         <entry><symbol role="symbolfont">&brl145;</symbol></entry>
+		 <entry><symbol role="symbolfont">&brl15;</symbol></entry>
+		 <entry><symbol role="symbolfont">&brl124;</symbol></entry>
+		 <entry><symbol role="symbolfont">&brl1245;</symbol></entry>
+		 <entry><symbol role="symbolfont">&brl125;</symbol></entry>
+		 <entry><symbol role="symbolfont">&brl24;</symbol></entry>
+		 <entry><symbol role="symbolfont">&brl245;</symbol></entry>
+	    </row>
+	  </tbody>
+	</tgroup>
+	</table>
+      </sect1>
+    </chapter>
+  </part>
+
+  <part><title>Obtaining MusicXML scores</title>
+    <partintro>
+      <para>
+&App; is not a full &omr; solution.  To be able to read sheet music, you will
+first need to obtain the music you want to read with &App; in MusicXML format.
+      </para>
+      <para>
+The following chapters are concerned with how and where you can obtain sheet
+music in MusicXML.
+      </para>
+    </partintro>
+
+    <chapter><title>What is MusicXML?</title>
+      <para>
+MusicXML is a &XML; based file format for storing musical notation.  It is
+being developed by Recordare LLC.
+      </para>
+    </chapter>
+    <chapter><title>MusicXML on the Internet</title>
+      <para>
+Since MusicXML is increasingly being used as a interchange format between
+different music notation software, it is increasingly being used as the
+canonical format to distribute musical notation over the Internet.
+      </para>
+      <para>
+Therefore, there is a fairly good chance that the music you are looking for is
+already available on the Internet in MusicXML format.
+      </para>
+    </chapter>
+  </part>
+  <part><title>Using &App;</title>
+    <partintro>
+      <para>
+Now that we have acquainted ourselves with &bmn; we can go on and examine in
+detail how &App; can be used to automatically transcribe scanned sheet music
+to &bmn;.
+      </para>
+    </partintro>
+    <chapter><title>The Menubar</title>
+      <para>This list briefly describes the actions available in the &App;
+        menu.</para>
+      <variablelist>
+	<varlistentry>
+	  <term><menuchoice>
+	    <shortcut>
+	      <keycombo><keycap>Ctrl</keycap><keycap>o</keycap></keycombo>
+	    </shortcut>
+	    <guimenu>File</guimenu>
+	    <guimenuitem>Open</guimenuitem>
+	  </menuchoice></term>
+	  <listitem><para><action>Open a MusicXML document.</action></para></listitem>
+	</varlistentry>
+      </variablelist>
+    </chapter>
+  </part>
+  <appendix><title>Frequently Asked Questions</title>
+    <qandaset>
+      <qandadiv><title>General Information</title>
+        <qandaentry>
+	    <question id="q-windows"><para>Does &App; work on
+	      <productname class="trade"><indexterm zone="q-windows">
+	        <primary>Windows</primary></indexterm>Windows</productname>?</para></question>
+	    <answer><para>Yes.  You will need to install <application>Python</application>, <application>setuptools</application> and <application>pygame</application> and their
+	      associated dependencies.  An installer for &App; on <productname class="trade">Windows</productname>
+	      is currently not available, but could be built.
+	      Volunteers for maintaining a <productname class="trade">Windows</productname> version of &App; are very welcome!</para></answer>
+	  </qandaentry>
+	  <qandaentry>
+	    <question id="q-linux-brltty"><para>Why can't I read the default output of &App;
+	      on <productname class="trade"><indexterm zone="q-linux-brltty">
+	           <primary>Linux</primary></indexterm>Linux</productname> with
+	      <application><indexterm zone="q-linux-brltty"><primary>BRLTTY</primary></indexterm>BRLTTY</application>?</para></question>
+	    <answer><para>&App; uses Unicode by default to output
+	      braille and text such that sighted and blind users can read the
+	      output without major confusion.</para>
+	    <para>However, the Unicode braille row is only supported by the
+	      braille display driver BRLTTY on Linux since release 3.10.
+	      You will also need the braille fonts provided
+	      on <ulink url="http://brl.thefreecats.org/"/>.</para></answer>
+	  </qandaentry>
+	</qandadiv>
+      </qandaset>
+  </appendix>
+  <appendix><title>Traditional <acronym>UNIX</acronym> manual pages</title>
+    <refentry id="freedots">
+      <refmeta>
+	<refentrytitle>&app;</refentrytitle> <manvolnum>1</manvolnum>
+	<refmiscinfo class="version">0.2</refmiscinfo>
+      </refmeta>
+
+      <refnamediv>
+	<refname>&app;</refname>
+	<refpurpose>convert MusicXML to &bmn;</refpurpose>
+      </refnamediv>
+
+      <refsynopsisdiv>
+	<cmdsynopsis>
+	  <command>&app;</command>
+	  <arg><option>--gui</option></arg>
+	  <group>
+	    <arg><option>-p</option></arg>
+	    <arg><option>--play</option></arg>
+	  </group>
+	  <group>
+	    <arg><option>-w</option> <replaceable>COLUMNS</replaceable></arg>
+	    <arg><option>--width</option> <replaceable>COLUMNS</replaceable></arg>
+	  </group>
+	  <arg choice="req"><replaceable>MusicXML file</replaceable></arg>
+	</cmdsynopsis>
+      </refsynopsisdiv>
+
+      <refsect1><title>Description</title>
+	<para><application>&App;</application> converts MusicXML files
+	  to &bmn;.
+	</para>
+      </refsect1>
+      <refsect1><title>Options</title>
+        <para><application>&App;</application> always expects a
+	  MusicXML input file on the command line.
+	</para>
+	<variablelist>
+	  <varlistentry>
+	    <term>
+	      <option>--gui</option>
+	    </term>
+	    <listitem><para>
+	      Start up the <acronym>GNOME</acronym> user interface.</para>
+	    </listitem>
+	  </varlistentry>
+	  <varlistentry>
+	    <term><option>-p</option></term>
+	    <term><option>--play</option></term>
+	    <listitem>
+	      <para>Play music in addition to converting it to braille.</para>
+	    </listitem>
+	  </varlistentry>
+	  <varlistentry id="width">
+	    <term><option>-w</option></term>
+	    <term><option>--width</option></term>
+	    <listitem>
+	      <para>
+	        <indexterm><primary>width</primary><secondary>COLUMNS</secondary></indexterm>
+	        Set the desired amount of braille cells used horizontally.</para>
+	      <para>The default is 32.</para>
+	    </listitem>
+	  </varlistentry>
+	</variablelist>
+      </refsect1>
+    </refentry>
+  </appendix>
+
+  <index/>
+</book>
+

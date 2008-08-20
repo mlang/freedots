@@ -1,0 +1,28 @@
+		Doc for Freedots install on FreeBSD.
+1. on FreeBSD UTF-8 is not enabled by default.
+To enable it you need to read FreeBSD_unicode from the FreeBSD site.
+
+2. as root do:
+cd /usr/ports/devel/py-setuptools
+make install clean
+
+or to install the precompiled package:
+pkg_add -r py25-setuptools
+
+For playback support you have to install the pygame port:
+
+     cd /usr/ports/devel/py-game
+as usual:
+    make install clean
+and some timidity port for instance timidity++
+    cd /usr/ports/audio/timidity++
+and here:
+    make install clean
+
+of course you have to configure timidity (see the man), and download
+and install some soundfonts. try to play some file with timidity,
+if all goes well you need to symlink the timidity.cfg file:
+    ln -s TIMIDITY_PATH/timidity.cfg /etc/timidity.cfg
+
+normally this is sufficient.
+

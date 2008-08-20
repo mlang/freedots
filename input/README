@@ -1,0 +1,10 @@
+This directory contains various MusicXML files from different programs.
+
+These files are only for testing purposes during initial
+development.  We will want to collect better example data
+in the future, but this is a good start.
+
+If you have (possibly already corrected) MusicXML files of music
+without license problems (anything that is on mutopiaproject.org is a good
+candidate) please consider contributing your data.
+

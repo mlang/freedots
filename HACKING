@@ -1,0 +1,21 @@
+Overall layout of files in this project:
+----------------------------------------
+setup.py                     Python setuptools script used to build and install
+freedots/                    The top-level python package
+    musicxml.py              Support for reading/saving MusicXML files
+    playback.py              Code to transform musicxml.Score to MIDI
+    braillemusic.py          Braille music translation module
+    frontend.py              Module implementing the command-line interface
+    utils/                   Utility modules (mostly third-party)
+        ElementTree.py       The ElementTree module for XML processing
+        ElementPath.py       XPath support for ElementTree
+        midi.py              Classes to work with Standard MIDI Files
+input/                       Various sample input files in MusicXML format
+    audiveris/               MusicXML output from Audiveris (Open Source OMR)
+    capella-scan/            MusicXML output Capella-Scan from Capella Software
+    photoscore/              MusicXML output from Neuratron PhotoScore
+    sharpeye/                MusicXML output from SharpEye2
+    sources/                 Sources used to feed the OMR engines
+doc/                         User Documentation
+    manual.xml               DocBook XML 4.5 User Manual
+    *.xsl                    DocBook-XSL customisation layer
