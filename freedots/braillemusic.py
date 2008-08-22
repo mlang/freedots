@@ -195,7 +195,7 @@ class AbstractFormatter(object):
     def formatScore(self, score):
         self.startOfScore(score)
         for part in score:
-	    self.format(part)
+            self.format(part)
     def formatPart(self, part):
         def layoutType(measure):
             return (measure.staves(), bool(measure.lyrics()), False)
