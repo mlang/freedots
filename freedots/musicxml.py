@@ -346,7 +346,7 @@ class Part(object):
 
     def __repr__(self):
         return "<%s %s>" % (self.__class__.__name__,
-                            self.name or `self.xml.get('id')`)
+                            self.name or repr(self.xml.get('id')))
 
     def __iter__(self):
         divisionMultiplier = 1
