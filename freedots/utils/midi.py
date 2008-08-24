@@ -31,7 +31,6 @@ from math import sqrt
 ## Constants
 ##
 
-BEATNAMES = ['whole', 'half', 'quarter', 'eighth', 'sixteenth', 'thiry-second', 'sixty-fourth']
 BEATVALUES = [4, 2, 1, .5, .25, .125, .0625]
 
 DEFAULT_MIDI_HEADER_SIZE = 14
