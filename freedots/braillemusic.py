@@ -165,8 +165,8 @@ class AbstractFormatter(object):
     # Abstract methods which can be overriden in concrete implementations
     def startOfScore(self, score):
         pass
-    def whitespace(self, count=1, object=None):
-        self.addSymbol(u'⠀'*count, object)
+    def whitespace(self, count=1, obj=None):
+        self.addSymbol(u'⠀'*count, obj)
     def startOfPart(self, part):
         if part.name:
             self.addSymbol(part.name, part)
@@ -184,14 +184,14 @@ class AbstractFormatter(object):
         pass
     def startOfMeasure(self, measure):
         pass
-    def addSymbol(self, symbol, object=None):
+    def addSymbol(self, symbol, obj=None):
         pass
-    def measureElement(self, symbol, object):
-        self.addSymbol(symbol, object)
+    def measureElement(self, symbol, obj):
+        self.addSymbol(symbol, obj)
 
     # Main entry-point of abstract algorithm
-    def format(self, object):
-        getattr(self, 'format'+object.__class__.__name__)(object)
+    def format(self, obj):
+        getattr(self, 'format'+obj.__class__.__name__)(obj)
     def formatScore(self, score):
         self.startOfScore(score)
         for part in score:
@@ -201,8 +201,8 @@ class AbstractFormatter(object):
             return (measure.staves(), bool(measure.lyrics()), False)
         self.resetState()
         self.startOfPart(part)
-        layouts = [(type, list(i))
-                    for type, i in itertools.groupby(part, layoutType)]
+        layouts = [(layout, list(i))
+                    for layout, i in itertools.groupby(part, layoutType)]
         if len(layouts) > 1:
             index = 0
             while index < len(layouts)-1:
@@ -221,7 +221,7 @@ class AbstractFormatter(object):
         for layout, measures in layouts:
             self.processLayout(layout, measures)
         self.endOfPart()
-    def processLayout(self, (staves, lyric, harmony), measures):
+    def processLayout(self, layout, measures):
         def groupBySystems(measures):
             system = []
             for measure in measures:
@@ -245,6 +245,7 @@ class AbstractFormatter(object):
                         system = []
             if len(system):
                 yield system
+        staves, lyric, harmony = layout
         # Process various layout types individually
         if staves == 1 and not lyric and not harmony:
             for system in groupBySystems(measures):
@@ -331,9 +332,9 @@ class Embosser(AbstractFormatter):
         output = u''
         for page in self.pages:
             for line in page:
-                for symbol, object in line:
+                for symbol, obj in line:
                     output += symbol
-                    self.objectMap += [object]*len(symbol)
+                    self.objectMap += [obj]*len(symbol)
                 output += u'\n'
                 self.objectMap += [None]
             output += u'\n'
@@ -351,9 +352,9 @@ class Embosser(AbstractFormatter):
     def newLine(self):
         self.addLineToPage(self.currentLine)
         self.currentLine = []
-    def addCenteredLine(self, text, object=None):
+    def addCenteredLine(self, text, obj=None):
         for line in textwrap.wrap(unicode(text), self.width):
-            self.addLineToPage([(line.center(self.width, u'⠀'), object)])
+            self.addLineToPage([(line.center(self.width, u'⠀'), obj)])
     def startOfScore(self, score):
         self.newPage()
         if score.composer:
@@ -376,18 +377,18 @@ class Embosser(AbstractFormatter):
             self.newLine()
             self.whitespace()
     def startOfMeasure(self, measure):
-        self.whitespace(object=measure)
+        self.whitespace(obj=measure)
     def currentLineLength(self):
         return len(u''.join(elem[0] for elem in self.currentLine))
-    def addSymbol(self, symbol, object=None):
+    def addSymbol(self, symbol, obj=None):
         if self.currentLineLength()+len(symbol) > self.width:
             self.newLine()
-        self.currentLine += [(symbol, object)]
-    def measureElement(self, symbol, object=None):
+        self.currentLine += [(symbol, obj)]
+    def measureElement(self, symbol, obj=None):
         if self.currentLineLength()+len(symbol) >= self.width:
             if self.currentLine[-1][0] == u'⠀':
                 self.currentLine.pop(-1)
             else:
                 self.currentLine += [(u'⠐', None)]
             self.newLine()
-        self.currentLine += [(symbol, object)]
+        self.currentLine += [(symbol, obj)]
