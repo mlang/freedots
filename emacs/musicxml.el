@@ -1,0 +1,484 @@
+;;; musicxml.el --- MusicXML
+
+;; Copyright (C) 2008  Mario Lang
+
+;; Author: Mario Lang <mlang@delysid.org>
+;; Keywords: 
+
+;; This file is free software; you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation; either version 2, or (at your option)
+;; any later version.
+
+;; This file is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with GNU Emacs; see the file COPYING.  If not, write to
+;; the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+;; Boston, MA 02110-1301, USA.
+
+;;; Commentary:
+
+;; 
+
+;; TODO:
+;; * Get rid of xml-sub-parse.
+
+;;; Code:
+
+(require 'xml)
+
+;;; XML Parsing
+;;
+;; We borrow and extend a bit of code from xml.el.
+;; The main goal is to keep markers for start and end positions of XML tags
+;; and text in the XML sexp representation.
+
+(defun musicxml-parse-string ()
+  "Parse the next whatever.  Could be a string, or an element."
+  (let* ((start (point))
+	 (string (progn (if (search-forward "<" nil t)
+			    (forward-char -1)
+			  (goto-char (point-max)))
+			(buffer-substring-no-properties start (point))))
+	 (end (point)))
+    ;; Clean up the string.  As per XML specifications, the XML
+    ;; processor should always pass the whole string to the
+    ;; application.  But \r's should be replaced:
+    ;; http://www.w3.org/TR/2000/REC-xml-20001006#sec-line-ends
+    (let ((pos 0))
+      (while (string-match "\r\n?" string pos)
+	(setq string (replace-match "\n" t t string))
+	(setq pos (1+ (match-beginning 0)))))
+
+    (list (list (xml-substitute-special string)
+		(copy-marker start) (copy-marker end)))))
+
+(defun musicxml-parse-tag (&optional parse-dtd)
+  "Parse the tag at point.
+If PARSE-DTD is non-nil, the DTD of the document, if any, is parsed and
+returned as the first element in the list.
+Returns one of:
+ - a list : the matching node
+ - nil    : the point is not looking at a tag.
+ - a pair : the first element is the DTD, the second is the node."
+  (let ((xml-validating-parser (or parse-dtd xml-validating-parser)))
+    (cond
+     ;; Processing instructions (like the <?xml version="1.0"?> tag at the
+     ;; beginning of a document).
+     ((looking-at "<\\?")
+      (search-forward "?>")
+      (skip-syntax-forward " ")
+      (musicxml-parse-tag parse-dtd))
+     ;;  Character data (CDATA) sections, in which no tag should be interpreted
+     ((looking-at "<!\\[CDATA\\[")
+      (let ((pos (match-end 0)))
+	(unless (search-forward "]]>" nil t)
+	  (error "XML: (Not Well Formed) CDATA section does not end anywhere in the document"))
+	(concat
+	 (buffer-substring-no-properties pos (match-beginning 0))
+	 (xml-parse-string))))
+     ;;  DTD for the document
+     ((looking-at "<!DOCTYPE")
+      (let ((dtd (xml-parse-dtd)))
+	(skip-syntax-forward " ")
+	(if xml-validating-parser
+	    (cons dtd (musicxml-parse-tag nil))
+	  (musicxml-parse-tag nil))))
+     ;;  skip comments
+     ((looking-at "<!--")
+      (search-forward "-->")
+      nil)
+     ;;  end tag
+     ((looking-at "</")
+      '())
+     ;;  opening tag
+     ((looking-at "<\\([^/>[:space:]]+\\)")
+      (goto-char (match-end 1))
+
+      ;; Parse this node
+      (let* ((node-name (list (match-string-no-properties 1)
+			      (copy-marker (match-beginning 0))
+			      nil))
+	     ;; Parse the attribute list.
+	     (attrs (xml-parse-attlist))
+	     children pos)
+
+	(setq children (list attrs node-name))
+
+	;; is this an empty element ?
+	(if (looking-at "/>")
+	    (progn
+	      (forward-char 2)
+	      (setf (nth 2 node-name) (copy-marker (point)))
+	      (nreverse children))
+
+	  ;; is this a valid start tag ?
+	  (if (eq (char-after) ?>)
+	      (progn
+		(forward-char 1)
+		;;  Now check that we have the right end-tag. Note that this
+		;;  one might contain spaces after the tag name
+		(let ((end (concat "</" (car node-name) "\\s-*>")))
+		  (while (not (looking-at end))
+		    (cond
+		     ((looking-at "</")
+		      (error "XML: (Not Well-Formed) Invalid end tag (expecting %s) at pos %d"
+			     node-name (point)))
+		     ((= (char-after) ?<)
+		      (let ((tag (musicxml-parse-tag nil)))
+			(when tag
+			  (push tag children))))
+		     (t
+		      (let ((expansion (musicxml-parse-string)))
+			(setq children
+			      (if (stringp expansion)
+				  (if (stringp (car children))
+				      ;; The two strings were separated by a comment.
+				      (setq children (append (list (concat (car children) expansion))
+							     (cdr children)))
+				    (setq children (append (list expansion) children)))
+				(setq children (append expansion children))))))))
+
+		  (goto-char (match-end 0))
+		  (setf (nth 2 node-name) (copy-marker (point)))
+		  (nreverse children)))
+	    ;;  This was an invalid start tag (Expected ">", but didn't see it.)
+	    (error "XML: (Well-Formed) Couldn't parse tag: %s"
+		   (buffer-substring-no-properties (- (point) 10) (+ (point) 1)))))))
+     (t	;; (Not one of PI, CDATA, Comment, End tag, or Start tag)
+      (unless xml-sub-parser		; Usually, we error out.
+	(error "XML: (Well-Formed) Invalid character"))
+
+      ;; However, if we're parsing incrementally, then we need to deal
+      ;; with stray CDATA.
+      (xml-parse-string)))))
+
+(defun musicxml-parse-region (beg end &optional parse-dtd)
+  "Parse the region from BEG to END in the current buffer.
+Returns the XML list for the region, or raises an error if the region
+is not well-formed XML.
+If PARSE-DTD is non-nil, the DTD is parsed rather than skipped,
+and returned as the first element of the list."
+  ;; Use fixed syntax table to ensure regexp char classes and syntax
+  ;; specs DTRT.
+  (with-syntax-table (standard-syntax-table)
+    (let ((case-fold-search nil)	; XML is case-sensitive.
+ 	  xml result dtd)
+      (save-excursion
+ 	(save-restriction
+ 	  (narrow-to-region beg end)
+	  (goto-char (point-min))
+	  (while (not (eobp))
+	    (if (search-forward "<" nil t)
+		(progn
+		  (forward-char -1)
+		  (setq result (musicxml-parse-tag parse-dtd))
+		  (if (and xml result (not xml-sub-parser))
+		      ;;  translation of rule [1] of XML specifications
+		      (error "XML: (Not Well-Formed) Only one root tag allowed")
+		    (cond
+		     ((null result))
+		     ((and (listp (car result))
+			   parse-dtd)
+		      (setq dtd (car result))
+		      (if (cdr result)	; possible leading comment
+			  (add-to-list 'xml (cdr result))))
+		     (t
+		      (add-to-list 'xml result)))))
+	      (goto-char (point-max))))
+	  (if parse-dtd
+	      (cons dtd (nreverse xml))
+	    (nreverse xml)))))))
+
+(defun musicxml-reparse-tag (tag)
+  (with-current-buffer (marker-buffer (nth 1 (car tag)))
+    (save-restriction
+      (widen)
+      (narrow-to-region (nth 1 (car tag)) (nth 2 (car tag)))
+      (goto-char (point-min))
+      (let ((new (musicxml-parse-tag)))
+	(setcar tag (car new))
+	(setcdr tag (cdr new))))))
+
+(defun musicxml-goto-tag (tag)
+  (pop-to-buffer (marker-buffer (nth 1 (car tag))))
+  (goto-char (nth 1 (car tag))))
+
+(defun musicxml-node-name (node)
+  (caar node))
+
+(defun musicxml-children (node)
+  (remove-if (lambda (elem) (stringp (car elem))) (cddr node)))
+
+(defun musicxml-get-child (node name)
+  (remove-if (lambda (elem)
+	       (or (stringp (car elem))
+		   (not (string= (musicxml-node-name elem) name))))
+	     (cddr node)))
+
+(defun musicxml-get-first-child (node name)
+  (let ((children (cddr node)))
+    (catch 'found
+      (while children
+	(let ((child (car children)))
+	  (if (and (not (stringp (car child)))
+		   (string= (musicxml-node-name child) name))
+	      (throw 'found child)
+	    (setq children (cdr children))))))))
+
+(defun musicxml-node-text (node)
+  (let ((first-child (caddr node)))
+    (when (and first-child (stringp (car first-child)))
+      first-child)))
+
+(defun musicxml-node-text-string (node)
+  (or (nth 0 (musicxml-node-text node)) ""))
+
+(defun musicxml/work ()
+  (musicxml-get-first-child musicxml-root-node "work"))
+(defun musicxml/part-list ()
+  (or (musicxml-get-first-child musicxml-root-node "part-list")
+      (error "Required element part-list not present")))
+(defun musicxml/part-list/score-part (id)
+  (loop for node in (musicxml-children (musicxml/part-list))
+	when (and (string= (musicxml-node-name node) "score-part")
+		  (string= (xml-get-attribute node 'id) id))
+	return node))
+(defun musicxml/part-list/score-part/part-name (id)
+  (musicxml-get-first-child (musicxml/part-list/score-part id) "part-name"))
+(defun musicxml/work/work-number ()
+  (musicxml-get-first-child (musicxml/work) "work-number"))
+(defun musicxml/work/work-title ()
+  (musicxml-get-first-child (musicxml/work) "work-title"))
+(defun musicxml/part ()
+  (musicxml-get-child musicxml-root-node "part"))
+
+(defun musicxml-note-p (node)
+  (string= (musicxml-node-name node) "note"))
+(defun musicxml-dots (node)
+  (length (musicxml-get-child node "dot")))
+(defun musicxml-rest-p (node)
+  (and (musicxml-note-p node)
+       (musicxml-get-first-child node "rest")))
+(defun musicxml-pitched-p (node)
+  (and (musicxml-note-p node)
+       (musicxml-get-first-child node "pitch")))
+(defun musicxml-note-pitch-step (node)
+  (and (musicxml-pitched-p node)
+       (musicxml-node-text-string (musicxml-get-first-child
+				   (musicxml-get-first-child
+				    node "pitch") "step"))))
+
+(defun musicxml-note-type (node)
+  (and (musicxml-note-p node)
+       (musicxml-node-text-string (musicxml-get-first-child node "type"))))
+
+(defvar musicxml-dtd nil)
+(make-variable-buffer-local 'musicxml-dtd)
+(defvar musicxml-root-node nil)
+(make-variable-buffer-local 'musicxml-root-node)
+
+(defvar musicxml-mode-map (make-sparse-keymap)
+  "Keymap for `musicxml-mode'.")
+
+(define-minor-mode musicxml-mode
+  "If enabled, special functions for MusicXML handling can be used."
+  :lighter " Music"
+  (if musicxml-mode
+      (let ((xml (musicxml-parse-region (point-min) (point-max) t)))
+	(if xml
+	    (setq musicxml-dtd (nth 0 xml)
+		  musicxml-root-node (nth 1 xml))
+	  (error "Unable to parse XML data"))
+	)
+    (setq musicxml-dtd nil
+	  musicxml-root-node nil)))
+
+;;; Braille music
+
+(defcustom braille-music-symbol-table
+  (append
+   (loop for (value . lower) in
+	 '((1or16 . 36) (2or32 . 3) (4or64 . 6) (8or128 . 0))
+	 append
+	 (loop for (name . upper) in
+	       '((c . 145) (d . 15) (e . 124)
+		 (f . 1245)(g . 125)(a . 24) (b . 245))
+	       collect
+	       (cons (intern (concat (symbol-name name) (symbol-name value)))
+		     (let ((unicode #x2800))
+		       (labels ((add-decimal-dots (dots)
+			        (while (> dots 0)
+				  (setq unicode (logior unicode
+							(ash 1
+							     (1- (% dots 10))))
+					dots (/ dots 10)))))
+			 (add-decimal-dots upper)
+			 (add-decimal-dots lower)
+			 (decode-char 'ucs unicode))))))
+   '((r1or16 . ?⠍) (r2or32 . ?⠥) (r4or64 . ?⠧) (r8or128 . ?⠭)))
+  "A table of braille music symbols."
+  :group 'braille-music
+  :type '(repeat (cons :tag "Entry" symbol character)))
+
+(defun braille-music-char (symbol)
+  (cdr (assq symbol braille-music-symbol-table)))
+
+(defun braille-music-symbol (char)
+  (car (rassq char braille-music-symbol-table)))
+
+(defun braille-music-note-value-interpretations (notes time-signature)
+  (let ((time (* (car time-signature) (/ 1.0 (cdr time-signature))))
+	results)
+    (labels ((generate (lists sum)
+	       (if (null lists)
+		   nil
+		 (let ((choices (car lists))
+		       result)
+		   (if (endp (cdr lists))
+		       (loop for choice in choices 
+			     when (= (car choice) sum) collect (list choice))
+		     (dolist (choice choices result)
+		       (let ((time (car choice)))
+			 (when (<= time sum)
+			   (mapc (lambda (elt)
+				   (push (cons choice elt) result))
+				 (generate (cdr lists) (- sum time)))))))))))
+      (generate
+       (mapcar (lambda (note)
+		 (mapcar (lambda (str)
+			   (cons (/ 1.0
+				    (string-to-number str))
+				 (intern
+				  (concat
+				   (substring
+				    (symbol-name (car note)) 0 1)
+				   str))))
+			 (split-string
+			  (substring (symbol-name (car note)) 1)
+			  "or")))
+	       notes)
+       time))))
+
+(defun braille-music-from-musicdata (node)
+  (let ((types '(("whole" . "1or16") ("half" . "2or32")
+		 ("quarter" . "4or64") ("eighth" . "8or128")
+		 ("16th" . "1or16") ("32nd" . "2or32")
+		 ("64th" . "4or64") ("128th" . "8or128")))
+	symbols)
+    (dolist (child (musicxml-children node) (nreverse symbols))
+      (cond
+       ((musicxml-pitched-p child)
+	(push (cons (intern
+		     (concat (downcase (musicxml-note-pitch-step child))
+			     (cdr (assoc (musicxml-note-type child) types))))
+		    child)
+	      symbols))
+       ((musicxml-rest-p child)
+	(push (cons (intern
+		     (concat "r"
+			     (cdr (assoc (musicxml-note-type child) types))))
+		    child)
+	      symbols))))))
+
+(defun braille-music-insert-music-symbol (music)
+  (let ((symbol (car music)) (xml (cdr music))
+	(begin (point)))
+    (insert (braille-music-char symbol))
+    (put-text-property begin (point) 'xml-node xml)))
+
+(defun braille-music-goto-musicxml ()
+  (interactive)
+  (let ((node (get-text-property (point) 'xml-node)))
+    (if node
+	(musicxml-goto-tag node)
+      (error "No associated XML data found"))))
+
+(defvar musicxml-braille-music-mode-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map (kbd "C-c C-x") 'braille-music-goto-musicxml)
+    map)
+  "Keymap for `musicxml-braille-music-mode'.")
+
+(define-derived-mode musicxml-braille-music-mode fundamental-mode
+  "MusicBraille"
+  "Major mode for music braille produced from MusicXML document content."
+  )
+
+(defun musicxml-to-braille-music ()
+  "Convert the current MusicXML document to braille music."
+  (interactive)
+  (if (not musicxml-mode)
+      (error "Current buffer not in musicxml-mode")
+    (let ((progress-reporter
+	   (make-progress-reporter
+	    "Transcribing..."
+	    0 (length (apply #'append
+			     (mapcar #'musicxml-children (musicxml/part))))))
+	  (processed-measures 0)
+	  (root musicxml-root-node))
+      (pop-to-buffer (generate-new-buffer (format "*Braille music for %s*"
+						  (buffer-name))))
+      (musicxml-braille-music-mode)
+      (setq musicxml-root-node root)
+
+      (insert (musicxml-node-text-string (musicxml/work/work-title)) "\n")
+
+      (dolist (part (musicxml/part))
+	(let ((part-id (xml-get-attribute part 'id)))
+	  (insert (musicxml-node-text-string
+		   (musicxml/part-list/score-part/part-name part-id)) ":\n")
+	  (let ((current-time-signature (cons 4 4))
+		(alterations (list 0 0 0 0 0 0 0)))
+	    (insert "  ")
+	    (dolist (measure (musicxml-children part))
+	      ;; Check for a time signature
+	      (dolist (music-data (musicxml-children measure))
+		(cond
+		 ((string= (musicxml-node-name music-data) "attributes")
+		  (dolist (attribute (musicxml-children music-data))
+		    (cond
+		     ((string= (musicxml-node-name attribute) "time")
+		      (dolist (value (musicxml-children attribute))
+			(cond
+			 ((string= (musicxml-node-name value) "beats")
+			  (setf (car current-time-signature)
+				(string-to-number
+				 (musicxml-node-text-string value))))
+			 ((string= (musicxml-node-name value) "beat-type")
+			  (setf (cdr current-time-signature)
+				(string-to-number
+				 (musicxml-node-text-string value))))))))))))
+	      (let* ((measure-number (xml-get-attribute measure 'number))
+		     (braille-music (braille-music-from-musicdata measure))
+		     (interpretations
+		      (braille-music-note-value-interpretations
+		       braille-music current-time-signature)))
+		(when (/= (length interpretations) 1)
+		  (if (= (length interpretations) 0)
+		      (lwarn 'musicxml-braille-music :warning
+			     "Measure %s has no possible interpretations"
+			     measure-number)
+		    (lwarn 'musicxml-braille-music :error
+			   "Unresolved ambigious measure %s: %S"
+			   measure-number interpretations)))
+
+		(mapc #'braille-music-insert-music-symbol braille-music)
+
+		(if (< (- (point) (line-beginning-position)) fill-column)
+		    (insert " ")
+		  (insert "\n")))
+	      (progress-reporter-update progress-reporter
+					(incf processed-measures))))
+	    (insert "\n")))
+      (progress-reporter-done progress-reporter)
+      (goto-char (point-min)))))
+
+(define-key musicxml-mode-map (kbd "C-c | b") 'musicxml-to-braille-music)
+
+(provide 'musicxml)
+;;; musicxml.el ends here
