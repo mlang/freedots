@@ -3,7 +3,7 @@
 ;; Copyright (C) 2008  Mario Lang
 
 ;; Author: Mario Lang <mlang@delysid.org>
-;; Keywords: 
+;; Keywords: xml
 
 ;; This file is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -414,13 +414,7 @@ and returned as the first element of the list."
   (interactive)
   (if (not musicxml-mode)
       (error "Current buffer not in musicxml-mode")
-    (let ((progress-reporter
-	   (make-progress-reporter
-	    "Transcribing..."
-	    0 (length (apply #'append
-			     (mapcar #'musicxml-children (musicxml/part))))))
-	  (processed-measures 0)
-	  (root musicxml-root-node))
+    (let ((root musicxml-root-node))
       (pop-to-buffer (generate-new-buffer (format "*Braille music for %s*"
 						  (buffer-name))))
       (musicxml-braille-music-mode)
@@ -471,11 +465,8 @@ and returned as the first element of the list."
 
 		(if (< (- (point) (line-beginning-position)) fill-column)
 		    (insert " ")
-		  (insert "\n")))
-	      (progress-reporter-update progress-reporter
-					(incf processed-measures))))
+		  (insert "\n")))))
 	    (insert "\n")))
-      (progress-reporter-done progress-reporter)
       (goto-char (point-min)))))
 
 (define-key musicxml-mode-map (kbd "C-c | b") 'musicxml-to-braille-music)
