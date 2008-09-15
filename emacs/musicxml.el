@@ -431,22 +431,16 @@ and returned as the first element of the list."
 	    (insert "  ")
 	    (dolist (measure (musicxml-children part))
 	      ;; Check for a time signature
-	      (dolist (music-data (musicxml-children measure))
+	      (dolist (node (musicxml-children (musicxml-get-first-child
+						(musicxml-get-child
+						 measure "attributes") "time")))
 		(cond
-		 ((string= (musicxml-node-name music-data) "attributes")
-		  (dolist (attribute (musicxml-children music-data))
-		    (cond
-		     ((string= (musicxml-node-name attribute) "time")
-		      (dolist (value (musicxml-children attribute))
-			(cond
-			 ((string= (musicxml-node-name value) "beats")
-			  (setf (car current-time-signature)
-				(string-to-number
-				 (musicxml-node-text-string value))))
-			 ((string= (musicxml-node-name value) "beat-type")
-			  (setf (cdr current-time-signature)
-				(string-to-number
-				 (musicxml-node-text-string value))))))))))))
+		 ((string= (musicxml-node-name node) "beats")
+		  (setf (car current-time-signature)
+			(string-to-number (musicxml-node-text-string node))))
+		 ((string= (musicxml-node-name node) "beat-type")
+		  (setf (cdr current-time-signature)
+			(string-to-number (musicxml-node-text-string node))))))
 	      (let* ((measure-number (xml-get-attribute measure 'number))
 		     (braille-music (braille-music-from-musicdata measure))
 		     (interpretations
