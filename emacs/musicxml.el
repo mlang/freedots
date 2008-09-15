@@ -22,10 +22,15 @@
 
 ;;; Commentary:
 
-;; 
+;; Primary goal of this program is to transcribe MusicXML documents to
+;; braille music notation.
 
-;; TODO:
-;; * Get rid of xml-sub-parse.
+;; However, to achieve this we first need to define layer of MusicXML handling
+;; functionality.
+
+;;; TODO:
+
+;; * Get rid of xml-sub-parser.
 
 ;;; Code:
 
@@ -367,7 +372,7 @@ It returns a list of lists, ideally with just one element."
 		 (let ((choices (car lists))
 		       result)
 		   (if (endp (cdr lists))
-		       (loop for choice in choices 
+		       (loop for choice in choices
 			     when (= (car choice) sum) collect (list choice))
 		     (dolist (choice choices result)
 		       (let ((time (car choice)))
@@ -377,17 +382,20 @@ It returns a list of lists, ideally with just one element."
 				 (generate (cdr lists) (- sum time)))))))))))
       (generate
        (mapcar (lambda (note)
-		 (mapcar (lambda (str)
-			   (cons (/ 1.0
-				    (string-to-number str))
-				 (intern
-				  (concat
-				   (substring
-				    (symbol-name (car note)) 0 1)
-				   str))))
-			 (split-string
-			  (substring (symbol-name (car note)) 1)
-			  "or")))
+		 (let ((dots (musicxml-note-dots note)))
+		   (mapcar (lambda (str)
+			     (let ((undotted-duration
+				    (/ 1.0 (string-to-number str))))
+			       (cons (- (* undotted-duration 2)
+					(/ undotted-duration (expt 2 dots)))
+				     (intern
+				      (concat
+				       (substring
+					(symbol-name (car note)) 0 1)
+				       str)))))
+			   (split-string
+			    (substring (symbol-name (car note)) 1)
+			    "or"))))
 	       notes)
        time))))
 
