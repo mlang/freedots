@@ -204,7 +204,8 @@ and returned as the first element of the list."
 	(setcar tag (car new))
 	(setcdr tag (cdr new))))))
 
-(defun musicxml-goto-tag (tag)
+(defun musicxml-pop-to-tag (tag)
+  "Jump to TAG source location."
   (pop-to-buffer (marker-buffer (nth 1 (car tag))))
   (goto-char (nth 1 (car tag))))
 
@@ -212,15 +213,19 @@ and returned as the first element of the list."
   (caar node))
 
 (defun musicxml-children (node)
+  "Return a list of all children of NODE with text content removed."
   (remove-if (lambda (elem) (stringp (car elem))) (cddr node)))
 
+
 (defun musicxml-get-child (node name)
+  "Return all NAME children of NODE."
   (remove-if (lambda (elem)
 	       (or (stringp (car elem))
 		   (not (string= (musicxml-node-name elem) name))))
 	     (cddr node)))
 
 (defun musicxml-get-first-child (node name)
+  "Return the first child of NODE with name NAME."
   (let ((children (cddr node)))
     (catch 'found
       (while children
@@ -231,35 +236,44 @@ and returned as the first element of the list."
 	    (setq children (cdr children))))))))
 
 (defun musicxml-node-text (node)
+  "Return the (first) text element in NODE."
   (let ((first-child (caddr node)))
     (when (and first-child (stringp (car first-child)))
       first-child)))
 
-(defun musicxml-node-text-string (node)
-  (or (nth 0 (musicxml-node-text node)) ""))
+(defun musicxml-node-text-string (text-node)
+  "Get the text of a TEXT-NODE as a string."
+  (or (nth 0 (musicxml-node-text text-node)) ""))
 
 (defun musicxml/work ()
+  "XML node /*/work."
   (musicxml-get-first-child musicxml-root-node "work"))
+(defun musicxml/work/work-number ()
+  "XML node /*/work/work-number."
+  (musicxml-get-first-child (musicxml/work) "work-number"))
+(defun musicxml/work/work-title ()
+  "XML node /*/work/work-title."
+  (musicxml-get-first-child (musicxml/work) "work-title"))
 (defun musicxml/part-list ()
+  "XML node /*/part-list."
   (or (musicxml-get-first-child musicxml-root-node "part-list")
-      (error "Required element part-list not present")))
+      (error "Required element `part-list' not present")))
 (defun musicxml/part-list/score-part (id)
+  "XML node /*/part-list/score-part[@id=ID]."
   (loop for node in (musicxml-children (musicxml/part-list))
 	when (and (string= (musicxml-node-name node) "score-part")
 		  (string= (xml-get-attribute node 'id) id))
 	return node))
 (defun musicxml/part-list/score-part/part-name (id)
+  "XML node /*/part-list/score-part[@id=ID]/part-name."
   (musicxml-get-first-child (musicxml/part-list/score-part id) "part-name"))
-(defun musicxml/work/work-number ()
-  (musicxml-get-first-child (musicxml/work) "work-number"))
-(defun musicxml/work/work-title ()
-  (musicxml-get-first-child (musicxml/work) "work-title"))
 (defun musicxml/part ()
+  "XML nodes /*/part."
   (musicxml-get-child musicxml-root-node "part"))
 
 (defun musicxml-note-p (node)
   (string= (musicxml-node-name node) "note"))
-(defun musicxml-dots (node)
+(defun musicxml-note-dots (node)
   (length (musicxml-get-child node "dot")))
 (defun musicxml-rest-p (node)
   (and (musicxml-note-p node)
@@ -277,9 +291,15 @@ and returned as the first element of the list."
   (and (musicxml-note-p node)
        (musicxml-node-text-string (musicxml-get-first-child node "type"))))
 
-(defvar musicxml-dtd nil)
+;;; MusicXML minor mode
+
+(defvar musicxml-dtd nil
+  "The DTD information for the XML document in this buffer.")
 (make-variable-buffer-local 'musicxml-dtd)
-(defvar musicxml-root-node nil)
+(defvar musicxml-root-node nil
+  "The root XML node of the MusicXML document in this buffer.
+Functions like `musicxml/work', `musicxml/part-list', `musicxml/part' and
+others use the value of this variable to directly access parsed XML.")
 (make-variable-buffer-local 'musicxml-root-node)
 
 (defvar musicxml-mode-map (make-sparse-keymap)
@@ -332,6 +352,13 @@ and returned as the first element of the list."
   (car (rassq char braille-music-symbol-table)))
 
 (defun braille-music-note-value-interpretations (notes time-signature)
+  "Calculate all possible interpretations of braille music symbols in NOTES
+given a measure duration defined by TIME-SIGNATURE.
+
+Due to the inherent ambiguity of note values in braille music we need to
+be able to check if there is only one correct interpretation of the
+note values.  This function performs the job.
+It returns a list of lists, ideally with just one element."
   (let ((time (* (car time-signature) (/ 1.0 (cdr time-signature))))
 	results)
     (labels ((generate (lists sum)
@@ -365,6 +392,11 @@ and returned as the first element of the list."
        time))))
 
 (defun braille-music-from-musicdata (node)
+  "Return a list of braille music symbols from NODE.
+
+NODE can be
+ either /score-partwise/part/measure
+     or /score-timewise/measure/part."
   (let ((types '(("whole" . "1or16") ("half" . "2or32")
 		 ("quarter" . "4or64") ("eighth" . "8or128")
 		 ("16th" . "1or16") ("32nd" . "2or32")
@@ -372,31 +404,37 @@ and returned as the first element of the list."
 	symbols)
     (dolist (child (musicxml-children node) (nreverse symbols))
       (cond
-       ((musicxml-pitched-p child)
-	(push (cons (intern
-		     (concat (downcase (musicxml-note-pitch-step child))
-			     (cdr (assoc (musicxml-note-type child) types))))
-		    child)
-	      symbols))
-       ((musicxml-rest-p child)
-	(push (cons (intern
-		     (concat "r"
-			     (cdr (assoc (musicxml-note-type child) types))))
-		    child)
-	      symbols))))))
+       ((musicxml-note-p child)
+	(cond
+	 ((musicxml-pitched-p child)
+	  (push (cons (intern
+		       (concat (downcase (musicxml-note-pitch-step child))
+			       (cdr (assoc (musicxml-note-type child) types))))
+		      child)
+		symbols))
+	 ((musicxml-rest-p child)
+	  (push (cons (intern
+		       (concat "r"
+			       (cdr (assoc (musicxml-note-type child) types))))
+		      child)
+		symbols))))))))
 
 (defun braille-music-insert-music-symbol (music)
+  "Insert MUSIC (a cons cell) as braille music in the current buffer.
+The `car' of MUSIC is the braille music symbol and `cdr' is the XML tag
+mainly responsible for this symbol having been produced."
   (let ((symbol (car music)) (xml (cdr music))
 	(begin (point)))
     (insert (braille-music-char symbol))
     (put-text-property begin (point) 'xml-node xml)))
 
 (defun braille-music-goto-musicxml ()
+  "Pop to XML location which is responsible for the symbol at point."
   (interactive)
   (let ((node (get-text-property (point) 'xml-node)))
     (if node
-	(musicxml-goto-tag node)
-      (error "No associated XML data found"))))
+	(musicxml-pop-to-tag node)
+      (error "No XML node found"))))
 
 (defvar musicxml-braille-music-mode-map
   (let ((map (make-sparse-keymap)))
