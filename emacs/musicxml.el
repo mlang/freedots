@@ -339,11 +339,11 @@ others use the value of this variable to directly access parsed XML.")
 					dots (/ dots 10)))))
 			 (add-decimal-dots upper)
 			 (add-decimal-dots lower)
-			 (decode-char 'ucs unicode))))))
-   '((r1or16 . ?⠍) (r2or32 . ?⠥) (r4or64 . ?⠧) (r8or128 . ?⠭)))
+			 (format "%c" (decode-char 'ucs unicode)))))))
+   '((r1or16 . "⠍") (r2or32 . "⠥") (r4or64 . "⠧") (r8or128 . "⠭")))
   "A table of braille music symbols."
   :group 'braille-music
-  :type '(repeat (cons :tag "Entry" symbol character)))
+  :type '(repeat (cons :tag "Entry" symbol string)))
 
 (defun braille-music-char (symbol)
   (cdr (assq symbol braille-music-symbol-table)))
@@ -391,33 +391,28 @@ It returns a list of lists, ideally with just one element."
 	       notes)
        time))))
 
+(defun braille-music-symbol-from-musicxml-note (note)
+  (let ((types '(("whole" . "1or16") ("half" . "2or32")
+		 ("quarter" . "4or64") ("eighth" . "8or128")
+		 ("16th" . "1or16") ("32nd" . "2or32")
+		 ("64th" . "4or64") ("128th" . "8or128"))))
+    (intern (concat (if (musicxml-rest-p note)
+			"r"
+		      (downcase (musicxml-note-pitch-step note)))
+		    (cdr (assoc (musicxml-note-type note) types))))))
+
 (defun braille-music-from-musicdata (node)
   "Return a list of braille music symbols from NODE.
 
 NODE can be
  either /score-partwise/part/measure
      or /score-timewise/measure/part."
-  (let ((types '(("whole" . "1or16") ("half" . "2or32")
-		 ("quarter" . "4or64") ("eighth" . "8or128")
-		 ("16th" . "1or16") ("32nd" . "2or32")
-		 ("64th" . "4or64") ("128th" . "8or128")))
-	symbols)
+  (let (symbols)
     (dolist (child (musicxml-children node) (nreverse symbols))
       (cond
        ((musicxml-note-p child)
-	(cond
-	 ((musicxml-pitched-p child)
-	  (push (cons (intern
-		       (concat (downcase (musicxml-note-pitch-step child))
-			       (cdr (assoc (musicxml-note-type child) types))))
-		      child)
-		symbols))
-	 ((musicxml-rest-p child)
-	  (push (cons (intern
-		       (concat "r"
-			       (cdr (assoc (musicxml-note-type child) types))))
-		      child)
-		symbols))))))))
+	(push (cons (braille-music-symbol-from-musicxml-note child) child)
+	      symbols))))))
 
 (defun braille-music-insert-music-symbol (music)
   "Insert MUSIC (a cons cell) as braille music in the current buffer.
@@ -426,6 +421,9 @@ mainly responsible for this symbol having been produced."
   (let ((symbol (car music)) (xml (cdr music))
 	(begin (point)))
     (insert (braille-music-char symbol))
+    (when (and (musicxml-note-p xml) (musicxml-note-dots xml))
+      (dotimes (i (musicxml-note-dots xml))
+	(insert ?⠄)))
     (put-text-property begin (point) 'xml-node xml)))
 
 (defun braille-music-goto-musicxml ()
