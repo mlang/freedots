@@ -37,8 +37,8 @@
 (require 'midi)
 (require 'xml)
 
-;;; XML Parsing
-;;
+;;;; XML Parsing
+
 ;; We borrow and extend a bit of code from xml.el.
 ;; The main goal is to keep markers for start and end positions of XML tags
 ;; and text in the XML sexp representation.
@@ -290,12 +290,6 @@ and returned as the first element of the list."
 (defun musicxml-pitched-p (node)
   (and (musicxml-note-p node)
        (musicxml-get-first-child node "pitch")))
-(defun musicxml-note-pitch-step (node)
-  (and (musicxml-pitched-p node)
-       (musicxml-node-text-string (musicxml-get-first-child
-				   (musicxml-get-first-child
-				    node "pitch") "step"))))
-
 (defun musicxml-note-midi-pitch (node)
   (and (musicxml-pitched-p node)
        (let ((pitch (musicxml-get-first-child node "pitch")))
@@ -376,7 +370,7 @@ and returned as the first element of the list."
   (interactive)
   (smf-play (musicxml-as-smf)))
 
-;;; MusicXML minor mode
+;;;; MusicXML minor mode
 
 (defvar musicxml-dtd nil
   "The DTD information for the XML document in this buffer.")
@@ -406,7 +400,7 @@ others use the value of this variable to directly access parsed XML.")
     (setq musicxml-dtd nil
 	  musicxml-root-node nil)))
 
-;;; Braille music
+;;;; Braille music
 
 (defcustom braille-music-symbol-table
   (append
@@ -486,10 +480,12 @@ It returns a list of lists, ideally with just one element."
   (let ((types '(("whole" . "1or16") ("half" . "2or32")
 		 ("quarter" . "4or64") ("eighth" . "8or128")
 		 ("16th" . "1or16") ("32nd" . "2or32")
-		 ("64th" . "4or64") ("128th" . "8or128"))))
-    (intern (concat (if (musicxml-rest-p note)
+		 ("64th" . "4or64") ("128th" . "8or128")))
+	(pitch (musicxml-get-first-child note "pitch")))
+    (intern (concat (if (not pitch)
 			"r"
-		      (downcase (musicxml-note-pitch-step note)))
+		      (downcase (musicxml-node-text-string
+				 (musicxml-get-first-child pitch "step"))))
 		    (cdr (assoc (musicxml-note-type note) types))))))
 
 (defun braille-music-from-musicdata (node)
