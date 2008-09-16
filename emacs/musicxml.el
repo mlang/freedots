@@ -34,6 +34,7 @@
 
 ;;; Code:
 
+(require 'midi)
 (require 'xml)
 
 ;;; XML Parsing
@@ -278,6 +279,9 @@ and returned as the first element of the list."
 
 (defun musicxml-note-p (node)
   (string= (musicxml-node-name node) "note"))
+(defun musicxml-grace-note-p (node)
+  (and (musicxml-note-p node) (musicxml-get-first-child node "grace")))
+
 (defun musicxml-note-dots (node)
   (length (musicxml-get-child node "dot")))
 (defun musicxml-rest-p (node)
@@ -292,9 +296,85 @@ and returned as the first element of the list."
 				   (musicxml-get-first-child
 				    node "pitch") "step"))))
 
+(defun musicxml-note-midi-pitch (node)
+  (and (musicxml-pitched-p node)
+       (let ((pitch (musicxml-get-first-child node "pitch")))
+	 (let ((step (cdr (assoc (downcase (musicxml-node-text-string
+					    (musicxml-get-first-child
+					     pitch "step")))
+				 '(("c" . 0) ("d" . 2) ("e" . 4) ("f" . 5)
+				   ("g" . 7) ("a" . 9) ("b" . 11)))))
+	       (octave (string-to-number
+			(musicxml-node-text-string
+			 (musicxml-get-first-child pitch "octave"))))
+	       (alter (string-to-number
+		       (musicxml-node-text-string
+			(musicxml-get-first-child pitch "alter")))))
+	   (+ (* octave 12) step alter)))))
+
 (defun musicxml-note-type (node)
   (and (musicxml-note-p node)
        (musicxml-node-text-string (musicxml-get-first-child node "type"))))
+
+(defun musicxml-duration (node)
+  (let ((duration (musicxml-get-first-child musicdata "duration")))
+    (if duration
+	(string-to-number (musicxml-node-text-string duration))
+      (error "No duration: %S" node))))
+
+(defun musicxml-as-smf ()
+  (let ((ppqn (apply #'lcm
+		     (loop for part in (musicxml/part)
+			   append
+			   (loop for measure in
+				 (musicxml-get-child part "measure")
+				 append
+				 (loop for attributes in
+				       (musicxml-get-child measure
+							   "attributes")
+				       append
+				       (loop for divisions in
+					     (musicxml-get-child attributes
+								 "divisions")
+					     collect
+					     (string-to-number
+					      (musicxml-node-text-string
+					       divisions))))))))
+	tracks)
+    (dolist (part (musicxml/part) (append (list 1 ppqn) (nreverse tracks)))
+      (let ((tick 0) (divisions-multiplier 1) events)
+	(dolist (measure (musicxml-get-child part "measure"))
+	  (dolist (musicdata (musicxml-children measure))
+	    (cond
+	     ((string= (musicxml-node-name musicdata) "attributes")
+	      (dolist (divisions (musicxml-get-child musicdata "divisions"))
+		(setq divisions-multiplier
+		      (/ ppqn (string-to-number
+			       (musicxml-node-text-string divisions))))))
+	     ((string= (musicxml-node-name musicdata) "backup")
+	      (setq tick (- tick (* (musicxml-duration musicdata) divisions-multiplier))))
+	     ((or (string= (musicxml-node-name musicdata) "forward")
+		  (musicxml-rest-p musicdata))
+	      (setq tick (+ tick (* (musicxml-duration musicdata) divisions-multiplier))))
+	     ((and (musicxml-pitched-p musicdata)
+		   (not (musicxml-grace-note-p musicdata)))
+	      (push (list tick
+			  'Note
+			  0
+			  (musicxml-note-midi-pitch musicdata)
+			  127
+			  (musicxml-duration musicdata)
+			  0)
+		    events)
+	      (setq tick (+ tick (* (musicxml-duration musicdata) divisions-multiplier)))))))
+	(push (append (list "MTrk")
+		      (sort (nreverse events) #'car-less-than-car))
+	      tracks)))))
+
+(defun musicxml-play-score ()
+  "Play the complete score."
+  (interactive)
+  (smf-play (musicxml-as-smf)))
 
 ;;; MusicXML minor mode
 
@@ -307,7 +387,10 @@ Functions like `musicxml/work', `musicxml/part-list', `musicxml/part' and
 others use the value of this variable to directly access parsed XML.")
 (make-variable-buffer-local 'musicxml-root-node)
 
-(defvar musicxml-mode-map (make-sparse-keymap)
+(defvar musicxml-mode-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map (kbd "C-c C-p") 'musicxml-play-score)
+    map)
   "Keymap for `musicxml-mode'.")
 
 (define-minor-mode musicxml-mode
