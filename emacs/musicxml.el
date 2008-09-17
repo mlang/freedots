@@ -365,10 +365,21 @@ and returned as the first element of the list."
 		      (sort (nreverse events) #'car-less-than-car))
 	      tracks)))))
 
+(defvar musicxml-player-process nil)
+
+(defun musicxml-playing-p ()
+  (and musicxml-player-process
+       (eq (process-status musicxml-player-process) 'run)))
+
+(defun musicxml-stop-playback ()
+  (interactive)
+  (and (musicxml-playing-p) (kill-process musicxml-player-process)))
+
 (defun musicxml-play-score ()
   "Play the complete score."
   (interactive)
-  (smf-play (musicxml-as-smf)))
+  (musicxml-stop-playback)
+  (setq musicxml-player-process (smf-play (musicxml-as-smf))))
 
 ;;;; MusicXML minor mode
 
