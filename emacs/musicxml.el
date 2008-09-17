@@ -25,8 +25,8 @@
 ;; Primary goal of this program is to transcribe MusicXML documents to
 ;; braille music notation.
 
-;; However, to achieve this we first need to define layer of MusicXML handling
-;; functionality.
+;; However, to achieve this we first need to define a layer of
+;; MusicXML handling functionality.
 
 ;;; TODO:
 
@@ -222,7 +222,6 @@ and returned as the first element of the list."
   "Return a list of all children of NODE with text content removed."
   (remove-if (lambda (elem) (stringp (car elem))) (cddr node)))
 
-
 (defun musicxml-get-child (node name)
   "Return all NAME children of NODE."
   (remove-if (lambda (elem)
@@ -244,38 +243,39 @@ and returned as the first element of the list."
 (defun musicxml-node-text (node)
   "Return the (first) text element in NODE."
   (let ((first-child (caddr node)))
-    (when (and first-child (stringp (car first-child)))
-      first-child)))
+    (and first-child (stringp (car first-child))
+	 first-child)))
 
 (defun musicxml-node-text-string (text-node)
   "Get the text of a TEXT-NODE as a string."
   (or (nth 0 (musicxml-node-text text-node)) ""))
 
-(defun musicxml/work ()
+(defun musicxml/work (&optional score)
   "XML node /*/work."
-  (musicxml-get-first-child musicxml-root-node "work"))
-(defun musicxml/work/work-number ()
+  (musicxml-get-first-child (or score musicxml-root-node) "work"))
+(defun musicxml/work/work-number (&optional score)
   "XML node /*/work/work-number."
-  (musicxml-get-first-child (musicxml/work) "work-number"))
-(defun musicxml/work/work-title ()
+  (musicxml-get-first-child (musicxml/work score) "work-number"))
+(defun musicxml/work/work-title (&optional score)
   "XML node /*/work/work-title."
-  (musicxml-get-first-child (musicxml/work) "work-title"))
-(defun musicxml/part-list ()
+  (musicxml-get-first-child (musicxml/work score) "work-title"))
+(defun musicxml/part-list (&optional score)
   "XML node /*/part-list."
-  (or (musicxml-get-first-child musicxml-root-node "part-list")
+  (or (musicxml-get-first-child (or score musicxml-root-node) "part-list")
       (error "Required element `part-list' not present")))
-(defun musicxml/part-list/score-part (id)
+(defun musicxml/part-list/score-part (id &optional score)
   "XML node /*/part-list/score-part[@id=ID]."
-  (loop for node in (musicxml-children (musicxml/part-list))
+  (loop for node in (musicxml-children (musicxml/part-list score))
 	when (and (string= (musicxml-node-name node) "score-part")
 		  (string= (xml-get-attribute node 'id) id))
 	return node))
-(defun musicxml/part-list/score-part/part-name (id)
+(defun musicxml/part-list/score-part/part-name (id &optional score)
   "XML node /*/part-list/score-part[@id=ID]/part-name."
-  (musicxml-get-first-child (musicxml/part-list/score-part id) "part-name"))
-(defun musicxml/part ()
+  (musicxml-get-first-child (musicxml/part-list/score-part id score)
+			    "part-name"))
+(defun musicxml/part (&optional score)
   "XML nodes /*/part."
-  (musicxml-get-child musicxml-root-node "part"))
+  (musicxml-get-child (or score musicxml-root-node) "part"))
 
 (defun musicxml-note-p (node)
   (string= (musicxml-node-name node) "note"))
@@ -290,21 +290,24 @@ and returned as the first element of the list."
 (defun musicxml-pitched-p (node)
   (and (musicxml-note-p node)
        (musicxml-get-first-child node "pitch")))
-(defun musicxml-note-midi-pitch (node)
-  (and (musicxml-pitched-p node)
-       (let ((pitch (musicxml-get-first-child node "pitch")))
-	 (let ((step (cdr (assoc (downcase (musicxml-node-text-string
-					    (musicxml-get-first-child
-					     pitch "step")))
-				 '(("c" . 0) ("d" . 2) ("e" . 4) ("f" . 5)
-				   ("g" . 7) ("a" . 9) ("b" . 11)))))
-	       (octave (string-to-number
-			(musicxml-node-text-string
-			 (musicxml-get-first-child pitch "octave"))))
-	       (alter (string-to-number
-		       (musicxml-node-text-string
-			(musicxml-get-first-child pitch "alter")))))
-	   (+ (* octave 12) step alter)))))
+
+(defconst musicxml-step-to-chromatic
+  '((?C . 0) (?D . 2) (?E . 4) (?F . 5) (?G . 7) (?A . 9) (?B . 11)))
+
+(defun musicxml-note-midi-pitch (note)
+  (let ((pitch (musicxml-get-first-child note "pitch")))
+    (when pitch
+      (round
+       (+ (* (string-to-number
+	      (musicxml-node-text-string
+	       (musicxml-get-first-child pitch "octave"))) 12)
+	  (cdr (assq (upcase (aref (musicxml-node-text-string
+				    (musicxml-get-first-child
+				     pitch "step")) 0))
+		     musicxml-step-to-chromatic))
+	  (string-to-number
+	   (musicxml-node-text-string
+	    (musicxml-get-first-child pitch "alter"))))))))
 
 (defun musicxml-note-type (node)
   (and (musicxml-note-p node)
@@ -316,9 +319,9 @@ and returned as the first element of the list."
 	(string-to-number (musicxml-node-text-string duration))
       (error "No duration: %S" node))))
 
-(defun musicxml-as-smf ()
+(defun musicxml-as-smf (&optional score)
   (let ((ppqn (apply #'lcm
-		     (loop for part in (musicxml/part)
+		     (loop for part in (musicxml/part score)
 			   append
 			   (loop for measure in
 				 (musicxml-get-child part "measure")
@@ -335,8 +338,14 @@ and returned as the first element of the list."
 					      (musicxml-node-text-string
 					       divisions))))))))
 	tracks)
-    (dolist (part (musicxml/part) (append (list 1 ppqn) (nreverse tracks)))
+    (dolist (part (musicxml/part score)
+		  (append (list 1 ppqn) (nreverse tracks)))
       (let ((tick 0) (divisions-multiplier 1) events)
+	(push (list tick
+		    'TrackName (musicxml-node-text-string
+				(musicxml/part-list/score-part/part-name
+				 (xml-get-attribute part 'id))))
+	      events)
 	(dolist (measure (musicxml-get-child part "measure"))
 	  (dolist (musicdata (musicxml-children measure))
 	    (cond
@@ -396,8 +405,9 @@ others use the value of this variable to directly access parsed XML.")
 (defvar musicxml-minor-mode-map
   (let ((map (make-sparse-keymap)))
     (define-key map (kbd "C-c | C-p") 'musicxml-play-score)
+    (define-key map (kbd "C-c | C-s") 'musicxml-stop-playback)
     map)
-  "Keymap for `musicxml-mode'.")
+  "Keymap for `musicxml-minor-mode'.")
 
 (define-minor-mode musicxml-minor-mode
   "If enabled, special functions for MusicXML handling can be used."
