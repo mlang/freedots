@@ -386,22 +386,23 @@ and returned as the first element of the list."
 (defvar musicxml-dtd nil
   "The DTD information for the XML document in this buffer.")
 (make-variable-buffer-local 'musicxml-dtd)
+
 (defvar musicxml-root-node nil
   "The root XML node of the MusicXML document in this buffer.
 Functions like `musicxml/work', `musicxml/part-list', `musicxml/part' and
 others use the value of this variable to directly access parsed XML.")
 (make-variable-buffer-local 'musicxml-root-node)
 
-(defvar musicxml-mode-map
+(defvar musicxml-minor-mode-map
   (let ((map (make-sparse-keymap)))
     (define-key map (kbd "C-c | C-p") 'musicxml-play-score)
     map)
   "Keymap for `musicxml-mode'.")
 
-(define-minor-mode musicxml-mode
+(define-minor-mode musicxml-minor-mode
   "If enabled, special functions for MusicXML handling can be used."
   :lighter " Music"
-  (if musicxml-mode
+  (if musicxml-minor-mode
       (let ((xml (musicxml-parse-region (point-min) (point-max) t)))
 	(if xml
 	    (setq musicxml-dtd (nth 0 xml)
@@ -546,8 +547,8 @@ mainly responsible for this symbol having been produced."
 (defun musicxml-to-braille-music ()
   "Convert the current MusicXML document to braille music."
   (interactive)
-  (if (not musicxml-mode)
-      (error "Current buffer not in musicxml-mode")
+  (if (not musicxml-minor-mode)
+      (error "Current buffer not in musicxml-minor-mode")
     (let ((root musicxml-root-node))
       (pop-to-buffer (generate-new-buffer (format "*Braille music for %s*"
 						  (buffer-name))))
@@ -597,7 +598,7 @@ mainly responsible for this symbol having been produced."
 	    (insert "\n")))
       (goto-char (point-min)))))
 
-(define-key musicxml-mode-map (kbd "C-c | b") 'musicxml-to-braille-music)
+(define-key musicxml-minor-mode-map (kbd "C-c | b") 'musicxml-to-braille-music)
 
 (provide 'musicxml)
 ;;; musicxml.el ends here
