@@ -383,7 +383,7 @@ others use the value of this variable to directly access parsed XML.")
 
 (defvar musicxml-mode-map
   (let ((map (make-sparse-keymap)))
-    (define-key map (kbd "C-c C-p") 'musicxml-play-score)
+    (define-key map (kbd "C-c | C-p") 'musicxml-play-score)
     map)
   "Keymap for `musicxml-mode'.")
 
