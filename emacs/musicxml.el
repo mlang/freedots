@@ -340,12 +340,31 @@ and returned as the first element of the list."
 	tracks)
     (dolist (part (musicxml/part score)
 		  (append (list 1 ppqn) (nreverse tracks)))
-      (let ((tick 0) (divisions-multiplier 1) events)
+      (let* ((tick 0) (divisions-multiplier 1)
+	     (score-part (musicxml/part-list/score-part
+			 (xml-get-attribute part 'id) score))
+	     (midi-instrument (musicxml-get-first-child
+			       score-part "midi-instrument"))
+	     (midi-channel (musicxml-get-first-child
+			    midi-instrument "midi-channel"))
+	     (midi-program (musicxml-get-first-child
+			    midi-instrument "midi-program"))
+	     (channel (or (and midi-channel (1- (string-to-number
+						 (musicxml-node-text-string
+						  midi-channel))))
+			  0))
+	     (program (or (and midi-program (string-to-number
+					     (musicxml-node-text-string
+					      midi-program)))
+			  1))
+	     (velocity 64)
+	     events)
 	(push (list tick
 		    'TrackName (musicxml-node-text-string
-				(musicxml/part-list/score-part/part-name
-				 (xml-get-attribute part 'id))))
+				(musicxml-get-first-child
+				 score-part "part-name")))
 	      events)
+	(push (list tick 'PC channel program) events)
 	(dolist (measure (musicxml-get-child part "measure"))
 	  (dolist (musicdata (musicxml-children measure))
 	    (cond
@@ -354,6 +373,11 @@ and returned as the first element of the list."
 		(setq divisions-multiplier
 		      (/ ppqn (string-to-number
 			       (musicxml-node-text-string divisions))))))
+	     ((string= (musicxml-node-name musicdata) "direction")
+	      (let ((sound (musicxml-get-first-child musicdata "sound")))
+		(when (and sound (xml-get-attribute-or-nil sound 'dynamics))
+		  (setq velocity (string-to-number
+				  (xml-get-attribute sound 'dynamics))))))
 	     ((string= (musicxml-node-name musicdata) "backup")
 	      (setq tick (- tick (* (musicxml-duration musicdata) divisions-multiplier))))
 	     ((or (string= (musicxml-node-name musicdata) "forward")
@@ -363,9 +387,9 @@ and returned as the first element of the list."
 		   (not (musicxml-grace-note-p musicdata)))
 	      (push (list tick
 			  'Note
-			  0
+			  channel
 			  (musicxml-note-midi-pitch musicdata)
-			  127
+			  velocity
 			  (musicxml-duration musicdata)
 			  0)
 		    events)
