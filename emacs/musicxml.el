@@ -298,9 +298,9 @@ and returned as the first element of the list."
   (let ((pitch (musicxml-get-first-child note "pitch")))
     (when pitch
       (round
-       (+ (* (string-to-number
-	      (musicxml-node-text-string
-	       (musicxml-get-first-child pitch "octave"))) 12)
+       (+ (* (1+ (string-to-number
+		  (musicxml-node-text-string
+		   (musicxml-get-first-child pitch "octave")))) 12)
 	  (cdr (assq (upcase (aref (musicxml-node-text-string
 				    (musicxml-get-first-child
 				     pitch "step")) 0))
