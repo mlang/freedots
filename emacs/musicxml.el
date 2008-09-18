@@ -292,7 +292,8 @@ and returned as the first element of the list."
        (musicxml-get-first-child node "pitch")))
 
 (defconst musicxml-step-to-chromatic
-  '((?C . 0) (?D . 2) (?E . 4) (?F . 5) (?G . 7) (?A . 9) (?B . 11)))
+  '((?C . 0) (?D . 2) (?E . 4) (?F . 5) (?G . 7) (?A . 9) (?B . 11))
+  "Maps step names to chromatic step counts.")
 
 (defun musicxml-note-midi-pitch (note)
   (let ((pitch (musicxml-get-first-child note "pitch")))
