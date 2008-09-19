@@ -447,6 +447,23 @@ others use the value of this variable to directly access parsed XML.")
     (setq musicxml-dtd nil
 	  musicxml-root-node nil)))
 
+(defconst musicxml-root-node-names '("score-partwise" "score-timewise"))
+
+(defun turn-on-musicxml-minor-mode ()
+  "Turn on `musicxml-minor-mode' if the current buffer is a MusicXML document."
+  (case major-mode
+    (nxml-mode (let ((root-node-name (nth 2 (rng-document-element))))
+		 (when (member root-node-name musicxml-root-node-names)
+		   (musicxml-minor-mode 1))))
+    (t (when (save-excursion
+	       (goto-char (point-min))
+	       (re-search-forward
+		(concat "<" (regexp-opt musicxml-root-node-names)) nil t))
+	 (musicxml-minor-mode 1)))))
+
+(eval-after-load 'nxml-mode
+  '(add-hook 'nxml-mode-hook #'turn-on-musicxml-minor-mode t))
+
 ;;;; Braille music
 
 (defcustom braille-music-symbol-table
