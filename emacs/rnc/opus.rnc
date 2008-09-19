@@ -1,0 +1,89 @@
+# MusicXML™ Opus DTD
+# 
+# Version 2.0 - 18 June 2007
+# 
+# Copyright © 2004-2007 Recordare LLC.
+# http://www.recordare.com/
+# 
+# This MusicXML™ work is being provided by the copyright
+# holder under the MusicXML Document Type Definition 
+# Public License Version 2.0, available from:
+# 
+#	http://www.recordare.com/dtds/license.html
+
+# An opus collects MusicXML scores together into a larger
+# entity. The individual scores could be movements in a
+# symphony, scenes or acts in an opera, or songs in an
+# album. The opus definition allows arbitrary nesting
+# either via an opus (included in the document) or an
+# opus-link (linked like scores). Future versions of the
+# MusicXML format may expand this DTD to include reference
+# data and other metadata related to musical scores.
+# 
+# Suggested use:
+# 
+# <!DOCTYPE opus PUBLIC
+#	"-//Recordare//DTD MusicXML 2.0 Opus//EN"
+#	"http://www.musicxml.org/dtds/opus.dtd">
+
+# Component DTD modules
+
+# The common DTD module contains the entities and elements
+# that are shared among multiple DTD modules.
+
+include "common.mod.rnc"
+# The link DTD module contains XLink attributes.
+include "link.mod.rnc"
+# Elements
+
+# Opus is the document element. The document-attributes
+# entity includes the version attribute and is defined in
+# the common.mod file.
+opus =
+  element opus { attlist-opus, title?, (opus | opus-link | score)* }
+attlist-opus &= document-attributes
+# The score elements provide the links to the individual 
+# movements. The new-page attribute, added in Version
+# 2.0, is used to indicate if the first page of the score is 
+# different than the last page of the previous score. If
+# new-page is "yes", then a different page is used; if
+# "no", then the same page is used. The default value is
+# implementation-dependent.
+score = element score { attlist-score, empty }
+attlist-score &=
+  link-attributes,
+  attribute new-page { yes-no }?
+# An opus-link provides a link to another opus document,
+# allowing for multiple levels of opus collections via
+# linking as well as nesting.
+opus-link = element opus-link { attlist-opus-link, empty }
+attlist-opus-link &= link-attributes
+# Future versions may include metadata elements. In
+# this version, we just include the title of the opus.
+title = element title { attlist-title, text }
+attlist-title &= empty
+start =
+  bookmark
+  | normal-type
+  | fingering
+  | coda
+  | level
+  | fermata
+  | link
+  | tuning-step
+  | normal-notes
+  | footnote
+  | tuning-octave
+  | part-name-display
+  | part-abbreviation-display
+  | dynamics
+  | fret
+  | tuning-alter
+  | staff
+  | actual-notes
+  | midi-instrument
+  | normal-dot
+  | \string
+  | voice
+  | wavy-line
+  | segno

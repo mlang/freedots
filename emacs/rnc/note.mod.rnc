@@ -1,0 +1,923 @@
+# MusicXML™ note.mod module
+# 
+# Version 2.0 - 18 June 2007
+# 
+# Copyright © 2004-2007 Recordare LLC.
+# http://www.recordare.com/
+# 
+# This MusicXML™ work is being provided by the copyright
+# holder under the MusicXML Document Type Definition 
+# Public License Version 2.0, available from:
+# 
+#	http://www.recordare.com/dtds/license.html
+
+# The note DTD module contains the note representations for
+# the MusicXML format. It contains the note element, all its
+# children elements, and related entities.
+
+# Entities
+
+# Structures
+
+# The common note elements between cue/grace notes and
+# regular (full) notes: pitch, chord, and rest information,
+# but not duration (cue and grace notes do not have
+# duration encoded here). Unpitched elements are used for
+# unpitched percussion, speaking voice, and other musical
+# elements lacking determinate pitch.
+
+namespace a = "http://relaxng.org/ns/compatibility/annotations/1.0"
+
+full-note =
+  element-chord?, (element-pitch | element-unpitched | element-rest)
+# Elements
+
+# Notes are the most common type of MusicXML data. The
+# MusicXML format keeps the MuseData distinction between
+# elements used for sound information and elements used for
+# notation information (e.g., tie is used for sound, tied for
+# notation). Thus grace notes do not have a duration element.
+# Cue notes have a duration element, as do forward elements,
+# but no tie elements. Having these two types of information
+# available can make interchange considerably easier, as
+# some programs handle one type of information much more
+# readily than the other. 
+element-note =
+  element note {
+    attlist-note,
+    ((element-grace, full-note, (element-tie, element-tie?)?)
+     | (element-cue, full-note, element-duration)
+     | (full-note, element-duration, (element-tie, element-tie?)?)),
+    element-instrument?,
+    editorial-voice,
+    element-type?,
+    element-dot*,
+    element-accidental?,
+    element-time-modification?,
+    element-stem?,
+    element-notehead?,
+    element-staff?,
+    element-beam*,
+    element-notations*,
+    element-lyric*
+  }
+# The position and printout entities for printing suggestions
+# are defined in the common.mod file.
+# 
+# The dynamics and end-dynamics attributes correspond to
+# MIDI 1.0's Note On and Note Off velocities, respectively.
+# They are expressed in terms of percentages of the default
+# forte value (90 for MIDI 1.0). The attack and release
+# attributes are used to alter the staring and stopping time
+# of the note from when it would otherwise occur based on
+# the flow of durations - information that is specific to a
+# performance. They are expressed in terms of divisions,
+# either positive or negative. A note that starts a tie should
+# not have a release attribute, and a note that stops a tie
+# should not have an attack attribute. If a note is played
+# only one time through a repeat, the time-only attribute
+# shows which time to play the note. The pizzicato attribute
+# is used when just this note is sounded pizzicato, vs. the
+# pizzicato element which changes overall playback between
+# pizzicato and arco.
+attlist-note &=
+  print-style,
+  printout,
+  attribute dynamics { text }?,
+  attribute end-dynamics { text }?,
+  attribute attack { text }?,
+  attribute release { text }?,
+  attribute time-only { text }?,
+  attribute pizzicato { yes-no }?
+# Pitch is represented as a combination of the step of the
+# diatonic scale, the chromatic alteration, and the octave.
+# The step element uses the English letters A through G. 
+# The alter element represents chromatic alteration in
+# number of semitones (e.g., -1 for flat, 1 for sharp).
+# Decimal values like 0.5 (quarter tone sharp) may be 
+# used for microtones. The octave element is represented
+# by the numbers 0 to 9, where 4 indicates the octave
+# started by middle C.
+element-pitch =
+  element pitch {
+    attlist-pitch, element-step, element-alter?, element-octave
+  }
+attlist-pitch &= empty
+element-step = element step { attlist-step, text }
+attlist-step &= empty
+element-alter = element alter { attlist-alter, text }
+attlist-alter &= empty
+element-octave = element octave { attlist-octave, text }
+attlist-octave &= empty
+# The cue and grace elements indicate the presence of
+# cue and grace notes. The slash attribute for a grace
+# note is yes for slashed eighth notes. The other grace
+# note attributes come from MuseData sound suggestions.
+# Steal-time-previous indicates the percentage of time
+# to steal from the previous note for the grace note.
+# Steal-time-following indicates the percentage of time
+# to steal from the following note for the grace note.
+# Make-time indicates to make time, not steal time; the
+# units are in real-time divisions for the grace note. 
+element-cue = element cue { attlist-cue, empty }
+attlist-cue &= empty
+element-grace = element grace { attlist-grace, empty }
+attlist-grace &=
+  attribute steal-time-previous { text }?,
+  attribute steal-time-following { text }?,
+  attribute make-time { text }?,
+  attribute slash { yes-no }?
+# The chord element indicates that this note is an additional
+# chord tone with the preceding note. The duration of this
+# note can be no longer than the preceding note. In MuseData,
+# a missing duration indicates the same length as the previous
+# note, but the MusicXML format requires a duration for chord
+# notes too.
+element-chord = element chord { attlist-chord, empty }
+attlist-chord &= empty
+# The unpitched element indicates musical elements that are
+# notated on the staff but lack definite pitch, such as
+# unpitched percussion and speaking voice. Like notes, it
+# uses step and octave elements to indicate placement on the
+# staff, following the current clef. If percussion clef is
+# used, the display-step and display-octave elements are
+# interpreted as if in treble clef, with a G in octave 4 on
+# line 2. If not present, the note is placed on the middle
+# line of the staff, generally used for one-line staffs.
+element-unpitched =
+  element unpitched {
+    attlist-unpitched, (element-display-step, element-display-octave)?
+  }
+attlist-unpitched &= empty
+element-display-step =
+  element display-step { attlist-display-step, text }
+attlist-display-step &= empty
+element-display-octave =
+  element display-octave { attlist-display-octave, text }
+attlist-display-octave &= empty
+# The rest element indicates notated rests or silences.
+# Rest are usually empty, but placement on the staff can
+# be specified using display-step and display-octave
+# elements.
+element-rest =
+  element rest {
+    attlist-rest, (element-display-step, element-display-octave)?
+  }
+attlist-rest &= empty
+# Duration is a positive number specified in division units.
+# This is the intended duration vs. notated duration (for
+# instance, swing eighths vs. even eighths, or differences
+# in dotted notes in Baroque-era music). Differences in
+# duration specific to an interpretation or performance
+# should use the note element's attack and release
+# attributes. 
+# 
+# The tie element indicates that a tie begins or ends with
+# this note. The tie element indicates sound; the tied
+# element indicates notation.
+element-duration = element duration { attlist-duration, text }
+attlist-duration &= empty
+element-tie = element tie { attlist-tie, empty }
+attlist-tie &= attribute type { start-stop }
+# If multiple score-instruments are specified on a
+# score-part, there should be an instrument element for
+# each note in the part. The id attribute is an IDREF back
+# to the score-instrument ID.
+element-instrument = element instrument { attlist-instrument, empty }
+attlist-instrument &= attribute id { xsd:IDREF }
+# Type indicates the graphic note type, Valid values (from
+# shortest to longest) are 256th, 128th, 64th, 32nd, 16th,
+# eighth, quarter, half, whole, breve, and long. The size
+# attribute indicates full, cue, or large size, with full
+# the default for regular notes and cue the default for
+# cue and grace notes.
+element-type = element type { attlist-type, text }
+attlist-type &= attribute size { symbol-size }?
+# One dot element is used for each dot of prolongation.
+# The placement element is used to specify whether the
+# dot should appear above or below the staff line. It is
+# ignored for notes that appear on a staff space.
+element-dot = element dot { attlist-dot, empty }
+attlist-dot &= print-style, placement
+# Actual notated accidentals. Valid values include: sharp,
+# natural, flat, double-sharp, sharp-sharp, flat-flat,
+# natural-sharp, natural-flat, quarter-flat, quarter-sharp,
+# three-quarters-flat, and three-quarters-sharp. Editorial
+# and cautionary indications are indicated by attributes.
+# Values for these attributes are "no" if not present.
+# Specific graphic display such as parentheses, brackets,
+# and size are controlled by the level-display entity 
+# defined in the common.mod file.
+element-accidental = element accidental { attlist-accidental, text }
+attlist-accidental &=
+  attribute cautionary { yes-no }?,
+  attribute editorial { yes-no }?,
+  level-display,
+  print-style
+# Time modification indicates tuplets and other durational
+# changes. The child elements are defined in the common.mod
+# file.
+element-time-modification =
+  element time-modification {
+    attlist-time-modification,
+    element-actual-notes,
+    element-normal-notes,
+    (element-normal-type, element-normal-dot*)?
+  }
+attlist-time-modification &= empty
+# Stems can be down, up, none, or double. For down and up
+# stems, the position attributes can be used to specify
+# stem length. The relative values specify the end of the
+# stem relative to the program default. Default values
+# specify an absolute end stem position. Negative values of
+# relative-y that would flip a stem instead of shortening
+# it are ignored.
+element-stem = element stem { attlist-stem, text }
+attlist-stem &= position, color
+# The notehead element indicates shapes other than the open
+# and closed ovals associated with note durations. The element
+# value can be slash, triangle, diamond, square, cross, x,
+# circle-x, inverted triangle, arrow down, arrow up, slashed,
+# back slashed, normal, cluster, or none. For shape note
+# music, the element values do, re, mi, fa, so, la, and ti
+# are used, corresponding to Aikin's 7-shape system.
+# 
+# The arrow shapes differ from triangle and inverted triangle
+# by being centered on the stem. Slashed and back slashed 
+# notes include both the normal notehead and a slash. The 
+# triangle shape has the tip of the triangle pointing up;
+# the inverted triangle shape has the tip of the triangle 
+# pointing down.
+# 
+# For the enclosed shapes, the default is to be hollow for
+# half notes and longer, and filled otherwise. The filled
+# attribute can be set to change this if needed.
+# 
+# If the parentheses attribute is set to yes, the notehead
+# is parenthesized. It is no by default.
+element-notehead = element notehead { attlist-notehead, text }
+attlist-notehead &=
+  attribute filled { yes-no }?,
+  attribute parentheses { yes-no }?,
+  font,
+  color
+# Beam types include begin, continue, end, forward hook,
+# and backward hook. In MuseData, up to six concurrent
+# beams are available to cover up to 256th notes. This
+# seems sufficient so we use an enumerated type defined
+# in the common.mod file. The repeater attribute, used for
+# tremolos, needs to be specified with a "yes" value for each
+# beam using it. Beams that have a begin value can also have 
+# a fan attribute to indicate accelerandos and ritardandos 
+# using fanned beams. The fan attribute may also be used
+# with a continue value if the fanning direction changes
+# on that note. The value is "none" if not specified.
+# 
+# Note that the beam number does not distinguish sets of
+# beams that overlap, as it does for slur and other elements.
+# Beaming groups are distinguished by being in different
+# voices and/or the presence or absence of grace and cue
+# elements.
+element-beam = element beam { attlist-beam, text }
+attlist-beam &=
+  [ a:defaultValue = "1" ] attribute number { beam-level }?,
+  attribute repeater { yes-no }?,
+  attribute fan { "accel" | "rit" | "none" }?,
+  color
+# Notations are musical notations, not XML notations.
+# Multiple notations are allowed in order to represent
+# multiple editorial levels. The set of notations will be
+# refined and expanded over time, especially to handle
+# more instrument-specific technical notations.
+element-notations =
+  element notations {
+    attlist-notations,
+    editorial,
+    (element-tied
+     | element-slur
+     | element-tuplet
+     | element-glissando
+     | element-slide
+     | element-ornaments
+     | element-technical
+     | element-articulations
+     | element-dynamics
+     | element-fermata
+     | element-arpeggiate
+     | element-non-arpeggiate
+     | element-accidental-mark
+     | element-other-notation)*
+  }
+attlist-notations &= empty
+element-tied = element tied { attlist-tied, empty }
+attlist-tied &=
+  attribute type { start-stop },
+  attribute number { number-level }?,
+  line-type,
+  position,
+  placement,
+  orientation,
+  bezier,
+  color
+# Slur elements are empty. Most slurs are represented with
+# two elements: one with a start type, and one with a stop
+# type. Slurs can add more elements using a continue type.
+# This is typically used to specify the formatting of cross-
+# system slurs, or to specify the shape of very complex slurs.
+element-slur = element slur { attlist-slur, empty }
+attlist-slur &=
+  attribute type { start-stop-continue },
+  [ a:defaultValue = "1" ] attribute number { number-level }?,
+  line-type,
+  position,
+  placement,
+  orientation,
+  bezier,
+  color
+# A tuplet element is present when a tuplet is to be displayed
+# graphically, in addition to the sound data provided by the
+# time-modification elements. The number attribute is used to
+# distinguish nested tuplets. The bracket attribute is used
+# to indicate the presence of a bracket. If unspecified, the
+# results are implementation-dependent. The line-shape
+# attribute is used to specify whether the bracket is straight
+# or in the older curved or slurred style. It is straight by
+# default.
+# 
+# Whereas a time-modification element shows how the
+# cumulative, sounding effect of tuplets compare to the
+# written note type, the tuplet element describes how this
+# is displayed. The tuplet-actual and tuplet-normal elements
+# provide optional full control over tuplet specifications.
+# Each allows the number and note type (including dots)
+# describing a single tuplet. If any of these elements are
+# absent, their values are based on the time-modification
+# element.
+# 
+# The show-number attribute is used to display either the
+# number of actual notes, the number of both actual and
+# normal notes, or neither. It is actual by default. The
+# show-type attribute is used to display either the actual
+# type, both the actual and normal types, or neither. It is
+# none by default.
+element-tuplet =
+  element tuplet {
+    attlist-tuplet, element-tuplet-actual?, element-tuplet-normal?
+  }
+attlist-tuplet &=
+  attribute type { start-stop },
+  attribute number { number-level }?,
+  attribute bracket { yes-no }?,
+  attribute show-number { "actual" | "both" | "none" }?,
+  attribute show-type { "actual" | "both" | "none" }?,
+  line-shape,
+  position,
+  placement
+element-tuplet-actual =
+  element tuplet-actual {
+    attlist-tuplet-actual,
+    element-tuplet-number?,
+    element-tuplet-type?,
+    element-tuplet-dot*
+  }
+attlist-tuplet-actual &= empty
+element-tuplet-normal =
+  element tuplet-normal {
+    attlist-tuplet-normal,
+    element-tuplet-number?,
+    element-tuplet-type?,
+    element-tuplet-dot*
+  }
+attlist-tuplet-normal &= empty
+element-tuplet-number =
+  element tuplet-number { attlist-tuplet-number, text }
+attlist-tuplet-number &= font, color
+element-tuplet-type = element tuplet-type { attlist-tuplet-type, text }
+attlist-tuplet-type &= font, color
+element-tuplet-dot = element tuplet-dot { attlist-tuplet-dot, empty }
+attlist-tuplet-dot &= font, color
+# Glissando and slide elements both indicate rapidly moving
+# from one pitch to the other so that individual notes are not
+# discerned. The distinction is similar to that between NIFF's
+# glissando and portamento elements. A glissando sounds the
+# half notes in between the slide and defaults to a wavy line.
+# A slide is continuous between two notes and defaults to a
+# solid line. The optional text for a glissando or slide is
+# printed alongside the line.
+element-glissando = element glissando { attlist-glissando, text }
+attlist-glissando &=
+  attribute type { start-stop },
+  [ a:defaultValue = "1" ] attribute number { number-level }?,
+  line-type,
+  print-style
+element-slide = element slide { attlist-slide, text }
+attlist-slide &=
+  attribute type { start-stop },
+  [ a:defaultValue = "1" ] attribute number { number-level }?,
+  line-type,
+  print-style,
+  bend-sound
+# The other-notation element is used to define any notations
+# not yet in the MusicXML format. This allows extended
+# representation, though without application interoperability.
+# It handles notations where more specific extension elements
+# such as other-dynamics and other-technical are not
+# appropriate.
+element-other-notation =
+  element other-notation { attlist-other-notation, text }
+attlist-other-notation &=
+  attribute type { start-stop-single },
+  [ a:defaultValue = "1" ] attribute number { number-level }?,
+  print-object,
+  print-style,
+  placement
+# Ornaments can be any of several types, followed optionally
+# by accidentals. The accidental-mark element's content is
+# represented the same as an accidental element, but with a
+# different name to reflect the different musical meaning.
+element-ornaments =
+  element ornaments {
+    attlist-ornaments,
+    ((element-trill-mark
+      | element-turn
+      | element-delayed-turn
+      | element-inverted-turn
+      | element-shake
+      | element-wavy-line
+      | element-mordent
+      | element-inverted-mordent
+      | element-schleifer
+      | element-tremolo
+      | element-other-ornament),
+     element-accidental-mark*)*
+  }
+attlist-ornaments &= empty
+element-trill-mark = element trill-mark { attlist-trill-mark, empty }
+attlist-trill-mark &= print-style, placement, trill-sound
+# The turn and delayed-turn elements are the normal turn
+# shape which goes up then down. The delayed-turn element
+# indicates a turn that is delayed until the end of the
+# current note. The inverted-turn element has the shape
+# which goes down and then up.
+element-turn = element turn { attlist-turn, empty }
+attlist-turn &= print-style, placement, trill-sound
+element-delayed-turn =
+  element delayed-turn { attlist-delayed-turn, empty }
+attlist-delayed-turn &= print-style, placement, trill-sound
+element-inverted-turn =
+  element inverted-turn { attlist-inverted-turn, empty }
+attlist-inverted-turn &= print-style, placement, trill-sound
+element-shake = element shake { attlist-shake, empty }
+attlist-shake &= print-style, placement, trill-sound
+# The wavy-line element is defined in the common.mod file,
+# as it applies to more than just note elements.
+
+# The long attribute for the mordent and inverted-mordent
+# elements is "no" by default. The mordent element represents
+# the sign with the vertical line; the inverted-mordent
+# element represents the sign without the vertical line.
+element-mordent = element mordent { attlist-mordent, empty }
+attlist-mordent &=
+  attribute long { yes-no }?,
+  print-style,
+  placement,
+  trill-sound
+element-inverted-mordent =
+  element inverted-mordent { attlist-inverted-mordent, empty }
+attlist-inverted-mordent &=
+  attribute long { yes-no }?,
+  print-style,
+  placement,
+  trill-sound
+# The name for this ornament is based on the German,
+# to avoid confusion with the more common slide element
+# defined earlier.
+element-schleifer = element schleifer { attlist-schleifer, empty }
+attlist-schleifer &= print-style, placement
+# While using repeater beams is the preferred method for
+# indicating tremolos, often playback and display are not
+# well-enough integrated in an application to make that
+# feasible. The tremolo ornament can be used to indicate
+# either single-note or double-note tremolos. Single-note
+# tremolos use the single type, while double-note tremolos
+# use the start and stop types. The default is "single" for
+# compatibility with Version 1.1. The text of the element
+# indicates the number of tremolo marks and is an integer
+# from 0 to 6. Note that the number of attached beams is
+# not included in this value, but is represented separately
+# using the beam element.
+element-tremolo = element tremolo { attlist-tremolo, text }
+attlist-tremolo &=
+  [ a:defaultValue = "single" ] attribute type { start-stop-single }?,
+  print-style,
+  placement
+# The other-ornament element is used to define any ornaments
+# not yet in the MusicXML format. This allows extended
+# representation, though without application interoperability.
+element-other-ornament =
+  element other-ornament { attlist-other-ornament, text }
+attlist-other-ornament &= print-style, placement
+# An accidental-mark can be used as a separate notation or
+# as part of an ornament. When used in an ornament, position
+# and placement are relative to the ornament, not relative to
+# the note.
+element-accidental-mark =
+  element accidental-mark { attlist-accidental-mark, text }
+attlist-accidental-mark &= print-style, placement
+# Technical indications give performance information for
+# individual instruments.
+element-technical =
+  element technical {
+    attlist-technical,
+    (element-up-bow
+     | element-down-bow
+     | element-harmonic
+     | element-open-string
+     | element-thumb-position
+     | element-fingering
+     | element-pluck
+     | element-double-tongue
+     | element-triple-tongue
+     | element-stopped
+     | element-snap-pizzicato
+     | element-fret
+     | element-string
+     | element-hammer-on
+     | element-pull-off
+     | element-bend
+     | element-tap
+     | element-heel
+     | element-toe
+     | element-fingernails
+     | element-other-technical)*
+  }
+attlist-technical &= empty
+# The up-bow and down-bow elements represent the symbol
+# that is used both for bowing indications on bowed
+# instruments, and up-stroke / down-stoke indications
+# on plucked instruments.
+element-up-bow = element up-bow { attlist-up-bow, empty }
+attlist-up-bow &= print-style, placement
+element-down-bow = element down-bow { attlist-down-bow, empty }
+attlist-down-bow &= print-style, placement
+# The harmonic element indicates natural and artificial
+# harmonics. Natural harmonics usually notate the base
+# pitch rather than the sounding pitch. Allowing the type
+# of pitch to be specified, combined with controls for
+# appearance/playback differences, allows both the notation
+# and the sound to be represented. Artificial harmonics can
+# add a notated touching-pitch; the pitch or fret at which
+# the string is touched lightly to produce the harmonic.
+# Artificial pinch harmonics will usually not notate a
+# touching pitch. The attributes for the harmonic element
+# refer to the use of the circular harmonic symbol, typically
+# but not always used with natural harmonics.
+element-harmonic =
+  element harmonic {
+    attlist-harmonic,
+    (element-natural | element-artificial)?,
+    (element-base-pitch
+     | element-touching-pitch
+     | element-sounding-pitch)?
+  }
+attlist-harmonic &= print-object, print-style, placement
+element-natural = element natural { attlist-natural, empty }
+attlist-natural &= empty
+element-artificial = element artificial { attlist-artificial, empty }
+attlist-artificial &= empty
+element-base-pitch = element base-pitch { attlist-base-pitch, empty }
+attlist-base-pitch &= empty
+element-touching-pitch =
+  element touching-pitch { attlist-touching-pitch, empty }
+attlist-touching-pitch &= empty
+element-sounding-pitch =
+  element sounding-pitch { attlist-sounding-pitch, empty }
+attlist-sounding-pitch &= empty
+element-open-string = element open-string { attlist-open-string, empty }
+attlist-open-string &= print-style, placement
+element-thumb-position =
+  element thumb-position { attlist-thumb-position, empty }
+attlist-thumb-position &= print-style, placement
+# The pluck element is used to specify the plucking fingering
+# on a fretted instrument, where the fingering element refers
+# to the fretting fingering. Typical values are p, i, m, a for
+# pulgar/thumb, indicio/index, medio/middle, and anular/ring
+# fingers.
+element-pluck = element pluck { attlist-pluck, text }
+attlist-pluck &= print-style, placement
+element-double-tongue =
+  element double-tongue { attlist-double-tongue, empty }
+attlist-double-tongue &= print-style, placement
+element-triple-tongue =
+  element triple-tongue { attlist-triple-tongue, empty }
+attlist-triple-tongue &= print-style, placement
+element-stopped = element stopped { attlist-stopped, empty }
+attlist-stopped &= print-style, placement
+element-snap-pizzicato =
+  element snap-pizzicato { attlist-snap-pizzicato, empty }
+attlist-snap-pizzicato &= print-style, placement
+# The hammer-on and pull-off elements are used in guitar
+# and fretted instrument notation. Since a single slur
+# can be marked over many notes, the hammer-on and pull-off
+# elements are separate so the individual pair of notes can
+# be specified. The element content can be used to specify
+# how the hammer-on or pull-off should be notated. An empty
+# element leaves this choice up to the application.
+element-hammer-on = element hammer-on { attlist-hammer-on, text }
+attlist-hammer-on &=
+  attribute type { start-stop },
+  [ a:defaultValue = "1" ] attribute number { number-level }?,
+  print-style,
+  placement
+element-pull-off = element pull-off { attlist-pull-off, text }
+attlist-pull-off &=
+  attribute type { start-stop },
+  [ a:defaultValue = "1" ] attribute number { number-level }?,
+  print-style,
+  placement
+# The bend element is used in guitar and tablature. The
+# bend-alter element indicates the number of steps in the
+# bend, similar to the alter element. As with the alter
+# element, numbers like 0.5 can be used to indicate
+# microtones. Negative numbers indicate pre-bends or
+# releases; the pre-bend and release elements are used
+# to distinguish what is intended. A with-bar element
+# indicates that the bend is to be done at the bridge
+# with a whammy or vibrato bar. The content of the
+# element indicates how this should be notated.
+element-bend =
+  element bend {
+    attlist-bend,
+    element-bend-alter,
+    (element-pre-bend | element-release)?,
+    element-with-bar?
+  }
+attlist-bend &= print-style, bend-sound
+element-bend-alter = element bend-alter { attlist-bend-alter, text }
+attlist-bend-alter &= empty
+element-pre-bend = element pre-bend { attlist-pre-bend, empty }
+attlist-pre-bend &= empty
+element-release = element release { attlist-release, empty }
+attlist-release &= empty
+element-with-bar = element with-bar { attlist-with-bar, text }
+attlist-with-bar &= print-style, placement
+# The tap element indicates a tap on the fretboard. The
+# element content allows specification of the notation;
+# + and T are common choices. If empty, the display is
+# application-specific.
+element-tap = element tap { attlist-tap, text }
+attlist-tap &= print-style, placement
+# The heel and toe element are used with organ pedals. The
+# substitution value is "no" if the attribute is not present.
+element-heel = element heel { attlist-heel, empty }
+attlist-heel &=
+  attribute substitution { yes-no }?,
+  print-style,
+  placement
+element-toe = element toe { attlist-toe, empty }
+attlist-toe &=
+  attribute substitution { yes-no }?,
+  print-style,
+  placement
+# The fingernails element is used in harp notation.
+element-fingernails = element fingernails { attlist-fingernails, empty }
+attlist-fingernails &= print-style, placement
+# The other-technical element is used to define any technical
+# indications not yet in the MusicXML format. This allows
+# extended representation, though without application
+# interoperability.
+element-other-technical =
+  element other-technical { attlist-other-technical, text }
+attlist-other-technical &= print-style, placement
+# Articulations and accents are grouped together here.
+element-articulations =
+  element articulations {
+    attlist-articulations,
+    (element-accent
+     | element-strong-accent
+     | element-staccato
+     | element-tenuto
+     | element-detached-legato
+     | element-staccatissimo
+     | element-spiccato
+     | element-scoop
+     | element-plop
+     | element-doit
+     | element-falloff
+     | element-breath-mark
+     | element-caesura
+     | element-stress
+     | element-unstress
+     | element-other-articulation)*
+  }
+attlist-articulations &= empty
+element-accent = element accent { attlist-accent, empty }
+attlist-accent &= print-style, placement
+element-strong-accent =
+  element strong-accent { attlist-strong-accent, empty }
+attlist-strong-accent &=
+  print-style,
+  placement,
+  [ a:defaultValue = "up" ] attribute type { up-down }?
+# The staccato element is used for a dot articulation, as
+# opposed to a stroke or a wedge.
+element-staccato = element staccato { attlist-staccato, empty }
+attlist-staccato &= print-style, placement
+element-tenuto = element tenuto { attlist-tenuto, empty }
+attlist-tenuto &= print-style, placement
+element-detached-legato =
+  element detached-legato { attlist-detached-legato, empty }
+attlist-detached-legato &= print-style, placement
+# The staccatissimo element is used for a wedge articulation,
+# as opposed to a dot or a stroke.
+element-staccatissimo =
+  element staccatissimo { attlist-staccatissimo, empty }
+attlist-staccatissimo &= print-style, placement
+# The spiccato element is used for a stroke articulation, as
+# opposed to a dot or a wedge.
+element-spiccato = element spiccato { attlist-spiccato, empty }
+attlist-spiccato &= print-style, placement
+# The scoop, plop, doit, and falloff elements are
+# indeterminate slides attached to a single note.
+# Scoops and plops come before the main note, coming
+# from below and above the pitch, respectively. Doits
+# and falloffs come after the main note, going above
+# and below the pitch, respectively.
+element-scoop = element scoop { attlist-scoop, empty }
+attlist-scoop &= line-shape, line-type, print-style, placement
+element-plop = element plop { attlist-plop, empty }
+attlist-plop &= line-shape, line-type, print-style, placement
+element-doit = element doit { attlist-doit, empty }
+attlist-doit &= line-shape, line-type, print-style, placement
+element-falloff = element falloff { attlist-falloff, empty }
+attlist-falloff &= line-shape, line-type, print-style, placement
+element-breath-mark = element breath-mark { attlist-breath-mark, empty }
+attlist-breath-mark &= print-style, placement
+element-caesura = element caesura { attlist-caesura, empty }
+attlist-caesura &= print-style, placement
+element-stress = element stress { attlist-stress, empty }
+attlist-stress &= print-style, placement
+element-unstress = element unstress { attlist-unstress, empty }
+attlist-unstress &= print-style, placement
+# The other-articulation element is used to define any
+# articulations not yet in the MusicXML format. This allows
+# extended representation, though without application
+# interoperability.
+element-other-articulation =
+  element other-articulation { attlist-other-articulation, text }
+attlist-other-articulation &= print-style, placement
+# The dynamics and fermata elements are defined in the
+# common.mod file as they apply to more than just note
+# elements.
+
+# The arpeggiate element indicates that this note is part of
+# an arpeggiated chord. The number attribute can be used to
+# distinguish between two simultaneous chords arpeggiated
+# separately (different numbers) or together (same number).
+# The up-down attribute is used if there is an arrow on the
+# arpeggio sign. By default, arpeggios go from the lowest to
+# highest note.
+element-arpeggiate = element arpeggiate { attlist-arpeggiate, empty }
+attlist-arpeggiate &=
+  attribute number { number-level }?,
+  attribute direction { up-down }?,
+  position,
+  placement,
+  color
+# The non-arpeggiate element indicates that this note is at
+# the top or bottom of a bracket indicating to not arpeggiate
+# these notes. Since this does not involve playback, it is
+# only used on the top or bottom notes, not on each note
+# as for the arpeggiate element.
+element-non-arpeggiate =
+  element non-arpeggiate { attlist-non-arpeggiate, empty }
+attlist-non-arpeggiate &=
+  attribute type { top-bottom },
+  attribute number { number-level }?,
+  position,
+  placement,
+  color
+# Text underlays for lyrics, based on Humdrum with support
+# for other formats. The lyric number indicates multiple
+# lines, though a name can be used as well (as in Finale's
+# verse/chorus/section specification). Word extensions are
+# represented using the extend element. Hyphenation is 
+# indicated by the syllabic element, which can be single, 
+# begin, end, or middle. These represent single-syllable
+# words, word-beginning syllables, word-ending syllables,
+# and mid-word syllables. Multiple syllables on a single
+# note are separated by elision elements. A hyphen in the
+# text element should only be used for an actual hyphenated
+# word. Two text elements that are not separated by an
+# elision element are part of the same syllable, but may have
+# different text formatting.
+# 
+# Humming and laughing representations are taken from
+# Humdrum. The end-line and end-paragraph elements come
+# from RP-017 for Standard MIDI File Lyric meta-events;
+# they help facilitate lyric display for Karaoke and
+# similar applications. Language names for text elements
+# come from ISO 639, with optional country subcodes from
+# ISO 3166. Justification is center by default; placement is
+# below by default.
+element-lyric =
+  element lyric {
+    attlist-lyric,
+    (((element-syllabic?, element-text),
+      (element-elision?, element-syllabic?, element-text)*,
+      element-extend?)
+     | element-extend
+     | element-laughing
+     | element-humming),
+    element-end-line?,
+    element-end-paragraph?,
+    editorial
+  }
+attlist-lyric &=
+  attribute number { xsd:NMTOKEN }?,
+  attribute name { text }?,
+  justify,
+  position,
+  placement,
+  color
+element-text = element text { attlist-text, text }
+attlist-text &=
+  font,
+  color,
+  text-decoration,
+  text-rotation,
+  letter-spacing,
+  attribute xml:lang { xsd:NMTOKEN }?,
+  text-direction
+element-syllabic = element syllabic { attlist-syllabic, text }
+attlist-syllabic &= empty
+# In Version 2.0, the elision element text is used to specify
+# the symbol used to display the elision. Common values
+# are a no-break space (Unicode 00A0), an underscore
+# (Unicode 005F), or an undertie (Unicode 203F).
+element-elision = element elision { attlist-elision, text }
+attlist-elision &= font, color
+element-extend = element extend { attlist-extend, empty }
+attlist-extend &= font, color
+element-laughing = element laughing { attlist-laughing, empty }
+attlist-laughing &= empty
+element-humming = element humming { attlist-humming, empty }
+attlist-humming &= empty
+element-end-line = element end-line { attlist-end-line, empty }
+attlist-end-line &= empty
+element-end-paragraph =
+  element end-paragraph { attlist-end-paragraph, empty }
+attlist-end-paragraph &= empty
+# Figured bass elements take their position from the first
+# regular note that follows. Figures are ordered from top to
+# bottom. A figure-number is a number. Values for prefix and
+# suffix include the accidental values sharp, flat, natural,
+# double-sharp, flat-flat, and sharp-sharp. Suffixes include
+# both symbols that come after the figure number and those 
+# that overstrike the figure number. The suffix value slash
+# is used for slashed numbers indicating chromatic alteration.
+# The orientation and display of the slash usually depends on
+# the figure number. The prefix and suffix elements may
+# contain additional values for symbols specific to particular
+# figured bass styles. The value of parentheses is "no" if not
+# present.
+element-figured-bass =
+  element figured-bass {
+    attlist-figured-bass, element-figure+, element-duration?, editorial
+  }
+attlist-figured-bass &=
+  print-style,
+  printout,
+  attribute parentheses { yes-no }?
+element-figure =
+  element figure {
+    attlist-figure,
+    element-prefix?,
+    element-figure-number?,
+    element-suffix?,
+    element-extend?
+  }
+attlist-figure &= empty
+element-prefix = element prefix { attlist-prefix, text }
+attlist-prefix &= print-style
+element-figure-number =
+  element figure-number { attlist-figure-number, text }
+attlist-figure-number &= print-style
+element-suffix = element suffix { attlist-suffix, text }
+attlist-suffix &= print-style
+# The backup and forward elements are required to coordinate
+# multiple voices in one part, including music on multiple
+# staves. The forward element is generally used within voices
+# and staves, while the backup element is generally used to
+# move between voices and staves. Thus the backup element
+# does not include voice or staff elements. Duration values
+# should always be positive, and should not cross measure
+# boundaries.
+element-backup =
+  element backup { attlist-backup, element-duration, editorial }
+attlist-backup &= empty
+element-forward =
+  element forward {
+    attlist-forward, element-duration, editorial-voice, element-staff?
+  }
+attlist-forward &= empty

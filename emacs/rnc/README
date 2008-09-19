@@ -1,0 +1,31 @@
+MusicXML Relax NG schemas
+-------------------------
+
+The musicxml-rng distribution contains the original MusicXML 2.0 DTDs
+from Recordare LLC[1] converted to Relax NG[2] (compact) format.
+
+This is mostly to allow validation and completion of MusicXML documents
+edited in Emacs nxml-mode.
+
+[1] http://www.recordare.com/xml.html
+[2] http://relaxng.org/
+
+nxml-mode integration:
+----------------------
+To make nxml-mode automatically load the correct MusicXML schema
+file when visiting a MusicXML document put the following in your ~/.emacs file:
+
+ (require 'rng-loc)
+ (add-to-list 'rng-schema-locating-files
+ 	      (expand-file-name "/path/to/musicxml-rng/schemas.xml"))
+
+Or alternatively use the Emacs customization interface:
+
+ 1. Type "M-x customize-varilable RET rng-schema-locating-files RET".
+ 2. Add the schemas.xml file from the directory where you unpacked the
+ musicxml-rng distribution to the list of locating-files.
+ 3. Select "Save for future sessions" to make this change permanent.
+
+This should make nxml-mode automatically detect and load the correct
+MusicXML schema if you open a MusicXML document in nxml-mode.
+

@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<locatingRules xmlns="http://thaiopensource.com/ns/locating-rules/1.0">
+  <documentElement localName="score-partwise" typeId="MusicXML"/>
+  <documentElement localName="score-timewise" typeId="MusicXML"/>
+  <typeId id="MusicXML" uri="musicxml.rnc"/>
+</locatingRules>
