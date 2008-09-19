@@ -34,6 +34,15 @@
 
 ;;; Code:
 
+(let ((dir (file-name-directory (or load-file-name buffer-file-name))))
+  (add-to-list 'load-path dir 'append)
+  (eval-after-load 'nxml-mode
+    `(progn
+       (add-to-list 'rng-schema-locating-files
+		    ,(abbreviate-file-name
+		      (expand-file-name "schemas.xml" (concat dir "rnc/"))))
+       (add-hook 'nxml-mode-hook #'turn-on-musicxml-minor-mode t))))
+
 (require 'midi)
 (require 'xml)
 
@@ -460,9 +469,6 @@ others use the value of this variable to directly access parsed XML.")
 	       (re-search-forward
 		(concat "<" (regexp-opt musicxml-root-node-names)) nil t))
 	 (musicxml-minor-mode 1)))))
-
-(eval-after-load 'nxml-mode
-  '(add-hook 'nxml-mode-hook #'turn-on-musicxml-minor-mode t))
 
 ;;;; Braille music
 
