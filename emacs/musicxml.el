@@ -38,6 +38,7 @@
   (add-to-list 'load-path dir 'append)
   (eval-after-load 'nxml-mode
     `(progn
+       (require 'rng-loc)
        (add-to-list 'rng-schema-locating-files
 		    ,(abbreviate-file-name
 		      (expand-file-name "schemas.xml" (concat dir "rnc/"))))
