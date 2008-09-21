@@ -444,6 +444,12 @@ others use the value of this variable to directly access parsed XML.")
     map)
   "Keymap for `musicxml-minor-mode'.")
 
+(easy-menu-define musicxml-menu musicxml-minor-mode-map
+  "Menu for MusicXML documents."
+  '("MusicXML"
+    ["Play score" musicxml-play-score]
+    ["Stop playback" musicxml-stop-playback :active (musicxml-playing-p)]))
+
 (define-minor-mode musicxml-minor-mode
   "If enabled, special functions for MusicXML handling can be used."
   :lighter " Music"
