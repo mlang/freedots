@@ -488,18 +488,29 @@ others use the value of this variable to directly access parsed XML.")
 	       '((c . 145) (d . 15) (e . 124)
 		 (f . 1245)(g . 125)(a . 24) (b . 245))
 	       collect
-	       (cons (intern (concat (symbol-name name) (symbol-name value)))
-		     (let ((unicode #x2800))
-		       (labels ((add-decimal-dots (dots)
-			        (while (> dots 0)
-				  (setq unicode (logior unicode
-							(ash 1
-							     (1- (% dots 10))))
-					dots (/ dots 10)))))
-			 (add-decimal-dots upper)
-			 (add-decimal-dots lower)
-			 (format "%c" (decode-char 'ucs unicode)))))))
-   '((r1or16 . "⠍") (r2or32 . "⠥") (r4or64 . "⠧") (r8or128 . "⠭")))
+	       (let ((symbol
+		      (intern (concat (symbol-name name) (symbol-name value)))))
+		 (put symbol 'denominators
+		      (mapcar #'string-to-number
+			      (split-string (symbol-name value) "or")))
+		 (cons symbol
+		       (let ((unicode #x2800))
+			 (labels ((add-decimal-dots (dots)
+				    (while (> dots 0)
+				      (setq unicode (logior unicode
+							    (ash 1
+								 (1- (% dots 10))))
+					    dots (/ dots 10)))))
+			   (add-decimal-dots upper)
+			   (add-decimal-dots lower)
+			   (format "%c" (decode-char 'ucs unicode))))))))
+   (mapcar (lambda (info)
+	     (put (car info) 'denominators
+		  (mapcar #'string-to-number
+			  (split-string
+			   (substring (symbol-name (car info)) 1) "or")))
+	     info)
+	   '((r1or16 . "⠍") (r2or32 . "⠥") (r4or64 . "⠧") (r8or128 . "⠭"))))
   "A table of braille music symbols."
   :group 'braille-music
   :type '(repeat (cons :tag "Entry" symbol string)))
@@ -536,20 +547,13 @@ It returns a list of lists, ideally with just one element."
 				 (generate (cdr lists) (- sum time)))))))))))
       (generate
        (mapcar (lambda (note)
-		 (let ((dots (musicxml-note-dots note)))
-		   (mapcar (lambda (str)
-			     (let ((undotted-duration
-				    (/ 1.0 (string-to-number str))))
+		 (let ((dots (musicxml-note-dots (cdr note))))
+		   (mapcar (lambda (denominator)
+			     (let ((undotted-duration (/ 1.0 denominator)))
 			       (cons (- (* undotted-duration 2)
 					(/ undotted-duration (expt 2 dots)))
-				     (intern
-				      (concat
-				       (substring
-					(symbol-name (car note)) 0 1)
-				       str)))))
-			   (split-string
-			    (substring (symbol-name (car note)) 1)
-			    "or"))))
+				     (car note))))
+			   (get (car note) 'denominators))))
 	       notes)
        time))))
 
@@ -600,6 +604,7 @@ mainly responsible for this symbol having been produced."
 
 (defvar musicxml-braille-music-mode-map
   (let ((map (make-sparse-keymap)))
+    (define-key map (kbd "C-c C-p") 'musicxml-play-score)
     (define-key map (kbd "C-c C-x") 'braille-music-goto-musicxml)
     map)
   "Keymap for `musicxml-braille-music-mode'.")
