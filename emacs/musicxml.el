@@ -604,16 +604,23 @@ the return value indicates the end of the shortest sequence.
 		  (cdr seqs))))
 
 (defun braille-music-disambiguate (elements time-signature)
+  "Due to the inherent ambiguity of rhythmic signs in braille music we need
+to check if there are several possible interpretations for a list of
+braille-music-elements.
+
+If we find an ambiguity, we currently \"brute force\" a resolution
+by using explicit value-distinction symbols (`braille-music-larger-values'
+and `braille-music-smaller-values')."
   (let ((time (* (car time-signature) (/ 1.0 (cdr time-signature))))
 	results)
     (labels ((generate (lists sum)
 	       (if (null lists)
 		   nil
-		 (let ((choices (car lists))
-		       result)
+		 (let ((choices (car lists)) result)
 		   (if (endp (cdr lists))
-		       (loop for choice in choices
-			     when (= (car choice) sum) collect (list choice))
+		       (dolist (choice choices result)
+			 (when (= (car choice) sum)
+			   (push (list choice) result)))
 		     (dolist (choice choices result)
 		       (let ((time (car choice)))
 			 (when (<= time sum)
@@ -624,11 +631,15 @@ the return value indicates the end of the shortest sequence.
 	     (generate
 	      (mapcar (lambda (note)
 			(if (eq (braille-music-element-type note) 'note)
-			    (let ((dots (musicxml-note-dots (braille-music-element-get note :xml))))
+			    (let ((dots (musicxml-note-dots
+					 (braille-music-element-get
+					  note :xml))))
 			      (mapcar (lambda (denominator)
-					(let ((undotted-duration (/ 1.0 denominator)))
+					(let ((undotted-duration
+					       (/ 1.0 denominator)))
 					  (cons (- (* undotted-duration 2)
-						   (/ undotted-duration (expt 2 dots)))
+						   (/ undotted-duration
+						      (expt 2 dots)))
 						note)))
 				      (let ((denominators
 					     (braille-music-rhythmic-sign-denominators
@@ -699,8 +710,8 @@ the return value indicates the end of the shortest sequence.
 NODE can be
  either /score-partwise/part/measure
      or /score-timewise/measure/part."
-  (let (symbols)
-    (dolist (child (musicxml-children node) (nreverse symbols))
+  (let (elements)
+    (dolist (child (musicxml-children node) (nreverse elements))
       (cond
        ((musicxml-note-p child)
 	(push (make-braille-music-element 'note
@@ -710,7 +721,7 @@ NODE can be
 						    (make-list (musicxml-note-dots child) 'braille-music-dot)
 						  nil)
 					  :xml child)
-	      symbols))))))
+	      elements))))))
 
 (defun braille-music-insert-music-symbol (music)
   "Insert MUSIC (a braille-music-element) as braille music in the current
@@ -722,7 +733,8 @@ buffer."
 	     (braille-music-element-get music :rhythmic-sign)))
     (mapcar (lambda (symbol) (insert (braille-music-char symbol)))
 	    (braille-music-element-get music :tail))
-    (put-text-property begin (point) 'xml-node (braille-music-element-get music :xml))))
+    (put-text-property begin (point) 'xml-node (braille-music-element-get
+						music :xml))))
 
 (defun braille-music-goto-musicxml ()
   "Pop to XML location which is responsible for the symbol at point."
