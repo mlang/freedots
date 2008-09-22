@@ -603,7 +603,7 @@ the return value indicates the end of the shortest sequence.
 	  (mapcar (lambda (s) (mismatch (car seqs) s :test #'equal))
 		  (cdr seqs))))
 
-(defun braille-music-disambiguate (notes time-signature)
+(defun braille-music-disambiguate (elements time-signature)
   (let ((time (* (car time-signature) (/ 1.0 (cdr time-signature))))
 	results)
     (labels ((generate (lists sum)
@@ -645,22 +645,25 @@ the return value indicates the end of the shortest sequence.
 					  (list (apply #'max denominators)))
 					 (t denominators)))))
 			  (cons 0 note)))
-		      notes)
+		      elements)
 	      time)))
 	(if (not (null interpretations))
 	    (if (= (length interpretations) 1)
 		(mapcar #'cdr (car interpretations))
-	      (let ((note (nth (braille-music-mismatch* interpretations) notes)))
+	      (let ((note (nth (braille-music-mismatch* interpretations)
+			       elements)))
 		(braille-music-element-push
 		 note :head
-		 (if (< (position (musicxml-note-type (braille-music-element-get note :xml)) musicxml-note-type-names :test #'string=) 6)
+		 (if (< (position (musicxml-note-type
+				   (braille-music-element-get note :xml))
+				  musicxml-note-type-names :test #'string=) 6)
 		     'braille-music-larger-values
 		   'braille-music-smaller-values))
-		(braille-music-disambiguate notes time-signature)))
+		(braille-music-disambiguate elements time-signature)))
 	  (lwarn 'musicxml-braille-music :warning
 		 "Measure %s has no possible interpretations"
 		 measure-number)
-	  notes)))))
+	  elements)))))
 
 (defun braille-music-symbol-from-musicxml-note (note)
   (let ((types (butlast (nthcdr 2 musicxml-note-type-names)))
