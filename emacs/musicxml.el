@@ -603,6 +603,14 @@ the return value indicates the end of the shortest sequence.
 	  (mapcar (lambda (s) (mismatch (car seqs) s :test #'equal))
 		  (cdr seqs))))
 
+(defun braille-music-dotted-duration (denominator dots)
+  "The float representation of note value 1/DENOMINATOR with DOTS."
+  (let ((dotted-denominator (* denominator (expt 2 dots))))
+    (let ((numerator (- (* 2 dotted-denominator) denominator)))
+      (setq denominator (* denominator dotted-denominator))
+      (let ((gcd (gcd numerator denominator)))
+	(/ (float (/ numerator gcd)) (/ denominator gcd))))))
+
 (defun braille-music-disambiguate (elements time-signature)
   "Due to the inherent ambiguity of rhythmic signs in braille music we need
 to check if there are several possible interpretations for a list of
@@ -635,12 +643,9 @@ and `braille-music-smaller-values')."
 					 (braille-music-element-get
 					  note :xml))))
 			      (mapcar (lambda (denominator)
-					(let ((undotted-duration
-					       (/ 1.0 denominator)))
-					  (cons (- (* undotted-duration 2)
-						   (/ undotted-duration
-						      (expt 2 dots)))
-						note)))
+					(cons (braille-music-dotted-duration
+					       denominator dots)
+					      note))
 				      (let ((denominators
 					     (braille-music-rhythmic-sign-denominators
 					      (braille-music-element-get
