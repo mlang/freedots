@@ -28,10 +28,6 @@
 ;; However, to achieve this we first need to define a layer of
 ;; MusicXML handling functionality.
 
-;;; TODO:
-
-;; * Get rid of xml-sub-parser.
-
 ;;; Code:
 
 (let ((dir (file-name-directory (or load-file-name buffer-file-name))))
@@ -55,12 +51,12 @@
 
 (defun musicxml-parse-string ()
   "Parse the next whatever.  Could be a string, or an element."
-  (let* ((start (point))
+  (let* ((start (point)) end
 	 (string (progn (if (search-forward "<" nil t)
 			    (forward-char -1)
 			  (goto-char (point-max)))
-			(buffer-substring-no-properties start (point))))
-	 (end (point)))
+			(buffer-substring-no-properties
+			 start (setq end (point))))))
     ;; Clean up the string.  As per XML specifications, the XML
     ;; processor should always pass the whole string to the
     ;; application.  But \r's should be replaced:
@@ -69,7 +65,6 @@
       (while (string-match "\r\n?" string pos)
 	(setq string (replace-match "\n" t t string))
 	(setq pos (1+ (match-beginning 0)))))
-
     (list (list (xml-substitute-special string)
 		(copy-marker start) (copy-marker end)))))
 
@@ -98,7 +93,7 @@ Returns one of:
 	 (buffer-substring-no-properties pos (match-beginning 0))
 	 (xml-parse-string))))
      ;;  DTD for the document
-     ((looking-at "<!DOCTYPE")
+     ((and parse-dtd (looking-at "<!DOCTYPE"))
       (let ((dtd (xml-parse-dtd)))
 	(skip-syntax-forward " ")
 	(if xml-validating-parser
@@ -108,56 +103,54 @@ Returns one of:
      ((looking-at "<!--")
       (search-forward "-->")
       nil)
-     ;;  end tag
-     ((looking-at "</")
-      '())
      ;;  opening tag
      ((looking-at "<\\([^/>[:space:]]+\\)")
       (goto-char (match-end 1))
 
       ;; Parse this node
-      (let* ((node-name (list (intern (match-string-no-properties 1))
-			      (copy-marker (match-beginning 0))
-			      nil))
-	     ;; Parse the attribute list.
-	     (attrs (xml-parse-attlist))
-	     children pos)
-
-	(setq children (list attrs node-name))
-
+      (let ((node-name (list (intern (match-string-no-properties 1))
+			     (copy-marker (match-beginning 0))
+			     nil))
+	    ;; Parse the attribute list.
+	    (attrs (xml-parse-attlist))
+	    children pos)
 	;; is this an empty element ?
 	(if (looking-at "/>")
 	    (progn
 	      (forward-char 2)
 	      (setf (nth 2 node-name) (copy-marker (point)))
-	      (nreverse children))
-
+	      (list node-name attrs))
+	  (setq children (list attrs node-name))
 	  ;; is this a valid start tag ?
 	  (if (eq (char-after) ?>)
 	      (progn
 		(forward-char 1)
+		(skip-syntax-forward " ")
 		;;  Now check that we have the right end-tag. Note that this
 		;;  one might contain spaces after the tag name
 		(let ((end (concat "</" (symbol-name (car node-name)) "\\s-*>")))
 		  (while (not (looking-at end))
-		    (cond
-		     ((looking-at "</")
-		      (error "XML: (Not Well-Formed) Invalid end tag (expecting %s) at pos %d"
-			     node-name (point)))
-		     ((= (char-after) ?<)
-		      (let ((tag (musicxml-parse-tag nil)))
-			(when tag
-			  (push tag children))))
-		     (t
+		    (if (= (char-after) ?<)
+			(if (= (char-after (1+ (point))) ?/)
+			    (error "XML: (Not Well-Formed) Invalid end tag (expecting %s) at pos %d"
+				   (car node-name) (point))
+			  (let ((tag (musicxml-parse-tag nil)))
+			    (when tag
+			      (push tag children))
+			    (skip-syntax-forward " ")))
 		      (let ((expansion (musicxml-parse-string)))
-			(setq children
-			      (if (stringp expansion)
-				  (if (stringp (car children))
-				      ;; The two strings were separated by a comment.
-				      (setq children (append (list (concat (car children) expansion))
-							     (cdr children)))
-				    (setq children (append (list expansion) children)))
-				(setq children (append expansion children))))))))
+			(when expansion
+			  (setq children
+				(if (stringp expansion)
+				    (if (stringp (car children))
+					;; The two strings were separated by a comment.
+					(setq children (append (list (concat (car children) expansion))
+							       (cdr children)))
+				      (setq children
+					    (append (list expansion)
+						    children)))
+				  (setq children (append expansion
+							 children))))))))
 
 		  (goto-char (match-end 0))
 		  (setf (nth 2 node-name) (copy-marker (point)))
@@ -165,13 +158,8 @@ Returns one of:
 	    ;;  This was an invalid start tag (Expected ">", but didn't see it.)
 	    (error "XML: (Well-Formed) Couldn't parse tag: %s"
 		   (buffer-substring-no-properties (- (point) 10) (+ (point) 1)))))))
-     (t	;; (Not one of PI, CDATA, Comment, End tag, or Start tag)
-      (unless xml-sub-parser		; Usually, we error out.
-	(error "XML: (Well-Formed) Invalid character"))
-
-      ;; However, if we're parsing incrementally, then we need to deal
-      ;; with stray CDATA.
-      (xml-parse-string)))))
+     (t	;; (Not one of PI, CDATA, Comment or Start tag)
+      (error "XML: (Well-Formed) Invalid character")))))
 
 (defun musicxml-parse-region (beg end &optional parse-dtd)
   "Parse the region from BEG to END in the current buffer.
@@ -300,6 +288,15 @@ and returned as the first element of the list."
 	    (setq parts nil))
 	(setq parts (cdr parts))))))
 
+(defmacro musicxml-bind (children expr &rest body)
+  (declare (indent 2))
+  (let ((node (gensym "xml-node-")))
+    `(let* ((,node ,expr)
+	    ,@(mapcar (lambda (child)
+			`(,child (musicxml-get-first-child ,node ',child)))
+		      children))
+       ,@body)))
+
 (defun musicxml-children-unique-child-text (node child-name)
   (let (strings)
     (dolist (child (musicxml-children node) (nreverse strings))
@@ -309,7 +306,7 @@ and returned as the first element of the list."
 
 (defun musicxml-staves (node &optional staves)
   (cond
-   ((eq (musicxml-node-name node) 'measure)
+   ((musicxml-measure-p node)
     (let ((staves-node (catch 'node
 			 (dolist (attributes
 				  (musicxml-get-child node 'attributes))
@@ -322,8 +319,15 @@ and returned as the first element of the list."
 	  (or staves 1))))
    (t (error "`musicxml-staves' called on non-measure node"))))
 	       
-(defun musicxml-note-p (node)
-  (eq (musicxml-node-name node) 'note))
+(defmacro define-musicxml-predicates (names)
+  (cons 'progn
+	(mapcar
+	 (lambda (name)
+	   `(defun ,(intern (concat "musicxml-" (symbol-name name) "-p")) (node)
+	      (eq (musicxml-node-name node) ',name))) names)))
+
+(define-musicxml-predicates (attributes direction note backup forward))
+(define-musicxml-predicates (measure))
 
 (defun musicxml-grace-note-p (node)
   (and (musicxml-note-p node) (musicxml-get-first-child node 'grace)))
@@ -344,59 +348,95 @@ and returned as the first element of the list."
   "Maps step names to chromatic step counts.")
 
 (defun musicxml-note-midi-pitch (note)
+  (check-type note musicxml-note)
   (let ((pitch (musicxml-get-first-child note 'pitch)))
     (when pitch
-      (round
-       (+ (* (1+ (string-to-number
-		  (musicxml-node-text-string
-		   (musicxml-get-first-child pitch 'octave)))) 12)
-	  (cdr (assq (upcase (aref (musicxml-node-text-string
-				    (musicxml-get-first-child
-				     pitch 'step)) 0))
-		     musicxml-step-to-chromatic))
-	  (string-to-number
-	   (musicxml-node-text-string
-	    (musicxml-get-first-child pitch 'alter))))))))
+      (musicxml-bind (step octave alter) pitch
+	(round
+	 (+ (* (1+ (string-to-number (musicxml-node-text-string octave))) 12)
+	    (cdr (assq (upcase (aref (musicxml-node-text-string step) 0))
+		       musicxml-step-to-chromatic))
+	    (string-to-number (musicxml-node-text-string alter))))))))
 
 (defvar musicxml-note-type-names
   '("long" "breve"
     "whole" "half" "quarter" "eighth" "16th" "32nd" "64th" "128th"
     "256th"))
 
-(defun musicxml-note-type (node)
-  (and (musicxml-note-p node)
-       (musicxml-node-text-string (musicxml-get-first-child node 'type))))
+(defun musicxml-note-type (note)
+  "Return the note value type (a integer)."
+  (check-type note musicxml-note)
+  (musicxml-bind (type) note
+    (when type
+      (or (position (musicxml-node-text-string type) musicxml-note-type-names
+		    :test #'string=)
+	  (error "Invalid note type %s" (musicxml-node-text-string type))))))
+
+(defvar musicxml-divisions-multiplier nil
+  "XML duration tag values are multiplied by this value for normalisation.
+MusicXML allows for changing the divisions value at any arbitrary point.
+To allow for normalisation of all the duration values in a score, this
+variable holds the current value durations should be multiplied with.")
+(make-variable-buffer-local 'musicxml-divisions-multiplier)
 
 (defun musicxml-duration (node)
-  (let ((duration (musicxml-get-first-child musicdata 'duration)))
+  (check-type node (or musicxml-note musicxml-backup musicxml-forward))
+  (musicxml-bind (duration) node
     (if duration
-	(string-to-number (musicxml-node-text-string duration))
+	(* (string-to-number (musicxml-node-text-string duration))
+	   musicxml-divisions-multiplier)
       (error "No duration: %S" node))))
 
-(defun musicxml-as-smf (&optional score)
-  (let ((ppqn (apply #'lcm
-		     (loop for part in (musicxml/part score)
+(defun musicxml-infer-symbolic-duration (duration divisions)
+  "Infer a ratio and the amount of augmentation dots from DURATION.
+DURATION is the number of DIVISIONS per quarter note.
+Return a cons of the form ((NUMERATOR . DENOMINATOR) . DOTS)."
+  (check-type duration (integer 1))
+  (check-type divisions (integer 1))
+  (let* ((numerator duration) (denominator (* 4 divisions)) (dots 0)
+	 (gcd (gcd numerator denominator)))
+    (setq numerator (/ numerator gcd) denominator (/ denominator gcd))
+    (when (memq denominator '(2 4 8 16 32 64 128 256))
+      (loop for dot from 10 downto 1
+	    when (= numerator (1- (expt 2 (1+ dot))))
+	    do (setq numerator (1- numerator) dots (1+ dots)
+		     gcd (gcd numerator denominator)
+		     numerator (/ numerator gcd)
+		     denominator (/ denominator gcd))))
+    (when (= denominator 1)
+      (case numerator
+	(3 (setq numerator 2 dots (1+ dots)))
+	(6 (setq numerator 4 dots (1+ dots)))
+	(7 (setq numerator 4 dots (+ dots 2)))))
+    (cons (cons numerator denominator) dots)))
+
+(defconst musicxml-smf-type 1
+  "Standard MIDI file type for MusicXML MIDI export.")
+
+(defun musicxml-lcm-divisions (&optional score)
+  (apply #'lcm
+	 (loop for part in (musicxml/part score)
+	       append
+	       (loop for measure in (musicxml-get-child part 'measure)
+		     append
+		     (loop for attributes
+			   in (musicxml-get-child measure 'attributes)
 			   append
-			   (loop for measure in
-				 (musicxml-get-child part 'measure)
-				 append
-				 (loop for attributes in
-				       (musicxml-get-child measure
-							   'attributes)
-				       append
-				       (loop for divisions in
-					     (musicxml-get-child attributes
-								 'divisions)
-					     collect
-					     (string-to-number
-					      (musicxml-node-text-string
-					       divisions))))))))
+			   (loop for divisions in
+				 (musicxml-get-child attributes 'divisions)
+				 collect
+				 (string-to-number
+				  (musicxml-node-text-string divisions))))))))
+
+(defun musicxml-as-smf (&optional score)
+  (let ((ppqn (musicxml-lcm-divisions score))
 	tracks)
     (dolist (part (musicxml/part score)
-		  (append (list 1 ppqn) (nreverse tracks)))
-      (let* ((tick 0) (divisions-multiplier 1)
+		  (append (list musicxml-smf-type ppqn) (nreverse tracks)))
+      (setq musicxml-divisions-multiplier 1)
+      (let* ((tick 0)
 	     (score-part (musicxml/part-list/score-part
-			 (xml-get-attribute part 'id) score))
+			  (xml-get-attribute part 'id) score))
 	     (midi-instrument (musicxml-get-first-child
 			       score-part 'midi-instrument))
 	     (midi-channel (musicxml-get-first-child
@@ -420,40 +460,43 @@ and returned as the first element of the list."
 	      events)
 	(push (list tick 'PC channel program) events)
 	(dolist (measure (musicxml-get-child part 'measure))
-	  (dolist (musicdata (musicxml-children measure))
-	    (cond
-	     ((eq (musicxml-node-name musicdata) 'attributes)
-	      (dolist (divisions (musicxml-get-child musicdata 'divisions))
-		(setq divisions-multiplier
-		      (/ ppqn (string-to-number
-			       (musicxml-node-text-string divisions))))))
-	     ((eq (musicxml-node-name musicdata) 'direction)
-	      (let ((sound (musicxml-get-first-child musicdata 'sound)))
-		(when (and sound (xml-get-attribute-or-nil sound 'dynamics))
-		  (setq velocity (string-to-number
-				  (xml-get-attribute sound 'dynamics))))))
-	     ((eq (musicxml-node-name musicdata) 'backup)
-	      (setq tick (- tick (* (musicxml-duration musicdata)
-				    divisions-multiplier))))
-	     ((or (eq (musicxml-node-name musicdata) 'forward)
-		  (musicxml-rest-p musicdata))
-	      (setq tick (+ tick (* (musicxml-duration musicdata)
-				    divisions-multiplier))))
-	     ((and (musicxml-pitched-p musicdata)
-		   (not (musicxml-grace-note-p musicdata)))
-	      (push (list tick
-			  'Note
-			  channel
-			  (musicxml-note-midi-pitch musicdata)
-			  velocity
-			  (musicxml-duration musicdata)
-			  0)
-		    events)
-	      (setq tick (+ tick (* (musicxml-duration musicdata)
-				    divisions-multiplier)))))))
-	(push (append (list "MTrk")
-		      (sort (nreverse events) #'car-less-than-car))
-	      tracks)))))
+	  (let ((next-time-change 0))
+	    (dolist (musicdata (musicxml-children measure))
+	      (unless (and (musicxml-note-p musicdata)
+			   (musicxml-bind (rest) musicdata rest))
+		(setq tick (+ tick next-time-change)
+		      next-time-change 0))
+	      (cond
+	       ((musicxml-attributes-p musicdata)
+		(dolist (divisions (musicxml-get-child musicdata 'divisions))
+		  (setq musicxml-divisions-multiplier
+			(/ ppqn (string-to-number
+				 (musicxml-node-text-string divisions))))))
+	       ((musicxml-direction-p musicdata)
+		(musicxml-bind (sound) musicdata
+		  (when sound
+		    (let ((dynamics (xml-get-attribute-or-nil sound 'dynamics)))
+		      (when dynamics
+			(setq velocity (string-to-number dynamics)))))))
+	       ((musicxml-backup-p musicdata)
+		(setq next-time-change (- (musicxml-duration musicdata))))
+	       ((or (musicxml-forward-p musicdata)
+		    (musicxml-rest-p musicdata))
+		(setq next-time-change (musicxml-duration musicdata)))
+	       ((and (musicxml-pitched-p musicdata)
+		     (not (musicxml-grace-note-p musicdata)))
+		(push (list tick
+			    'Note
+			    channel
+			    (musicxml-note-midi-pitch musicdata)
+			    velocity
+			    (musicxml-duration musicdata)
+			    0)
+		      events)
+		(unless (musicxml-bind (chord) musicdata chord)
+		  (setq next-time-change (musicxml-duration musicdata))))))))
+	(push (nconc (list "MTrk")
+		     (sort (nreverse events) #'car-less-than-car)) tracks)))))
 
 (defvar musicxml-player-process nil)
 
@@ -605,6 +648,8 @@ the return value indicates the end of the shortest sequence.
 
 (defun braille-music-dotted-duration (denominator dots)
   "The float representation of note value 1/DENOMINATOR with DOTS."
+  (check-type denominator (integer 1))
+  (check-type dots (integer 0))
   (let ((dotted-denominator (* denominator (expt 2 dots))))
     (let ((numerator (- (* 2 dotted-denominator) denominator)))
       (setq denominator (* denominator dotted-denominator))
@@ -670,9 +715,8 @@ and `braille-music-smaller-values')."
 			       elements)))
 		(braille-music-element-push
 		 note :head
-		 (if (< (position (musicxml-note-type
-				   (braille-music-element-get note :xml))
-				  musicxml-note-type-names :test #'string=) 6)
+		 (if (< (musicxml-note-type
+			 (braille-music-element-get note :xml)) 6)
 		     'braille-music-larger-values
 		   'braille-music-smaller-values))
 		(braille-music-disambiguate elements time-signature)))
@@ -682,16 +726,21 @@ and `braille-music-smaller-values')."
 	  elements)))))
 
 (defun braille-music-symbol-from-musicxml-note (note)
-  (let ((types (butlast (nthcdr 2 musicxml-note-type-names)))
+  (check-type note musicxml-note)
+  (let ((log (musicxml-note-type note))
 	(pitch (musicxml-get-first-child note 'pitch)))
     (braille-music-rhythmic-sign
-     (expt 2 (position (musicxml-note-type note) types :test #'string=))
-     (and pitch
-	  (musicxml-node-text-string
-	   (musicxml-get-first-child pitch 'step))))))
+     ; denominator
+     (or (and log (expt 2 (- log 2)))
+	 (cdar (musicxml-infer-symbolic-duration (musicxml-duration note)
+						 (musicxml-lcm-divisions))))
+     ; pitch step or rest
+     (when pitch
+       (musicxml-bind (step) pitch (musicxml-node-text-string step))))))
 
 (defun make-braille-music-element (type &rest plist)
   (cons type plist))
+
 (defun braille-music-element-type (element)
   (car element))
 (defun braille-music-element-get (element property)
@@ -718,6 +767,11 @@ NODE can be
   (let (elements)
     (dolist (child (musicxml-children node) (nreverse elements))
       (cond
+       ((musicxml-attributes-p child)
+	(dolist (node (musicxml-get-child child 'divisions))
+	  (setq musicxml-divisions-multiplier
+		(/ musicxml-lcm-divisions
+		   (string-to-number (musicxml-node-text-string node))))))
        ((musicxml-note-p child)
 	(push (make-braille-music-element 'note
 					  :rhythmic-sign (braille-music-symbol-from-musicxml-note child)
@@ -770,7 +824,8 @@ buffer."
       (pop-to-buffer (generate-new-buffer (format "*Braille music for %s*"
 						  (buffer-name))))
       (musicxml-braille-music-mode)
-      (setq musicxml-root-node root)
+      (setq musicxml-root-node root
+	    musicxml-lcm-divisions (musicxml-lcm-divisions root))
 
       (insert (musicxml-node-text-string (musicxml/work/work-title)) "\n")
 
