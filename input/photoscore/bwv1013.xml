@@ -26,7 +26,7 @@
 			</score-instrument>
 			<midi-instrument id="P1-I1">
 				<midi-channel>1</midi-channel>
-				<midi-program>73</midi-program>
+				<midi-program>74</midi-program>
 			</midi-instrument>
 		</score-part>
 	</part-list>

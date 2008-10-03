@@ -443,10 +443,10 @@ Return a cons of the form ((NUMERATOR . DENOMINATOR) . DOTS)."
 						 (musicxml-node-text-string
 						  midi-channel))))
 			  0))
-	     (program (or (and midi-program (string-to-number
-					     (musicxml-node-text-string
-					      midi-program)))
-			  1))
+	     (program (or (and midi-program (1- (string-to-number
+						 (musicxml-node-text-string
+						  midi-program))))
+			  0))
 	     (velocity 64)
 	     events)
 	(push (list tick
