@@ -733,7 +733,7 @@ and `braille-music-smaller-values')."
      ; denominator
      (or (and log (expt 2 (- log 2)))
 	 (cdar (musicxml-infer-symbolic-duration (musicxml-duration note)
-						 (musicxml-lcm-divisions))))
+						 musicxml-lcm-divisions)))
      ; pitch step or rest
      (when pitch
        (musicxml-bind (step) pitch (musicxml-node-text-string step))))))
