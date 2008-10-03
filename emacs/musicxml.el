@@ -65,8 +65,8 @@
       (while (string-match "\r\n?" string pos)
 	(setq string (replace-match "\n" t t string))
 	(setq pos (1+ (match-beginning 0)))))
-    (list (list (xml-substitute-special string)
-		(copy-marker start) (copy-marker end)))))
+    (list (xml-substitute-special string)
+	  (copy-marker start) (copy-marker end))))
 
 (defun musicxml-parse-tag (&optional parse-dtd)
   "Parse the tag at point.
@@ -108,9 +108,8 @@ Returns one of:
       (goto-char (match-end 1))
 
       ;; Parse this node
-      (let ((node-name (list (intern (match-string-no-properties 1))
-			     (copy-marker (match-beginning 0))
-			     nil))
+      (let ((begin (copy-marker (match-beginning 0)))
+	    (node-name (intern (match-string-no-properties 1)))
 	    ;; Parse the attribute list.
 	    (attrs (xml-parse-attlist))
 	    children pos)
@@ -118,9 +117,7 @@ Returns one of:
 	(if (looking-at "/>")
 	    (progn
 	      (forward-char 2)
-	      (setf (nth 2 node-name) (copy-marker (point)))
-	      (list node-name attrs))
-	  (setq children (list attrs node-name))
+	      (list (list node-name begin (point-marker)) attrs))
 	  ;; is this a valid start tag ?
 	  (if (eq (char-after) ?>)
 	      (progn
@@ -128,7 +125,7 @@ Returns one of:
 		(skip-syntax-forward " ")
 		;;  Now check that we have the right end-tag. Note that this
 		;;  one might contain spaces after the tag name
-		(let ((end (concat "</" (symbol-name (car node-name)) "\\s-*>")))
+		(let ((end (concat "</" (symbol-name node-name) "\\s-*>")))
 		  (while (not (looking-at end))
 		    (if (= (char-after) ?<)
 			(if (= (char-after (1+ (point))) ?/)
@@ -149,12 +146,11 @@ Returns one of:
 				      (setq children
 					    (append (list expansion)
 						    children)))
-				  (setq children (append expansion
-							 children))))))))
+				  (cons expansion children)))))))
 
 		  (goto-char (match-end 0))
-		  (setf (nth 2 node-name) (copy-marker (point)))
-		  (nreverse children)))
+		  (nconc (list (list node-name begin (point-marker)) attrs)
+			 (nreverse children))))
 	    ;;  This was an invalid start tag (Expected ">", but didn't see it.)
 	    (error "XML: (Well-Formed) Couldn't parse tag: %s"
 		   (buffer-substring-no-properties (- (point) 10) (+ (point) 1)))))))
