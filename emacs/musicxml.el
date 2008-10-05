@@ -51,22 +51,60 @@
 
 (defun musicxml-parse-string ()
   "Parse the next whatever.  Could be a string, or an element."
-  (let* ((start (point)) end
-	 (string (progn (if (search-forward "<" nil t)
-			    (forward-char -1)
-			  (goto-char (point-max)))
-			(buffer-substring-no-properties
-			 start (setq end (point))))))
+  (let* ((start (point-marker))
+	 (end (progn (skip-chars-forward "^<") (point-marker)))
+	 (string (buffer-substring-no-properties start end))
+	 (pos 0))
     ;; Clean up the string.  As per XML specifications, the XML
     ;; processor should always pass the whole string to the
     ;; application.  But \r's should be replaced:
     ;; http://www.w3.org/TR/2000/REC-xml-20001006#sec-line-ends
-    (let ((pos 0))
-      (while (string-match "\r\n?" string pos)
-	(setq string (replace-match "\n" t t string))
-	(setq pos (1+ (match-beginning 0)))))
-    (list (xml-substitute-special string)
-	  (copy-marker start) (copy-marker end))))
+    (while (string-match "\r\n?" string pos)
+      (setq string (replace-match "\n" t t string))
+      (setq pos (1+ (match-beginning 0))))
+    (list (xml-substitute-special string) start end)))
+
+(defun musicxml-parse-attlist ()
+  "Return the attribute-list after point.
+Leave point at the first non-blank character after the tag."
+  (let ((attlist ())
+	end-pos name)
+    (skip-syntax-forward " ")
+    (while (looking-at (eval-when-compile
+			 (concat "\\(" xml-name-regexp "\\)\\s-*=\\s-*")))
+      (setq name (intern (match-string-no-properties 1)))
+      (goto-char (match-end 0))
+
+      ;; See also: http://www.w3.org/TR/2000/REC-xml-20001006#AVNormalize
+
+      ;; Do we have a string between quotes (or double-quotes), 
+      ;;  or a simple word ?
+      (if (looking-at "\"\\([^\"]*\\)\"\\s-*")
+	  (setq end-pos (match-end 0))
+	(if (looking-at "'\\([^']*\\)'\\s-*")
+	    (setq end-pos (match-end 0))
+	  (error "XML: (Not Well-Formed) Attribute values must be given between quotes")))
+
+      ;; Each attribute must be unique within a given element
+      (if (assq name attlist)
+	  (error "XML: (Not Well-Formed) Each attribute must be unique within an element"))
+
+      ;; Multiple whitespace characters should be replaced with a single one
+      ;; in the attributes
+      (let ((string (match-string-no-properties 1))
+	    (pos 0))
+	(while (string-match "\\s-\\{2,\\}" string pos)
+	  (setq string (replace-match " " t t string))
+	  (setq pos (1+ (match-beginning 0))))
+	(let ((expansion (xml-substitute-special string)))
+	  (unless (stringp expansion)
+					; We say this is the constraint.  It is acctually that
+					; external entities nor "<" can be in an attribute value.
+	    (error "XML: (Not Well-Formed) Entities in attributes cannot expand into elements"))
+	  (push (cons name expansion) attlist)))
+
+      (goto-char end-pos))
+    (nreverse attlist)))
 
 (defun musicxml-parse-tag (&optional parse-dtd)
   "Parse the tag at point.
@@ -111,7 +149,7 @@ Returns one of:
       (let ((begin (copy-marker (match-beginning 0)))
 	    (node-name (intern (match-string-no-properties 1)))
 	    ;; Parse the attribute list.
-	    (attrs (xml-parse-attlist))
+	    (attrs (musicxml-parse-attlist))
 	    children pos)
 	;; is this an empty element ?
 	(if (looking-at "/>")
@@ -138,14 +176,12 @@ Returns one of:
 		      (let ((expansion (musicxml-parse-string)))
 			(when expansion
 			  (setq children
-				(if (stringp expansion)
+				(if (stringp (car expansion))
 				    (if (stringp (car children))
 					;; The two strings were separated by a comment.
 					(setq children (append (list (concat (car children) expansion))
 							       (cdr children)))
-				      (setq children
-					    (append (list expansion)
-						    children)))
+				      (cons expansion children))
 				  (cons expansion children)))))))
 
 		  (goto-char (match-end 0))
