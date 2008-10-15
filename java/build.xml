@@ -1,0 +1,64 @@
+<?xml version='1.0' encoding='utf-8'?>
+<project name="FreeDots" default="dist" basedir=".">
+  <description>MusicXML to braille music transcription</description>
+  <!-- set global properties for this build -->
+  <property name="src" location="src"/>
+  <property name="build" location="build"/>
+  <property name="dist"  location="dist"/>
+
+  <target name="init">
+    <!-- Create the time stamp -->
+    <tstamp/>
+    <!-- Create the build directory structure used by compile -->
+    <mkdir dir="${build}"/>
+  </target>
+
+  <target name="compile" depends="init" description="compile the source">
+    <mkdir dir="${build}/musicxml"/>
+    <get src="http://www.musicxml.org/dtds/partwise.dtd"
+	 dest="${build}/musicxml/partwise.dtd"/>
+    <get src="http://www.musicxml.org/dtds/common.mod"
+	 dest="${build}/musicxml/common.mod"/>
+    <get src="http://www.musicxml.org/dtds/isolat1.ent"
+	 dest="${build}/musicxml/isolat1.ent"/>
+    <get src="http://www.musicxml.org/dtds/isolat2.ent"
+	 dest="${build}/musicxml/isolat2.ent"/>
+    <get src="http://www.musicxml.org/dtds/layout.mod"
+	 dest="${build}/musicxml/layout.mod"/>
+    <get src="http://www.musicxml.org/dtds/identity.mod"
+	 dest="${build}/musicxml/identity.mod"/>
+    <get src="http://www.musicxml.org/dtds/attributes.mod"
+	 dest="${build}/musicxml/attributes.mod"/>
+    <get src="http://www.musicxml.org/dtds/link.mod"
+	 dest="${build}/musicxml/link.mod"/>
+    <get src="http://www.musicxml.org/dtds/note.mod"
+	 dest="${build}/musicxml/note.mod"/>
+    <get src="http://www.musicxml.org/dtds/barline.mod"
+	 dest="${build}/musicxml/barline.mod"/>
+    <get src="http://www.musicxml.org/dtds/direction.mod"
+	 dest="${build}/musicxml/direction.mod"/>
+    <get src="http://www.musicxml.org/dtds/score.mod"
+	 dest="${build}/musicxml/score.mod"/>
+    <!-- Compile the java code from ${src} into ${build} -->
+    <javac srcdir="${src}" destdir="${build}"/>
+  </target>
+
+  <target name="dist" depends="compile"
+	  description="generate the distribution">
+    <!-- Create the distribution directory -->
+    <mkdir dir="${dist}"/>
+    <manifest file="${dist}/MANIFEST.MF">
+      <attribute name="Main-Class" value="GraphicalUserInterface"/>
+    </manifest>
+
+    <!-- Put everything in ${build} into the MyProject-${DSTAMP}.jar file -->
+    <jar jarfile="${dist}/FreeDots-${DSTAMP}.jar" basedir="${build}"
+	 manifest="${dist}/MANIFEST.MF"/>
+  </target>
+
+  <target name="clean" description="clean up">
+    <!-- Delete the ${build} and ${dist} directory trees -->
+    <delete dir="${build}"/>
+    <delete dir="${dist}"/>
+  </target>
+</project>
