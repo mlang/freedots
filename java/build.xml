@@ -10,35 +10,34 @@
     <!-- Create the time stamp -->
     <tstamp/>
     <!-- Create the build directory structure used by compile -->
-    <mkdir dir="${build}"/>
+    <mkdir dir="${build}/musicxml"/>
+    <get src="http://www.musicxml.org/dtds/partwise.dtd"
+	 dest="${build}/musicxml/partwise.dtd" usetimestamp="true"/>
+    <get src="http://www.musicxml.org/dtds/common.mod"
+	 dest="${build}/musicxml/common.mod" usetimestamp="true"/>
+    <get src="http://www.musicxml.org/dtds/isolat1.ent"
+	 dest="${build}/musicxml/isolat1.ent" usetimestamp="true"/>
+    <get src="http://www.musicxml.org/dtds/isolat2.ent"
+	 dest="${build}/musicxml/isolat2.ent" usetimestamp="true"/>
+    <get src="http://www.musicxml.org/dtds/layout.mod"
+	 dest="${build}/musicxml/layout.mod" usetimestamp="true"/>
+    <get src="http://www.musicxml.org/dtds/identity.mod"
+	 dest="${build}/musicxml/identity.mod" usetimestamp="true"/>
+    <get src="http://www.musicxml.org/dtds/attributes.mod"
+	 dest="${build}/musicxml/attributes.mod" usetimestamp="true"/>
+    <get src="http://www.musicxml.org/dtds/link.mod"
+	 dest="${build}/musicxml/link.mod" usetimestamp="true"/>
+    <get src="http://www.musicxml.org/dtds/note.mod"
+	 dest="${build}/musicxml/note.mod" usetimestamp="true"/>
+    <get src="http://www.musicxml.org/dtds/barline.mod"
+	 dest="${build}/musicxml/barline.mod" usetimestamp="true"/>
+    <get src="http://www.musicxml.org/dtds/direction.mod"
+	 dest="${build}/musicxml/direction.mod" usetimestamp="true"/>
+    <get src="http://www.musicxml.org/dtds/score.mod"
+	 dest="${build}/musicxml/score.mod" usetimestamp="true"/>
   </target>
 
   <target name="compile" depends="init" description="compile the source">
-    <mkdir dir="${build}/musicxml"/>
-    <get src="http://www.musicxml.org/dtds/partwise.dtd"
-	 dest="${build}/musicxml/partwise.dtd"/>
-    <get src="http://www.musicxml.org/dtds/common.mod"
-	 dest="${build}/musicxml/common.mod"/>
-    <get src="http://www.musicxml.org/dtds/isolat1.ent"
-	 dest="${build}/musicxml/isolat1.ent"/>
-    <get src="http://www.musicxml.org/dtds/isolat2.ent"
-	 dest="${build}/musicxml/isolat2.ent"/>
-    <get src="http://www.musicxml.org/dtds/layout.mod"
-	 dest="${build}/musicxml/layout.mod"/>
-    <get src="http://www.musicxml.org/dtds/identity.mod"
-	 dest="${build}/musicxml/identity.mod"/>
-    <get src="http://www.musicxml.org/dtds/attributes.mod"
-	 dest="${build}/musicxml/attributes.mod"/>
-    <get src="http://www.musicxml.org/dtds/link.mod"
-	 dest="${build}/musicxml/link.mod"/>
-    <get src="http://www.musicxml.org/dtds/note.mod"
-	 dest="${build}/musicxml/note.mod"/>
-    <get src="http://www.musicxml.org/dtds/barline.mod"
-	 dest="${build}/musicxml/barline.mod"/>
-    <get src="http://www.musicxml.org/dtds/direction.mod"
-	 dest="${build}/musicxml/direction.mod"/>
-    <get src="http://www.musicxml.org/dtds/score.mod"
-	 dest="${build}/musicxml/score.mod"/>
     <!-- Compile the java code from ${src} into ${build} -->
     <javac srcdir="${src}" destdir="${build}"/>
   </target>
