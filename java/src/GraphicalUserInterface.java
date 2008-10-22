@@ -9,6 +9,7 @@ import javax.swing.JTextField;
 import java.awt.*;
 import java.awt.event.*;
 import musicxml.MusicXML;
+import musicxml.Part;
 
 public class GraphicalUserInterface extends JFrame {
   protected JTextArea textArea;
@@ -24,19 +25,19 @@ public class GraphicalUserInterface extends JFrame {
     textArea = new JTextArea(5, 30);
     JScrollPane jsPane = new JScrollPane(textArea);
     // Lay out the content pane.
-    JPanel jplContentPane = new JPanel();
-    jplContentPane.setLayout(new BorderLayout());
-    jplContentPane.setPreferredSize(new Dimension(400, 100));
-    jplContentPane.add(jtbMainToolbar, BorderLayout.NORTH);
-    jplContentPane.add(jsPane, BorderLayout.CENTER);
-    setContentPane(jplContentPane);
+    JPanel contentPane = new JPanel();
+    contentPane.setLayout(new BorderLayout());
+    contentPane.setPreferredSize(new Dimension(400, 100));
+    contentPane.add(jtbMainToolbar, BorderLayout.NORTH);
+    contentPane.add(jsPane, BorderLayout.CENTER);
+    setContentPane(contentPane);
   }
   public void addButtons(JToolBar jtbToolBar) {
-      JButton jbnToolbarButtons = null;
-      // first button
-      jbnToolbarButtons = new JButton(new ImageIcon("left.gif"));
-	jbnToolbarButtons.setToolTipText("left");
-	jbnToolbarButtons.addActionListener(new ActionListener() {
+    JButton jbnToolbarButtons = null;
+    // first button
+    jbnToolbarButtons = new JButton(new ImageIcon("left.gif"));
+    jbnToolbarButtons.setToolTipText("left");
+    jbnToolbarButtons.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 		    displayInTextArea("This is Left Toolbar Button Reporting");
 		}
@@ -94,18 +95,22 @@ public class GraphicalUserInterface extends JFrame {
 	    textArea.append(actionDescription + newline);
 	}
   public static void main(String[] args) {
+    MusicXML score = null;
     try {
-      MusicXML score = new MusicXML(args[0]);
-      GraphicalUserInterface jtfToolbar = new GraphicalUserInterface(); // Extends Frame.
-      jtfToolbar.pack();
-      jtfToolbar.addWindowListener(new WindowAdapter() {
-	  public void windowClosing(WindowEvent e) {
-	    System.exit(0);
-	  }
-	});
-      jtfToolbar.setVisible(true);
+      score = new MusicXML(args[0]);
+      GraphicalUserInterface gui = new GraphicalUserInterface(); // Extends Frame.
+      gui.pack();
+      gui.addWindowListener(new WindowAdapter() {
+	public void windowClosing(WindowEvent e) {
+	  System.exit(0);
+	}
+      });
+      gui.setVisible(true);
     } catch (HeadlessException e) {
       System.err.println("No graphical environment available, exiting...");
+      for (Part p:score.parts()) {
+	System.out.println(p.getName());
+      }
       System.exit(0);
     } catch (Exception e) {
       e.printStackTrace();
