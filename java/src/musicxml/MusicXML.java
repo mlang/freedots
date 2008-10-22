@@ -60,25 +60,13 @@ public class MusicXML {
       ZipEntry zipEntry = null;
       while ((zipEntry = zipInputStream.getNextEntry()) != null) {
 	if ("META-INF/container.xml".equals(zipEntry.getName())) {
-	  BufferedReader reader = new BufferedReader(new InputStreamReader(zipInputStream));
-	  StringBuilder stringBuilder = new StringBuilder();
-	  String string = null;
-	  while ((string = reader.readLine()) != null) {
-	    stringBuilder.append(string + "\n");
-	  }
-	  Document container = documentBuilder.parse(new InputSource(new StringReader(stringBuilder.toString())));
+	  Document container = documentBuilder.parse(getInputSourceFromZipInputStream(zipInputStream));
 	  XPath xpath = XPathFactory.newInstance().newXPath();
 	  zipEntryName = (String) xpath.evaluate("container/rootfiles/rootfile/@full-path",
 						 container,
 						 XPathConstants.STRING);
 	} else if (zipEntry.getName().equals(zipEntryName)) {
-	  BufferedReader reader = new BufferedReader(new InputStreamReader(zipInputStream));
-	  StringBuilder stringBuilder = new StringBuilder();
-	  String string = null;
-	  while ((string = reader.readLine()) != null) {
-	    stringBuilder.append(string + "\n");
-	  }
-	  document = documentBuilder.parse(new InputSource(new StringReader(stringBuilder.toString())));
+	  document = documentBuilder.parse(getInputSourceFromZipInputStream(zipInputStream));
 	}
 	zipInputStream.closeEntry();
       }
@@ -86,6 +74,19 @@ public class MusicXML {
       document = documentBuilder.parse(inputStream);
     }
     document.getDocumentElement().normalize();
+  }
+
+  private InputSource getInputSourceFromZipInputStream(
+    ZipInputStream zipInputStream
+  ) throws IOException {
+    BufferedReader reader =
+      new BufferedReader(new InputStreamReader(zipInputStream));
+    StringBuilder stringBuilder = new StringBuilder();
+    String string = null;
+    while ((string = reader.readLine()) != null) {
+      stringBuilder.append(string + "\n");
+    }
+    return new InputSource(new StringReader(stringBuilder.toString()));
   }
 
   public String getScoreType () {
