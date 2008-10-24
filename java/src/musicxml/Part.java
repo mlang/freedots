@@ -10,6 +10,8 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 public class Part {
   private Element part;
@@ -32,6 +34,13 @@ public class Part {
 
   public List<Measure> measures() {
     List<Measure> result = new ArrayList<Measure>();
+    NodeList nodes = part.getChildNodes();
+    for (int i = 0; i<nodes.getLength(); i++) {
+      Node kid = nodes.item(i);
+      if (kid.getNodeType() == Node.ELEMENT_NODE) {
+	result.add(new Measure((Element)kid, this));
+      }
+    }
     return result;
   }
 }
