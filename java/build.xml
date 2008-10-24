@@ -47,7 +47,7 @@
     <!-- Create the distribution directory -->
     <mkdir dir="${dist}"/>
     <manifest file="${dist}/MANIFEST.MF">
-      <attribute name="Main-Class" value="GraphicalUserInterface"/>
+      <attribute name="Main-Class" value="musicxml/MIDIPlayer"/>
     </manifest>
 
     <!-- Put everything in ${build} into the MyProject-${DSTAMP}.jar file -->
