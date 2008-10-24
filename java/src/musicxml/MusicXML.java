@@ -10,6 +10,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.IOException;
 
+import java.math.BigInteger;
+
 import java.net.URL;
 
 import java.util.List;
@@ -97,6 +99,24 @@ public class MusicXML {
 
   public String getScoreType () {
     return document.getDocumentElement().getNodeName();
+  }
+
+  public int getDivisions() {
+    XPath xpath = XPathFactory.newInstance().newXPath();
+    try {
+      NodeList nodelist = (NodeList) xpath.evaluate("//attributes/divisions/text()",
+						   document,
+						   XPathConstants.NODESET);
+      BigInteger result = BigInteger.ONE;
+      for (int i = 0; i < nodelist.getLength(); i++) {
+	Node node = nodelist.item(i);
+	BigInteger divisions = new BigInteger(node.getNodeValue());
+	result = result.multiply(divisions.divide(result.gcd(divisions)));
+      }
+      return result.intValue();
+    } catch (XPathExpressionException e) {
+      return 0;
+    }
   }
 
   public List<Part> parts() {

@@ -1,3 +1,4 @@
+/* -*- c-basic-offset: 2; -*- */
 import javax.swing.JToolBar;
 import javax.swing.JButton;
 import javax.swing.ImageIcon;
@@ -92,9 +93,11 @@ public class GraphicalUserInterface extends JFrame {
 	    });
 	jtbToolBar.add(jtfButton);
     }
-	protected void displayInTextArea(String actionDescription) {
-	    textArea.append(actionDescription + newline);
-	}
+
+  protected void displayInTextArea(String actionDescription) {
+    textArea.append(actionDescription + newline);
+  }
+
   public static void main(String[] args) {
     MusicXML score = null;
     try {
@@ -112,7 +115,7 @@ public class GraphicalUserInterface extends JFrame {
       for (Part part:score.parts()) {
 	System.out.println("Part name: " + part.getName());
 	for (Measure measure:part.measures()) {
-	    System.out.println("Measure number: " + measure.getNumber());
+	  System.out.println("Measure number: " + measure.getNumber());
 	} 
       }
       System.exit(0);
