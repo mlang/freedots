@@ -38,6 +38,7 @@ import org.w3c.dom.NodeList;
 
 public class MusicXML {
   private Document document;
+  private XPathFactory xPathFactory = XPathFactory.newInstance();
 
   public MusicXML(
     String filename
@@ -58,8 +59,10 @@ public class MusicXML {
       URL url = new URL(filename);
       inputStream = url.openConnection().getInputStream();
     }
-    DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-    DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+    DocumentBuilderFactory documentBuilderFactory =
+      DocumentBuilderFactory.newInstance();
+    DocumentBuilder documentBuilder =
+      documentBuilderFactory.newDocumentBuilder();
     documentBuilder.setEntityResolver(new MusicXMLEntityResolver());
 
     if ("mxl".equals(extension)) {
@@ -68,13 +71,16 @@ public class MusicXML {
       ZipEntry zipEntry = null;
       while ((zipEntry = zipInputStream.getNextEntry()) != null) {
 	if ("META-INF/container.xml".equals(zipEntry.getName())) {
-	  Document container = documentBuilder.parse(getInputSourceFromZipInputStream(zipInputStream));
-	  XPath xpath = XPathFactory.newInstance().newXPath();
+	  Document container =
+	    documentBuilder.parse(
+	      getInputSourceFromZipInputStream(zipInputStream));
+	  XPath xpath = xPathFactory.newXPath();
 	  zipEntryName = (String) xpath.evaluate("container/rootfiles/rootfile/@full-path",
 						 container,
 						 XPathConstants.STRING);
 	} else if (zipEntry.getName().equals(zipEntryName)) {
-	  document = documentBuilder.parse(getInputSourceFromZipInputStream(zipInputStream));
+	  document = documentBuilder.parse(
+		       getInputSourceFromZipInputStream(zipInputStream));
 	}
 	zipInputStream.closeEntry();
       }
@@ -102,16 +108,18 @@ public class MusicXML {
   }
 
   public int getDivisions() {
-    XPath xpath = XPathFactory.newInstance().newXPath();
+    XPath xPath = xPathFactory.newXPath();
     try {
-      NodeList nodelist = (NodeList) xpath.evaluate("//attributes/divisions/text()",
-						   document,
-						   XPathConstants.NODESET);
+      String xPathExpression = "//attributes/divisions/text()";
+      NodeList nodeList = (NodeList) xPath.evaluate(xPathExpression,
+						    document,
+						    XPathConstants.NODESET);
+      int count = nodeList.getLength();
       BigInteger result = BigInteger.ONE;
-      for (int i = 0; i < nodelist.getLength(); i++) {
-	Node node = nodelist.item(i);
+      for (int index = 0; index < count; index++) {
+	Node node = nodeList.item(index);
 	BigInteger divisions = new BigInteger(node.getNodeValue());
-	result = result.multiply(divisions.divide(result.gcd(divisions)));
+	result = result.multiply(divisions).divide(result.gcd(divisions));
       }
       return result.intValue();
     } catch (XPathExpressionException e) {
