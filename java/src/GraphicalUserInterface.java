@@ -10,6 +10,7 @@ import java.awt.*;
 import java.awt.event.*;
 import musicxml.MusicXML;
 import musicxml.Part;
+import musicxml.Measure;
 
 public class GraphicalUserInterface extends JFrame {
   protected JTextArea textArea;
@@ -108,8 +109,11 @@ public class GraphicalUserInterface extends JFrame {
       gui.setVisible(true);
     } catch (HeadlessException e) {
       System.err.println("No graphical environment available, exiting...");
-      for (Part p:score.parts()) {
-	System.out.println(p.getName());
+      for (Part part:score.parts()) {
+	System.out.println("Part name: " + part.getName());
+	for (Measure measure:part.measures()) {
+	    System.out.println("Measure number: " + measure.getNumber());
+	} 
       }
       System.exit(0);
     } catch (Exception e) {
