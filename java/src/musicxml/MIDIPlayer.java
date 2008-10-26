@@ -14,25 +14,20 @@ import javax.sound.midi.InvalidMidiDataException;
 public class MIDIPlayer {
   private Synthesizer synthesizer;
   private Sequencer sequencer;
-  private Transmitter transmitter;
-  private Receiver receiver;
 
   public MIDIPlayer(
     MusicXML score
   ) throws MidiUnavailableException, InvalidMidiDataException {
     sequencer = MidiSystem.getSequencer();
     synthesizer = MidiSystem.getSynthesizer();
-    transmitter = sequencer.getTransmitter();
-    receiver = synthesizer.getReceiver();
-    sequencer.open();
-    synthesizer.open();
-    transmitter.setReceiver(receiver);
-
+    sequencer.getTransmitter().setReceiver(synthesizer.getReceiver());
     sequencer.setSequence(new MIDISequence(score));
     //sequencer.setTempoInBPM(120);
   }
 
-  public void play() {
+  public void play() throws MidiUnavailableException {
+    sequencer.open();
+    synthesizer.open();
     sequencer.start();
     while (true) {
       try {
@@ -43,6 +38,7 @@ public class MIDIPlayer {
       }
     }
     sequencer.stop();
+
     sequencer.close();
     synthesizer.close();
   }

@@ -9,25 +9,27 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 public class Measure {
-  private Part parentPart;
-  private Element measure;
+  Part part;
+  Element measure;
 
   public Measure(Element measure, Part part) {
     this.measure = measure;
-    this.parentPart = part;
+    this.part = part;
   }
 
-  public String getNumber() {
-    return measure.getAttribute("number");
-  }
+  public String getNumber() { return measure.getAttribute("number"); }
 
-  public List<Element> musicData() {
-    List<Element> result = new ArrayList<Element>();
+  public List<Musicdata> musicdata() {
+    List<Musicdata> result = new ArrayList<Musicdata>();
     NodeList nodes = measure.getChildNodes();
-    for (int i = 0; i < nodes.getLength(); i++) {
-      Node kid = nodes.item(i);
+    for (int index = 0; index < nodes.getLength(); index++) {
+      Node kid = nodes.item(index);
       if (kid.getNodeType() == Node.ELEMENT_NODE) {
-	result.add((Element)kid);
+	if ("note".equals(kid.getNodeName())) {
+	  result.add(new Note((Element)kid));
+	} else {
+	  System.err.println("Unsupported musicdata element " + kid.getNodeName());
+	}
       }
     }
     return result;
