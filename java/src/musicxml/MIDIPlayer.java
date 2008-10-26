@@ -16,7 +16,6 @@ public class MIDIPlayer {
   private Sequencer sequencer;
   private Transmitter transmitter;
   private Receiver receiver;
-  private Sequence sequence;
 
   public MIDIPlayer(
     MusicXML score
@@ -29,8 +28,7 @@ public class MIDIPlayer {
     synthesizer.open();
     transmitter.setReceiver(receiver);
 
-    sequence = new MIDISequence(score);
-    sequencer.setSequence(sequence);
+    sequencer.setSequence(new MIDISequence(score));
     //sequencer.setTempoInBPM(120);
   }
 
