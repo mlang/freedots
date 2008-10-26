@@ -2,6 +2,7 @@
 package musicxml;
 
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 public class Note extends Musicdata {
@@ -13,5 +14,13 @@ public class Note extends Musicdata {
     }
     return null;
   }
-  public int getDuration() { return 1; }
+  public int getDuration() throws Exception {
+    NodeList nodeList = element.getElementsByTagName("duration");
+    if (nodeList.getLength() == 1) {
+      Node textNode = nodeList.item(0).getChildNodes().item(0);
+      int duration = Integer.parseInt(textNode.getNodeValue());
+      return duration;
+    }
+    throw new Exception();
+  }
 }

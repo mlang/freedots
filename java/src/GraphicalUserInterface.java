@@ -1,24 +1,97 @@
 /* -*- c-basic-offset: 2; -*- */
+import java.io.File;
+
+import javax.sound.midi.MidiUnavailableException;
 import javax.swing.JToolBar;
 import javax.swing.JButton;
-import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileFilter;
 import javax.swing.JFrame;
+import javax.swing.JMenuBar;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.ImageIcon;
 import java.awt.*;
 import java.awt.event.*;
 import musicxml.MusicXML;
 import musicxml.Part;
 import musicxml.Measure;
+import musicxml.MIDIPlayer;
 
 public class GraphicalUserInterface extends JFrame {
+  protected MusicXML score = null;
   protected JTextArea textArea;
   protected String newline = "\n";
 
   public GraphicalUserInterface() {
     super("FreeDots");
+    // Create the menubar.
+    JMenuBar menuBar = new JMenuBar();
+    JMenu fileMenu = new JMenu("File");
+    fileMenu.setMnemonic(KeyEvent.VK_F);
+
+    JMenuItem openItem = new JMenuItem("Open", KeyEvent.VK_O);
+    openItem.getAccessibleContext().setAccessibleDescription(
+      "Open a MusicXML score file.");
+    openItem.addActionListener(new ActionListener() {
+	public void actionPerformed(ActionEvent e) {
+	  JFileChooser fileChooser = new JFileChooser();
+	  fileChooser.setAcceptAllFileFilterUsed(false);
+	  fileChooser.setFileFilter(new FileFilter() {
+	      @Override
+	      public boolean accept(File f) {
+		return f.isDirectory() || f.getName().matches(".*\\.(mxl|xml)");
+	      }
+	      @Override
+	      public String getDescription() {
+		return "*.mxl, *.xml";
+	      }
+	    });
+	  fileChooser.showOpenDialog(null);
+	  try {
+	    MusicXML newScore = new MusicXML(fileChooser.getSelectedFile().toString());
+	    setScore(newScore);
+	  } catch (javax.xml.parsers.ParserConfigurationException exception) {
+	    exception.printStackTrace();
+	  } catch (Exception exception) {
+	    exception.printStackTrace();
+	  }
+	}
+      });
+    fileMenu.add(openItem);
+
+
+    JMenuItem playItem = new JMenuItem("Play score", KeyEvent.VK_P);
+    playItem.getAccessibleContext().setAccessibleDescription(
+      "Play the complete score.");
+    playItem.addActionListener(new ActionListener() {
+	public void actionPerformed(ActionEvent e) {
+	  if (score != null) {
+	    try {
+	      MIDIPlayer midiPlayer = new MIDIPlayer(score);
+	      midiPlayer.play();
+	    } catch (MidiUnavailableException exception) {
+	      exception.printStackTrace();
+	    } catch (javax.sound.midi.InvalidMidiDataException exception) {
+	      exception.printStackTrace();
+	    }
+	  }
+	}
+      });
+    fileMenu.add(playItem);
+
+    JMenuItem quitItem = new JMenuItem("Quit", KeyEvent.VK_Q);
+    quitItem.getAccessibleContext().setAccessibleDescription(
+      "Exit this application.");
+    fileMenu.add(quitItem);
+
+    menuBar.add(fileMenu);
+    setJMenuBar(menuBar);
+
     // Create the toolbar.
     JToolBar jtbMainToolbar = new JToolBar();
     // setFloatable(false) to make the toolbar non movable
@@ -98,11 +171,15 @@ public class GraphicalUserInterface extends JFrame {
     textArea.append(actionDescription + newline);
   }
 
+  public void setScore(MusicXML score) {
+    this.score = score;
+  }
   public static void main(String[] args) {
     MusicXML score = null;
     try {
       score = new MusicXML(args[0]);
       GraphicalUserInterface gui = new GraphicalUserInterface(); // Extends Frame.
+      gui.setScore(score);
       gui.pack();
       gui.addWindowListener(new WindowAdapter() {
 	public void windowClosing(WindowEvent e) {

@@ -8,8 +8,13 @@ import javax.sound.midi.Sequencer;
 import javax.sound.midi.Synthesizer;
 import javax.sound.midi.Transmitter;
 
+import com.sun.media.sound.StandardMidiFileWriter;
+
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.InvalidMidiDataException;
+
+import java.io.File;
+import java.io.FileOutputStream;
 
 public class MIDIPlayer {
   private Synthesizer synthesizer;
@@ -20,14 +25,14 @@ public class MIDIPlayer {
   ) throws MidiUnavailableException, InvalidMidiDataException {
     sequencer = MidiSystem.getSequencer();
     synthesizer = MidiSystem.getSynthesizer();
+    sequencer.open();
+    synthesizer.open();
     sequencer.getTransmitter().setReceiver(synthesizer.getReceiver());
     sequencer.setSequence(new MIDISequence(score));
     //sequencer.setTempoInBPM(120);
   }
 
-  public void play() throws MidiUnavailableException {
-    sequencer.open();
-    synthesizer.open();
+  public void play() {
     sequencer.start();
     while (true) {
       try {
@@ -45,7 +50,16 @@ public class MIDIPlayer {
 
   public static void main(String[] args) {
     try {
-      MIDIPlayer player = new MIDIPlayer(new MusicXML(args[0]));
+      MusicXML score = new MusicXML(args[0]);
+      File file = new File("foo.mid");
+      FileOutputStream fileOutputStream = new FileOutputStream(file);
+      try {
+	StandardMidiFileWriter mfw = new StandardMidiFileWriter();
+	mfw.write(new MIDISequence(score), 1, fileOutputStream);
+      } finally {
+	fileOutputStream.close();
+      }
+      MIDIPlayer player = new MIDIPlayer(score);
       player.play();
     } catch (MidiUnavailableException e) {
       e.printStackTrace();
