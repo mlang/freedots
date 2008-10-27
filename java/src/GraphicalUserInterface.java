@@ -1,7 +1,11 @@
 /* -*- c-basic-offset: 2; -*- */
-import java.io.File;
-
+// MIDI
+import com.sun.media.sound.StandardMidiFileWriter;
 import javax.sound.midi.MidiUnavailableException;
+
+import java.io.File;
+import java.io.FileOutputStream;
+
 import javax.swing.JToolBar;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -10,17 +14,19 @@ import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
-import javax.swing.JTextArea;
-import javax.swing.JScrollPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ImageIcon;
 import java.awt.*;
 import java.awt.event.*;
+
 import musicxml.MusicXML;
 import musicxml.Part;
 import musicxml.Measure;
 import musicxml.MIDIPlayer;
+import musicxml.MIDISequence;
 
 public class GraphicalUserInterface extends JFrame {
   protected MusicXML score = null;
@@ -83,6 +89,33 @@ public class GraphicalUserInterface extends JFrame {
 	}
       });
     fileMenu.add(playItem);
+
+    JMenuItem saveMidiItem = new JMenuItem("Save as MIDI", KeyEvent.VK_M);
+    saveMidiItem.getAccessibleContext().setAccessibleDescription(
+      "Save as Standard MIDI file.");
+    saveMidiItem.addActionListener(new ActionListener() {
+	public void actionPerformed(ActionEvent e) {
+	  if (score != null) {
+	    JFileChooser fileChooser = new JFileChooser();
+	    fileChooser.showSaveDialog(null);
+	    File file = fileChooser.getSelectedFile();
+	    try {
+	      FileOutputStream fileOutputStream = new FileOutputStream(file);
+	      try {
+		StandardMidiFileWriter mfw = new StandardMidiFileWriter();
+		mfw.write(new MIDISequence(score), 1, fileOutputStream);
+	      } catch (Exception exception) {
+		exception.printStackTrace();
+	      } finally {
+		fileOutputStream.close();
+	      }
+	    } catch (java.io.IOException exception) {
+	      exception.printStackTrace();
+	    }
+	  }
+	}
+      });
+    fileMenu.add(saveMidiItem);
 
     JMenuItem quitItem = new JMenuItem("Quit", KeyEvent.VK_Q);
     quitItem.getAccessibleContext().setAccessibleDescription(

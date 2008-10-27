@@ -47,27 +47,4 @@ public class MIDIPlayer {
     sequencer.close();
     synthesizer.close();
   }
-
-  public static void main(String[] args) {
-    try {
-      MusicXML score = new MusicXML(args[0]);
-      File file = new File("foo.mid");
-      FileOutputStream fileOutputStream = new FileOutputStream(file);
-      try {
-	StandardMidiFileWriter mfw = new StandardMidiFileWriter();
-	mfw.write(new MIDISequence(score), 1, fileOutputStream);
-      } finally {
-	fileOutputStream.close();
-      }
-      MIDIPlayer player = new MIDIPlayer(score);
-      player.play();
-    } catch (MidiUnavailableException e) {
-      e.printStackTrace();
-      System.exit(1);
-    } catch (Exception e) {
-      e.printStackTrace();
-      System.exit(2);
-    }
-  }
 }
-
