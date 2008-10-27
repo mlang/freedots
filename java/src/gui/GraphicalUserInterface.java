@@ -207,6 +207,7 @@ public class GraphicalUserInterface extends JFrame {
 
   public void setScore(MusicXML score) {
     this.score = score;
+    textArea.append(Character.toString((char)(0X2800+0X07)));
   }
   public static void main(String[] args) {
     MusicXML score = null;
