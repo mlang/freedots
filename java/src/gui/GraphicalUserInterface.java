@@ -7,10 +7,10 @@ import javax.sound.midi.MidiUnavailableException;
 import java.io.File;
 import java.io.FileOutputStream;
 
+import javax.swing.Action;
 import javax.swing.JToolBar;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
-import javax.swing.filechooser.FileFilter;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
@@ -63,32 +63,13 @@ public class GraphicalUserInterface extends JFrame {
     JMenu fileMenu = new JMenu("File");
     fileMenu.setMnemonic(KeyEvent.VK_F);
 
-    JMenuItem openItem = new JMenuItem("Open", KeyEvent.VK_O);
+    Action openAction = new FileOpenAction(this);
+    JMenuItem openItem = new JMenuItem(openAction);
+    openItem.setMnemonic(KeyEvent.VK_O);
     openItem.getAccessibleContext().setAccessibleDescription(
       "Open a MusicXML score file.");
     openItem.addActionListener(new ActionListener() {
 	public void actionPerformed(ActionEvent e) {
-	  JFileChooser fileChooser = new JFileChooser();
-	  fileChooser.setAcceptAllFileFilterUsed(false);
-	  fileChooser.setFileFilter(new FileFilter() {
-	      @Override
-	      public boolean accept(File f) {
-		return f.isDirectory() || f.getName().matches(".*\\.(mxl|xml)");
-	      }
-	      @Override
-	      public String getDescription() {
-		return "*.mxl, *.xml";
-	      }
-	    });
-	  fileChooser.showOpenDialog(null);
-	  try {
-	    MusicXML newScore = new MusicXML(fileChooser.getSelectedFile().toString());
-	    setScore(newScore);
-	  } catch (javax.xml.parsers.ParserConfigurationException exception) {
-	    exception.printStackTrace();
-	  } catch (Exception exception) {
-	    exception.printStackTrace();
-	  }
 	}
       });
     fileMenu.add(openItem);
@@ -149,87 +130,31 @@ public class GraphicalUserInterface extends JFrame {
     setJMenuBar(menuBar);
 
     // Create the toolbar.
-    JToolBar jtbMainToolbar = new JToolBar();
+    JToolBar toolBar = new JToolBar();
     // setFloatable(false) to make the toolbar non movable
-    addButtons(jtbMainToolbar);
+    JButton openButton = new JButton(openAction);
+    toolBar.add(openButton);
+
     // Create the text area
     textArea = new JTextArea(5, 30);
-    Font brailleFont = new Font("DejaVu Serif", Font.PLAIN, 14);
-    textArea.setFont(brailleFont);
-    JScrollPane jsPane = new JScrollPane(textArea);
+    Font font = new Font("DejaVu Serif", Font.PLAIN, 14);
+    textArea.setFont(font);
+    JScrollPane scrollPane = new JScrollPane(textArea);
+
     // Lay out the content pane.
     JPanel contentPane = new JPanel();
     contentPane.setLayout(new BorderLayout());
     contentPane.setPreferredSize(new Dimension(400, 100));
-    contentPane.add(jtbMainToolbar, BorderLayout.NORTH);
-    contentPane.add(jsPane, BorderLayout.CENTER);
+    contentPane.add(toolBar, BorderLayout.NORTH);
+    contentPane.add(scrollPane, BorderLayout.CENTER);
     setContentPane(contentPane);
+
     addWindowListener(new WindowAdapter() {
       public void windowClosing(WindowEvent e) {
 	quit();
       }
     });
   }
-  public void addButtons(JToolBar jtbToolBar) {
-    JButton jbnToolbarButtons = null;
-    // first button
-    jbnToolbarButtons = new JButton(new ImageIcon("left.gif"));
-    jbnToolbarButtons.setToolTipText("left");
-    jbnToolbarButtons.addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
-		    displayInTextArea("This is Left Toolbar Button Reporting");
-		}
-	    });
-	jtbToolBar.add(jbnToolbarButtons);
-	// 2nd button
-	jbnToolbarButtons = new JButton(new ImageIcon("right.gif"));
-	jbnToolbarButtons.setToolTipText("right");
-	jbnToolbarButtons.addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
-		    displayInTextArea("This is right Toolbar Button Reporting");
-		}
-	    });
-	jtbToolBar.add(jbnToolbarButtons);
-	jtbToolBar.addSeparator();
-	// 3rd button
-	jbnToolbarButtons = new JButton(new ImageIcon("open.gif"));
-	jbnToolbarButtons.setToolTipText("open");
-	jbnToolbarButtons.addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
-		    displayInTextArea("This is open Toolbar Button Reporting");
-		}
-	    });
-	jtbToolBar.add(jbnToolbarButtons);
-	// 4th button
-	jbnToolbarButtons = new JButton(new ImageIcon("save.gif"));
-	jbnToolbarButtons.setToolTipText("save");
-	jbnToolbarButtons.addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
-		    displayInTextArea("This is save Toolbar Button Reporting");
-		}
-	    });
-	jtbToolBar.add(jbnToolbarButtons);
-	// We can add separators to group similar components
-	jtbToolBar.addSeparator();
-	// fourth button
-	jbnToolbarButtons = new JButton("Text button");
-	jbnToolbarButtons.addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
-		    displayInTextArea("Text button");
-		}
-	    });
-	jtbToolBar.add(jbnToolbarButtons);
-	// fifth component is NOT a button!
-	JTextField jtfButton = new JTextField("Text field");
-	jtfButton.setEditable(false);
-	jtfButton.addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
-		    displayInTextArea("TextField component can also be placed");
-		}
-	    });
-	jtbToolBar.add(jtfButton);
-    }
-
   protected void displayInTextArea(String actionDescription) {
     textArea.append(actionDescription + newline);
   }
