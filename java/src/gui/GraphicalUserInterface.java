@@ -95,10 +95,10 @@ public class GraphicalUserInterface extends JFrame {
     saveMidiItem.getAccessibleContext().setAccessibleDescription(
       "Save as Standard MIDI file.");
     saveMidiItem.addActionListener(new ActionListener() {
-	public void actionPerformed(ActionEvent e) {
-	  if (score != null) {
-	    JFileChooser fileChooser = new JFileChooser();
-	    fileChooser.showSaveDialog(null);
+      public void actionPerformed(ActionEvent e) {
+	if (score != null) {
+	  JFileChooser fileChooser = new JFileChooser();
+	  if (fileChooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
 	    File file = fileChooser.getSelectedFile();
 	    try {
 	      FileOutputStream fileOutputStream = new FileOutputStream(file);
@@ -115,10 +115,12 @@ public class GraphicalUserInterface extends JFrame {
 	    }
 	  }
 	}
-      });
+      }
+    });
     fileMenu.add(saveMidiItem);
 
-    JMenuItem quitItem = new JMenuItem("Quit", KeyEvent.VK_Q);
+    JMenuItem quitItem = new JMenuItem(new QuitAction(this));
+    quitItem.setMnemonic(KeyEvent.VK_Q);
     quitItem.getAccessibleContext().setAccessibleDescription(
       "Exit this application.");
     fileMenu.add(quitItem);
@@ -140,6 +142,11 @@ public class GraphicalUserInterface extends JFrame {
     contentPane.add(jtbMainToolbar, BorderLayout.NORTH);
     contentPane.add(jsPane, BorderLayout.CENTER);
     setContentPane(contentPane);
+    addWindowListener(new WindowAdapter() {
+      public void windowClosing(WindowEvent e) {
+	quit();
+      }
+    });
   }
   public void addButtons(JToolBar jtbToolBar) {
     JButton jbnToolbarButtons = null;
@@ -209,6 +216,9 @@ public class GraphicalUserInterface extends JFrame {
     this.score = score;
     textArea.append(Character.toString((char)(0X2800+0X07)));
   }
+  public void quit() {
+    System.exit(0);
+  }
   public static void main(String[] args) {
     MusicXML score = null;
     try {
@@ -216,11 +226,6 @@ public class GraphicalUserInterface extends JFrame {
       GraphicalUserInterface gui = new GraphicalUserInterface(); // Extends Frame.
       gui.setScore(score);
       gui.pack();
-      gui.addWindowListener(new WindowAdapter() {
-	public void windowClosing(WindowEvent e) {
-	  System.exit(0);
-	}
-      });
       gui.setVisible(true);
     } catch (HeadlessException e) {
       System.err.println("No graphical environment available, exiting...");
