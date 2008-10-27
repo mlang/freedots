@@ -1,4 +1,5 @@
 /* -*- c-basic-offset: 2; -*- */
+package gui;
 // MIDI
 import com.sun.media.sound.StandardMidiFileWriter;
 import javax.sound.midi.MidiUnavailableException;

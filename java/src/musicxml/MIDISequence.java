@@ -26,8 +26,9 @@ public class MIDISequence extends javax.sound.midi.Sequence {
 	  if ("note".equals(musicdata.getNodeName())) {
 	    Note note = (Note)musicdata;
 	    Pitch pitch = note.getPitch();
-	    if (pitch != null) {
-	      try {
+	    try {
+	      int duration = note.getDuration();
+	      if (pitch != null) {
 		int midiPitch = pitch.getMIDIPitch();
 		ShortMessage msg = new ShortMessage();
 		msg.setMessage(ShortMessage.NOTE_ON,
@@ -36,12 +37,12 @@ public class MIDISequence extends javax.sound.midi.Sequence {
 		msg = new ShortMessage();
 		msg.setMessage(ShortMessage.NOTE_OFF,
 			       channel, midiPitch, 0);
-		track.add(new MidiEvent(msg, currentTick+note.getDuration()));
-	      } catch (Exception e) {
-		e.printStackTrace();
+		track.add(new MidiEvent(msg, currentTick+duration));
 	      }
+	      currentTick += duration;
+	    } catch (Exception e) {
+	      e.printStackTrace();
 	    }
-	    currentTick += note.getDuration();
 	  }
 	}
       }
