@@ -11,37 +11,35 @@ import javax.sound.midi.Transmitter;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.InvalidMidiDataException;
 
+import java.io.Closeable;
 import java.io.File;
 import java.io.FileOutputStream;
 
-public class MIDIPlayer {
+public class MIDIPlayer implements Closeable {
   private Synthesizer synthesizer;
   private Sequencer sequencer;
 
-  public MIDIPlayer(
-    MusicXML score
-  ) throws MidiUnavailableException, InvalidMidiDataException {
+  public MIDIPlayer() throws MidiUnavailableException,
+			     InvalidMidiDataException {
     sequencer = MidiSystem.getSequencer();
     synthesizer = MidiSystem.getSynthesizer();
     sequencer.open();
     synthesizer.open();
     sequencer.getTransmitter().setReceiver(synthesizer.getReceiver());
-    sequencer.setSequence(new MIDISequence(score));
     //sequencer.setTempoInBPM(120);
   }
 
-  public void play() {
+  public void setSequence(Sequence sequence) throws InvalidMidiDataException {
+    sequencer.setSequence(sequence);
+  }
+  public void start() {
     sequencer.start();
-    while (true) {
-      try {
-	Thread.sleep(100);
-      } catch (Exception e) { }
-      if (!sequencer.isRunning()) {
-	break;
-      }
-    }
+  }    
+  public boolean isRunning() { return sequencer.isRunning(); }
+  public void stop() {
     sequencer.stop();
-
+  }
+  public void close() {
     sequencer.close();
     synthesizer.close();
   }

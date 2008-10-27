@@ -35,10 +35,19 @@ public class GraphicalUserInterface extends JFrame {
   protected MusicXML score = null;
   protected JTextArea textArea;
   protected String newline = "\n";
+  protected MIDIPlayer midiPlayer;
 
   public GraphicalUserInterface() {
     super("FreeDots");
 
+    try {
+      MIDIPlayer player = new MIDIPlayer();
+      midiPlayer = player;
+    } catch (MidiUnavailableException e) {
+      e.printStackTrace();
+    } catch (javax.sound.midi.InvalidMidiDataException e) {
+      e.printStackTrace();
+    }
     try {
       GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
       ge.registerFont(Font.createFont(Font.TRUETYPE_FONT,
@@ -92,10 +101,8 @@ public class GraphicalUserInterface extends JFrame {
 	public void actionPerformed(ActionEvent e) {
 	  if (score != null) {
 	    try {
-	      MIDIPlayer midiPlayer = new MIDIPlayer(score);
-	      midiPlayer.play();
-	    } catch (MidiUnavailableException exception) {
-	      exception.printStackTrace();
+	      midiPlayer.setSequence(new MIDISequence(score));
+	      midiPlayer.start();
 	    } catch (javax.sound.midi.InvalidMidiDataException exception) {
 	      exception.printStackTrace();
 	    }
@@ -232,6 +239,9 @@ public class GraphicalUserInterface extends JFrame {
     textArea.append("Hello "+Character.toString((char)(0X2800+0X07)));
   }
   public void quit() {
+    if (midiPlayer != null) {
+      midiPlayer.close();
+    }
     System.exit(0);
   }
   public static void main(String[] args) {
