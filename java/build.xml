@@ -10,6 +10,7 @@
     <!-- Create the time stamp -->
     <tstamp/>
     <!-- Create the build directory structure used by compile -->
+    <mkdir dir="${build}/gui"/>
     <mkdir dir="${build}/musicxml"/>
     <get src="http://www.musicxml.org/dtds/partwise.dtd"
 	 dest="${build}/musicxml/partwise.dtd" usetimestamp="true"/>
@@ -35,6 +36,8 @@
 	 dest="${build}/musicxml/direction.mod" usetimestamp="true"/>
     <get src="http://www.musicxml.org/dtds/score.mod"
 	 dest="${build}/musicxml/score.mod" usetimestamp="true"/>
+    <copy file="../doc/DejaVuSerif.ttf"
+          tofile="${build}/gui/DejaVuSerif.ttf"/>
   </target>
 
   <target name="compile" depends="init" description="compile the source">

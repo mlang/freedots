@@ -23,6 +23,8 @@ import javax.swing.ImageIcon;
 import java.awt.*;
 import java.awt.event.*;
 
+import java.awt.GraphicsEnvironment;
+
 import musicxml.MusicXML;
 import musicxml.Part;
 import musicxml.Measure;
@@ -36,6 +38,17 @@ public class GraphicalUserInterface extends JFrame {
 
   public GraphicalUserInterface() {
     super("FreeDots");
+
+    try {
+      GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+      ge.registerFont(Font.createFont(Font.TRUETYPE_FONT,
+				      getClass().getResourceAsStream("DejaVuSerif.ttf")));
+    } catch (java.io.IOException ioe) {
+      ioe.printStackTrace();
+    } catch (FontFormatException ffe) {
+      ffe.printStackTrace();
+    }
+
     // Create the menubar.
     JMenuBar menuBar = new JMenuBar();
     JMenu fileMenu = new JMenu("File");
@@ -134,6 +147,8 @@ public class GraphicalUserInterface extends JFrame {
     addButtons(jtbMainToolbar);
     // Create the text area
     textArea = new JTextArea(5, 30);
+    Font brailleFont = new Font("DejaVu Serif", Font.PLAIN, 14);
+    textArea.setFont(brailleFont);
     JScrollPane jsPane = new JScrollPane(textArea);
     // Lay out the content pane.
     JPanel contentPane = new JPanel();
@@ -214,7 +229,7 @@ public class GraphicalUserInterface extends JFrame {
 
   public void setScore(MusicXML score) {
     this.score = score;
-    textArea.append(Character.toString((char)(0X2800+0X07)));
+    textArea.append("Hello "+Character.toString((char)(0X2800+0X07)));
   }
   public void quit() {
     System.exit(0);
