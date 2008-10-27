@@ -68,12 +68,7 @@ public class GraphicalUserInterface extends JFrame {
     openItem.setMnemonic(KeyEvent.VK_O);
     openItem.getAccessibleContext().setAccessibleDescription(
       "Open a MusicXML score file.");
-    openItem.addActionListener(new ActionListener() {
-	public void actionPerformed(ActionEvent e) {
-	}
-      });
     fileMenu.add(openItem);
-
 
     JMenuItem playItem = new JMenuItem("Play score", KeyEvent.VK_P);
     playItem.getAccessibleContext().setAccessibleDescription(
