@@ -150,10 +150,6 @@ public class GraphicalUserInterface extends JFrame {
       }
     });
   }
-  protected void displayInTextArea(String actionDescription) {
-    textArea.append(actionDescription + newline);
-  }
-
   public void setScore(MusicXML score) {
     this.score = score;
     textArea.append("Hello "+Character.toString((char)(0X2800+0X07)));

@@ -65,7 +65,7 @@ public class MusicXML {
       documentBuilderFactory.newDocumentBuilder();
     documentBuilder.setEntityResolver(new MusicXMLEntityResolver());
 
-    if ("mxl".equals(extension)) {
+    if ("mxl".equals(extension.toLowercase())) {
       String zipEntryName = null;
       ZipInputStream zipInputStream = new ZipInputStream(inputStream);
       ZipEntry zipEntry = null;
