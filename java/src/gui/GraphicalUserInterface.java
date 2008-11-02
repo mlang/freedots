@@ -1,35 +1,38 @@
 /* -*- c-basic-offset: 2; -*- */
 package gui;
 // MIDI
-import com.sun.media.sound.StandardMidiFileWriter;
-import javax.sound.midi.MidiUnavailableException;
-
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontFormatException;
+import java.awt.GraphicsEnvironment;
+import java.awt.HeadlessException;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.FileOutputStream;
 
+import javax.sound.midi.MidiUnavailableException;
 import javax.swing.Action;
-import javax.swing.JToolBar;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
-import javax.swing.JMenuBar;
 import javax.swing.JMenu;
+import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import javax.swing.ImageIcon;
-import java.awt.*;
-import java.awt.event.*;
+import javax.swing.JToolBar;
 
-import java.awt.GraphicsEnvironment;
-
-import musicxml.MusicXML;
-import musicxml.Part;
-import musicxml.Measure;
 import musicxml.MIDIPlayer;
 import musicxml.MIDISequence;
+import musicxml.MusicXML;
+
+import com.sun.media.sound.StandardMidiFileWriter;
 
 public class GraphicalUserInterface extends JFrame {
   protected MusicXML score = null;
@@ -163,19 +166,15 @@ public class GraphicalUserInterface extends JFrame {
   public static void main(String[] args) {
     MusicXML score = null;
     try {
-      score = new MusicXML(args[0]);
+      if (java.lang.reflect.Array.getLength(args) == 1) {
+        score = new MusicXML(args[0]);
+      }
       GraphicalUserInterface gui = new GraphicalUserInterface(); // Extends Frame.
-      gui.setScore(score);
+      if (score != null) gui.setScore(score);
       gui.pack();
       gui.setVisible(true);
     } catch (HeadlessException e) {
       System.err.println("No graphical environment available, exiting...");
-      for (Part part:score.parts()) {
-	System.out.println("Part name: " + part.getName());
-	for (Measure measure:part.measures()) {
-	  System.out.println("Measure number: " + measure.getNumber());
-	} 
-      }
       System.exit(0);
     } catch (Exception e) {
       e.printStackTrace();

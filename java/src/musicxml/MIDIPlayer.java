@@ -2,18 +2,14 @@
 package musicxml;
 
 import javax.sound.midi.MidiSystem;
-import javax.sound.midi.Receiver;
 import javax.sound.midi.Sequence;
 import javax.sound.midi.Sequencer;
 import javax.sound.midi.Synthesizer;
-import javax.sound.midi.Transmitter;
 
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.InvalidMidiDataException;
 
 import java.io.Closeable;
-import java.io.File;
-import java.io.FileOutputStream;
 
 public class MIDIPlayer implements Closeable {
   private Synthesizer synthesizer;

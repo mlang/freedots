@@ -23,7 +23,7 @@ public class MIDISequence extends javax.sound.midi.Sequence {
 
       for (Measure measure:part.measures()) {
 	for (Musicdata musicdata:measure.musicdata()) {
-	  if ("note".equals(musicdata.getNodeName())) {
+	  if (musicdata instanceof Note) {
 	    Note note = (Note)musicdata;
 	    Pitch pitch = note.getPitch();
 	    try {

@@ -27,6 +27,8 @@ public class Measure {
       if (kid.getNodeType() == Node.ELEMENT_NODE) {
 	if ("note".equals(kid.getNodeName())) {
 	  result.add(new Note((Element)kid));
+	} else if ("attributes".equals(kid.getNodeName())) {
+	  result.add(new Attributes((Element)kid));
 	} else {
 	  System.err.println("Unsupported musicdata element " + kid.getNodeName());
 	}
