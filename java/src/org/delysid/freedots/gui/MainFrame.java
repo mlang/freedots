@@ -1,4 +1,4 @@
-package gui;
+package org.delysid.freedots.gui;
 
 import java.io.IOException;
 import java.util.Vector;

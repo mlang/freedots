@@ -1,5 +1,5 @@
 /* -*- c-basic-offset: 2; -*- */
-package musicxml;
+package org.delysid.musicxml;
 
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MetaMessage;

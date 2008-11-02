@@ -1,4 +1,4 @@
-package musicxml;
+package org.delysid.musicxml;
 
 import java.io.IOException;
 import java.io.InputStream;

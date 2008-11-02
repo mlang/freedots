@@ -1,5 +1,5 @@
 /* -*- c-basic-offset: 2; -*- */
-package musicxml;
+package org.delysid.musicxml;
 
 import java.io.Closeable;
 
