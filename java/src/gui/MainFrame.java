@@ -13,13 +13,11 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.FontDialog;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
@@ -68,39 +66,33 @@ public class MainFrame {
     Menu menu = new Menu(bar);
 
     MenuItem item = new MenuItem(menu, SWT.PUSH);
-    item.setText("Cut");
+    item.setText("Cut"); //$NON-NLS-1$
     item.setAccelerator(SWT.MOD1 + 'X');
     item.addSelectionListener(new SelectionAdapter() {
+      @Override
       public void widgetSelected(SelectionEvent event) {
-        handleCutCopy();
         text.cut();
       }
     });
     item = new MenuItem(menu, SWT.PUSH);
-    item.setText("Copy");
+    item.setText("Copy"); //$NON-NLS-1$
     item.setAccelerator(SWT.MOD1 + 'C');
     item.addSelectionListener(new SelectionAdapter() {
+      @Override
       public void widgetSelected(SelectionEvent event) {
-        handleCutCopy();
         text.copy();
       }
     });
     item = new MenuItem(menu, SWT.PUSH);
-    item.setText("Paste");
+    item.setText("Paste"); //$NON-NLS-1$
     item.setAccelerator(SWT.MOD1 + 'V');
     item.addSelectionListener(new SelectionAdapter() {
+      @Override
       public void widgetSelected(SelectionEvent event) {
         text.paste();
       }
     });
     new MenuItem(menu, SWT.SEPARATOR);
-    item = new MenuItem(menu, SWT.PUSH);
-    item.setText("Font");
-    item.addSelectionListener(new SelectionAdapter() {
-      public void widgetSelected(SelectionEvent event) {
-        setFont();
-      }
-    });
     return menu;
   }
 
@@ -109,8 +101,9 @@ public class MainFrame {
     Menu menu = new Menu(bar);
 
     MenuItem item = new MenuItem(menu, SWT.PUSH);
-    item.setText("Exit");
+    item.setText(Messages.getString("exit")); //$NON-NLS-1$
     item.addSelectionListener(new SelectionAdapter() {
+      @Override
       public void widgetSelected(SelectionEvent event) {
         shell.close();
       }
@@ -124,29 +117,12 @@ public class MainFrame {
     shell.setMenuBar(bar);
 
     MenuItem fileItem = new MenuItem(bar, SWT.CASCADE);
-    fileItem.setText("File");
+    fileItem.setText(Messages.getString("file")); //$NON-NLS-1$
     fileItem.setMenu(createFileMenu());
 
     MenuItem editItem = new MenuItem(bar, SWT.CASCADE);
-    editItem.setText("Edit");
+    editItem.setText(Messages.getString("edit")); //$NON-NLS-1$
     editItem.setMenu(createEditMenu());
-  }
-
-  void createShell(Display display) {
-    shell = new Shell(display);
-    shell.setText("FreeDots");
-    GridLayout layout = new GridLayout();
-    layout.numColumns = 1;
-    shell.setLayout(layout);
-    shell.addDisposeListener(new DisposeListener() {
-      public void widgetDisposed(DisposeEvent e) {
-        if (font != null)
-          font.dispose();
-        RED.dispose();
-        GREEN.dispose();
-        BLUE.dispose();
-      }
-    });
   }
 
   void createStyledText() {
@@ -164,43 +140,48 @@ public class MainFrame {
         handleExtendedModify(e);
       }
     });
+    text.setText("Test text "+java.lang.Character.toString((char)(0X2800+7)));
   }
 
   void createToolBar() {
     toolBar = new ToolBar(shell, SWT.NONE);
     SelectionAdapter listener = new SelectionAdapter() {
+      @Override
       public void widgetSelected(SelectionEvent event) {
         setStyle(event.widget);
       }
     };
     boldButton = new ToolItem(toolBar, SWT.CHECK);
-    boldButton.setToolTipText("Bold");
+    boldButton.setToolTipText("Bold"); //$NON-NLS-1$
     boldButton.addSelectionListener(listener);
     italicButton = new ToolItem(toolBar, SWT.CHECK);
-    italicButton.setToolTipText("Italic");
+    italicButton.setToolTipText("Italic"); //$NON-NLS-1$
     italicButton.addSelectionListener(listener);
     underlineButton = new ToolItem(toolBar, SWT.CHECK);
-    underlineButton.setToolTipText("Underline");
+    underlineButton.setToolTipText("Underline"); //$NON-NLS-1$
     underlineButton.addSelectionListener(listener);
     strikeoutButton = new ToolItem(toolBar, SWT.CHECK);
-    strikeoutButton.setToolTipText("Strikeout");
+    strikeoutButton.setToolTipText("Strikeout"); //$NON-NLS-1$
     strikeoutButton.addSelectionListener(listener);
 
     ToolItem item = new ToolItem(toolBar, SWT.SEPARATOR);
     item = new ToolItem(toolBar, SWT.PUSH);
     item.addSelectionListener(new SelectionAdapter() {
+      @Override
       public void widgetSelected(SelectionEvent event) {
         fgColor(RED);
       }
     });
     item = new ToolItem(toolBar, SWT.PUSH);
     item.addSelectionListener(new SelectionAdapter() {
+      @Override
       public void widgetSelected(SelectionEvent event) {
         fgColor(GREEN);
       }
     });
     item = new ToolItem(toolBar, SWT.PUSH);
     item.addSelectionListener(new SelectionAdapter() {
+      @Override
       public void widgetSelected(SelectionEvent event) {
         fgColor(BLUE);
       }
@@ -208,6 +189,7 @@ public class MainFrame {
     item = new ToolItem(toolBar, SWT.SEPARATOR);
     item = new ToolItem(toolBar, SWT.PUSH);
     item.addSelectionListener(new SelectionAdapter() {
+      @Override
       public void widgetSelected(SelectionEvent event) {
         clear();
       }
@@ -235,38 +217,6 @@ public class MainFrame {
       text.setStyleRange(style);
     }
     text.setSelectionRange(sel.x + sel.y, 0);
-  }
-
-  /*
-   * Cache the style information for text that has been cut or copied.
-   */
-  void handleCutCopy() {
-    // Save the cut/copied style info so that during paste we will maintain
-    // the style information. Cut/copied text is put in the clipboard in
-    // RTF format, but is not pasted in RTF format. The other way to
-    // handle the pasting of styles would be to access the Clipboard directly
-    // and
-    // parse the RTF text.
-    cachedStyles = new Vector();
-    Point sel = text.getSelectionRange();
-    int startX = sel.x;
-    for (int i = sel.x; i <= sel.x + sel.y - 1; i++) {
-      StyleRange style = text.getStyleRangeAtOffset(i);
-      if (style != null) {
-        style.start = style.start - startX;
-        if (!cachedStyles.isEmpty()) {
-          StyleRange lastStyle = (StyleRange) cachedStyles.lastElement();
-          if (lastStyle.similarTo(style)
-              && lastStyle.start + lastStyle.length == style.start) {
-            lastStyle.length++;
-          } else {
-            cachedStyles.addElement(style);
-          }
-        } else {
-          cachedStyles.addElement(style);
-        }
-      }
-    }
   }
 
   void handleExtendedModify(ExtendedModifyEvent event) {
@@ -302,7 +252,7 @@ public class MainFrame {
       // paste occurring, have text take on the styles it had when it was
       // cut/copied
       for (int i = 0; i < cachedStyles.size(); i++) {
-        style = (StyleRange) cachedStyles.elementAt(i);
+        style = cachedStyles.elementAt(i);
         StyleRange newStyle = (StyleRange) style.clone();
         newStyle.start = style.start + event.start;
         text.setStyleRange(newStyle);
@@ -318,26 +268,26 @@ public class MainFrame {
   }
 
   public Shell open(Display display) {
-    createShell(display);
+    shell = new Shell(display);
+    shell.setText("FreeDots"); //$NON-NLS-1$
+    GridLayout layout = new GridLayout();
+    layout.numColumns = 1;
+    shell.setLayout(layout);
+    shell.addDisposeListener(new DisposeListener() {
+      public void widgetDisposed(DisposeEvent e) {
+        if (font != null)
+          font.dispose();
+        RED.dispose();
+        GREEN.dispose();
+        BLUE.dispose();
+      }
+    });
     createMenuBar();
     createToolBar();
     createStyledText();
     shell.setSize(500, 300);
     shell.open();
     return shell;
-  }
-
-  void setFont() {
-    FontDialog fontDialog = new FontDialog(shell);
-    fontDialog.setFontList((text.getFont()).getFontData());
-    FontData fontData = fontDialog.open();
-    if (fontData != null) {
-      Font newFont = new Font(shell.getDisplay(), fontData);
-      text.setFont(newFont);
-      if (font != null)
-        font.dispose();
-      font = newFont;
-    }
   }
 
   /*
