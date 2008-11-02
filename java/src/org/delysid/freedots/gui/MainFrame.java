@@ -33,9 +33,9 @@ import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.swt.widgets.Widget;
 import org.xml.sax.SAXException;
 
-import musicxml.MIDISequence;
-import musicxml.MusicXML;
-import musicxml.MIDIPlayer;
+import org.delysid.musicxml.MIDISequence;
+import org.delysid.musicxml.MusicXML;
+import org.delysid.freedots.MIDIPlayer;
 
 /**
  */
@@ -63,7 +63,7 @@ public class MainFrame {
   MusicXML score;
   MIDIPlayer player;
 
-  MainFrame() {
+  public MainFrame() {
     try {
       player = new MIDIPlayer();
     } catch (MidiUnavailableException e) {
@@ -127,6 +127,7 @@ public class MainFrame {
     MenuItem item = new MenuItem(menu, SWT.PUSH);
     item.setText("Open...");
     item.addSelectionListener(new SelectionAdapter() {
+      @Override
       public void widgetSelected(SelectionEvent event) {
         FileDialog fileDialog = new FileDialog(shell, SWT.OPEN);
         fileDialog.setText("Open MusicXML score");

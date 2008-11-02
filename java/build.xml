@@ -36,7 +36,7 @@
 	 dest="${build}/musicxml/direction.mod" usetimestamp="true"/>
     <get src="http://www.musicxml.org/dtds/score.mod"
 	 dest="${build}/musicxml/score.mod" usetimestamp="true"/>
-    <copy file="../doc/DejaVuSerif.ttf"
+    <copy file="/usr/share/fonts/truetype/ttf-dejavu/DejaVuSerif.ttf"
           tofile="${build}/gui/DejaVuSerif.ttf"/>
   </target>
 
@@ -50,7 +50,7 @@
     <!-- Create the distribution directory -->
     <mkdir dir="${dist}"/>
     <manifest file="${dist}/MANIFEST.MF">
-      <attribute name="Main-Class" value="gui.GraphicalUserInterface"/>
+      <attribute name="Main-Class" value="org.delysid.freedots.Main"/>
     </manifest>
 
     <!-- Put everything in ${build} into the MyProject-${DSTAMP}.jar file -->

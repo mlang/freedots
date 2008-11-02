@@ -28,9 +28,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JToolBar;
 
-import musicxml.MIDIPlayer;
-import musicxml.MIDISequence;
-import musicxml.MusicXML;
+import org.delysid.freedots.MIDIPlayer;
+import org.delysid.musicxml.MIDISequence;
+import org.delysid.musicxml.MusicXML;
 
 import com.sun.media.sound.StandardMidiFileWriter;
 

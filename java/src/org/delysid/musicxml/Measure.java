@@ -34,6 +34,13 @@ public class Measure {
     }
     return result;
   }
+
+  public List<Staff> staves() {
+    List<Staff> result = new ArrayList<Staff>();
+    List<Musicdata> musicdata = musicdata();
+    if (musicdata.isEmpty()) return result;
+    return result;
+  }
   private boolean noteStartsChord(Node note) {
     Node node = note;
     while ((node = node.getNextSibling()) != null) {
@@ -41,13 +48,11 @@ public class Measure {
         if ("note".equals(node.getNodeName())) {
           NodeList nodeList = ((Element)node).getElementsByTagName("chord");
           boolean hasChord = nodeList.getLength() == 1;
-          if (hasChord) {
+          if (hasChord)
             return true;
-          }
           return false;
-        } else {
+        } else
           return false;
-        }
       }
     }
     return false;
