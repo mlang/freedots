@@ -78,14 +78,13 @@ public class GraphicalUserInterface extends JFrame {
       "Play the complete score.");
     playItem.addActionListener(new ActionListener() {
 	public void actionPerformed(ActionEvent e) {
-	  if (score != null) {
-	    try {
+	  if (score != null)
+      try {
 	      midiPlayer.setSequence(new MIDISequence(score));
 	      midiPlayer.start();
 	    } catch (javax.sound.midi.InvalidMidiDataException exception) {
 	      exception.printStackTrace();
 	    }
-	  }
 	}
       });
     fileMenu.add(playItem);
@@ -148,6 +147,7 @@ public class GraphicalUserInterface extends JFrame {
     setContentPane(contentPane);
 
     addWindowListener(new WindowAdapter() {
+      @Override
       public void windowClosing(WindowEvent e) {
 	quit();
       }
@@ -158,17 +158,15 @@ public class GraphicalUserInterface extends JFrame {
     textArea.append("Hello "+Character.toString((char)(0X2800+0X07)));
   }
   public void quit() {
-    if (midiPlayer != null) {
+    if (midiPlayer != null)
       midiPlayer.close();
-    }
     System.exit(0);
   }
   public static void main(String[] args) {
     MusicXML score = null;
     try {
-      if (java.lang.reflect.Array.getLength(args) == 1) {
+      if (java.lang.reflect.Array.getLength(args) == 1)
         score = new MusicXML(args[0]);
-      }
       GraphicalUserInterface gui = new GraphicalUserInterface(); // Extends Frame.
       if (score != null) gui.setScore(score);
       gui.pack();

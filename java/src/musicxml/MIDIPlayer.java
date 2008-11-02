@@ -1,15 +1,14 @@
 /* -*- c-basic-offset: 2; -*- */
 package musicxml;
 
+import java.io.Closeable;
+
+import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiSystem;
+import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Sequence;
 import javax.sound.midi.Sequencer;
 import javax.sound.midi.Synthesizer;
-
-import javax.sound.midi.MidiUnavailableException;
-import javax.sound.midi.InvalidMidiDataException;
-
-import java.io.Closeable;
 
 public class MIDIPlayer implements Closeable {
   private Synthesizer synthesizer;
@@ -36,6 +35,7 @@ public class MIDIPlayer implements Closeable {
     sequencer.stop();
   }
   public void close() {
+    if (isRunning()) stop();
     sequencer.close();
     synthesizer.close();
   }

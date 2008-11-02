@@ -21,31 +21,29 @@ public class MIDISequence extends javax.sound.midi.Sequence {
       metaMessage.setMessage(0x03, trackName.getBytes(), trackName.length());
       track.add(new MidiEvent(metaMessage, currentTick));
 
-      for (Measure measure:part.measures()) {
-	for (Musicdata musicdata:measure.musicdata()) {
-	  if (musicdata instanceof Note) {
-	    Note note = (Note)musicdata;
-	    Pitch pitch = note.getPitch();
-	    try {
-	      int duration = note.getDuration();
-	      if (pitch != null) {
-		int midiPitch = pitch.getMIDIPitch();
-		ShortMessage msg = new ShortMessage();
-		msg.setMessage(ShortMessage.NOTE_ON,
-			       channel, midiPitch, velocity);
-		track.add(new MidiEvent(msg, currentTick));
-		msg = new ShortMessage();
-		msg.setMessage(ShortMessage.NOTE_OFF,
-			       channel, midiPitch, 0);
-		track.add(new MidiEvent(msg, currentTick+duration));
-	      }
-	      currentTick += duration;
-	    } catch (Exception e) {
-	      e.printStackTrace();
-	    }
-	  }
-	}
-      }
+      for (Measure measure:part.measures())
+        for (Musicdata musicdata:measure.musicdata())
+          if (musicdata instanceof Note) {
+            Note note = (Note)musicdata;
+            Pitch pitch = note.getPitch();
+            try {
+              int duration = note.getDuration();
+              if (pitch != null) {
+        	int midiPitch = pitch.getMIDIPitch();
+        	ShortMessage msg = new ShortMessage();
+        	msg.setMessage(ShortMessage.NOTE_ON,
+        		       channel, midiPitch, velocity);
+        	track.add(new MidiEvent(msg, currentTick));
+        	msg = new ShortMessage();
+        	msg.setMessage(ShortMessage.NOTE_OFF,
+        		       channel, midiPitch, 0);
+        	track.add(new MidiEvent(msg, currentTick+duration));
+              }
+              currentTick += duration;
+            } catch (Exception e) {
+              e.printStackTrace();
+            }
+          }
     }
   }
 }

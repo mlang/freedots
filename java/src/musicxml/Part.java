@@ -1,13 +1,13 @@
 /* -*- c-basic-offset: 2; -*- */
 package musicxml;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
-import javax.xml.xpath.XPathFactory;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -37,9 +37,8 @@ public class Part {
     NodeList nodes = part.getChildNodes();
     for (int i = 0; i<nodes.getLength(); i++) {
       Node kid = nodes.item(i);
-      if (kid.getNodeType() == Node.ELEMENT_NODE) {
-	result.add(new Measure((Element)kid, this));
-      }
+      if (kid.getNodeType() == Node.ELEMENT_NODE)
+        result.add(new Measure((Element)kid, this));
     }
     return result;
   }

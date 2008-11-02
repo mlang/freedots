@@ -1,13 +1,13 @@
 package musicxml;
 
-import java.util.*;
-
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 
-import org.xml.sax.SAXException;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 public class MusicXMLEntityResolver implements EntityResolver {
   private Map<String, String> map = new HashMap<String, String>() {
@@ -46,9 +46,8 @@ public class MusicXMLEntityResolver implements EntityResolver {
     String fileName = map.get(publicID);
     if (fileName != null) {
       InputStream inputStream = getClass().getResourceAsStream(fileName);
-      if (inputStream != null) {
+      if (inputStream != null)
         return new InputSource(inputStream);
-      }
     }
     return null;
   }

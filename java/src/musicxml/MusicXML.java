@@ -3,38 +3,33 @@
 package musicxml;
 
 import java.io.BufferedReader;
-import java.io.StringReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.IOException;
-
+import java.io.StringReader;
 import java.math.BigInteger;
-
 import java.net.URL;
-
-import java.util.List;
 import java.util.ArrayList;
-
-import java.util.zip.ZipInputStream;
+import java.util.List;
 import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.xpath.XPathFactory;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
-
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
+import javax.xml.xpath.XPathFactory;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 public class MusicXML {
   private Document document;
@@ -49,13 +44,12 @@ public class MusicXML {
     String extension = null;
 
     int dot = filename.lastIndexOf('.');
-    if (dot != -1) {
+    if (dot != -1)
       extension = filename.substring(dot + 1);
-    }
 
-    if (file.exists()) {
+    if (file.exists())
       inputStream = new FileInputStream(file);
-    } else {
+    else {
       URL url = new URL(filename);
       inputStream = url.openConnection().getInputStream();
     }
@@ -78,15 +72,13 @@ public class MusicXML {
 	  zipEntryName = (String) xpath.evaluate("container/rootfiles/rootfile/@full-path",
 						 container,
 						 XPathConstants.STRING);
-	} else if (zipEntry.getName().equals(zipEntryName)) {
-	  document = documentBuilder.parse(
+	} else if (zipEntry.getName().equals(zipEntryName))
+    document = documentBuilder.parse(
 		       getInputSourceFromZipInputStream(zipInputStream));
-	}
 	zipInputStream.closeEntry();
       }
-    } else { /* Plain XML file */
+    } else
       document = documentBuilder.parse(inputStream);
-    }
     document.getDocumentElement().normalize();
   }
 
@@ -97,9 +89,8 @@ public class MusicXML {
       new BufferedReader(new InputStreamReader(zipInputStream));
     StringBuilder stringBuilder = new StringBuilder();
     String string = null;
-    while ((string = reader.readLine()) != null) {
+    while ((string = reader.readLine()) != null)
       stringBuilder.append(string + "\n");
-    }
     return new InputSource(new StringReader(stringBuilder.toString()));
   }
 
@@ -141,9 +132,8 @@ public class MusicXML {
 	Node kid = partListKids.item(j);
 	if (kid.getNodeType() == Node.ELEMENT_NODE) {
 	  Element elem = (Element) kid;
-	  if (idValue.equals(elem.getAttribute("id"))) {
-	    scorePart = elem;
-	  }
+	  if (idValue.equals(elem.getAttribute("id")))
+      scorePart = elem;
 	}
       }
       result.add(new Part(part, scorePart));

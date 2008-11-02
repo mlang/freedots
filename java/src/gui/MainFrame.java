@@ -1,6 +1,12 @@
 package gui;
 
+import java.io.IOException;
 import java.util.Vector;
+
+import javax.sound.midi.InvalidMidiDataException;
+import javax.sound.midi.MidiUnavailableException;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPathExpressionException;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ExtendedModifyEvent;
@@ -18,12 +24,18 @@ import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.swt.widgets.Widget;
+import org.xml.sax.SAXException;
+
+import musicxml.MIDISequence;
+import musicxml.MusicXML;
+import musicxml.MIDIPlayer;
 
 /**
  */
@@ -48,6 +60,18 @@ public class MainFrame {
 
   ToolItem boldButton, italicButton, underlineButton, strikeoutButton;
 
+  MusicXML score;
+  MIDIPlayer player;
+
+  MainFrame() {
+    try {
+      player = new MIDIPlayer();
+    } catch (MidiUnavailableException e) {
+      e.printStackTrace();
+    } catch (InvalidMidiDataException e) {
+      e.printStackTrace();
+    }
+  }
   /*
    * Clear all style data for the selected text.
    */
@@ -101,6 +125,42 @@ public class MainFrame {
     Menu menu = new Menu(bar);
 
     MenuItem item = new MenuItem(menu, SWT.PUSH);
+    item.setText("Open...");
+    item.addSelectionListener(new SelectionAdapter() {
+      public void widgetSelected(SelectionEvent event) {
+        FileDialog fileDialog = new FileDialog(shell, SWT.OPEN);
+        fileDialog.setText("Open MusicXML score");
+        String selectedItem = fileDialog.open();
+        if (selectedItem != null) {
+          MusicXML newScore = null;
+          try {
+            newScore = new MusicXML(selectedItem);
+          } catch (XPathExpressionException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+          } catch (ParserConfigurationException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+          } catch (IOException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+          } catch (SAXException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+          }
+          if (newScore != null) {
+            score = newScore;
+            try {
+              player.setSequence(new MIDISequence(score));
+            } catch (InvalidMidiDataException e) {
+              // TODO Auto-generated catch block
+              e.printStackTrace();
+            }
+          }
+        }
+      }
+    });
+    item = new MenuItem(menu, SWT.PUSH);
     item.setText(Messages.getString("exit")); //$NON-NLS-1$
     item.addSelectionListener(new SelectionAdapter() {
       @Override
@@ -211,9 +271,8 @@ public class MainFrame {
         style.start = i;
         style.length = 1;
         style.foreground = fg;
-      } else {
+      } else
         style = new StyleRange(i, 1, fg, null, SWT.NORMAL);
-      }
       text.setStyleRange(style);
     }
     text.setSelectionRange(sel.x + sel.y, 0);
@@ -236,10 +295,9 @@ public class MainFrame {
         style = (StyleRange) style.clone();
         style.start = event.start;
         style.length = event.length;
-      } else {
+      } else
         style = new StyleRange(event.start, event.length, null, null,
             SWT.NORMAL);
-      }
       if (boldButton.getSelection())
         style.fontStyle |= SWT.BOLD;
       if (italicButton.getSelection())
@@ -248,7 +306,7 @@ public class MainFrame {
       style.strikeout = strikeoutButton.getSelection();
       if (!style.isUnstyled())
         text.setStyleRange(style);
-    } else {
+    } else
       // paste occurring, have text take on the styles it had when it was
       // cut/copied
       for (int i = 0; i < cachedStyles.size(); i++) {
@@ -257,7 +315,6 @@ public class MainFrame {
         newStyle.start = style.start + event.start;
         text.setStyleRange(newStyle);
       }
-    }
   }
 
   void initializeColors() {
@@ -304,18 +361,16 @@ public class MainFrame {
         style = (StyleRange) range.clone();
         style.start = i;
         style.length = 1;
-      } else {
+      } else
         style = new StyleRange(i, 1, null, null, SWT.NORMAL);
-      }
-      if (widget == boldButton) {
+      if (widget == boldButton)
         style.fontStyle ^= SWT.BOLD;
-      } else if (widget == italicButton) {
+      else if (widget == italicButton)
         style.fontStyle ^= SWT.ITALIC;
-      } else if (widget == underlineButton) {
+      else if (widget == underlineButton)
         style.underline = !style.underline;
-      } else if (widget == strikeoutButton) {
+      else if (widget == strikeoutButton)
         style.strikeout = !style.strikeout;
-      }
       text.setStyleRange(style);
     }
     text.setSelectionRange(sel.x + sel.y, 0);
