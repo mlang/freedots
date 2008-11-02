@@ -1,4 +1,4 @@
-package org.delysid.freedots.gui;
+package org.delysid.freedots.gui.swing;
 
 import java.awt.event.ActionEvent;
 import java.io.File;

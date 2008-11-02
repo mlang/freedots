@@ -1,5 +1,5 @@
 /* -*- c-basic-offset: 2; -*- */
-package org.delysid.freedots.gui;
+package org.delysid.freedots.gui.swing;
 // MIDI
 import java.awt.BorderLayout;
 import java.awt.Dimension;

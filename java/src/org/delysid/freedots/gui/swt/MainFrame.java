@@ -1,4 +1,4 @@
-package org.delysid.freedots.gui;
+package org.delysid.freedots.gui.swt;
 
 import java.io.IOException;
 import java.util.Vector;
@@ -36,6 +36,7 @@ import org.xml.sax.SAXException;
 import org.delysid.musicxml.MIDISequence;
 import org.delysid.musicxml.MusicXML;
 import org.delysid.freedots.MIDIPlayer;
+import org.delysid.freedots.gui.Messages;
 
 /**
  */
