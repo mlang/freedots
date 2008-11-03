@@ -4,7 +4,7 @@ public class Staff {
   String name;
 
   public Staff() {
-    Staff("default");
+    this("default");
   }
   public Staff(String name) {
     this.name = name;

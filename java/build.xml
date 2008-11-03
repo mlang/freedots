@@ -2,9 +2,14 @@
 <project name="FreeDots" default="dist" basedir=".">
   <description>MusicXML to braille music transcription</description>
   <!-- set global properties for this build -->
+  <property file="build.properties" />
   <property name="src" location="src"/>
   <property name="build" location="build"/>
   <property name="dist"  location="dist"/>
+
+  <path id="class.path">
+    <fileset file="${lib.swt.jar}" />
+  </path >
 
   <target name="init">
     <!-- Create the time stamp -->
@@ -42,20 +47,20 @@
 
   <target name="compile" depends="init" description="compile the source">
     <!-- Compile the java code from ${src} into ${build} -->
-    <javac srcdir="${src}" destdir="${build}"/>
+    <javac srcdir="${src}" destdir="${build}">
+      <classpath refid="class.path"/>
+    </javac>
   </target>
 
   <target name="dist" depends="compile"
 	  description="generate the distribution">
-    <!-- Create the distribution directory -->
     <mkdir dir="${dist}"/>
-    <manifest file="${dist}/MANIFEST.MF">
-      <attribute name="Main-Class" value="org.delysid.freedots.Main"/>
-    </manifest>
-
-    <!-- Put everything in ${build} into the MyProject-${DSTAMP}.jar file -->
-    <jar jarfile="${dist}/FreeDots-${DSTAMP}.jar" basedir="${build}"
-	 manifest="${dist}/MANIFEST.MF"/>
+    <jar jarfile="${dist}/FreeDots-${DSTAMP}.jar" basedir="${build}">
+      <manifest>
+        <attribute name="Class-Path" value="${lib.swt.jar}"/>
+        <attribute name="Main-Class" value="org.delysid.freedots.Main"/>
+      </manifest>
+    </jar>
   </target>
 
   <target name="clean" description="clean up">
