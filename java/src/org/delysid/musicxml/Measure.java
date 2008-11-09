@@ -19,6 +19,15 @@ public class Measure {
 
   public String getNumber() { return measure.getAttribute("number"); }
   public int getStaffCount() { return 1; }
+  public boolean startsNewSystem() {
+    for (Musicdata musicdata:musicdata()) {
+      if (musicdata instanceof Print) {
+        Print print = (Print)musicdata;
+        if (print.isNewSystem()) return true;
+      }
+    }
+    return false;
+  }
   public List<Musicdata> musicdata() {
     List<Musicdata> result = new ArrayList<Musicdata>();
     NodeList nodes = measure.getChildNodes();
@@ -29,6 +38,8 @@ public class Measure {
           result.add(new Note((Element)kid));
         else if ("attributes".equals(kid.getNodeName()))
           result.add(new Attributes((Element)kid));
+        else if ("print".equals(kid.getNodeName()))
+          result.add(new Print((Element)kid));
         else
           System.err.println("Unsupported musicdata element " + kid.getNodeName());
     }

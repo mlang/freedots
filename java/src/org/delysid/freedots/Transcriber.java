@@ -15,7 +15,7 @@ public class Transcriber {
     this.score = score;
     this.options = options;
     clear();
-    if (score != null) { transcribe(); }
+    if (score != null) transcribe();
   }
   private void clear() {
     textStore = "";
@@ -23,6 +23,7 @@ public class Transcriber {
   void transcribe() {
     for (Part part:score.parts()) {
       for (System system:getSystems(part)) {
+        textStore += system.measures().size() + ", ";
         for (Measure measure:system.measures()) {
         }
       }
@@ -35,7 +36,7 @@ public class Transcriber {
     int staffCount;
     List<Measure> measures = new ArrayList<Measure>();
     public System(Measure firstMeasure) {
-      this.staffCount = firstMeasure.getStaffCount();
+      staffCount = firstMeasure.getStaffCount();
       add(firstMeasure);
     }
     public void add(Measure measure) { measures.add(measure); }
@@ -45,17 +46,11 @@ public class Transcriber {
   List<System> getSystems(Part part) {
     List<System> systems = new ArrayList<System>();
     System currentSystem = null;
-    for (Measure measure:part.measures()) {
-      if (currentSystem == null) {
+    for (Measure measure:part.measures())
+      if (currentSystem == null || measure.startsNewSystem() ||
+          measure.getStaffCount() != currentSystem.getStaffCount())
         systems.add(currentSystem = new System(measure));
-      } else {
-        if (measure.getStaffCount() == currentSystem.getStaffCount()) {
-          currentSystem.add(measure);
-        } else {
-          systems.add(currentSystem = new System(measure));
-        }
-      }
-    }
+      else currentSystem.add(measure);
     return systems;
   }
 }
