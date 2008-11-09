@@ -44,11 +44,9 @@ public class MusicXML {
     String extension = null;
 
     int dot = filename.lastIndexOf('.');
-    if (dot != -1)
-      extension = filename.substring(dot + 1);
+    if (dot != -1) extension = filename.substring(dot + 1);
 
-    if (file.exists())
-      inputStream = new FileInputStream(file);
+    if (file.exists()) inputStream = new FileInputStream(file);
     else {
       URL url = new URL(filename);
       inputStream = url.openConnection().getInputStream();
@@ -132,8 +130,7 @@ public class MusicXML {
 	Node kid = partListKids.item(j);
 	if (kid.getNodeType() == Node.ELEMENT_NODE) {
 	  Element elem = (Element) kid;
-	  if (idValue.equals(elem.getAttribute("id")))
-      scorePart = elem;
+	  if (idValue.equals(elem.getAttribute("id"))) scorePart = elem;
 	}
       }
       result.add(new Part(part, scorePart));
