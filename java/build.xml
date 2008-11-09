@@ -9,7 +9,7 @@
 
   <path id="class.path">
     <fileset file="${lib.swt.jar}" />
-  </path >
+  </path>
 
   <target name="init">
     <!-- Create the time stamp -->

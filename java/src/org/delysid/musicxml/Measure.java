@@ -18,7 +18,7 @@ public class Measure {
   }
 
   public String getNumber() { return measure.getAttribute("number"); }
-
+  public int getStaffCount() { return 1; }
   public List<Musicdata> musicdata() {
     List<Musicdata> result = new ArrayList<Musicdata>();
     NodeList nodes = measure.getChildNodes();
