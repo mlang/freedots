@@ -42,6 +42,8 @@ public class Measure {
           result.add(new Note((Element)kid));
         else if ("attributes".equals(kid.getNodeName()))
           result.add(new Attributes((Element)kid));
+        else if ("backup".equals(kid.getNodeName()))
+          result.add(new Backup((Element)kid));
         else if ("print".equals(kid.getNodeName()))
           result.add(new Print((Element)kid));
         else
@@ -54,10 +56,14 @@ public class Measure {
     List<Staff> staves = new ArrayList<Staff>();
     Map<String, Staff> staffMap = new HashMap<String, Staff>();
     Staff defaultStaff = null;
+    int offset = 0;
     for (Musicdata musicdata:musicdata()) {
       if (musicdata instanceof Note) {
         Note note = (Note)musicdata;
         String noteStaff = note.getStaff();
+        note.setOffset(offset);
+        try { offset += note.getDuration();
+        } catch (Exception e) { e.printStackTrace(); }
         if (noteStaff == null) {
           if (defaultStaff == null) {
             defaultStaff = new Staff();
@@ -72,9 +78,14 @@ public class Measure {
           }
           staff.add(note);
         }
+      } else if (musicdata instanceof Backup) {
+        Backup backup = (Backup)musicdata;
+        try { offset -= backup.getDuration();
+        } catch (Exception e) { e.printStackTrace(); }
       }
     }
     Collections.sort(staves, new StaffNameComparator());
+    for (Staff staff:staves) staff.sort();
     return staves;
   }
   public Staff staves(int index) { return staves().get(index); }

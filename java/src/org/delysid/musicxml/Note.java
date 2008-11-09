@@ -6,6 +6,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 public class Note extends Musicdata implements StaffElement {
+  int offset;
   public Note(Element element) { super(element); }
   public Pitch getPitch() {
     NodeList nodeList = element.getElementsByTagName("pitch");
@@ -30,4 +31,6 @@ public class Note extends Musicdata implements StaffElement {
     }
     return null;
   }
+  public int getOffset() { return offset; }
+  public void setOffset(int offset) { this.offset = offset; }
 }
