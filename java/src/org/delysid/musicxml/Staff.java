@@ -12,6 +12,7 @@ public class Staff {
   public Staff(String name) {
     this.name = name;
   }
+  public String getName() { return name; }
   public void add(StaffElement newElement) {
     staffElements.add(newElement);
   }

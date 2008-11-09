@@ -2,6 +2,8 @@
 package org.delysid.musicxml;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
@@ -72,9 +74,15 @@ public class Measure {
         }
       }
     }
+    Collections.sort(staves, new StaffNameComparator());
     return staves;
   }
   public Staff staves(int index) { return staves().get(index); }
+  class StaffNameComparator implements Comparator<Staff> {
+    public int compare(Staff s1, Staff s2) {
+      return s1.getName().compareTo(s2.getName());
+    }
+  }
   private boolean noteStartsChord(Node note) {
     Node node = note;
     while ((node = node.getNextSibling()) != null) {
