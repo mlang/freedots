@@ -5,6 +5,7 @@ import java.util.List;
 import org.delysid.musicxml.Measure;
 import org.delysid.musicxml.MusicXML;
 import org.delysid.musicxml.Part;
+import org.delysid.musicxml.Staff;
 
 public class Transcriber {
   MusicXML score;
@@ -22,9 +23,12 @@ public class Transcriber {
   }
   void transcribe() {
     for (Part part:score.parts()) {
+      textStore += part.getName() + "\n";
       for (System system:getSystems(part)) {
-        textStore += system.measures().size() + ", ";
-        for (Measure measure:system.measures()) {
+        for (int staffIndex=0; staffIndex<system.getStaffCount(); staffIndex++) {
+          for (Measure measure:system.measures()) {
+            Staff staff = measure.staves(staffIndex);
+          }
         }
       }
     }

@@ -2,6 +2,8 @@
 package org.delysid.musicxml;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.List;
 
 import org.w3c.dom.Element;
@@ -18,7 +20,7 @@ public class Measure {
   }
 
   public String getNumber() { return measure.getAttribute("number"); }
-  public int getStaffCount() { return 1; }
+  public int getStaffCount() { return staves().size(); }
   public boolean startsNewSystem() {
     for (Musicdata musicdata:musicdata()) {
       if (musicdata instanceof Print) {
@@ -47,11 +49,32 @@ public class Measure {
   }
 
   public List<Staff> staves() {
-    List<Staff> result = new ArrayList<Staff>();
-    List<Musicdata> musicdata = musicdata();
-    if (musicdata.isEmpty()) return result;
-    return result;
+    List<Staff> staves = new ArrayList<Staff>();
+    Map<String, Staff> staffMap = new HashMap<String, Staff>();
+    Staff defaultStaff = null;
+    for (Musicdata musicdata:musicdata()) {
+      if (musicdata instanceof Note) {
+        Note note = (Note)musicdata;
+        String noteStaff = note.getStaff();
+        if (noteStaff == null) {
+          if (defaultStaff == null) {
+            defaultStaff = new Staff();
+            staves.add(defaultStaff);
+          }
+          defaultStaff.add(note);
+        } else {
+          Staff staff = staffMap.get(noteStaff);
+          if (staff == null) {
+            staff = new Staff(noteStaff);
+            staves.add(staff);
+          }
+          staff.add(note);
+        }
+      }
+    }
+    return staves;
   }
+  public Staff staves(int index) { return staves().get(index); }
   private boolean noteStartsChord(Node note) {
     Node node = note;
     while ((node = node.getNextSibling()) != null) {
