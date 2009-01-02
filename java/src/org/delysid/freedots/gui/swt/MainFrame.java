@@ -162,6 +162,16 @@ public class MainFrame {
         }
       }
     });
+
+    item = new MenuItem(menu, SWT.PUSH);
+    item.setText(Messages.getString("play")); //$NON-NLS-1$
+    item.addSelectionListener(new SelectionAdapter() {
+      @Override
+      public void widgetSelected(SelectionEvent event) {
+        player.start();
+      }
+    });
+
     item = new MenuItem(menu, SWT.PUSH);
     item.setText(Messages.getString("exit")); //$NON-NLS-1$
     item.addSelectionListener(new SelectionAdapter() {

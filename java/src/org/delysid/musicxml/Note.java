@@ -6,8 +6,14 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 public class Note extends Musicdata implements StaffElement {
+  int divisions;
+  int durationMultiplier;
   int offset;
-  public Note(Element element) { super(element); }
+  public Note(Element element, int divisions, int durationMultiplier) {
+    super(element);
+    this.divisions = divisions;
+    this.durationMultiplier = durationMultiplier;
+  }
   public Pitch getPitch() {
     NodeList nodeList = element.getElementsByTagName("pitch");
     if (nodeList.getLength() == 1)
@@ -19,7 +25,7 @@ public class Note extends Musicdata implements StaffElement {
     if (nodeList.getLength() == 1) {
       Node textNode = nodeList.item(0).getChildNodes().item(0);
       int duration = Integer.parseInt(textNode.getNodeValue());
-      return duration;
+      return duration * durationMultiplier;
     }
     throw new Exception();
   }

@@ -2,10 +2,13 @@ package org.delysid.freedots;
 
 import java.io.IOException;
 
+import java.awt.HeadlessException;
+
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
 
 import org.delysid.freedots.gui.swt.MainFrame;
+import org.delysid.freedots.gui.swing.GraphicalUserInterface;
 import org.delysid.musicxml.MusicXML;
 import org.eclipse.swt.SWTError;
 import org.eclipse.swt.widgets.Display;
@@ -16,8 +19,8 @@ public class Main {
   public static void main(String[] args) {
     Options options = new Options(args);
     Transcriber transcriber = null;
+    MusicXML score = null;
     if (options.getLocation() != null) {
-      MusicXML score = null;
       try {
         score = new MusicXML(options.getLocation());
       } catch (XPathExpressionException e) {
@@ -35,14 +38,20 @@ public class Main {
       }
       if (score != null) transcriber = new Transcriber(score, options);
     }
+//     try {
+//       Display display = new Display();
+//       MainFrame frame = new MainFrame();
+//       Shell shell = frame.open(display);
+//       while (!shell.isDisposed())
+//         if (!display.readAndDispatch()) display.sleep();
+//       display.dispose();
+//     } catch (SWTError e) {
     try {
-      Display display = new Display();
-      MainFrame frame = new MainFrame();
-      Shell shell = frame.open(display);
-      while (!shell.isDisposed())
-        if (!display.readAndDispatch()) display.sleep();
-      display.dispose();
-    } catch (SWTError e) {
+      GraphicalUserInterface gui = new GraphicalUserInterface();
+      if (score != null) gui.setScore(score);
+      gui.pack();
+      gui.setVisible(true);
+    } catch (HeadlessException e) {
       options.setWindowSystem(false);
       if (transcriber != null) {
         System.out.println(transcriber.toString());

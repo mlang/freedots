@@ -133,7 +133,7 @@ public class MusicXML {
 	  if (idValue.equals(elem.getAttribute("id"))) scorePart = elem;
 	}
       }
-      result.add(new Part(part, scorePart));
+      result.add(new Part(part, scorePart, this));
     }
     return result;
   }

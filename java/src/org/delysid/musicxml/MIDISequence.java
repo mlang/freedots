@@ -12,36 +12,37 @@ public class MIDISequence extends javax.sound.midi.Sequence {
     super(PPQ, score.getDivisions());
     for (Part part:score.parts()) {
       Track track = createTrack();
-      int currentTick = 0;
       int channel = 0;
       int velocity = 64;
 
       String trackName = new String(part.getName());
       MetaMessage metaMessage = new MetaMessage();
       metaMessage.setMessage(0x03, trackName.getBytes(), trackName.length());
-      track.add(new MidiEvent(metaMessage, currentTick));
+      track.add(new MidiEvent(metaMessage, 0));
 
       for (Measure measure:part.measures())
-        for (Musicdata musicdata:measure.musicdata())
-          if (musicdata instanceof Note) {
-            Note note = (Note)musicdata;
-            Pitch pitch = note.getPitch();
-            try {
-              int duration = note.getDuration();
-              if (pitch != null) {
-        	int midiPitch = pitch.getMIDIPitch();
-        	ShortMessage msg = new ShortMessage();
-        	msg.setMessage(ShortMessage.NOTE_ON,
-        		       channel, midiPitch, velocity);
-        	track.add(new MidiEvent(msg, currentTick));
-        	msg = new ShortMessage();
-        	msg.setMessage(ShortMessage.NOTE_OFF,
-        		       channel, midiPitch, 0);
-        	track.add(new MidiEvent(msg, currentTick+duration));
+        for (Staff staff:measure.getStaves())
+          for (StaffElement staffElement:staff.getStaffElements()) {
+            if (staffElement instanceof Note) {
+              Note note = (Note)staffElement;
+              Pitch pitch = note.getPitch();
+              try {
+                int duration = note.getDuration();
+                if (pitch != null) {
+                  int midiPitch = pitch.getMIDIPitch();
+                  ShortMessage msg = new ShortMessage();
+                  msg.setMessage(ShortMessage.NOTE_ON,
+                      channel, midiPitch, velocity);
+                  track.add(new MidiEvent(msg, note.getOffset()));
+                  msg = new ShortMessage();
+                  msg.setMessage(ShortMessage.NOTE_OFF,
+                      channel, midiPitch, 0);
+                  track.add(new MidiEvent(msg, note.getOffset()+note.getDuration()));
+                  System.out.println("Note "+note.getOffset()+" "+note.getDuration());
+                }
+              } catch (Exception e) {
+                e.printStackTrace();
               }
-              currentTick += duration;
-            } catch (Exception e) {
-              e.printStackTrace();
             }
           }
     }
