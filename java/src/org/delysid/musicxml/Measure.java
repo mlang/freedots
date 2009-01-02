@@ -60,7 +60,7 @@ public class Measure {
     for (Musicdata musicdata:musicdata()) {
       if (musicdata instanceof Note) {
         Note note = (Note)musicdata;
-        String noteStaff = note.getStaff();
+        String noteStaff = note.getStaffName();
         note.setOffset(offset);
         try { offset += note.getDuration();
         } catch (Exception e) { e.printStackTrace(); }

@@ -23,7 +23,7 @@ public class Note extends Musicdata implements StaffElement {
     }
     throw new Exception();
   }
-  public String getStaff() {
+  public String getStaffName() {
     NodeList nodeList = element.getElementsByTagName("staff");
     if (nodeList.getLength() == 1) {
       Node textNode = nodeList.item(0).getChildNodes().item(0);

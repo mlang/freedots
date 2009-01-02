@@ -25,4 +25,6 @@ public class Staff {
       return se1.getOffset() - se2.getOffset();
     }
   }
+
+  public List<StaffElement> getStaffElements() { return staffElements; }
 }
