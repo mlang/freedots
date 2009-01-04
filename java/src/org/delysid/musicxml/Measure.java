@@ -35,20 +35,4 @@ public class Measure {
   }
   public List<Staff> getStaves() { return staves; }
   public Staff staves(int index) { return staves.get(index); }
-  private boolean noteStartsChord(Node note) {
-    Node node = note;
-    while ((node = node.getNextSibling()) != null) {
-      if (node.getNodeType() == Node.ELEMENT_NODE) {
-        if ("note".equals(node.getNodeName())) {
-          NodeList nodeList = ((Element)node).getElementsByTagName("chord");
-          boolean hasChord = nodeList.getLength() == 1;
-          if (hasChord)
-            return true;
-          return false;
-        } else
-          return false;
-      }
-    }
-    return false;
-  }
 }

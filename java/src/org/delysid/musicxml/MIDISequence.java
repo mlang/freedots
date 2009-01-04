@@ -7,6 +7,8 @@ import javax.sound.midi.MidiEvent;
 import javax.sound.midi.ShortMessage;
 import javax.sound.midi.Track;
 
+import org.delysid.music.Event;
+
 public class MIDISequence extends javax.sound.midi.Sequence {
   public MIDISequence (MusicXML score) throws InvalidMidiDataException {
     super(PPQ, score.getDivisions());
@@ -22,23 +24,23 @@ public class MIDISequence extends javax.sound.midi.Sequence {
 
       for (Measure measure:part.measures())
         for (Staff staff:measure.getStaves())
-          for (StaffElement staffElement:staff.getStaffElements()) {
+          for (Event staffElement:staff.getStaffElements()) {
             if (staffElement instanceof Note) {
               Note note = (Note)staffElement;
               Pitch pitch = note.getPitch();
               try {
-                int duration = note.getDuration();
+                int offset = note.getOffset().toInteger(resolution);
+                int duration = note.getDuration().toInteger(resolution);
                 if (pitch != null) {
                   int midiPitch = pitch.getMIDIPitch();
                   ShortMessage msg = new ShortMessage();
                   msg.setMessage(ShortMessage.NOTE_ON,
                       channel, midiPitch, velocity);
-                  track.add(new MidiEvent(msg, note.getOffset()));
+                  track.add(new MidiEvent(msg, offset));
                   msg = new ShortMessage();
                   msg.setMessage(ShortMessage.NOTE_OFF,
                       channel, midiPitch, 0);
-                  track.add(new MidiEvent(msg, note.getOffset()+note.getDuration()));
-                  System.out.println("Note "+note.getOffset()+" "+note.getDuration());
+                  track.add(new MidiEvent(msg, offset+duration));
                 }
               } catch (Exception e) {
                 e.printStackTrace();

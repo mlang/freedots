@@ -3,13 +3,15 @@ package org.delysid.freedots;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.delysid.music.Event;
+
 import org.delysid.musicxml.Measure;
 import org.delysid.musicxml.MusicXML;
 import org.delysid.musicxml.Note;
 import org.delysid.musicxml.Part;
 import org.delysid.musicxml.Pitch;
 import org.delysid.musicxml.Staff;
-import org.delysid.musicxml.StaffElement;
 
 public class Transcriber {
   MusicXML score;
@@ -34,7 +36,7 @@ public class Transcriber {
             Staff staff = measure.staves(staffIndex);
 	    BrailleMeasure brailleMeasure = new BrailleMeasure();
 
-	    for (StaffElement staffElement:staff.getStaffElements()) {
+	    for (Event staffElement:staff.getStaffElements()) {
 	      brailleMeasure.add(staffElement);
 	    }
 	    textStore += brailleMeasure.toString() + " ";
@@ -82,7 +84,7 @@ public class Transcriber {
   }
   class BrailleMeasure {
     List<Object> elements = new ArrayList<Object>();
-    public void add(StaffElement staffElement) {
+    public void add(Event staffElement) {
       elements.add(staffElement);
     }
     public String toString() {

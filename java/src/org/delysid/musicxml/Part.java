@@ -13,6 +13,7 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
+import org.delysid.Fraction;
 import org.delysid.music.TimeSignature;
 
 import org.w3c.dom.Element;
@@ -44,8 +45,9 @@ public class Part {
     List<Measure> result = new ArrayList<Measure>();
     int divisions = score.getDivisions();
     int durationMultiplier = 1;
-    int measureOffset = 0;
-    org.delysid.music.TimeSignature timeSignature = new org.delysid.music.TimeSignature(4, 4);
+
+    Fraction measureOffset = new Fraction(0, 1);
+    TimeSignature timeSignature = new TimeSignature(4, 4);
 
     NodeList partChildNodes = part.getChildNodes();
     for (int i = 0; i<partChildNodes.getLength(); i++) {
@@ -54,10 +56,11 @@ public class Part {
 	  "measure".equals(kid.getNodeName())) {
 	Element xmlMeasure = (Element)kid;
 	Measure measure = new Measure(xmlMeasure, this);
+	Chord currentChord = null;
 	List<Staff> staves = new ArrayList<Staff>();
 	Map<String, Staff> staffMap = new HashMap<String, Staff>();
 	Staff defaultStaff = null;
-	int offset = 0;
+	Fraction offset = new Fraction(0, 1);
 	NodeList measureChildNodes = xmlMeasure.getChildNodes();
 	for (int index = 0; index < measureChildNodes.getLength(); index++) {
 	  Node measureChild = measureChildNodes.item(index);
@@ -76,10 +79,27 @@ public class Part {
 	      }
 	    } else if ("note".equals(measureChild.getNodeName())) {
 	      Note note = new Note(musicdata, divisions, durationMultiplier);
+	      boolean advanceTime = true;
 	      String noteStaffName = note.getStaffName();
-	      note.setOffset(measureOffset+offset);
-	      try { offset += note.getDuration();
-	      } catch (Exception e) { e.printStackTrace(); }
+	      
+	      note.setOffset(measureOffset.add(offset));
+	      if (currentChord != null) {
+		if (elementHasChild(musicdata, "chord")) {
+		  currentChord.add(note);
+		  advanceTime = false;
+		} else {
+		  currentChord = null;
+		}
+	      }
+	      if (currentChord == null && noteStartsChord(musicdata)) {
+		currentChord = new Chord(note);
+		currentChord.setOffset(measureOffset.add(offset));
+		advanceTime = false;
+	      }
+	      if (advanceTime) {
+		try { offset = offset.add(note.getDuration());
+		} catch (Exception e) { e.printStackTrace(); }
+	      }
 	      if (noteStaffName == null) {
 		if (defaultStaff == null) {
 		  defaultStaff = new Staff();
@@ -95,8 +115,8 @@ public class Part {
 		staff.add(note);
 	      }
 	    } else if ("backup".equals(measureChild.getNodeName())) { 
-	      Backup backup = new Backup(musicdata);
-	      try { offset -= backup.getDuration();
+	      Backup backup = new Backup(musicdata, divisions, durationMultiplier);
+	      try { offset = offset.subtract(backup.getDuration());
 	      } catch (Exception e) { e.printStackTrace(); }
 	    } else if ("print".equals(measureChild.getNodeName())) {
 	    } else
@@ -107,17 +127,7 @@ public class Part {
 	for (Staff staff:staves) staff.sort();
         result.add(measure);
 
-	{
-	  int numerator = timeSignature.getNumerator();
-	  int denominator = timeSignature.getDenominator();
-	  int ticks = numerator * (divisions * 4);
-
-	  if (ticks % denominator == 0) {
-	    measureOffset += ticks / denominator;
-	  } else {
-	    System.err.println("Timesig does not fit global divisions!!!");
-	  }
-	}
+	measureOffset = measureOffset.add(timeSignature);
       }
     }
     return result;
@@ -126,5 +136,22 @@ public class Part {
     public int compare(Staff s1, Staff s2) {
       return s1.getName().compareTo(s2.getName());
     }
+  }
+  private static boolean noteStartsChord(Node note) {
+    Node node = note;
+    while ((node = node.getNextSibling()) != null) {
+      if (node.getNodeType() == Node.ELEMENT_NODE) {
+	String nodeName = node.getNodeName();
+        if ("note".equals(nodeName)) {
+          return elementHasChild((Element)node, "chord");
+        } else if ("backup".equals(nodeName) || "forward".equals(nodeName))
+          return false;
+      }
+    }
+    return false;
+  }
+  private static boolean elementHasChild(Element element, String tagName) {
+    NodeList nodeList = element.getElementsByTagName("chord");
+    return nodeList.getLength() >= 1;
   }
 }

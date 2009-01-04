@@ -7,10 +7,11 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-public class Attributes extends Musicdata {
+public class Attributes {
+  Element element;
   int divisions;
   public Attributes(Element element, int divisions) {
-    super(element);
+    this.element = element;
     this.divisions = divisions;
   }
   public int getDivisions() {

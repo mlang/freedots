@@ -3,10 +3,12 @@ package org.delysid.musicxml;
 
 import org.w3c.dom.Element;
 
-public class Print extends Musicdata {
-  public Print(Element element) { super(element); }
+public class Print {
+  Element element;
+
+  public Print(Element element) { this.element = element; }
   public boolean isNewSystem() {
     return element.getAttribute("new-system").trim().toLowerCase()
-                  .equals("yes");
+           .equals("yes");
   }
 }
