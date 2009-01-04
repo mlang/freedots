@@ -13,6 +13,8 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
+import org.delysid.music.TimeSignature;
+
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -65,7 +67,7 @@ public class Part {
 	    if ("attributes".equals(measureChild.getNodeName())) {
 	      Attributes attributes = new Attributes(musicdata, divisions);
 	      int newDivisions = attributes.getDivisions();
-	      TimeSignature newTimeSignature = attributes.getTimeSignature();
+	      Attributes.Time newTimeSignature = attributes.getTime();
 	      if (newDivisions > 0) {
 		durationMultiplier = divisions / newDivisions;
 	      }

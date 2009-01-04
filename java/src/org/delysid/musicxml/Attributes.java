@@ -1,6 +1,8 @@
 /* -*- c-basic-offset: 2; -*- */
 package org.delysid.musicxml;
 
+import org.delysid.music.TimeSignature;
+
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -20,13 +22,40 @@ public class Attributes extends Musicdata {
     }
     return 0;
   }
-  public TimeSignature getTimeSignature() {
+  public Time getTime() {
     NodeList nodeList = element.getElementsByTagName("time");
     if (nodeList.getLength() == 1) {
-      return new TimeSignature((Element)nodeList.item(0));
+      return new Time((Element)nodeList.item(0));
     } else if (nodeList.getLength() > 1) {
       System.err.println("Unhandled multiple time signatures in attributes");
     }
     return null;
   }
+  public class Time extends TimeSignature {
+    Element element = null;
+    public Time(Element element) {
+      super(getBeatsFromElement(element), getBeatTypeFromElement(element));
+      this.element = element;
+    }
+  }
+    static int getBeatsFromElement(Element element) throws MusicXMLParseException {
+      NodeList nodeList = element.getElementsByTagName("beats");
+      int nodeCount = nodeList.getLength();
+      if (nodeCount >= 1) {
+	Node textNode = nodeList.item(nodeCount-1).getChildNodes().item(0);
+	
+	return Integer.parseInt(textNode.getNodeValue());
+      }
+      throw new MusicXMLParseException("missing <beats> element");
+    }
+    static int getBeatTypeFromElement(Element element) throws MusicXMLParseException {
+      NodeList nodeList = element.getElementsByTagName("beat-type");
+      int nodeCount = nodeList.getLength();
+      if (nodeCount >= 1) {
+	Node textNode = nodeList.item(nodeCount-1).getChildNodes().item(0);
+
+	return Integer.parseInt(textNode.getNodeValue());
+      }
+      throw new MusicXMLParseException("missing <beat-type> element");
+    }
 }
