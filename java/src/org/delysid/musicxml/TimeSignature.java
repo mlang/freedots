@@ -5,46 +5,30 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-public class TimeSignature {
+public class TimeSignature extends org.delysid.music.TimeSignature {
   Element element = null;
-  int numerator;
-  int denominator;
-
-  public TimeSignature(int nominator, int denominator) {
-    this.numerator = numerator;
-    this.denominator = denominator;
-  }
   public TimeSignature(Element element) {
+    super(getBeatsFromElement(element), getBeatTypeFromElement(element));
     this.element = element;
   }
-  public int getNumerator() {
-    if (element != null) {
-      NodeList nodeList = element.getElementsByTagName("beats");
-      if (nodeList.getLength() == 1) {
-	Node textNode = nodeList.item(0).getChildNodes().item(0);
-	int beats = Integer.parseInt(textNode.getNodeValue());
-	return beats;
-      }
-    } else {
-      return numerator;
+  static int getBeatsFromElement(Element element) throws MusicXMLParseException {
+    NodeList nodeList = element.getElementsByTagName("beats");
+    int nodeCount = nodeList.getLength();
+    if (nodeCount >= 1) {
+      Node textNode = nodeList.item(nodeCount-1).getChildNodes().item(0);
+
+      return Integer.parseInt(textNode.getNodeValue());
     }
-    return 0;
+    throw new MusicXMLParseException("missing <beats> element");
   }
-  public int getDenominator() {
-    if (element != null) {
-      NodeList nodeList = element.getElementsByTagName("beat-type");
-      if (nodeList.getLength() == 1) {
-	Node textNode = nodeList.item(0).getChildNodes().item(0);
-	int beatType = Integer.parseInt(textNode.getNodeValue());
-	return beatType;
-      }
-    } else {
-      return denominator;
+  static int getBeatTypeFromElement(Element element) throws MusicXMLParseException {
+    NodeList nodeList = element.getElementsByTagName("beat-type");
+    int nodeCount = nodeList.getLength();
+    if (nodeCount >= 1) {
+      Node textNode = nodeList.item(nodeCount-1).getChildNodes().item(0);
+
+      return Integer.parseInt(textNode.getNodeValue());
     }
-    return 0;
-  }
-  public boolean equals(TimeSignature other) {
-    return this.getNumerator()==other.getNumerator() &&
-           this.getDenominator()==other.getDenominator();
+    throw new MusicXMLParseException("missing <beat-type> element");
   }
 }

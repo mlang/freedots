@@ -43,7 +43,7 @@ public class Part {
     int divisions = score.getDivisions();
     int durationMultiplier = 1;
     int measureOffset = 0;
-    TimeSignature timeSignature = new TimeSignature(4, 4);
+    org.delysid.music.TimeSignature timeSignature = new org.delysid.music.TimeSignature(4, 4);
 
     NodeList partChildNodes = part.getChildNodes();
     for (int i = 0; i<partChildNodes.getLength(); i++) {
