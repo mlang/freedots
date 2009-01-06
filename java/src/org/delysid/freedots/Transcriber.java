@@ -28,7 +28,7 @@ public class Transcriber {
     textStore = "";
   }
   void transcribe() {
-    for (Part part:score.parts()) {
+    for (Part part:score.getParts()) {
       printLine(part.getName());
       for (System system:getSystems(part)) {
         for (int staffIndex=0; staffIndex<system.getStaffCount(); staffIndex++) {

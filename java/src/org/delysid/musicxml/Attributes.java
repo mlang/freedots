@@ -23,6 +23,15 @@ public class Attributes {
     }
     return 0;
   }
+  public int getStaves() {
+    NodeList nodeList = element.getElementsByTagName("staves");
+    if (nodeList.getLength() == 1) {
+      Node textNode = nodeList.item(0).getChildNodes().item(0);
+      int staves = Integer.parseInt(textNode.getNodeValue());
+      return staves;
+    }
+    return 0;
+  }
   public Time getTime() {
     NodeList nodeList = element.getElementsByTagName("time");
     if (nodeList.getLength() == 1) {

@@ -14,7 +14,11 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
 import org.delysid.Fraction;
+import org.delysid.music.MusicList;
+import org.delysid.music.StartBar;
+import org.delysid.music.EndBar;
 import org.delysid.music.TimeSignature;
+import org.delysid.music.TimeSignatureChange;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -25,11 +29,92 @@ public class Part {
   private Element scorePart;
   private MusicXML score;
 
-  public Part(Element part, Element scorePart, MusicXML score) {
+  private MusicList eventList = new MusicList();
+
+  public Part(Element part, Element scorePart, MusicXML score) throws MusicXMLParseException {
     this.part = part;
     this.scorePart = scorePart;
     this.score = score;
+
+    int divisions = score.getDivisions();
+    int durationMultiplier = 1;
+
+    Fraction measureOffset = new Fraction(0, 1);
+    TimeSignature timeSignature = new TimeSignature(4, 4);
+
+    NodeList partChildNodes = part.getChildNodes();
+    for (int i = 0; i<partChildNodes.getLength(); i++) {
+      Node kid = partChildNodes.item(i);
+      if (kid.getNodeType() == Node.ELEMENT_NODE &&
+	  "measure".equals(kid.getNodeName())) {
+	Element xmlMeasure = (Element)kid;
+
+	eventList.add(new StartBar(measureOffset));
+
+	Chord currentChord = null;
+	Fraction offset = new Fraction(0, 1);
+	NodeList measureChildNodes = xmlMeasure.getChildNodes();
+	for (int index = 0; index < measureChildNodes.getLength(); index++) {
+	  Node measureChild = measureChildNodes.item(index);
+	  if (measureChild.getNodeType() == Node.ELEMENT_NODE) {
+	    Element musicdata = (Element)measureChild;
+
+	    if ("attributes".equals(measureChild.getNodeName())) {
+	      Attributes attributes = new Attributes(musicdata, divisions);
+	      int newDivisions = attributes.getDivisions();
+	      Attributes.Time newTimeSignature = attributes.getTime();
+	      if (newDivisions > 0) {
+		durationMultiplier = divisions / newDivisions;
+	      }
+	      if (newTimeSignature != null && !newTimeSignature.equals(timeSignature)) {
+		timeSignature = newTimeSignature;
+		eventList.add(new TimeSignatureChange(measureOffset.add(offset),
+						      timeSignature));
+	      }
+	    } else if ("note".equals(measureChild.getNodeName())) {
+	      Note note = new Note(musicdata, divisions, durationMultiplier);
+	      boolean advanceTime = true;
+	      boolean addNoteToEventList = true;
+
+	      note.setOffset(measureOffset.add(offset));
+	      if (currentChord != null) {
+		if (elementHasChild(musicdata, "chord")) {
+		  currentChord.add(note);
+		  advanceTime = false;
+		  addNoteToEventList = false;
+		} else {
+		  currentChord = null;
+		}
+	      }
+	      if (currentChord == null && noteStartsChord(musicdata)) {
+		currentChord = new Chord(note);
+		currentChord.setOffset(measureOffset.add(offset));
+		advanceTime = false;
+		eventList.add(currentChord);
+		addNoteToEventList = false;
+	      }
+	      if (addNoteToEventList) {
+		eventList.add(note);
+	      }
+	      if (advanceTime) {
+		offset = offset.add(note.getDuration());
+	      }
+	    } else if ("backup".equals(measureChild.getNodeName())) { 
+	      Backup backup = new Backup(musicdata, divisions, durationMultiplier);
+	      offset = offset.subtract(backup.getDuration());
+	    } else if ("print".equals(measureChild.getNodeName())) {
+	    } else
+	      System.err.println("Unsupported musicdata element " + measureChild.getNodeName());
+	  }
+	}
+	measureOffset = measureOffset.add(timeSignature);
+
+        eventList.add(new EndBar(measureOffset));
+      }
+    }
   }
+
+  public MusicList getMusicList () { return eventList; }
 
   public String getName() {
     XPath xpath = XPathFactory.newInstance().newXPath();

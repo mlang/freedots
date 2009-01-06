@@ -82,8 +82,8 @@ public class Fraction implements Comparable<Fraction> {
   }
 
   public void simplify() {
-    int gcd = calcGcd(Math.min(numerator, denominator),
-		      Math.max(numerator, denominator));
+    int gcd = calcGcd(Math.max(numerator, denominator),
+		      Math.min(numerator, denominator));
     numerator /= gcd;
     denominator /= gcd;
   }

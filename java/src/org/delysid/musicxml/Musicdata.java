@@ -17,13 +17,13 @@ public abstract class Musicdata {
     this.divisions = divisions;
     this.durationMultiplier = durationMultiplier;
   }
-  public Fraction getDuration() throws Exception {
+  public Fraction getDuration() throws MusicXMLParseException {
     NodeList nodeList = element.getElementsByTagName("duration");
     if (nodeList.getLength() == 1) {
       Node textNode = nodeList.item(0).getChildNodes().item(0);
       int duration = Integer.parseInt(textNode.getNodeValue());
       return new Fraction(duration * durationMultiplier, 4 * divisions);
     }
-    throw new Exception();
+    throw new MusicXMLParseException("Missing <duration> element");
   }
 }

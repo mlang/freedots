@@ -35,6 +35,8 @@ public class MusicXML {
   private Document document;
   private XPathFactory xPathFactory = XPathFactory.newInstance();
 
+  private List<Part> parts;
+
   public MusicXML(
     String filename
   ) throws ParserConfigurationException,
@@ -78,6 +80,26 @@ public class MusicXML {
     } else
       document = documentBuilder.parse(inputStream);
     document.getDocumentElement().normalize();
+
+    parts = new ArrayList<Part>();
+
+    Element root = document.getDocumentElement();
+    NodeList nodes = root.getElementsByTagName("part");
+    Element partList = (Element) root.getElementsByTagName("part-list").item(0);
+    NodeList partListKids = partList.getChildNodes();
+    for (int i=0; i<nodes.getLength(); i++) {
+      Element part = (Element) nodes.item(i);
+      String idValue = part.getAttribute("id");
+      Element scorePart = null;
+      for (int j=0; j<partListKids.getLength(); j++) {
+	Node kid = partListKids.item(j);
+	if (kid.getNodeType() == Node.ELEMENT_NODE) {
+	  Element elem = (Element) kid;
+	  if (idValue.equals(elem.getAttribute("id"))) scorePart = elem;
+	}
+      }
+      parts.add(new Part(part, scorePart, this));
+    }
   }
 
   private InputSource getInputSourceFromZipInputStream(
@@ -116,25 +138,7 @@ public class MusicXML {
     }
   }
 
-  public List<Part> parts() {
-    List<Part> result = new ArrayList<Part>();
-    Element root = document.getDocumentElement();
-    NodeList nodes = root.getElementsByTagName("part");
-    Element partList = (Element) root.getElementsByTagName("part-list").item(0);
-    NodeList partListKids = partList.getChildNodes();
-    for (int i=0; i<nodes.getLength(); i++) {
-      Element part = (Element) nodes.item(i);
-      String idValue = part.getAttribute("id");
-      Element scorePart = null;
-      for (int j=0; j<partListKids.getLength(); j++) {
-	Node kid = partListKids.item(j);
-	if (kid.getNodeType() == Node.ELEMENT_NODE) {
-	  Element elem = (Element) kid;
-	  if (idValue.equals(elem.getAttribute("id"))) scorePart = elem;
-	}
-      }
-      result.add(new Part(part, scorePart, this));
-    }
-    return result;
+  public List<Part> getParts() {
+    return parts;
   }
 }
