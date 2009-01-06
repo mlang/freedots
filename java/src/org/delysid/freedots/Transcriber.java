@@ -2,9 +2,16 @@
 package org.delysid.freedots;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.delysid.music.Event;
+import org.delysid.music.StaffElement;
+import org.delysid.music.MusicList;
+import org.delysid.music.StartBar;
+import org.delysid.music.EndBar;
+import org.delysid.music.VerticalEvent;
 
 import org.delysid.musicxml.Measure;
 import org.delysid.musicxml.MusicXML;
@@ -22,24 +29,33 @@ public class Transcriber {
     this.score = score;
     this.options = options;
     clear();
-    if (score != null) transcribe();
+    if (score != null)
+      try { transcribe(); }
+      catch (Exception e) { e.printStackTrace(); }
   }
   private void clear() {
     textStore = "";
   }
-  void transcribe() {
+  void transcribe() throws Exception {
     for (Part part:score.getParts()) {
       printLine(part.getName());
-      for (System system:getSystems(part)) {
-        for (int staffIndex=0; staffIndex<system.getStaffCount(); staffIndex++) {
-          for (Measure measure:system.measures()) {
-            Staff staff = measure.staves(staffIndex);
-	    BrailleMeasure brailleMeasure = new BrailleMeasure();
+      for (Segment segment:getSegments(part)) {
+        for (int staffIndex=0; staffIndex<segment.getStaffCount(); staffIndex++) {
+	  Staff staff = segment.getStaff(staffIndex);
 
-	    for (Event staffElement:staff.getStaffElements()) {
-	      brailleMeasure.add(staffElement);
+	  BrailleMeasure brailleMeasure = new BrailleMeasure();
+
+	  for (int staffElementIndex = 0; staffElementIndex < staff.size();
+	       staffElementIndex++) {
+	    
+	    Event event = staff.get(staffElementIndex);
+
+	    if (event instanceof EndBar) {
+	      textStore += brailleMeasure.toString() + " ";
+	      brailleMeasure = new BrailleMeasure();
+	    } else {
+	      brailleMeasure.add(event);
 	    }
-	    textStore += brailleMeasure.toString() + " ";
           }
         }
       }
@@ -61,26 +77,68 @@ public class Transcriber {
   public String toString() {
     return textStore;
   }
-  class System {
-    int staffCount;
-    List<Measure> measures = new ArrayList<Measure>();
-    public System(Measure firstMeasure) {
-      staffCount = firstMeasure.getStaffCount();
-      add(firstMeasure);
-    }
-    public void add(Measure measure) { measures.add(measure); }
-    public List<Measure> measures() { return measures; }
-    public int getStaffCount() { return staffCount; }
+  class Staff extends MusicList {
+    String name;
+    public Staff() { super(); }
+
+    public void setName(String name) { this.name = name; }
   }
-  List<System> getSystems(Part part) {
-    List<System> systems = new ArrayList<System>();
-    System currentSystem = null;
-    for (Measure measure:part.measures())
-      if (currentSystem == null || measure.startsNewSystem() ||
-          measure.getStaffCount() != currentSystem.getStaffCount())
-        systems.add(currentSystem = new System(measure));
-      else currentSystem.add(measure);
-    return systems;
+  class Segment extends MusicList {
+    Segment() { super(); }
+    public int getStaffCount() {
+      for (Event event:this) {
+	if (event instanceof StartBar) {
+	  StartBar startBar = (StartBar)event;
+	  return startBar.getStaffCount();
+	}
+      }
+      return 0;
+    }
+    public Staff getStaff(int index) {
+      List<Staff> staves = new ArrayList<Staff>();
+      Map<String, Staff> staffNames = new HashMap<String, Staff>();
+      int usedStaves = 0;
+
+      for (int i = 0; i < getStaffCount(); i++)	staves.add(new Staff());
+      
+      for (Event event:this) {
+	if (event instanceof VerticalEvent) {
+	  for (Staff staff:staves) staff.add(event);
+	} else if (event instanceof StaffElement) {
+	  String staffName = ((StaffElement)event).getStaffName();
+	  if (!staffNames.containsKey(staffName))
+	    staffNames.put(staffName, staves.get(usedStaves++));
+	  staffNames.get(staffName).add(event);
+	}
+      }
+      return staves.get(index);
+    }
+  }
+  List<Segment> getSegments(Part part) throws Exception {
+    List<Segment> segments = new ArrayList<Segment>();
+    Segment currentSegment = new Segment();
+    segments.add(currentSegment);
+    MusicList musicList = part.getMusicList();
+    int index = 0;
+
+    while (true) {
+      while (index < musicList.size()) {
+	Event event = musicList.get(index++);
+	currentSegment.add(event);
+	if (event instanceof EndBar) break;
+      }
+
+      if (index == musicList.size()) return segments;
+
+      if (!(musicList.get(index) instanceof StartBar))
+	throw new Exception();
+
+      StartBar startBar = (StartBar)musicList.get(index);
+      if (startBar.getStaffCount() != currentSegment.getStaffCount()) {
+	currentSegment = new Segment();
+	segments.add(currentSegment);
+      }
+    }
   }
   class BrailleMeasure {
     List<Object> elements = new ArrayList<Object>();

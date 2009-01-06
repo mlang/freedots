@@ -41,6 +41,7 @@ public class Part {
 
     Fraction measureOffset = new Fraction(0, 1);
     TimeSignature timeSignature = new TimeSignature(4, 4);
+    int staffCount = 1;
 
     NodeList partChildNodes = part.getChildNodes();
     for (int i = 0; i<partChildNodes.getLength(); i++) {
@@ -49,7 +50,9 @@ public class Part {
 	  "measure".equals(kid.getNodeName())) {
 	Element xmlMeasure = (Element)kid;
 
-	eventList.add(new StartBar(measureOffset));
+	StartBar startBar = new StartBar(measureOffset);
+	startBar.setStaffCount(staffCount);
+	eventList.add(startBar);
 
 	Chord currentChord = null;
 	Fraction offset = new Fraction(0, 1);
@@ -63,8 +66,13 @@ public class Part {
 	      Attributes attributes = new Attributes(musicdata, divisions);
 	      int newDivisions = attributes.getDivisions();
 	      Attributes.Time newTimeSignature = attributes.getTime();
+	      int newStaffCount = attributes.getStaves();
 	      if (newDivisions > 0) {
 		durationMultiplier = divisions / newDivisions;
+	      }
+	      if (newStaffCount > 1 && newStaffCount != staffCount) {
+		staffCount = newStaffCount;
+		startBar.setStaffCount(staffCount);
 	      }
 	      if (newTimeSignature != null && !newTimeSignature.equals(timeSignature)) {
 		timeSignature = newTimeSignature;

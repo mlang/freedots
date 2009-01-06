@@ -2,13 +2,14 @@
 package org.delysid.musicxml;
 
 import org.delysid.Fraction;
-import org.delysid.music.Event;
+
+import org.delysid.music.StaffElement;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-public class Note extends Musicdata implements Event {
+public class Note extends Musicdata implements StaffElement {
   Fraction offset;
 
   public Note(Element element, int divisions, int durationMultiplier) {
