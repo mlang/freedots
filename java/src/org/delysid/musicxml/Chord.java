@@ -3,7 +3,7 @@ package org.delysid.musicxml;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.delysid.Fraction;
+import org.delysid.freedots.Fraction;
 import org.delysid.music.Event;
 
 public class Chord extends ArrayList<Note> implements Event {

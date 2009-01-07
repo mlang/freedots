@@ -1,5 +1,5 @@
 /* -*- c-basic-offset: 2; -*- */
-package org.delysid;
+package org.delysid.freedots;
 
 /**
  * Represents a fraction value.

@@ -1,7 +1,7 @@
 /* -*- c-basic-offset: 2; -*- */
 package org.delysid.musicxml;
 
-import org.delysid.Fraction;
+import org.delysid.freedots.Fraction;
 
 import org.delysid.music.StaffElement;
 

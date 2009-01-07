@@ -1,7 +1,7 @@
 /* -*- c-basic-offset: 2; -*- */
 package org.delysid.music;
 
-import org.delysid.Fraction;
+import org.delysid.freedots.Fraction;
 
 public abstract class VerticalEvent implements Event {
   Fraction offset;

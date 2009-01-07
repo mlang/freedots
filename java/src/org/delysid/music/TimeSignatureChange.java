@@ -1,7 +1,7 @@
 /* -*- c-basic-offset: 2; -*- */
 package org.delysid.music;
 
-import org.delysid.Fraction;
+import org.delysid.freedots.Fraction;
 
 public class TimeSignatureChange extends VerticalEvent {
   private TimeSignature timeSignature;
