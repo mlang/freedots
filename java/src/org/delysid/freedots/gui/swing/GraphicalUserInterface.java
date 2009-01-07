@@ -33,7 +33,7 @@ import org.delysid.freedots.Transcriber;
 import org.delysid.musicxml.MIDISequence;
 import org.delysid.musicxml.MusicXML;
 
-import com.sun.media.sound.StandardMidiFileWriter;
+import org.delysid.StandardMidiFileWriter;
 
 public class GraphicalUserInterface extends JFrame {
   protected MusicXML score = null;
