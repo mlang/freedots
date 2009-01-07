@@ -111,6 +111,8 @@ public class Part {
 	      Backup backup = new Backup(musicdata, divisions, durationMultiplier);
 	      offset = offset.subtract(backup.getDuration());
 	    } else if ("print".equals(measureChild.getNodeName())) {
+	      Print print = new Print((Element)kid);
+	      if (print.isNewSystem()) startBar.setNewSystem(true);
 	    } else
 	      System.err.println("Unsupported musicdata element " + measureChild.getNodeName());
 	  }

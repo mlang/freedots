@@ -13,12 +13,10 @@ import org.delysid.music.StartBar;
 import org.delysid.music.EndBar;
 import org.delysid.music.VerticalEvent;
 
-import org.delysid.musicxml.Measure;
 import org.delysid.musicxml.MusicXML;
 import org.delysid.musicxml.Note;
 import org.delysid.musicxml.Part;
 import org.delysid.musicxml.Pitch;
-import org.delysid.musicxml.Staff;
 
 public class Transcriber {
   MusicXML score;

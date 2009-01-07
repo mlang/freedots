@@ -9,4 +9,8 @@ public class StartBar extends VerticalEvent {
   int staffCount;
   public int getStaffCount() { return staffCount; }
   public void setStaffCount(int staffCount) { this.staffCount = staffCount; }
+
+  boolean newSystem = false;
+  public boolean getNewSystem() { return newSystem; }
+  public void setNewSystem(boolean newSystem) { this.newSystem = newSystem; }
 }
