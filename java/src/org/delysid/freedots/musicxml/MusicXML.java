@@ -1,6 +1,6 @@
 /* -*- c-basic-offset: 2; -*- */
 
-package org.delysid.musicxml;
+package org.delysid.freedots.musicxml;
 
 import java.io.BufferedReader;
 import java.io.File;

@@ -30,8 +30,8 @@ import javax.swing.JToolBar;
 
 import org.delysid.freedots.MIDIPlayer;
 import org.delysid.freedots.Transcriber;
-import org.delysid.musicxml.MIDISequence;
-import org.delysid.musicxml.MusicXML;
+import org.delysid.freedots.musicxml.MIDISequence;
+import org.delysid.freedots.musicxml.MusicXML;
 
 import org.delysid.StandardMidiFileWriter;
 

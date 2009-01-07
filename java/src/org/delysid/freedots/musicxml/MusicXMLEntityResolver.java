@@ -1,4 +1,4 @@
-package org.delysid.musicxml;
+package org.delysid.freedots.musicxml;
 
 import java.io.IOException;
 import java.io.InputStream;

@@ -1,8 +1,8 @@
 /* -*- c-basic-offset: 2; -*- */
-package org.delysid.musicxml;
+package org.delysid.freedots.musicxml;
 
-import org.delysid.music.KeySignature;
-import org.delysid.music.TimeSignature;
+import org.delysid.freedots.model.KeySignature;
+import org.delysid.freedots.model.TimeSignature;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;

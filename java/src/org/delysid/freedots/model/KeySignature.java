@@ -1,5 +1,5 @@
 /* -*- c-basic-offset: 2; -*- */
-package org.delysid.music;
+package org.delysid.freedots.model;
 
 public class KeySignature {
   private final int type; // number of sharps (+) or flats (-)

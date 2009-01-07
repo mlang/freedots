@@ -1,5 +1,5 @@
 /* -*- c-basic-offset: 2; -*- */
-package org.delysid.musicxml;
+package org.delysid.freedots.musicxml;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,11 +14,11 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
 import org.delysid.freedots.Fraction;
-import org.delysid.music.MusicList;
-import org.delysid.music.StartBar;
-import org.delysid.music.EndBar;
-import org.delysid.music.TimeSignature;
-import org.delysid.music.TimeSignatureChange;
+import org.delysid.freedots.model.MusicList;
+import org.delysid.freedots.model.StartBar;
+import org.delysid.freedots.model.EndBar;
+import org.delysid.freedots.model.TimeSignature;
+import org.delysid.freedots.model.TimeSignatureChange;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;

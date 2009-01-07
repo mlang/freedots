@@ -1,5 +1,5 @@
 /* -*- c-basic-offset: 2; -*- */
-package org.delysid.music;
+package org.delysid.freedots.model;
 
 public class MusicList extends java.util.ArrayList<Event> {
   public MusicList() {

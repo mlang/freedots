@@ -6,17 +6,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.delysid.music.Event;
-import org.delysid.music.StaffElement;
-import org.delysid.music.MusicList;
-import org.delysid.music.StartBar;
-import org.delysid.music.EndBar;
-import org.delysid.music.VerticalEvent;
+import org.delysid.freedots.model.Event;
+import org.delysid.freedots.model.StaffElement;
+import org.delysid.freedots.model.MusicList;
+import org.delysid.freedots.model.StartBar;
+import org.delysid.freedots.model.EndBar;
+import org.delysid.freedots.model.VerticalEvent;
 
-import org.delysid.musicxml.MusicXML;
-import org.delysid.musicxml.Note;
-import org.delysid.musicxml.Part;
-import org.delysid.musicxml.Pitch;
+import org.delysid.freedots.musicxml.MusicXML;
+import org.delysid.freedots.musicxml.Note;
+import org.delysid.freedots.musicxml.Part;
+import org.delysid.freedots.musicxml.Pitch;
 
 public class Transcriber {
   MusicXML score;

@@ -7,7 +7,7 @@ import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 
-import org.delysid.musicxml.MusicXML;
+import org.delysid.freedots.musicxml.MusicXML;
 
 public class FileOpenAction extends AbstractAction {
   GraphicalUserInterface gui;

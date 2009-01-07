@@ -9,7 +9,7 @@ import javax.xml.xpath.XPathExpressionException;
 
 import org.delysid.freedots.gui.swt.MainFrame;
 import org.delysid.freedots.gui.swing.GraphicalUserInterface;
-import org.delysid.musicxml.MusicXML;
+import org.delysid.freedots.musicxml.MusicXML;
 import org.eclipse.swt.SWTError;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;

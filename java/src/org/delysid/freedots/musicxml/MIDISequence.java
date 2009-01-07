@@ -1,5 +1,5 @@
 /* -*- c-basic-offset: 2; -*- */
-package org.delysid.musicxml;
+package org.delysid.freedots.musicxml;
 
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MetaMessage;
@@ -7,7 +7,7 @@ import javax.sound.midi.MidiEvent;
 import javax.sound.midi.ShortMessage;
 import javax.sound.midi.Track;
 
-import org.delysid.music.Event;
+import org.delysid.freedots.model.Event;
 
 public class MIDISequence extends javax.sound.midi.Sequence {
   public MIDISequence (MusicXML score) throws InvalidMidiDataException {

@@ -33,8 +33,8 @@ import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.swt.widgets.Widget;
 import org.xml.sax.SAXException;
 
-import org.delysid.musicxml.MIDISequence;
-import org.delysid.musicxml.MusicXML;
+import org.delysid.freedots.musicxml.MIDISequence;
+import org.delysid.freedots.musicxml.MusicXML;
 import org.delysid.freedots.MIDIPlayer;
 import org.delysid.freedots.gui.Messages;
 
