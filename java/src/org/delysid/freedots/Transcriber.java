@@ -20,8 +20,12 @@ import org.delysid.musicxml.Pitch;
 
 public class Transcriber {
   MusicXML score;
+
+  public MusicXML getScore() { return score; }
+
   Options options;
   String textStore;
+  final String lineSeparator = System.getProperty("line.separator");
 
   public Transcriber(MusicXML score, Options options) {
     this.score = score;
@@ -60,7 +64,7 @@ public class Transcriber {
     }
   }
   public void printLine(String text) {
-    textStore += text + "\n";
+    textStore += text + lineSeparator;
   }
   public void printNote(Note note) {
     Pitch pitch = note.getPitch();

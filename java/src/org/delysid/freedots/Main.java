@@ -48,7 +48,7 @@ public class Main {
 //     } catch (SWTError e) {
     try {
       GraphicalUserInterface gui = new GraphicalUserInterface();
-      if (score != null) gui.setScore(score);
+      if (transcriber != null) gui.setTranscriber(transcriber);
       gui.pack();
       gui.setVisible(true);
     } catch (HeadlessException e) {

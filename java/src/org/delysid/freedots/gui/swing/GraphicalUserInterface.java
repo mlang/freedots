@@ -1,6 +1,6 @@
 /* -*- c-basic-offset: 2; -*- */
 package org.delysid.freedots.gui.swing;
-// MIDI
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -29,6 +29,7 @@ import javax.swing.JTextArea;
 import javax.swing.JToolBar;
 
 import org.delysid.freedots.MIDIPlayer;
+import org.delysid.freedots.Transcriber;
 import org.delysid.musicxml.MIDISequence;
 import org.delysid.musicxml.MusicXML;
 
@@ -36,6 +37,8 @@ import com.sun.media.sound.StandardMidiFileWriter;
 
 public class GraphicalUserInterface extends JFrame {
   protected MusicXML score = null;
+  protected Transcriber transcriber = null;
+
   protected JTextArea textArea;
   protected String newline = "\n";
   protected MIDIPlayer midiPlayer;
@@ -156,6 +159,13 @@ public class GraphicalUserInterface extends JFrame {
   public void setScore(MusicXML score) {
     this.score = score;
     textArea.append("Hello "+Character.toString((char)(0X2800+0X07)));
+  }
+  public void setTranscriber(Transcriber transcriber) {
+    if (transcriber != null) {
+      this.transcriber = transcriber;
+      this.score = transcriber.getScore();
+      textArea.append(transcriber.toString());
+    }
   }
   public void quit() {
     if (midiPlayer != null)
