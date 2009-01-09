@@ -5,11 +5,10 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-public class MusicXMLEntityResolver implements EntityResolver {
+public class MusicXMLEntityResolver implements org.xml.sax.EntityResolver {
   private Map<String, String> map = new HashMap<String, String>() {
     {
       put("-//Recordare//DTD MusicXML 2.0 Partwise//EN", "partwise.dtd");

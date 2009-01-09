@@ -31,12 +31,12 @@ import javax.swing.JToolBar;
 import org.delysid.freedots.MIDIPlayer;
 import org.delysid.freedots.Transcriber;
 import org.delysid.freedots.musicxml.MIDISequence;
-import org.delysid.freedots.musicxml.MusicXML;
+import org.delysid.freedots.musicxml.Score;
 
 import org.delysid.StandardMidiFileWriter;
 
 public class GraphicalUserInterface extends JFrame {
-  protected MusicXML score = null;
+  protected Score score = null;
   protected Transcriber transcriber = null;
 
   protected JTextArea textArea;
@@ -156,7 +156,7 @@ public class GraphicalUserInterface extends JFrame {
       }
     });
   }
-  public void setScore(MusicXML score) {
+  public void setScore(Score score) {
     this.score = score;
     textArea.append("Hello "+Character.toString((char)(0X2800+0X07)));
   }
@@ -173,10 +173,10 @@ public class GraphicalUserInterface extends JFrame {
     System.exit(0);
   }
   public static void main(String[] args) {
-    MusicXML score = null;
+    Score score = null;
     try {
       if (java.lang.reflect.Array.getLength(args) == 1)
-        score = new MusicXML(args[0]);
+        score = new Score(args[0]);
       GraphicalUserInterface gui = new GraphicalUserInterface(); // Extends Frame.
       if (score != null) gui.setScore(score);
       gui.pack();

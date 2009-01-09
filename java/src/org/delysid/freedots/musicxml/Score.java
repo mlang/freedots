@@ -31,13 +31,13 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-public class MusicXML {
+public class Score {
   private Document document;
   private XPathFactory xPathFactory = XPathFactory.newInstance();
 
   private List<Part> parts;
 
-  public MusicXML(
+  public Score(
     String filename
   ) throws ParserConfigurationException,
 	   IOException, SAXException, XPathExpressionException {

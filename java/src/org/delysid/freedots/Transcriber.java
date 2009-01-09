@@ -13,21 +13,21 @@ import org.delysid.freedots.model.StartBar;
 import org.delysid.freedots.model.EndBar;
 import org.delysid.freedots.model.VerticalEvent;
 
-import org.delysid.freedots.musicxml.MusicXML;
+import org.delysid.freedots.musicxml.Score;
 import org.delysid.freedots.musicxml.Note;
 import org.delysid.freedots.musicxml.Part;
 import org.delysid.freedots.musicxml.Pitch;
 
 public class Transcriber {
-  MusicXML score;
+  Score score;
 
-  public MusicXML getScore() { return score; }
+  public Score getScore() { return score; }
 
   Options options;
   String textStore;
   final String lineSeparator = System.getProperty("line.separator");
 
-  public Transcriber(MusicXML score, Options options) {
+  public Transcriber(Score score, Options options) {
     this.score = score;
     this.options = options;
     clear();

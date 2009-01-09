@@ -9,7 +9,7 @@ import javax.xml.xpath.XPathExpressionException;
 
 import org.delysid.freedots.gui.swt.MainFrame;
 import org.delysid.freedots.gui.swing.GraphicalUserInterface;
-import org.delysid.freedots.musicxml.MusicXML;
+import org.delysid.freedots.musicxml.Score;
 import org.eclipse.swt.SWTError;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -19,10 +19,10 @@ public class Main {
   public static void main(String[] args) {
     Options options = new Options(args);
     Transcriber transcriber = null;
-    MusicXML score = null;
+    Score score = null;
     if (options.getLocation() != null) {
       try {
-        score = new MusicXML(options.getLocation());
+        score = new Score(options.getLocation());
       } catch (XPathExpressionException e) {
         // TODO Auto-generated catch block
         e.printStackTrace();

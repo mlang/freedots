@@ -27,11 +27,12 @@ import org.w3c.dom.NodeList;
 public class Part {
   private Element part;
   private Element scorePart;
-  private MusicXML score;
+  private Score score;
 
   private MusicList eventList = new MusicList();
 
-  public Part(Element part, Element scorePart, MusicXML score) throws MusicXMLParseException {
+  public Part(Element part, Element scorePart, Score score)
+    throws MusicXMLParseException {
     this.part = part;
     this.scorePart = scorePart;
     this.score = score;

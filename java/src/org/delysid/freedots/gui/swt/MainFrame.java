@@ -34,7 +34,7 @@ import org.eclipse.swt.widgets.Widget;
 import org.xml.sax.SAXException;
 
 import org.delysid.freedots.musicxml.MIDISequence;
-import org.delysid.freedots.musicxml.MusicXML;
+import org.delysid.freedots.musicxml.Score;
 import org.delysid.freedots.MIDIPlayer;
 import org.delysid.freedots.gui.Messages;
 
@@ -61,7 +61,7 @@ public class MainFrame {
 
   ToolItem boldButton, italicButton, underlineButton, strikeoutButton;
 
-  MusicXML score;
+  Score score;
   MIDIPlayer player;
 
   public MainFrame() {
@@ -134,9 +134,9 @@ public class MainFrame {
         fileDialog.setText("Open MusicXML score");
         String selectedItem = fileDialog.open();
         if (selectedItem != null) {
-          MusicXML newScore = null;
+          Score newScore = null;
           try {
-            newScore = new MusicXML(selectedItem);
+            newScore = new Score(selectedItem);
           } catch (XPathExpressionException e1) {
             // TODO Auto-generated catch block
             e1.printStackTrace();

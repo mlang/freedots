@@ -10,7 +10,7 @@ import javax.sound.midi.Track;
 import org.delysid.freedots.model.Event;
 
 public class MIDISequence extends javax.sound.midi.Sequence {
-  public MIDISequence (MusicXML score) throws InvalidMidiDataException {
+  public MIDISequence (Score score) throws InvalidMidiDataException {
     super(PPQ, score.getDivisions());
     for (Part part:score.getParts()) {
       Track track = createTrack();

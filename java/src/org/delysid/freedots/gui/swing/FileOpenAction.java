@@ -7,7 +7,7 @@ import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 
-import org.delysid.freedots.musicxml.MusicXML;
+import org.delysid.freedots.musicxml.Score;
 
 public class FileOpenAction extends AbstractAction {
   GraphicalUserInterface gui;
@@ -30,7 +30,7 @@ public class FileOpenAction extends AbstractAction {
     });
     fileChooser.showOpenDialog(gui);
     try {
-      MusicXML newScore = new MusicXML(fileChooser.getSelectedFile().toString());
+      Score newScore = new Score(fileChooser.getSelectedFile().toString());
       gui.setScore(newScore);
     } catch (javax.xml.parsers.ParserConfigurationException exception) {
       exception.printStackTrace();
