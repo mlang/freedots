@@ -4,12 +4,13 @@ package org.delysid.freedots.musicxml;
 import org.delysid.freedots.Fraction;
 
 import org.delysid.freedots.model.StaffElement;
+import org.delysid.freedots.model.VoiceElement;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-public class Note extends Musicdata implements StaffElement {
+public class Note extends Musicdata implements StaffElement, VoiceElement {
   Fraction offset;
 
   public Note(Element element, int divisions, int durationMultiplier) {
@@ -29,6 +30,15 @@ public class Note extends Musicdata implements StaffElement {
     }
     return null;
   }
+  public String getVoiceName() {
+    NodeList nodeList = element.getElementsByTagName("voice");
+    if (nodeList.getLength() >= 0) {
+      Node textNode = nodeList.item(nodeList.getLength()-1).getChildNodes().item(0);
+      return textNode.getNodeValue();
+    }
+    return null;
+  }
+
   public Fraction getOffset() { return offset; }
   public void setOffset(Fraction offset) { this.offset = offset; }
 }

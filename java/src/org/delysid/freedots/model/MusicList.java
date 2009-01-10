@@ -5,6 +5,12 @@ package org.delysid.freedots.model;
  * objects in the past.  This property can be exploited by sorting all
  * the objects by their temporal order into a one-dimensional list.
  */
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.SortedMap;
+import java.util.TreeMap;
+
 public class MusicList extends java.util.ArrayList<Event> {
   public MusicList() {
     super();
@@ -16,5 +22,17 @@ public class MusicList extends java.util.ArrayList<Event> {
 
     add(index, newElement);
     return true;
+  }
+  public List<MusicList> getVoices() {
+    SortedMap<String, MusicList> voices = new TreeMap<String, MusicList>();
+    for (Event event:this) {
+      if (event instanceof VoiceElement) {
+        String voiceName = ((VoiceElement)event).getVoiceName();
+        if (!voices.containsKey(voiceName))
+          voices.put(voiceName, new MusicList());
+        voices.get(voiceName).add(event);
+      }
+    }
+    return new ArrayList<MusicList>(voices.values());    
   }
 }

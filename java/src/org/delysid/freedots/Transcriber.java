@@ -44,8 +44,7 @@ public class Transcriber {
       for (Segment segment:getSegments(part)) {
         for (int staffIndex=0; staffIndex<segment.getStaffCount(); staffIndex++) {
 	  Staff staff = segment.getStaff(staffIndex);
-
-	  BrailleMeasure brailleMeasure = new BrailleMeasure();
+	  MusicList measure = new MusicList();
 
 	  for (int staffElementIndex = 0; staffElementIndex < staff.size();
 	       staffElementIndex++) {
@@ -53,10 +52,24 @@ public class Transcriber {
 	    Event event = staff.get(staffElementIndex);
 
 	    if (event instanceof EndBar) {
-	      textStore += brailleMeasure.toString() + " ";
-	      brailleMeasure = new BrailleMeasure();
+	      List<MusicList> voices = measure.getVoices();
+	      int voiceCount = voices.size();
+
+	      for (int voiceIndex = 0; voiceIndex < voiceCount; voiceIndex++) {
+		BrailleMeasure bm = new BrailleMeasure();
+		for (Event voiceEvent:voices.get(voiceIndex)) {
+                  bm.add(voiceEvent);
+		}
+		textStore += bm.toString();
+		if (voiceIndex < voiceCount-1) {
+		  textStore += "2`";
+		}
+	      }
+	      textStore += " ";
+
+	      measure = new MusicList();
 	    } else {
-	      brailleMeasure.add(event);
+	      measure.add(event);
 	    }
           }
         }
