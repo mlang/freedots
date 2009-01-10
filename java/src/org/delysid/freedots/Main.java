@@ -46,13 +46,17 @@ public class Main {
 //         if (!display.readAndDispatch()) display.sleep();
 //       display.dispose();
 //     } catch (SWTError e) {
-    try {
-      GraphicalUserInterface gui = new GraphicalUserInterface();
-      if (transcriber != null) gui.setTranscriber(transcriber);
-      gui.pack();
-      gui.setVisible(true);
-    } catch (HeadlessException e) {
-      options.setWindowSystem(false);
+    if (options.getWindowSystem()) {
+      try {
+        GraphicalUserInterface gui = new GraphicalUserInterface();
+        if (transcriber != null) gui.setTranscriber(transcriber);
+        gui.pack();
+        gui.setVisible(true);
+      } catch (HeadlessException e) {
+        options.setWindowSystem(false);
+      }
+    }
+    if (!options.getWindowSystem()) {
       if (transcriber != null) {
         System.out.println(transcriber.toString());
       } else {
