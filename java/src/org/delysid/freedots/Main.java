@@ -4,12 +4,17 @@ import java.io.IOException;
 
 import java.awt.HeadlessException;
 
+import javax.sound.midi.MidiUnavailableException;
+import javax.sound.midi.InvalidMidiDataException;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
 
 import org.delysid.freedots.gui.swt.MainFrame;
 import org.delysid.freedots.gui.swing.GraphicalUserInterface;
+
+import org.delysid.freedots.musicxml.MIDISequence;
 import org.delysid.freedots.musicxml.Score;
+
 import org.eclipse.swt.SWTError;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -59,6 +64,21 @@ public class Main {
     if (!options.getWindowSystem()) {
       if (transcriber != null) {
         System.out.println(transcriber.toString());
+        if (options.getPlayScore() && score != null) {
+          try {
+            MIDIPlayer player = new MIDIPlayer();
+            player.setSequence(new MIDISequence(score));
+            player.start();
+            try {
+              while (player.isRunning())
+                Thread.sleep(100);
+            } catch (InterruptedException ie) {}
+          } catch (MidiUnavailableException mue) {
+            System.err.println("MIDI playback not available.");
+          } catch (InvalidMidiDataException imde) {
+            imde.printStackTrace();
+          }
+        }
       } else {
         System.err.println("No window system available and no filename specified.");
         printUsage();
@@ -68,8 +88,9 @@ public class Main {
   }
   static void printUsage() {
     System.out.println("Usage: java -jar freedots.jar " +
-                       "[-w PAGEWIDTH] [-nw] [FILENAME|URL]");
+                       "[-w PAGEWIDTH] [-nw] [-p] [FILENAME|URL]");
     System.out.println("Options:");
     System.out.println("\t-nw:\t\tNo Window System");
+    System.out.println("\t-p:\t\tPlay complete score");
   }
 }

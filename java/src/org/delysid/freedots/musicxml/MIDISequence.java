@@ -23,30 +23,31 @@ public class MIDISequence extends javax.sound.midi.Sequence {
       track.add(new MidiEvent(metaMessage, 0));
 
       for (Event event:part.getMusicList())
-	if (event instanceof Note) {
-	  Note note = (Note)event;
-	  Pitch pitch = note.getPitch();
-	  try {
-	    int offset = note.getOffset().toInteger(resolution);
-	    int duration = note.getDuration().toInteger(resolution);
-	    if (pitch != null) {
-	      int midiPitch = pitch.getMIDIPitch();
-	      ShortMessage msg = new ShortMessage();
-	      msg.setMessage(ShortMessage.NOTE_ON,
-			     channel, midiPitch, velocity);
-	      track.add(new MidiEvent(msg, offset));
-	      msg = new ShortMessage();
-	      msg.setMessage(ShortMessage.NOTE_OFF,
-			     channel, midiPitch, 0);
-	      track.add(new MidiEvent(msg, offset+duration));
-	    }
-	  } catch (MusicXMLParseException e) {
-	    e.printStackTrace();
-	  } catch (Exception e) {
-	    e.printStackTrace();
-	  }
-
-	}
+	if (event instanceof Note)
+          addNote(track, (Note)event, channel, velocity);
+	else if (event instanceof Chord)
+          for (Note note:(Chord)event)
+            addNote(track, note, channel, velocity);
+    }
+  }
+  private void addNote(Track track, Note note, int channel, int velocity) {
+    Pitch pitch = note.getPitch();
+    try {
+      int offset = note.getOffset().toInteger(resolution);
+      int duration = note.getDuration().toInteger(resolution);
+      if (pitch != null) {
+        int midiPitch = pitch.getMIDIPitch();
+        ShortMessage msg = new ShortMessage();
+        msg.setMessage(ShortMessage.NOTE_ON, channel, midiPitch, velocity);
+        track.add(new MidiEvent(msg, offset));
+        msg = new ShortMessage();
+        msg.setMessage(ShortMessage.NOTE_OFF, channel, midiPitch, 0);
+        track.add(new MidiEvent(msg, offset+duration));
+      }
+    } catch (MusicXMLParseException e) {
+      e.printStackTrace();
+    } catch (Exception e) {
+      e.printStackTrace();
     }
   }
 }

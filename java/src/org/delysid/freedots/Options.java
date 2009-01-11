@@ -5,17 +5,26 @@ public class Options {
   int pageHeight = 20;
   String location = null;
   boolean windowSystem = true;
+  boolean playScore = false;
+
   public Options(String[] args) {
-    for (int i = 0; i<args.length; i++) {
-      if (args[i].equals("-w") || args[i].equals("--width")) {
-        if (i < args.length-1) {
-          pageWidth = Integer.parseInt(args[++i]);
+    for (int index = 0; index < args.length; index++) {
+      String option = args[index];
+      if (option.equals("-w") || option.equals("--width")) {
+        if (index < args.length-1) {
+          pageWidth = Integer.parseInt(args[++index]);
         }
-      } else if ("-nw".equals(args[i])) {
+      } else if (option.equals("-h") || option.equals("--height")) {
+        if (index < args.length-1) {
+          pageHeight = Integer.parseInt(args[++index]);
+        }
+      } else if ("-nw".equals(option)) {
         windowSystem = false;
+      } else if ("-p".equals(option) || "--play".equals(option)) {
+        playScore = true;
       } else {
-        if (i == args.length-1) {
-          location = args[i];
+        if (index == args.length-1) {
+          location = args[index];
         } else {
           throw new IllegalArgumentException();
         }
@@ -25,16 +34,11 @@ public class Options {
   public String getLocation() {
     return location;
   }
-  public int getPageHeight() {
-    return pageHeight;
-  }
-  public int getPageWidth() {
-    return pageWidth;
-  }
-  public boolean getWindowSystem() {
-    return windowSystem;
-  }
+  public int getPageHeight() { return pageHeight; }
+  public int getPageWidth() { return pageWidth; }
+  public boolean getWindowSystem() { return windowSystem; }
   public void setWindowSystem(boolean windowSystem) {
     this.windowSystem = windowSystem;
   }
+  public boolean getPlayScore() { return playScore; }
 }
