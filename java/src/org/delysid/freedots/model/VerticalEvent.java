@@ -9,5 +9,4 @@ public abstract class VerticalEvent implements Event {
   public VerticalEvent(Fraction offset) { this.offset = offset; }
 
   public Fraction getOffset() { return offset; }
-  public void setOffset(Fraction offset) { this.offset = offset; }
 }

@@ -81,11 +81,11 @@ public class Part {
 						      timeSignature));
 	      }
 	    } else if ("note".equals(measureChild.getNodeName())) {
-	      Note note = new Note(musicdata, divisions, durationMultiplier);
+	      Note note = new Note(measureOffset.add(offset),
+                                   musicdata, divisions, durationMultiplier);
 	      boolean advanceTime = true;
 	      boolean addNoteToEventList = true;
 
-	      note.setOffset(measureOffset.add(offset));
 	      if (currentChord != null) {
 		if (elementHasChild(musicdata, "chord")) {
 		  currentChord.add(note);
@@ -97,7 +97,6 @@ public class Part {
 	      }
 	      if (currentChord == null && noteStartsChord(musicdata)) {
 		currentChord = new Chord(note);
-		currentChord.setOffset(measureOffset.add(offset));
 		advanceTime = false;
 		eventList.add(currentChord);
 		addNoteToEventList = false;

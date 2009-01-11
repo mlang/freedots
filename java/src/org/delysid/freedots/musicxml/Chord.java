@@ -9,11 +9,13 @@ import org.delysid.freedots.model.Event;
 public class Chord extends ArrayList<Note> implements Event {
   Fraction offset;
 
-  Chord() { super(); }
-  Chord(Note initialNote) {
+  Chord(Fraction offset) {
     super();
+    this.offset = offset;
+  }
+  Chord(Note initialNote) {
+    this(initialNote.getOffset());
     add(initialNote);
   }
   public Fraction getOffset() { return offset; }
-  public void setOffset(Fraction offset) { this.offset = offset; }
 }

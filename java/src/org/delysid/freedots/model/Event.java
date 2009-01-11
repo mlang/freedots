@@ -5,6 +5,5 @@ import org.delysid.freedots.Fraction;
 
 public interface Event {
   public Fraction getOffset();
-  public void setOffset(Fraction offset);
 }
 
