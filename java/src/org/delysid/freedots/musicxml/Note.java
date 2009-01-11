@@ -44,6 +44,11 @@ public class Note extends Musicdata implements StaffElement, VoiceElement {
     }
     return null;
   }
+  public void setVoiceName(String name) {
+    if (voice != null) {
+      voice.replaceWholeText(name);
+    }
+  }
 
   public Fraction getOffset() { return offset; }
 

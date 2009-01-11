@@ -12,6 +12,7 @@ import org.delysid.freedots.model.MusicList;
 import org.delysid.freedots.model.StartBar;
 import org.delysid.freedots.model.EndBar;
 import org.delysid.freedots.model.VerticalEvent;
+import org.delysid.freedots.model.Voice;
 
 import org.delysid.freedots.musicxml.Score;
 import org.delysid.freedots.musicxml.Note;
@@ -52,7 +53,7 @@ public class Transcriber {
 	    Event event = staff.get(staffElementIndex);
 
 	    if (event instanceof EndBar) {
-	      List<MusicList> voices = measure.getVoices();
+	      List<Voice> voices = measure.getVoices();
 	      int voiceCount = voices.size();
 
 	      for (int voiceIndex = 0; voiceIndex < voiceCount; voiceIndex++) {

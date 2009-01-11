@@ -23,16 +23,16 @@ public class MusicList extends java.util.ArrayList<Event> {
     add(index, newElement);
     return true;
   }
-  public List<MusicList> getVoices() {
-    SortedMap<String, MusicList> voices = new TreeMap<String, MusicList>();
+  public List<Voice> getVoices() {
+    SortedMap<String, Voice> voices = new TreeMap<String, Voice>();
     for (Event event:this) {
       if (event instanceof VoiceElement) {
         String voiceName = ((VoiceElement)event).getVoiceName();
         if (!voices.containsKey(voiceName))
-          voices.put(voiceName, new MusicList());
+          voices.put(voiceName, new Voice(voiceName));
         voices.get(voiceName).add(event);
       }
     }
-    return new ArrayList<MusicList>(voices.values());    
+    return new ArrayList<Voice>(voices.values());    
   }
 }

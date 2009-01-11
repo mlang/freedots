@@ -5,4 +5,5 @@ import org.delysid.freedots.Fraction;
 
 public interface VoiceElement {
   public String getVoiceName();
+  public void setVoiceName(String name);
 }
