@@ -1,6 +1,7 @@
 /* -*- c-basic-offset: 2; -*- */
 package org.delysid.freedots.musicxml;
 
+import org.delysid.freedots.AugmentedFraction;
 import org.delysid.freedots.Fraction;
 
 import org.delysid.freedots.model.StaffElement;
@@ -18,6 +19,7 @@ public class Note extends Musicdata implements StaffElement, VoiceElement {
   Pitch pitch = null;
   Text staff;
   Text voice;
+  Text type;
 
   public Note(Fraction offset, Element element, int divisions, int durationMultiplier) {
     super(element, divisions, durationMultiplier);
@@ -32,6 +34,7 @@ public class Note extends Musicdata implements StaffElement, VoiceElement {
     }
     staff = getTextContent(element, "staff");
     voice = getTextContent(element, "voice");
+    type = getTextContent(element, "type");
   }
 
   public boolean isGrace() {
@@ -56,6 +59,29 @@ public class Note extends Musicdata implements StaffElement, VoiceElement {
   public void setVoiceName(String name) {
     if (voice != null) {
       voice.replaceWholeText(name);
+    }
+  }
+
+  public AugmentedFraction getAugmentedFraction() {
+    if (type != null) {
+      int numerator = 1;
+      int denominator = 1;
+      String typeString = type.getWholeText();
+      if ("whole".equals(typeString)) denominator = 1;
+      else if ("half".equals(typeString)) denominator = 2;
+      else if ("quarter".equals(typeString)) denominator = 4;
+      else if ("eighth".equals(typeString)) denominator = 8;
+      else if ("16th".equals(typeString)) denominator = 16;
+      else if ("32nd".equals(typeString)) denominator = 32;
+      else if ("64th".equals(typeString)) denominator = 64;
+      else if ("128th".equals(typeString)) denominator = 128;
+      else if ("256th".equals(typeString)) denominator = 256;
+      else
+        System.err.println("Unhandled <type>"+typeString+"</type>");
+      return new AugmentedFraction(numerator, denominator,
+                                   element.getElementsByTagName("dot").getLength());
+    } else {
+      return new AugmentedFraction(getDuration().toInteger(divisions), divisions);
     }
   }
 

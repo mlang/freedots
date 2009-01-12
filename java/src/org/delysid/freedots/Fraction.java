@@ -8,53 +8,19 @@ public class Fraction implements Comparable<Fraction> {
   int numerator;
   int denominator;
     
-  /**
-   * Creates a new {@code Fraction}.
-   * 
-   * @param numerator the numerator value.
-   * @param denominator the denominator value.
-   */
   public Fraction(int numerator, int denominator) {
     this.numerator = numerator;
     this.denominator = denominator;
   }
     
-  /**
-   * Gets the numerator of the {@code Fraction}
-   * 
-   * @return the numerator as an integer.
-   */
-  public int getNumerator() {
-    return numerator;
-  }
-    
-  /**
-   * Gets the denominator of the {@code Fraction}
-   * 
-   * @return the denominator as an integer.
-   */
-  public int getDenominator() {
-    return denominator;
-  }
+  public int getNumerator() { return numerator; }
+  public int getDenominator() { return denominator; }
 
-  /**
-   * Gets the float value of the {@code Fraction}
-   * 
-   * @return the value as a float.
-   */
-  public float toFloat() {
-    return numerator / denominator;
-  }
-
+  public float toFloat() { return numerator / denominator; }
   public int toInteger(int divisions) {
     return this.divide(new Fraction(1, 4*divisions)).numerator;
   }
 
-  /**
-   * Compares this {@code Fraction} with the specified object for order.
-   * 
-   * @return a negative integer, zero, or a positive integer.
-   */
   public int compareTo(Fraction other) {
     return Float.compare(this.toFloat(), other.toFloat());
   }
