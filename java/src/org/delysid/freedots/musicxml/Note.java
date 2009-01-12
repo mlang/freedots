@@ -98,7 +98,7 @@ public class Note extends Musicdata implements StaffElement, VoiceElement {
       return new AugmentedFraction(type.getNumerator(), type.getDenominator(),
                                    element.getElementsByTagName("dot").getLength());
     } else {
-      return new AugmentedFraction(getDuration().toInteger(divisions), divisions);
+      return new AugmentedFraction(getDuration());
     }
   }
 

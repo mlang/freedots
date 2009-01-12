@@ -9,8 +9,8 @@ public class AugmentedFraction extends Fraction {
     this.dots = dots;
     simplify();
   }
-  public AugmentedFraction(int duration, int divisions) {
-    this(duration, 4 * divisions, 0);
+  public AugmentedFraction(Fraction duration) {
+    this(duration.getNumerator(), duration.getDenominator(), 0);
     if (denominator == 2 || denominator == 4 || denominator == 8 ||
         denominator == 16 || denominator == 32 || denominator == 64 ||
         denominator == 128 || denominator == 256) {
