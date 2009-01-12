@@ -53,7 +53,7 @@ public class AugmentedFraction extends Fraction {
       int[] denomDots = { 36, 3, 6, 0 };
       braille += Braille.unicodeBraille(
                    Braille.dotsToBits(stepDots[pitch.getStep()])
-                 | Braille.dotsToBits(log > 3? log-4: log));
+                 | Braille.dotsToBits(denomDots[log > 3? log-4: log]));
       for (int dot = 0; dot < dots; dot++)
         braille += Braille.unicodeBraille(Braille.dotsToBits(3));
     } else { /* Rest */
