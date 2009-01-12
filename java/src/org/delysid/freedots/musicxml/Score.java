@@ -28,6 +28,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.w3c.dom.Text;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
@@ -141,4 +142,17 @@ public class Score {
   public List<Part> getParts() {
     return parts;
   }
+
+  static Text getTextContent(Element element, String childTagName) {
+    NodeList nodeList = element.getElementsByTagName(childTagName);
+    if (nodeList.getLength() >= 1) {
+      nodeList = nodeList.item(nodeList.getLength()-1).getChildNodes();
+      for (int index = 0; index < nodeList.getLength(); index++) {
+        Node node = nodeList.item(index);
+        if (node.getNodeType() == Node.TEXT_NODE) return (Text)node;
+      }
+    }
+    return null;
+  }
+
 }

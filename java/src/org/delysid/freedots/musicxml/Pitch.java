@@ -1,41 +1,33 @@
 /* -*- c-basic-offset: 2; -*- */
 package org.delysid.freedots.musicxml;
 
-
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.w3c.dom.Text;
 
-public class Pitch {
+public class Pitch extends org.delysid.freedots.model.AbstractPitch {
   Element element;
-  public Pitch(Element element) { this.element = element; }
-  public int getStep() throws Exception {
-    NodeList nodeList = element.getElementsByTagName("step");
-    if (nodeList.getLength() == 1) {
-      Node textNode = nodeList.item(0).getChildNodes().item(0);
-      return "CDEFGAB".indexOf(textNode.getNodeValue());
+  Text step = null;
+  Text alter = null;
+  Text octave = null;
+
+  public Pitch(Element element) throws MusicXMLParseException {
+    this.element = element;
+    step = Score.getTextContent(element, "step");
+    alter = Score.getTextContent(element, "alter");
+    octave = Score.getTextContent(element, "octave");
+    if (step == null || octave == null) {
+      throw new MusicXMLParseException("Missing step or octave element");
     }
-    throw new Exception();
+  }
+  public int getStep() {
+    return "CDEFGAB".indexOf(step.getWholeText().trim().toUpperCase());
   }
   public int getAlter() {
-    NodeList nodeList = element.getElementsByTagName("alter");
-    if (nodeList.getLength() == 1) {
-      Node textNode = nodeList.item(0).getChildNodes().item(0);
-      return Integer.parseInt(textNode.getNodeValue());
-    }
-    return 0;
+    return alter != null? Integer.parseInt(alter.getWholeText()): 0;
   }
-  public int getOctave() throws Exception {
-    NodeList nodeList = element.getElementsByTagName("octave");
-    if (nodeList.getLength() == 1) {
-      Node textNode = nodeList.item(0).getChildNodes().item(0);
-      return Integer.parseInt(textNode.getNodeValue());
-    }
-    throw new Exception();
-  }
-  public int getMIDIPitch() throws Exception {
-    int[] stepToChromatic = { 0, 2, 4, 5, 7, 9, 11 };
-    int midiPitch = getOctave()*12 + stepToChromatic[getStep()] + getAlter();
-    return midiPitch;
+  public int getOctave() {
+    return Integer.parseInt(octave.getWholeText());
   }
 }

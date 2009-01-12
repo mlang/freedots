@@ -1,6 +1,8 @@
 /* -*- c-basic-offset: 2; -*- */
 package org.delysid.freedots;
 
+import org.delysid.freedots.model.AbstractPitch;
+
 public class AugmentedFraction extends Fraction {
   int dots;
 
@@ -42,5 +44,22 @@ public class AugmentedFraction extends Fraction {
     float rest = undottedValue;
     for (int dot = 0; dot < dots; dot++) rest /= 2;
     return (undottedValue * 2) - rest;    
+  }
+  public String toBrailleString(AbstractPitch pitch) {
+    String braille = "";
+    int log = Util.log2(denominator);
+    if (pitch != null) {
+      int[] stepDots = { 145, 15, 124, 1245, 125, 24, 245 };
+      int[] denomDots = { 36, 3, 6, 0 };
+      braille += Braille.unicodeBraille(
+                   Braille.dotsToBits(stepDots[pitch.getStep()])
+                 | Braille.dotsToBits(log > 3? log-4: log));
+      for (int dot = 0; dot < dots; dot++)
+        braille += Braille.unicodeBraille(Braille.dotsToBits(3));
+    } else { /* Rest */
+      int[] restDots = { 134, 136, 1236, 1346 };
+      braille += Braille.unicodeBraille(Braille.dotsToBits(restDots[log > 3? log-4: log]));
+    }
+    return braille;
   }
 }

@@ -54,10 +54,10 @@ public class Note extends Musicdata implements StaffElement, VoiceElement {
     if (nodeList.getLength() >= 1) {
       pitch = new Pitch((Element)nodeList.item(nodeList.getLength()-1));
     }
-    staff = getTextContent(element, "staff");
-    voice = getTextContent(element, "voice");
+    staff = Score.getTextContent(element, "staff");
+    voice = Score.getTextContent(element, "voice");
 
-    Text textNode = getTextContent(element, "type");
+    Text textNode = Score.getTextContent(element, "type");
     if (textNode != null) {
       String typeName = textNode.getWholeText();
       String santizedTypeName = typeName.trim().toLowerCase();
@@ -124,16 +124,5 @@ public class Note extends Musicdata implements StaffElement, VoiceElement {
     }
     int getNumerator() { return numerator; }
     int getDenominator() { return denominator; }      
-  }
-  static Text getTextContent(Element element, String childTagName) {
-    NodeList nodeList = element.getElementsByTagName(childTagName);
-    if (nodeList.getLength() >= 1) {
-      nodeList = nodeList.item(nodeList.getLength()-1).getChildNodes();
-      for (int index = 0; index < nodeList.getLength(); index++) {
-        Node node = nodeList.item(index);
-        if (node.getNodeType() == Node.TEXT_NODE) return (Text)node;
-      }
-    }
-    return null;
   }
 }

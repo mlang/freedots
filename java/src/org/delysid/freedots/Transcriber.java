@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.delysid.freedots.model.AbstractPitch;
 import org.delysid.freedots.model.Event;
 import org.delysid.freedots.model.StaffElement;
 import org.delysid.freedots.model.MusicList;
@@ -166,34 +167,11 @@ public class Transcriber {
       for (Object element:elements) {
 	if (element instanceof Note) {
 	  Note note = (Note)element;
-	  Pitch pitch = note.getPitch();
-	  if (pitch != null) {
-	    int noteDots[] = { 145, 15, 124, 1245, 125, 24, 245 };
-	    int step = -1;
-
-	    try {
-	      step = pitch.getStep();
-	    } catch (Exception e) {};
-
-	    if (step != -1) {
-	      int unicode = 0X2800 | dotsToBits(noteDots[step]);
-	      output += (char)unicode;
-	    }
-	  } else {
-	    output += "r";
-	  }
+	  AbstractPitch pitch = (AbstractPitch)note.getPitch();
+          output += note.getAugmentedFraction().toBrailleString(pitch);
 	}
       }
       return output;
     }
-  }
-  static int dotsToBits(int dots) {
-    int bits = 0;
-    while (dots > 0) {
-      int number = dots % 10;
-      dots /= 10;
-      bits |= 1 << (number - 1);
-    }
-    return bits;
   }
 }
