@@ -1,6 +1,9 @@
 /* -*- c-basic-offset: 2; -*- */
 package org.delysid.freedots.musicxml;
 
+import java.util.Map;
+import java.util.HashMap;
+
 import org.delysid.freedots.AugmentedFraction;
 import org.delysid.freedots.Fraction;
 
@@ -19,9 +22,28 @@ public class Note extends Musicdata implements StaffElement, VoiceElement {
   Pitch pitch = null;
   Text staff;
   Text voice;
-  Text type;
+  Type type = Type.NONE;
 
-  public Note(Fraction offset, Element element, int divisions, int durationMultiplier) {
+  private static Map<String, Type> typeMap = new HashMap<String, Type>() {
+    {
+      put("long", Type.LONG);
+      put("breve", Type.BREVE);
+      put("whole", Type.WHOLE);
+      put("half", Type.HALF);
+      put("quarter", Type.QUARTER);
+      put("eighth", Type.EIGHTH);
+      put("16th", Type.SIXTEENTH);
+      put("32nd", Type.THIRTYSECOND);
+      put("64th", Type.SIXTYFOURTH);
+      put("128th", Type.ONEHUNDREDTWENTYEIGHTH);
+      put("256th", Type.TWOHUNDREDFIFTYSIXTH);
+    }
+  };
+
+  public Note(
+    Fraction offset, Element element,
+    int divisions, int durationMultiplier
+  ) throws MusicXMLParseException {
     super(element, divisions, durationMultiplier);
     this.offset = offset;
     NodeList nodeList = element.getElementsByTagName("grace");
@@ -34,7 +56,16 @@ public class Note extends Musicdata implements StaffElement, VoiceElement {
     }
     staff = getTextContent(element, "staff");
     voice = getTextContent(element, "voice");
-    type = getTextContent(element, "type");
+
+    Text textNode = getTextContent(element, "type");
+    if (textNode != null) {
+      String typeName = textNode.getWholeText();
+      String santizedTypeName = typeName.trim().toLowerCase();
+      if (typeMap.containsKey(santizedTypeName))
+        type = typeMap.get(santizedTypeName);
+      else
+        throw new MusicXMLParseException("Illegal <type> content '"+typeName+"'");
+    }
   }
 
   public boolean isGrace() {
@@ -63,22 +94,8 @@ public class Note extends Musicdata implements StaffElement, VoiceElement {
   }
 
   public AugmentedFraction getAugmentedFraction() {
-    if (type != null) {
-      int numerator = 1;
-      int denominator = 1;
-      String typeString = type.getWholeText();
-      if ("whole".equals(typeString)) denominator = 1;
-      else if ("half".equals(typeString)) denominator = 2;
-      else if ("quarter".equals(typeString)) denominator = 4;
-      else if ("eighth".equals(typeString)) denominator = 8;
-      else if ("16th".equals(typeString)) denominator = 16;
-      else if ("32nd".equals(typeString)) denominator = 32;
-      else if ("64th".equals(typeString)) denominator = 64;
-      else if ("128th".equals(typeString)) denominator = 128;
-      else if ("256th".equals(typeString)) denominator = 256;
-      else
-        System.err.println("Unhandled <type>"+typeString+"</type>");
-      return new AugmentedFraction(numerator, denominator,
+    if (type != Type.NONE) {
+      return new AugmentedFraction(type.getNumerator(), type.getDenominator(),
                                    element.getElementsByTagName("dot").getLength());
     } else {
       return new AugmentedFraction(getDuration().toInteger(divisions), divisions);
@@ -87,6 +104,21 @@ public class Note extends Musicdata implements StaffElement, VoiceElement {
 
   public Fraction getOffset() { return offset; }
 
+  enum Type {
+    LONG(4, 1), BREVE(2, 1), WHOLE(1, 1), HALF(1, 2), QUARTER(1, 4),
+    EIGHTH(1, 8), SIXTEENTH(1, 16), THIRTYSECOND(1, 32),
+    SIXTYFOURTH(1, 64), ONEHUNDREDTWENTYEIGHTH(1, 128),
+    TWOHUNDREDFIFTYSIXTH(1, 256), NONE(0, 1);
+
+    int numerator;
+    int denominator;
+    private Type(int numerator, int denominator) {
+      this.numerator = numerator;
+      this.denominator = denominator;
+    }
+    int getNumerator() { return numerator; }
+    int getDenominator() { return denominator; }      
+  }
   static Text getTextContent(Element element, String childTagName) {
     NodeList nodeList = element.getElementsByTagName(childTagName);
     if (nodeList.getLength() >= 1) {
