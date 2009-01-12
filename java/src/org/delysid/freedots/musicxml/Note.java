@@ -7,6 +7,7 @@ import java.util.HashMap;
 import org.delysid.freedots.AugmentedFraction;
 import org.delysid.freedots.Fraction;
 
+import org.delysid.freedots.model.Accidental;
 import org.delysid.freedots.model.StaffElement;
 import org.delysid.freedots.model.VoiceElement;
 
@@ -23,7 +24,6 @@ public class Note extends Musicdata implements StaffElement, VoiceElement {
   Text staff;
   Text voice;
   Type type = Type.NONE;
-
   private static Map<String, Type> typeMap = new HashMap<String, Type>() {
     {
       put("long", Type.LONG);
@@ -39,7 +39,13 @@ public class Note extends Musicdata implements StaffElement, VoiceElement {
       put("256th", Type.TWOHUNDREDFIFTYSIXTH);
     }
   };
-
+  Accidental accidental = null;
+  private static Map<String, Accidental> accidentalMap =
+    new HashMap<String, Accidental>() {
+    { put("natural", Accidental.NATURAL);
+      put("flat", Accidental.FLAT); put("sharp", Accidental.SHARP);
+    }
+  };
   public Note(
     Fraction offset, Element element,
     int divisions, int durationMultiplier
@@ -65,6 +71,15 @@ public class Note extends Musicdata implements StaffElement, VoiceElement {
         type = typeMap.get(santizedTypeName);
       else
         throw new MusicXMLParseException("Illegal <type> content '"+typeName+"'");
+    }
+    textNode = Score.getTextContent(element, "accidental");
+    if (textNode != null) {
+      String accidentalName = textNode.getWholeText();
+      String santizedName = accidentalName.trim().toLowerCase();
+      if (accidentalMap.containsKey(santizedName))
+        accidental = accidentalMap.get(santizedName);
+      else
+        throw new MusicXMLParseException("Illegal <accidental>"+accidentalName+"</accidental>");
     }
   }
 
@@ -106,6 +121,10 @@ public class Note extends Musicdata implements StaffElement, VoiceElement {
     } else {
       return new AugmentedFraction(getDuration());
     }
+  }
+
+  public Accidental getAccidental() {
+    return accidental;
   }
 
   public Fraction getOffset() { return offset; }
