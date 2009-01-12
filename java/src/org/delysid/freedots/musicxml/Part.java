@@ -110,6 +110,11 @@ public class Part {
 	    } else if ("backup".equals(measureChild.getNodeName())) { 
 	      Backup backup = new Backup(musicdata, divisions, durationMultiplier);
 	      offset = offset.subtract(backup.getDuration());
+            } else if ("forward".equals(measureChild.getNodeName())) {
+              Note invisibleRest = new Note(measureOffset.add(offset), musicdata,
+                                            divisions, durationMultiplier);
+              eventList.add(invisibleRest);
+              offset = offset.add(invisibleRest.getDuration());
 	    } else if ("print".equals(measureChild.getNodeName())) {
 	      Print print = new Print((Element)kid);
 	      if (print.isNewSystem()) startBar.setNewSystem(true);

@@ -72,6 +72,12 @@ public class Note extends Musicdata implements StaffElement, VoiceElement {
     if (grace != null) return true;
     return false;
   }
+  public boolean isRest() {
+    if ("forward".equals(element.getTagName()) ||
+        element.getElementsByTagName("rest").getLength() > 0)
+      return true;
+    return false;
+  }
   public Pitch getPitch() {
     return pitch;
   }
