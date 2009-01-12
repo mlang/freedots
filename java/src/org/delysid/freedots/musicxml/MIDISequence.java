@@ -31,23 +31,25 @@ public class MIDISequence extends javax.sound.midi.Sequence {
     }
   }
   private void addNote(Track track, Note note, int channel, int velocity) {
-    Pitch pitch = note.getPitch();
-    try {
-      int offset = note.getOffset().toInteger(resolution);
-      int duration = note.getDuration().toInteger(resolution);
-      if (pitch != null) {
-        int midiPitch = pitch.getMIDIPitch();
-        ShortMessage msg = new ShortMessage();
-        msg.setMessage(ShortMessage.NOTE_ON, channel, midiPitch, velocity);
-        track.add(new MidiEvent(msg, offset));
-        msg = new ShortMessage();
-        msg.setMessage(ShortMessage.NOTE_OFF, channel, midiPitch, 0);
-        track.add(new MidiEvent(msg, offset+duration));
+    if (!note.isGrace()) {
+      Pitch pitch = note.getPitch();
+      try {
+        int offset = note.getOffset().toInteger(resolution);
+        int duration = note.getDuration().toInteger(resolution);
+        if (pitch != null) {
+          int midiPitch = pitch.getMIDIPitch();
+          ShortMessage msg = new ShortMessage();
+          msg.setMessage(ShortMessage.NOTE_ON, channel, midiPitch, velocity);
+          track.add(new MidiEvent(msg, offset));
+          msg = new ShortMessage();
+          msg.setMessage(ShortMessage.NOTE_OFF, channel, midiPitch, 0);
+          track.add(new MidiEvent(msg, offset+duration));
+        }
+      } catch (MusicXMLParseException e) {
+        e.printStackTrace();
+      } catch (Exception e) {
+        e.printStackTrace();
       }
-    } catch (MusicXMLParseException e) {
-      e.printStackTrace();
-    } catch (Exception e) {
-      e.printStackTrace();
     }
   }
 }

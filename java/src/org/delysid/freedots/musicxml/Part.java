@@ -83,7 +83,7 @@ public class Part {
 	    } else if ("note".equals(measureChild.getNodeName())) {
 	      Note note = new Note(measureOffset.add(offset),
                                    musicdata, divisions, durationMultiplier);
-	      boolean advanceTime = true;
+	      boolean advanceTime = !note.isGrace();
 	      boolean addNoteToEventList = true;
 
 	      if (currentChord != null) {

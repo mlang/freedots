@@ -14,6 +14,7 @@ import org.w3c.dom.Text;
 public class Note extends Musicdata implements StaffElement, VoiceElement {
   Fraction offset;
 
+  Element grace = null;
   Pitch pitch = null;
   Text staff;
   Text voice;
@@ -21,7 +22,11 @@ public class Note extends Musicdata implements StaffElement, VoiceElement {
   public Note(Fraction offset, Element element, int divisions, int durationMultiplier) {
     super(element, divisions, durationMultiplier);
     this.offset = offset;
-    NodeList nodeList = element.getElementsByTagName("pitch");
+    NodeList nodeList = element.getElementsByTagName("grace");
+    if (nodeList.getLength() >= 1) {
+      grace = (Element)nodeList.item(nodeList.getLength()-1);
+    }
+    nodeList = element.getElementsByTagName("pitch");
     if (nodeList.getLength() >= 1) {
       pitch = new Pitch((Element)nodeList.item(nodeList.getLength()-1));
     }
@@ -29,6 +34,10 @@ public class Note extends Musicdata implements StaffElement, VoiceElement {
     voice = getTextContent(element, "voice");
   }
 
+  public boolean isGrace() {
+    if (grace != null) return true;
+    return false;
+  }
   public Pitch getPitch() {
     return pitch;
   }
