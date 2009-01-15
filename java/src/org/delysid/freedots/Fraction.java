@@ -5,8 +5,8 @@ package org.delysid.freedots;
  * Represents a fraction value.
  */
 public class Fraction implements Comparable<Fraction> {
-  int numerator;
-  int denominator;
+  public int numerator;
+  public int denominator;
     
   public Fraction(int numerator, int denominator) {
     this.numerator = numerator;

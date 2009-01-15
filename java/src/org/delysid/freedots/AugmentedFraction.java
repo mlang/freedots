@@ -54,12 +54,13 @@ public class AugmentedFraction extends Fraction {
       braille += Braille.unicodeBraille(
                    Braille.dotsToBits(stepDots[pitch.getStep()])
                  | Braille.dotsToBits(denomDots[log > 3? log-4: log]));
-      for (int dot = 0; dot < dots; dot++)
-        braille += Braille.unicodeBraille(Braille.dotsToBits(3));
     } else { /* Rest */
       int[] restDots = { 134, 136, 1236, 1346 };
       braille += Braille.unicodeBraille(Braille.dotsToBits(restDots[log > 3? log-4: log]));
     }
+
+    for (int dot = 0; dot < dots; dot++) braille += Braille.dot;
+
     return braille;
   }
 }
