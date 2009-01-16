@@ -5,4 +5,5 @@ import org.delysid.freedots.Fraction;
 
 public interface StaffElement extends Event {
   public String getStaffName();
+  public boolean isRest();
 }

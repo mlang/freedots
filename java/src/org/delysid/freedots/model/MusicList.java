@@ -7,6 +7,7 @@ package org.delysid.freedots.model;
  */
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -33,6 +34,10 @@ public class MusicList extends java.util.ArrayList<Event> {
         voices.get(voiceName).add(event);
       }
     }
+
+    Iterator<Voice> iter = voices.values().iterator();
+    while (iter.hasNext()) if (iter.next().restsOnly()) iter.remove();
+
     return new ArrayList<Voice>(voices.values());    
   }
 }

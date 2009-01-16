@@ -9,6 +9,12 @@ public class Voice extends MusicList {
     this.name = name;
   }
 
+  public boolean restsOnly() {
+    for (Event event:this)
+      if (event instanceof StaffElement)
+        if (!((StaffElement)event).isRest()) return false;
+    return true;
+  }
   public void swapPosition(Voice other) {
     String oldName = this.name;
     String newName = other.name;
