@@ -26,8 +26,13 @@ public class Transcriber {
   public Score getScore() { return score; }
 
   Options options;
+
   String textStore;
-  final String lineSeparator = System.getProperty("line.separator");
+  int characterCount;
+  int lineCount;
+  int pageNumber;
+
+  static final String lineSeparator = System.getProperty("line.separator");
 
   public Transcriber(Score score, Options options) {
     this.score = score;
@@ -39,14 +44,22 @@ public class Transcriber {
   }
   private void clear() {
     textStore = "";
+    characterCount = 0;
+    lineCount = 0;
+    pageNumber = 1;
   }
   void transcribe() throws Exception {
     for (Part part:score.getParts()) {
       printLine(part.getName());
       for (Segment segment:getSegments(part)) {
-        for (int staffIndex=0; staffIndex<segment.getStaffCount(); staffIndex++) {
+        int staffCount = segment.getStaffCount();
+
+        for (int staffIndex = 0; staffIndex < staffCount; staffIndex++) {
 	  Staff staff = segment.getStaff(staffIndex);
 	  MusicList measure = new MusicList();
+
+          if (characterCount > 0) newLine();
+          indentTo(2);
 
 	  for (int staffElementIndex = 0; staffElementIndex < staff.size();
 	       staffElementIndex++) {
@@ -62,12 +75,18 @@ public class Transcriber {
 		for (Event voiceEvent:voices.get(voiceIndex)) {
                   bm.add(voiceEvent);
 		}
-		textStore += bm.toString();
+ 
+                String braille = bm.toString();
+                if (characterCount+braille.length() > options.getPageWidth()) {
+                  newLine();
+                }
+		printString(braille);
+
 		if (voiceIndex < voiceCount-1) {
-		  textStore += "2`";
+		  printString(Braille.fullVoiceSeparator.toString());
 		}
 	      }
-	      textStore += " ";
+	      printString(" ");
 
 	      measure = new MusicList();
 	    } else {
@@ -78,17 +97,31 @@ public class Transcriber {
       }
     }
   }
-  public void printLine(String text) {
-    textStore += text + lineSeparator;
+  private void printString(String text) {
+    textStore += text;
+    characterCount += text.length();
   }
-  public void printNote(Note note) {
-    Pitch pitch = note.getPitch();
-    if (pitch != null) {
-      String steps[] = { "C", "D", "E", "F", "G", "A", "B"};
-      try {
-	textStore += steps[pitch.getStep()] + " ";
-      } catch (Exception e) {};
-    } else {
+  private void printLine(String text) {
+    textStore += text;
+    newLine();
+  }
+  private void newLine() {
+    textStore += lineSeparator;
+    characterCount = 0;
+    lineCount += 1;
+    if (lineCount == options.getPageHeight()) {
+      indentTo(options.getPageWidth()-5);
+      textStore += Integer.toString(pageNumber++) + lineSeparator;
+      characterCount = 0;
+      lineCount = 0;
+    }
+  }
+  private void indentTo(int column) {
+    int difference = column - characterCount;
+    while (difference > 0) {
+      textStore += " ";
+      characterCount += 1;
+      difference -= 1;
     }
   }
   public String toString() {
