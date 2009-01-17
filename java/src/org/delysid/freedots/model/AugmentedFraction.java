@@ -1,7 +1,8 @@
 /* -*- c-basic-offset: 2; -*- */
-package org.delysid.freedots;
+package org.delysid.freedots.model;
 
-import org.delysid.freedots.model.AbstractPitch;
+import org.delysid.freedots.Braille;
+import org.delysid.freedots.Util;
 
 public class AugmentedFraction extends Fraction {
   int dots;

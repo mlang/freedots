@@ -1,7 +1,7 @@
 /* -*- c-basic-offset: 2; -*- */
 package org.delysid.freedots.musicxml;
 
-import org.delysid.freedots.Fraction;
+import org.delysid.freedots.model.Fraction;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;

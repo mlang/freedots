@@ -2,7 +2,6 @@
 package org.delysid.freedots.model;
 
 import org.delysid.freedots.Braille;
-import org.delysid.freedots.Fraction;
 
 public class TimeSignature extends Fraction {
   public TimeSignature(int numerator, int denominator) {

@@ -13,7 +13,7 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
-import org.delysid.freedots.Fraction;
+import org.delysid.freedots.model.Fraction;
 import org.delysid.freedots.model.MusicList;
 import org.delysid.freedots.model.StartBar;
 import org.delysid.freedots.model.EndBar;

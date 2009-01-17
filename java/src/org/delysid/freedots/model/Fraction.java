@@ -1,12 +1,12 @@
 /* -*- c-basic-offset: 2; -*- */
-package org.delysid.freedots;
+package org.delysid.freedots.model;
 
 /**
  * Represents a fraction value.
  */
 public class Fraction implements Comparable<Fraction> {
-  public int numerator;
-  public int denominator;
+  int numerator;
+  int denominator;
     
   public Fraction(int numerator, int denominator) {
     this.numerator = numerator;

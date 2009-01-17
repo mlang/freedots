@@ -4,10 +4,9 @@ package org.delysid.freedots.musicxml;
 import java.util.Map;
 import java.util.HashMap;
 
-import org.delysid.freedots.AugmentedFraction;
-import org.delysid.freedots.Fraction;
-
 import org.delysid.freedots.model.Accidental;
+import org.delysid.freedots.model.AugmentedFraction;
+import org.delysid.freedots.model.Fraction;
 import org.delysid.freedots.model.StaffElement;
 import org.delysid.freedots.model.VoiceElement;
 

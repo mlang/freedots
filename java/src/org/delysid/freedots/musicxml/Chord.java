@@ -3,8 +3,8 @@ package org.delysid.freedots.musicxml;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.delysid.freedots.Fraction;
 import org.delysid.freedots.model.Event;
+import org.delysid.freedots.model.Fraction;
 
 public class Chord extends ArrayList<Note> implements Event {
   Fraction offset;
