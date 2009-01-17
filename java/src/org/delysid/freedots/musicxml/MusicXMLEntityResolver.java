@@ -9,7 +9,7 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 public class MusicXMLEntityResolver implements org.xml.sax.EntityResolver {
-  private Map<String, String> map = new HashMap<String, String>() {
+  private static Map<String, String> map = new HashMap<String, String>() {
     {
       put("-//Recordare//DTD MusicXML 1.1 Partwise//EN", "partwise.dtd");
       put("-//Recordare//DTD MusicXML 2.0 Partwise//EN", "partwise.dtd");
@@ -31,15 +31,6 @@ public class MusicXMLEntityResolver implements org.xml.sax.EntityResolver {
 
   // Implementation of org.xml.sax.EntityResolver
 
-  /**
-   * Describe <code>resolveEntity</code> method here.
-   *
-   * @param publicID a <code>String</code> value
-   * @param systemID a <code>String</code> value
-   * @return an <code>InputSource</code> value
-   * @exception SAXException if an error occurs
-   * @exception IOException if an error occurs
-   */
   public final InputSource resolveEntity(
     String publicID, String systemID
   ) throws SAXException, IOException {

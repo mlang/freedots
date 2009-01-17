@@ -24,7 +24,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-public class Part {
+public final class Part {
   private Element part;
   private Element scorePart;
   private Score score;

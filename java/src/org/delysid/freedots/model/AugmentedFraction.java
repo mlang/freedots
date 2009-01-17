@@ -4,8 +4,8 @@ package org.delysid.freedots.model;
 import org.delysid.freedots.Braille;
 import org.delysid.freedots.Util;
 
-public class AugmentedFraction extends Fraction {
-  int dots;
+public final class AugmentedFraction extends Fraction {
+  private int dots;
 
   public AugmentedFraction(int numerator, int denominator, int dots) {
     super(numerator, denominator);

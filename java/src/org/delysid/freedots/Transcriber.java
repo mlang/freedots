@@ -20,19 +20,19 @@ import org.delysid.freedots.musicxml.Note;
 import org.delysid.freedots.musicxml.Part;
 import org.delysid.freedots.musicxml.Pitch;
 
-public class Transcriber {
-  Score score;
+public final class Transcriber {
+  private Score score;
 
   public Score getScore() { return score; }
 
   Options options;
 
-  String textStore;
-  int characterCount;
-  int lineCount;
-  int pageNumber;
+  private String textStore;
+  private int characterCount;
+  private int lineCount;
+  private int pageNumber;
 
-  static final String lineSeparator = System.getProperty("line.separator");
+  private static String lineSeparator = System.getProperty("line.separator");
 
   public Transcriber(Score score, Options options) {
     this.score = score;
