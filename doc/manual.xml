@@ -222,7 +222,7 @@ to &bmn;.
       <refsynopsisdiv>
 	<cmdsynopsis>
 	  <command>&app;</command>
-	  <arg><option>--gui</option></arg>
+	  <arg><option>-nw</option></arg>
 	  <group>
 	    <arg><option>-p</option></arg>
 	    <arg><option>--play</option></arg>
@@ -231,6 +231,11 @@ to &bmn;.
 	    <arg><option>-w</option> <replaceable>COLUMNS</replaceable></arg>
 	    <arg><option>--width</option> <replaceable>COLUMNS</replaceable></arg>
 	  </group>
+          <group>
+            <arg><option>-h</option> <replaceable>LINES</replaceable></arg>
+            <arg><option>--height</option> <replaceable>LINES</replaceable></arg>
+          </group>
+          <arg><option>-msm</option> <replaceable>visual|NUMBER</replaceable></arg>
 	  <arg choice="req"><replaceable>MusicXML file</replaceable></arg>
 	</cmdsynopsis>
       </refsynopsisdiv>
@@ -247,10 +252,10 @@ to &bmn;.
 	<variablelist>
 	  <varlistentry>
 	    <term>
-	      <option>--gui</option>
+	      <option>-nw</option>
 	    </term>
 	    <listitem><para>
-	      Start up the <acronym>GNOME</acronym> user interface.</para>
+	      Do not start the graphical user interface (batch processing).</para>
 	    </listitem>
 	  </varlistentry>
 	  <varlistentry>

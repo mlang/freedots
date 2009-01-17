@@ -171,12 +171,13 @@ public class Transcriber {
     segments.add(currentSegment);
     MusicList musicList = part.getMusicList();
     int index = 0;
+    int measureCount = 0;
 
     while (true) {
       while (index < musicList.size()) {
 	Event event = musicList.get(index++);
 	currentSegment.add(event);
-	if (event instanceof EndBar) break;
+	if (event instanceof EndBar) { measureCount++; break; }
       }
 
       if (index == musicList.size()) return segments;
@@ -185,9 +186,35 @@ public class Transcriber {
 	throw new Exception();
 
       StartBar startBar = (StartBar)musicList.get(index);
-      if (startBar.getStaffCount() != currentSegment.getStaffCount()) {
+      if ((startBar.getStaffCount() != currentSegment.getStaffCount()) ||
+          (currentSegment.getStaffCount() > 1 && (
+           (options.multiStaffMeasures == Options.MultiStaffMeasures.VISUAL &&
+            startBar.getNewSystem()) ||
+           (options.multiStaffMeasures == Options.MultiStaffMeasures.TWO &&
+            measureCount == 2) ||
+           (options.multiStaffMeasures == Options.MultiStaffMeasures.THREE &&
+            measureCount == 3) ||
+           (options.multiStaffMeasures == Options.MultiStaffMeasures.FOUR &&
+            measureCount == 4) ||
+           (options.multiStaffMeasures == Options.MultiStaffMeasures.FIVE &&
+            measureCount == 5) ||
+           (options.multiStaffMeasures == Options.MultiStaffMeasures.SIX &&
+            measureCount == 6) ||
+           (options.multiStaffMeasures == Options.MultiStaffMeasures.SEVEN &&
+            measureCount == 7) ||
+           (options.multiStaffMeasures == Options.MultiStaffMeasures.EIGHT &&
+            measureCount == 8) ||
+           (options.multiStaffMeasures == Options.MultiStaffMeasures.NINE &&
+            measureCount == 9) ||
+           (options.multiStaffMeasures == Options.MultiStaffMeasures.TEN &&
+            measureCount == 10) ||
+           (options.multiStaffMeasures == Options.MultiStaffMeasures.ELEVEN &&
+            measureCount == 11) ||
+           (options.multiStaffMeasures == Options.MultiStaffMeasures.TWELVE &&
+            measureCount == 12)))) {
 	currentSegment = new Segment();
 	segments.add(currentSegment);
+        measureCount = 0;
       }
     }
   }

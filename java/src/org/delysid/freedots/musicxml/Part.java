@@ -77,7 +77,7 @@ public class Part {
 		startBar.setStaffCount(staffCount);
 	      }
 	      if (newTimeSignature != null) {
-                if (timeSignature == null) {
+                if (lastTimeSignature == null) {
   		  timeSignature = newTimeSignature;
                 }
                 lastTimeSignature = newTimeSignature;
