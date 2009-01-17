@@ -51,6 +51,7 @@ public class Transcriber {
   void transcribe() throws Exception {
     for (Part part:score.getParts()) {
       printLine(part.getName());
+      printLine(part.getTimeSignature().toBraille());
       for (Segment segment:getSegments(part)) {
         int staffCount = segment.getStaffCount();
 

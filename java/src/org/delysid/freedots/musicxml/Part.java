@@ -29,6 +29,7 @@ public class Part {
   private Element scorePart;
   private Score score;
 
+  private TimeSignature timeSignature = new TimeSignature(4, 4);
   private MusicList eventList = new MusicList();
 
   public Part(Element part, Element scorePart, Score score)
@@ -41,7 +42,7 @@ public class Part {
     int durationMultiplier = 1;
 
     Fraction measureOffset = new Fraction(0, 1);
-    TimeSignature timeSignature = new TimeSignature(4, 4);
+    TimeSignature lastTimeSignature = null;
     int staffCount = 1;
 
     NodeList partChildNodes = part.getChildNodes();
@@ -75,10 +76,13 @@ public class Part {
 		staffCount = newStaffCount;
 		startBar.setStaffCount(staffCount);
 	      }
-	      if (newTimeSignature != null && !newTimeSignature.equals(timeSignature)) {
-		timeSignature = newTimeSignature;
+	      if (newTimeSignature != null) {
+                if (timeSignature == null) {
+  		  timeSignature = newTimeSignature;
+                }
+                lastTimeSignature = newTimeSignature;
 		eventList.add(new TimeSignatureChange(measureOffset.add(offset),
-						      timeSignature));
+						      lastTimeSignature));
 	      }
 	    } else if ("note".equals(measureChild.getNodeName())) {
 	      Note note = new Note(measureOffset.add(offset),
@@ -129,6 +133,7 @@ public class Part {
     }
   }
 
+  public TimeSignature getTimeSignature() { return timeSignature; }
   public MusicList getMusicList () { return eventList; }
 
   public String getName() {

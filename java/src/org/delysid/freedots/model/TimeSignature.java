@@ -19,13 +19,13 @@ public class TimeSignature extends Fraction {
     while (number > 0) {
       int digit = number % 10;
       number /= 10;
-      result = Braille.unicodeBraille(Braille.dotsToBits(lowerDots[number]))+result;
+      result = Braille.unicodeBraille(Braille.dotsToBits(lowerDots[digit]))+result;
     }
     number = numerator;
     while (number > 0) {
       int digit = number % 10;
       number /= 10;
-      result = Braille.unicodeBraille(Braille.dotsToBits(upperDots[number]))+result;
+      result = Braille.unicodeBraille(Braille.dotsToBits(upperDots[digit]))+result;
     }
     return Braille.numberSign + result;
   }
