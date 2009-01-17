@@ -15,31 +15,31 @@
     <!-- Create the time stamp -->
     <tstamp/>
     <!-- Create the build directory structure used by compile -->
-    <mkdir dir="${build}/org/delysid/musicxml"/>
+    <mkdir dir="${build}/org/delysid/freedots/musicxml"/>
     <get src="http://www.musicxml.org/dtds/partwise.dtd"
-	 dest="${build}/org/delysid/musicxml/partwise.dtd" usetimestamp="true"/>
+	 dest="${build}/org/delysid/freedots/musicxml/partwise.dtd" usetimestamp="true"/>
     <get src="http://www.musicxml.org/dtds/common.mod"
-	 dest="${build}/org/delysid/musicxml/common.mod" usetimestamp="true"/>
+	 dest="${build}/org/delysid/freedots/musicxml/common.mod" usetimestamp="true"/>
     <get src="http://www.musicxml.org/dtds/isolat1.ent"
-	 dest="${build}/org/delysid/musicxml/isolat1.ent" usetimestamp="true"/>
+	 dest="${build}/org/delysid/freedots/musicxml/isolat1.ent" usetimestamp="true"/>
     <get src="http://www.musicxml.org/dtds/isolat2.ent"
-	 dest="${build}/org/delysid/musicxml/isolat2.ent" usetimestamp="true"/>
+	 dest="${build}/org/delysid/freedots/musicxml/isolat2.ent" usetimestamp="true"/>
     <get src="http://www.musicxml.org/dtds/layout.mod"
-	 dest="${build}/org/delysid/musicxml/layout.mod" usetimestamp="true"/>
+	 dest="${build}/org/delysid/freedots/musicxml/layout.mod" usetimestamp="true"/>
     <get src="http://www.musicxml.org/dtds/identity.mod"
-	 dest="${build}/org/delysid/musicxml/identity.mod" usetimestamp="true"/>
+	 dest="${build}/org/delysid/freedots/musicxml/identity.mod" usetimestamp="true"/>
     <get src="http://www.musicxml.org/dtds/attributes.mod"
-	 dest="${build}/org/delysid/musicxml/attributes.mod" usetimestamp="true"/>
+	 dest="${build}/org/delysid/freedots/musicxml/attributes.mod" usetimestamp="true"/>
     <get src="http://www.musicxml.org/dtds/link.mod"
-	 dest="${build}/org/delysid/musicxml/link.mod" usetimestamp="true"/>
+	 dest="${build}/org/delysid/freedots/musicxml/link.mod" usetimestamp="true"/>
     <get src="http://www.musicxml.org/dtds/note.mod"
-	 dest="${build}/org/delysid/musicxml/note.mod" usetimestamp="true"/>
+	 dest="${build}/org/delysid/freedots/musicxml/note.mod" usetimestamp="true"/>
     <get src="http://www.musicxml.org/dtds/barline.mod"
-	 dest="${build}/org/delysid/musicxml/barline.mod" usetimestamp="true"/>
+	 dest="${build}/org/delysid/freedots/musicxml/barline.mod" usetimestamp="true"/>
     <get src="http://www.musicxml.org/dtds/direction.mod"
-	 dest="${build}/org/delysid/musicxml/direction.mod" usetimestamp="true"/>
+	 dest="${build}/org/delysid/freedots/musicxml/direction.mod" usetimestamp="true"/>
     <get src="http://www.musicxml.org/dtds/score.mod"
-	 dest="${build}/org/delysid/musicxml/score.mod" usetimestamp="true"/>
+	 dest="${build}/org/delysid/freedots/musicxml/score.mod" usetimestamp="true"/>
     <mkdir dir="${build}/org/delysid/freedots/gui/swing"/>
     <copy file="/usr/share/fonts/truetype/ttf-dejavu/DejaVuSerif.ttf"
           tofile="${build}/org/delysid/freedots/gui/swing/DejaVuSerif.ttf"/>
