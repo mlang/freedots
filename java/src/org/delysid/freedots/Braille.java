@@ -3,7 +3,11 @@ package org.delysid.freedots;
 
 public enum Braille {
   dot(3), flat(126), natural(16), sharp(146), numberSign(3456),
-  fullVoiceSeparator(126, 345);
+  fullVoiceSeparator(126, 345),
+  octave1(4, 4), octave2(4), octave3(45), octave4(456), octave5(5),
+  octave6(46), octave7(56), octave8(6), octave9(6, 6);
+
+  static private Braille[] octaves = new Braille[] { octave1, octave2, octave3, octave4, octave5, octave6, octave7, octave8, octave9 };
 
   int[] dots;
   Braille(int dots) { this.dots = new int[] {dots}; }
@@ -15,6 +19,9 @@ public enum Braille {
     return result;
   }
 
+  static public Braille octave(int number) {
+    return octaves[number];
+  }
   static public char unicodeBraille(int bits) {
     return (char)(0X2800 | bits);
   }

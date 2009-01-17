@@ -225,10 +225,16 @@ public class Transcriber {
     }
     public String toString() {
       String output = "";
+      AbstractPitch lastPitch = null;
       for (Object element:elements) {
 	if (element instanceof Note) {
 	  Note note = (Note)element;
 	  AbstractPitch pitch = (AbstractPitch)note.getPitch();
+          if (pitch != null) {
+            Braille octaveSign = pitch.getOctaveSign(lastPitch);
+            if (octaveSign != null) { output += octaveSign; }
+            lastPitch = pitch;
+          }
           output += note.getAugmentedFraction().toBrailleString(pitch);
 	}
       }
