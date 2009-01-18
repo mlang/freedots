@@ -17,6 +17,7 @@ import org.delysid.freedots.model.Voice;
 
 import org.delysid.freedots.musicxml.Score;
 import org.delysid.freedots.musicxml.Note;
+import org.delysid.freedots.musicxml.Chord;
 import org.delysid.freedots.musicxml.Part;
 import org.delysid.freedots.musicxml.Pitch;
 
@@ -236,7 +237,9 @@ public final class Transcriber {
             lastPitch = pitch;
           }
           output += note.getAugmentedFraction().toBrailleString(pitch);
-	}
+	} else if (element instanceof Chord) {
+          Note firstNote = ((Chord)element).get(0);
+        }
       }
       return output;
     }
