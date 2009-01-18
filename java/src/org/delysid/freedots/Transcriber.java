@@ -9,6 +9,7 @@ import java.util.Map;
 import org.delysid.freedots.model.AbstractPitch;
 import org.delysid.freedots.model.Event;
 import org.delysid.freedots.model.Staff;
+import org.delysid.freedots.model.StaffChord;
 import org.delysid.freedots.model.StaffElement;
 import org.delysid.freedots.model.MusicList;
 import org.delysid.freedots.model.StartBar;
@@ -156,7 +157,27 @@ public final class Transcriber {
 	  if (!staffNames.containsKey(staffName))
 	    staffNames.put(staffName, staves.get(usedStaves++));
 	  staffNames.get(staffName).add(event);
-	}
+	} else if (event instanceof Chord) {
+          Chord chord = (Chord)event;
+          List<StaffChord> chords = new ArrayList<StaffChord>();
+          StaffChord currentStaffChord = new StaffChord(chord.get(0));
+          chords.add(currentStaffChord);
+          for (int chordIndex = 1; chordIndex < chord.size(); chordIndex++) {
+            Note note = chord.get(chordIndex);
+            if (note.getStaffName().equals(currentStaffChord.getStaffName())) {
+              currentStaffChord.add(note);
+            } else {
+              currentStaffChord = new StaffChord(note);
+              chords.add(currentStaffChord);
+            }
+          }
+          for (StaffChord staffChord:chords) {
+            String staffName = staffChord.getStaffName();
+            if (!staffNames.containsKey(staffName))
+              staffNames.put(staffName, staves.get(usedStaves++));
+            staffNames.get(staffName).add(staffChord);
+          }
+        }
       }
       return staves.get(index);
     }
@@ -232,8 +253,8 @@ public final class Transcriber {
             lastPitch = pitch;
           }
           output += note.getAugmentedFraction().toBrailleString(pitch);
-	} else if (element instanceof Chord) {
-          Note firstNote = ((Chord)element).get(0);
+	} else if (element instanceof StaffChord) {
+          StaffElement firstNote = ((StaffChord)element).get(0);
         }
       }
       return output;
