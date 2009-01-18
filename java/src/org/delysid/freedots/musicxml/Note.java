@@ -45,7 +45,7 @@ public class Note extends Musicdata implements StaffElement, VoiceElement {
       put("flat", Accidental.FLAT); put("sharp", Accidental.SHARP);
     }
   };
-  public Note(
+  Note(
     Fraction offset, Element element,
     int divisions, int durationMultiplier
   ) throws MusicXMLParseException {
