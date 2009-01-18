@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.delysid.freedots.model.AbstractPitch;
 import org.delysid.freedots.model.Event;
+import org.delysid.freedots.model.Staff;
 import org.delysid.freedots.model.StaffElement;
 import org.delysid.freedots.model.MusicList;
 import org.delysid.freedots.model.StartBar;
@@ -128,12 +129,6 @@ public final class Transcriber {
   }
   public String toString() {
     return textStore;
-  }
-  class Staff extends MusicList {
-    String name;
-    public Staff() { super(); }
-
-    public void setName(String name) { this.name = name; }
   }
   class Segment extends MusicList {
     Segment() { super(); }

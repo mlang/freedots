@@ -7,6 +7,7 @@ import java.util.HashMap;
 import org.delysid.freedots.model.Accidental;
 import org.delysid.freedots.model.AugmentedFraction;
 import org.delysid.freedots.model.Fraction;
+import org.delysid.freedots.model.Staff;
 import org.delysid.freedots.model.StaffElement;
 import org.delysid.freedots.model.VoiceElement;
 
@@ -17,11 +18,12 @@ import org.w3c.dom.Text;
 
 public class Note extends Musicdata implements StaffElement, VoiceElement {
   Fraction offset;
+  Staff staff = null;
 
   Element grace = null;
   Pitch pitch = null;
-  Text staff;
-  Text voice;
+  Text staffName;
+  Text voiceName;
   Type type = Type.NONE;
   private static Map<String, Type> typeMap = new HashMap<String, Type>() {
     {
@@ -59,8 +61,8 @@ public class Note extends Musicdata implements StaffElement, VoiceElement {
     if (nodeList.getLength() >= 1) {
       pitch = new Pitch((Element)nodeList.item(nodeList.getLength()-1));
     }
-    staff = Score.getTextContent(element, "staff");
-    voice = Score.getTextContent(element, "voice");
+    staffName = Score.getTextContent(element, "staff");
+    voiceName = Score.getTextContent(element, "voice");
 
     Text textNode = Score.getTextContent(element, "type");
     if (textNode != null) {
@@ -96,20 +98,20 @@ public class Note extends Musicdata implements StaffElement, VoiceElement {
     return pitch;
   }
   public String getStaffName() {
-    if (staff != null) {
-      return staff.getWholeText();
+    if (staffName != null) {
+      return staffName.getWholeText();
     }
     return null;
   }
   public String getVoiceName() {
-    if (voice != null) {
-      return voice.getWholeText();
+    if (voiceName != null) {
+      return voiceName.getWholeText();
     }
     return null;
   }
   public void setVoiceName(String name) {
-    if (voice != null) {
-      voice.replaceWholeText(name);
+    if (voiceName != null) {
+      voiceName.replaceWholeText(name);
     }
   }
 
@@ -127,6 +129,7 @@ public class Note extends Musicdata implements StaffElement, VoiceElement {
   }
 
   public Fraction getOffset() { return offset; }
+  public void setStaff(Staff staff) { this.staff = staff; }
 
   enum Type {
     LONG(4, 1), BREVE(2, 1), WHOLE(1, 1), HALF(1, 2), QUARTER(1, 4),

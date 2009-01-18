@@ -23,4 +23,8 @@ public abstract class AbstractPitch {
     }
     return Braille.octave(getOctave());
   }
+  public int diatonicDifference(AbstractPitch other) {
+    return ((other.getOctave()*7) + other.getStep()) -
+           ((this.getOctave()*7) + this.getStep());
+  }
 }
