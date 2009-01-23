@@ -9,13 +9,13 @@ import java.util.Map;
 import org.delysid.freedots.model.AbstractPitch;
 import org.delysid.freedots.model.Event;
 import org.delysid.freedots.model.Staff;
-import org.delysid.freedots.model.StaffChord;
 import org.delysid.freedots.model.StaffElement;
 import org.delysid.freedots.model.MusicList;
 import org.delysid.freedots.model.StartBar;
 import org.delysid.freedots.model.EndBar;
 import org.delysid.freedots.model.VerticalEvent;
 import org.delysid.freedots.model.Voice;
+import org.delysid.freedots.model.VoiceChord;
 
 import org.delysid.freedots.musicxml.Score;
 import org.delysid.freedots.musicxml.Note;
@@ -205,8 +205,14 @@ public final class Transcriber {
             lastPitch = pitch;
           }
           output += note.getAugmentedFraction().toBrailleString(pitch);
-	} else if (element instanceof StaffChord) {
-          StaffElement firstNote = ((StaffChord)element).get(0);
+	} else if (element instanceof VoiceChord) {
+          Note firstNote = (Note)((VoiceChord)element).get(0);
+          AbstractPitch firstPitch = (AbstractPitch)firstNote.getPitch();
+          Braille octaveSign = firstPitch.getOctaveSign(lastPitch);
+          if (octaveSign != null) { output += octaveSign; }
+          lastPitch = firstPitch;
+          output += firstNote.getAugmentedFraction().toBrailleString(firstPitch);
+          output += "()";
         }
       }
       return output;

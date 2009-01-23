@@ -6,4 +6,3 @@ public class Timeline<E> extends java.util.TreeMap<Fraction, E> {
     return floorEntry(offset).getValue();
   }
 }
-
