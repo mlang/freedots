@@ -32,6 +32,7 @@ public class MusicList extends java.util.ArrayList<Event> {
         if (!voices.containsKey(voiceName))
           voices.put(voiceName, new Voice(voiceName));
         voices.get(voiceName).add(event);
+      } else if (event instanceof AbstractChord) {
       }
     }
 
