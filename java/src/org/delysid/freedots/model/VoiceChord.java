@@ -1,9 +1,6 @@
 /* -*- c-basic-offset: 2; -*- */
 package org.delysid.freedots.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class
 VoiceChord extends AbstractChord<VoiceElement> implements VoiceElement {
   private String staffName;

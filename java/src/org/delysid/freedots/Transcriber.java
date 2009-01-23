@@ -2,26 +2,20 @@
 package org.delysid.freedots;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.delysid.freedots.model.AbstractPitch;
 import org.delysid.freedots.model.Event;
 import org.delysid.freedots.model.Staff;
-import org.delysid.freedots.model.StaffElement;
 import org.delysid.freedots.model.MusicList;
 import org.delysid.freedots.model.StartBar;
 import org.delysid.freedots.model.EndBar;
-import org.delysid.freedots.model.VerticalEvent;
 import org.delysid.freedots.model.Voice;
 import org.delysid.freedots.model.VoiceChord;
 
 import org.delysid.freedots.musicxml.Score;
 import org.delysid.freedots.musicxml.Note;
-import org.delysid.freedots.musicxml.Chord;
 import org.delysid.freedots.musicxml.Part;
-import org.delysid.freedots.musicxml.Pitch;
 
 public final class Transcriber {
   private Score score;

@@ -2,7 +2,6 @@
 package org.delysid.freedots.model;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public abstract class
 AbstractChord<E extends Event> extends ArrayList<E> implements Event {
