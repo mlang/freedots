@@ -18,4 +18,3 @@ public class Staff extends MusicList {
     return false;
   }
 }
-

@@ -133,41 +133,6 @@ public final class Transcriber {
   }
   class Segment extends MusicList {
     Segment() { super(); }
-    public int getStaffCount() {
-      for (Event event:this) {
-	if (event instanceof StartBar) {
-	  StartBar startBar = (StartBar)event;
-	  return startBar.getStaffCount();
-	}
-      }
-      return 0;
-    }
-    public Staff getStaff(int index) {
-      List<Staff> staves = new ArrayList<Staff>();
-      Map<String, Staff> staffNames = new HashMap<String, Staff>();
-      int usedStaves = 0;
-
-      for (int i = 0; i < getStaffCount(); i++)	staves.add(new Staff());
-      
-      for (Event event:this) {
-	if (event instanceof VerticalEvent) {
-	  for (Staff staff:staves) staff.add(event);
-	} else if (event instanceof StaffElement) {
-	  String staffName = ((StaffElement)event).getStaffName();
-	  if (!staffNames.containsKey(staffName))
-	    staffNames.put(staffName, staves.get(usedStaves++));
-	  staffNames.get(staffName).add(event);
-	} else if (event instanceof Chord) {
-          for (StaffChord staffChord:((Chord)event).getStaffChords()) {
-            String staffName = staffChord.getStaffName();
-            if (!staffNames.containsKey(staffName))
-              staffNames.put(staffName, staves.get(usedStaves++));
-            staffNames.get(staffName).add(staffChord);
-          }
-        }
-      }
-      return staves.get(index);
-    }
   }
   List<Segment> getSegments(Part part) throws Exception {
     List<Segment> segments = new ArrayList<Segment>();

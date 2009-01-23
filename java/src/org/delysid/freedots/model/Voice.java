@@ -24,4 +24,3 @@ public class Voice extends MusicList {
     other.name = oldName;
   }
 }
-  

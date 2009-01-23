@@ -7,10 +7,14 @@ package org.delysid.freedots.model;
  */
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
+
+import org.delysid.freedots.musicxml.Chord; // FIXME
 
 public class MusicList extends java.util.ArrayList<Event> {
   public MusicList() {
@@ -24,6 +28,43 @@ public class MusicList extends java.util.ArrayList<Event> {
     add(index, newElement);
     return true;
   }
+
+  public int getStaffCount() {
+    for (Event event:this) {
+      if (event instanceof StartBar) {
+        StartBar startBar = (StartBar)event;
+        return startBar.getStaffCount();
+      }
+    }
+    return 0;
+  }
+  public Staff getStaff(int index) {
+    List<Staff> staves = new ArrayList<Staff>();
+    Map<String, Staff> staffNames = new HashMap<String, Staff>();
+    int usedStaves = 0;
+
+    for (int i = 0; i < getStaffCount(); i++) staves.add(new Staff());
+
+    for (Event event:this) {
+      if (event instanceof VerticalEvent) {
+        for (Staff staff:staves) staff.add(event);
+      } else if (event instanceof StaffElement) {
+        String staffName = ((StaffElement)event).getStaffName();
+        if (!staffNames.containsKey(staffName))
+          staffNames.put(staffName, staves.get(usedStaves++));
+        staffNames.get(staffName).add(event);
+      } else if (event instanceof Chord) {
+        for (StaffElement staffChord:((Chord)event).getStaffChords()) {
+          String staffName = staffChord.getStaffName();
+          if (!staffNames.containsKey(staffName))
+            staffNames.put(staffName, staves.get(usedStaves++));
+          staffNames.get(staffName).add(staffChord);
+        }
+      }
+    }
+    return staves.get(index);
+  }
+
   public List<Voice> getVoices() {
     SortedMap<String, Voice> voices = new TreeMap<String, Voice>();
     for (Event event:this) {
@@ -32,7 +73,13 @@ public class MusicList extends java.util.ArrayList<Event> {
         if (!voices.containsKey(voiceName))
           voices.put(voiceName, new Voice(voiceName));
         voices.get(voiceName).add(event);
-      } else if (event instanceof AbstractChord) {
+      } else if (event instanceof StaffChord) {
+        for (VoiceElement voiceElement:((StaffChord)event).getVoiceChords()) {
+          String voiceName = voiceElement.getVoiceName();
+          if (!voices.containsKey(voiceName))
+            voices.put(voiceName, new Voice(voiceName));
+          voices.get(voiceName).add(voiceElement);
+        }
       }
     }
 
