@@ -24,35 +24,35 @@
 			</attributes>
 			<note>
 				<pitch> <step>C</step> <octave>4</octave> </pitch>
-				<duration>6</duration> <type>eighth</type> <dot/>
+				<duration>6</duration>
 			</note>
 			<note>
 				<pitch> <step>C</step> <octave>4</octave> </pitch>
-				<duration>2</duration> <type>16th</type>
+				<duration>2</duration>
 			</note>
 			<note>
 				<pitch> <step>C</step> <octave>4</octave> </pitch>
-				<duration>4</duration> <type>eighth</type>
+				<duration>4</duration>
 			</note>
 			<note>
 				<rest/>
-				<duration>3</duration> <type>16th</type> <dot/>
+				<duration>3</duration>
 			</note>
 			<note>
 				<pitch> <step>C</step> <octave>4</octave> </pitch>
-				<duration>1</duration> <type>32nd</type>
+				<duration>1</duration>
 			</note>
 			<note>
 				<pitch> <step>C</step> <octave>4</octave> </pitch>
-				<duration>7</duration> <type>eighth</type> <dot/> <dot/>
+				<duration>7</duration>
 			</note>
 			<note>
 				<pitch> <step>C</step> <octave>4</octave> </pitch>
-				<duration>1</duration> <type>32nd</type>
+				<duration>1</duration>
 			</note>
 			<note>
 				<pitch> <step>C</step> <octave>4</octave> </pitch>
-				<duration>8</duration> <type>quarter</type>
+				<duration>8</duration>
 			</note>
 			<barline location="right">
 				<bar-style>light-heavy</bar-style>
