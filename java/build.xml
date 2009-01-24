@@ -4,12 +4,37 @@
   <!-- set global properties for this build -->
   <property file="build.properties" />
   <property name="src" location="src"/>
+  <property name="test" location="test"/>
   <property name="build" location="build"/>
-  <property name="dist"  location="dist"/>
+  <property name="dist" location="dist"/>
 
   <path id="class.path">
     <fileset file="${lib.swt.jar}" />
   </path>
+  <path id="class.path.test">
+    <pathelement location="/usr/share/java/junit4.jar" />
+    <pathelement location="${test}" />
+    <pathelement location="${build}"/>
+    <path refid="class.path" />
+  </path>
+  <target name="compile-test" depends="compile">
+    <javac srcdir="${test}" verbose="false" debug="true">
+      <classpath refid="class.path.test"/>
+    </javac>
+  </target>
+  <target name="clean-compile-test">
+    <delete> <fileset dir="${test}" includes="**/*.class" /> </delete>
+  </target>
+  <target name="test" depends="compile-test">
+    <junit failureProperty="test.failure">
+      <classpath refid="class.path.test" />
+      <formatter type="brief" usefile="false" />
+      <batchtest>
+        <fileset dir="${test}" includes="**/Test*.class" />
+      </batchtest>
+    </junit>
+    <fail message="test failed" if="test.failure" />
+  </target>
 
   <target name="init">
     <!-- Create the time stamp -->
@@ -52,7 +77,7 @@
     </javac>
   </target>
 
-  <target name="dist" depends="compile"
+  <target name="dist" depends="test"
 	  description="generate the distribution">
     <mkdir dir="${dist}"/>
     <jar jarfile="${dist}/FreeDots-${DSTAMP}.jar" basedir="${build}">
@@ -63,7 +88,11 @@
     </jar>
   </target>
 
-  <target name="clean" description="clean up">
+  <target name="run" depends="dist">
+    <java jar="${dist}/FreeDots-${DSTAMP}.jar" fork="true" />
+  </target>
+
+  <target name="clean" description="clean up" depends="clean-compile-test">
     <!-- Delete the ${build} and ${dist} directory trees -->
     <delete dir="${build}"/>
     <delete dir="${dist}"/>
