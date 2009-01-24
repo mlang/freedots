@@ -67,12 +67,18 @@ public class MusicList extends java.util.ArrayList<Event> {
 
   public List<Voice> getVoices() {
     SortedMap<String, Voice> voices = new TreeMap<String, Voice>();
+    Voice defaultVoice = null;
     for (Event event:this) {
       if (event instanceof VoiceElement) {
         String voiceName = ((VoiceElement)event).getVoiceName();
-        if (!voices.containsKey(voiceName))
-          voices.put(voiceName, new Voice(voiceName));
-        voices.get(voiceName).add(event);
+        if (voiceName == null) {
+          if (defaultVoice == null) defaultVoice = new Voice(null);
+          defaultVoice.add(event);
+        } else {
+          if (!voices.containsKey(voiceName))
+            voices.put(voiceName, new Voice(voiceName));
+          voices.get(voiceName).add(event);
+        }
       } else if (event instanceof StaffChord) {
         for (VoiceElement voiceElement:((StaffChord)event).getVoiceChords()) {
           String voiceName = voiceElement.getVoiceName();
@@ -86,6 +92,8 @@ public class MusicList extends java.util.ArrayList<Event> {
     Iterator<Voice> iter = voices.values().iterator();
     while (iter.hasNext()) if (iter.next().restsOnly()) iter.remove();
 
-    return new ArrayList<Voice>(voices.values());    
+    List<Voice> voiceList = new ArrayList<Voice>(voices.values());    
+    if (defaultVoice != null) voiceList.add(defaultVoice);
+    return voiceList;
   }
 }
