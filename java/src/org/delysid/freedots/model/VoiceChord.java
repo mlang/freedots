@@ -1,7 +1,7 @@
 /* -*- c-basic-offset: 2; -*- */
 package org.delysid.freedots.model;
 
-public class
+public final class
 VoiceChord extends AbstractChord<VoiceElement> implements VoiceElement {
   private String staffName;
   private String voiceName;

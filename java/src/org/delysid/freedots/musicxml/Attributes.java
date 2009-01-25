@@ -8,7 +8,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-public class Attributes {
+public final class Attributes {
   Element element;
   int divisions;
   public Attributes(Element element, int divisions) {

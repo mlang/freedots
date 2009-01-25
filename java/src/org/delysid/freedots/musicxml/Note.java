@@ -14,7 +14,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 
-public class Note extends Musicdata implements VoiceElement {
+public final class Note extends Musicdata implements VoiceElement {
   Fraction offset;
   Staff staff = null;
 

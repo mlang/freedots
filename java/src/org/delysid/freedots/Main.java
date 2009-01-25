@@ -21,7 +21,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
-public class Main {
+public final class Main {
   public static void main(String[] args) {
     Options options = new Options(args);
     Transcriber transcriber = null;

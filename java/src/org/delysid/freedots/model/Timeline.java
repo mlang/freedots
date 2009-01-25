@@ -1,3 +1,4 @@
+/* -*- c-basic-offset: 2; -*- */
 package org.delysid.freedots.model;
 
 public class Timeline<E> extends java.util.TreeMap<Fraction, E> {

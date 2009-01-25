@@ -4,7 +4,7 @@ package org.delysid.freedots.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class
+public final class
 StaffChord extends AbstractChord<VoiceElement> implements StaffElement {
   private String staffName;
 

@@ -10,7 +10,7 @@ import javax.sound.midi.Sequence;
 import javax.sound.midi.Sequencer;
 import javax.sound.midi.Synthesizer;
 
-public class MIDIPlayer implements Closeable {
+public final class MIDIPlayer implements Closeable {
   private Synthesizer synthesizer;
   private Sequencer sequencer;
 

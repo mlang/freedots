@@ -1,3 +1,4 @@
+/* -*- c-basic-offset: 2; -*- */
 import org.delysid.freedots.model.AugmentedFraction;
 import org.delysid.freedots.model.Fraction;
 

@@ -35,7 +35,7 @@ import org.delysid.freedots.musicxml.Score;
 
 import org.delysid.StandardMidiFileWriter;
 
-public class GraphicalUserInterface extends JFrame {
+public final class GraphicalUserInterface extends JFrame {
   protected Score score = null;
   protected Transcriber transcriber = null;
 

@@ -4,7 +4,7 @@ package org.delysid.freedots.musicxml;
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
 
-public class Pitch extends org.delysid.freedots.model.AbstractPitch {
+public final class Pitch extends org.delysid.freedots.model.AbstractPitch {
   Element element;
   Text step = null;
   Text alter = null;

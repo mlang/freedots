@@ -1,6 +1,7 @@
+/* -*- c-basic-offset: 2; -*- */
 package org.delysid.freedots;
 
-public class Options {
+public final class Options {
   int pageWidth = 32;
   int pageHeight = 20;
   MultiStaffMeasures multiStaffMeasures = MultiStaffMeasures.VISUAL;

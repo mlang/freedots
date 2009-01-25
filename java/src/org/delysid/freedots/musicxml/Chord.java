@@ -1,3 +1,4 @@
+/* -*- c-basic-offset: 2; -*- */
 package org.delysid.freedots.musicxml;
 
 import java.util.ArrayList;
@@ -7,7 +8,7 @@ import org.delysid.freedots.model.AbstractChord;
 import org.delysid.freedots.model.StaffChord;
 import org.delysid.freedots.model.StaffElement;
 
-public class Chord extends AbstractChord<Note> {
+public final class Chord extends AbstractChord<Note> {
   Chord(Note initialNote) {
     super(initialNote);
   }

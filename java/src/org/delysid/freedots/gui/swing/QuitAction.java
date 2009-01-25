@@ -3,7 +3,7 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 
-public class QuitAction extends AbstractAction {
+public final class QuitAction extends AbstractAction {
   GraphicalUserInterface gui;
   public QuitAction(GraphicalUserInterface gui) {
     super("Quit");

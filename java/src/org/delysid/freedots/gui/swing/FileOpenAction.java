@@ -9,7 +9,7 @@ import javax.swing.filechooser.FileFilter;
 
 import org.delysid.freedots.musicxml.Score;
 
-public class FileOpenAction extends AbstractAction {
+public final class FileOpenAction extends AbstractAction {
   GraphicalUserInterface gui;
   public FileOpenAction(GraphicalUserInterface gui) {
     super("Open");
