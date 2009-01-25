@@ -3,7 +3,7 @@ package org.delysid.freedots;
 
 public enum Braille {
   dot(3), flat(126), natural(16), sharp(146), numberSign(3456),
-  fullVoiceSeparator(126, 345),
+  fullMeasureInAccord(126, 345),
   octave1(4, 4), octave2(4), octave3(45), octave4(456), octave5(5),
   octave6(46), octave7(56), octave8(6), octave9(6, 6),
   digit0(245), digit1(1), digit2(12), digit3(14), digit4(145),

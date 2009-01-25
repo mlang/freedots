@@ -206,15 +206,21 @@ public final class Transcriber {
             output += "()";
           }
         }
+
         if (voiceIndex < voiceCount-1) {
-          output += Braille.fullVoiceSeparator;
+          output += Braille.fullMeasureInAccord;
+
+          /* The octave mark must be shown for
+           * the first note after an in-accord.
+           ************************************/
+          lastPitch = null;
         }
       }
 
-      /* 5-12. The octave mark must be shown for the frst note after an
-       * in-accord and at the beginning of the next measure, whether or not
+      /* 5-12. The octave mark must be shown for the first note after an
+       * in-accord and _at the beginning of the next measure_, whether or not
        * that measure contains an in-accord.
-       */
+       ***********************************************************************/
       if (voiceCount == 1) finalPitch = lastPitch;
 
       return output;
