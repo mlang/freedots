@@ -211,6 +211,10 @@ public final class Transcriber {
         }
       }
 
+      /* 5-12. The octave mark must be shown for the frst note after an
+       * in-accord and at the beginning of the next measure, whether or not
+       * that measure contains an in-accord.
+       */
       if (voiceCount == 1) finalPitch = lastPitch;
 
       return output;
