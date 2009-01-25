@@ -12,6 +12,15 @@ public abstract class AbstractPitch {
     int midiPitch = getOctave()*12 + stepToChromatic[getStep()] + getAlter();
     return midiPitch;
   }
+  public boolean equals(Object object) {
+    if (object instanceof AbstractPitch) {
+      AbstractPitch other = (AbstractPitch)object;
+      if (this.getStep() == other.getStep() &&
+          this.getAlter() == other.getAlter() &&
+          this.getOctave == other.getOctave) return true;
+    }
+    return false;
+  }
   public Braille getOctaveSign(AbstractPitch lastPitch) {
     if (lastPitch != null) {
       int halfSteps = Math.abs(getMIDIPitch() - lastPitch.getMIDIPitch());
