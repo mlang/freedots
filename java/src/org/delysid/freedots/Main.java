@@ -19,6 +19,7 @@ import org.eclipse.swt.SWTError;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 
 public class Main {
   public static void main(String[] args) {
@@ -37,9 +38,12 @@ public class Main {
       } catch (IOException e) {
         // TODO Auto-generated catch block
         e.printStackTrace();
+      } catch (SAXParseException e) {
+        System.exit(1);
       } catch (SAXException e) {
         // TODO Auto-generated catch block
         e.printStackTrace();
+        System.exit(1);
       }
       if (score != null) transcriber = new Transcriber(score, options);
     }

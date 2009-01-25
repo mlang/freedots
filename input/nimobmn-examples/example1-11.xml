@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE score-partwise PUBLIC "-//Recordare//DTD MusicXML 1.0 Partwise//EN" "http://www.musicxml.org/dtds/partwise.dtd">
+<score-partwise>
+	<work>
+		<work-title>New International Manual Of Braille Music Notation</work-title>
+	</work>
+	<movement-number>1-11</movement-number>
+	<movement-title>Example 1-11</movement-title>
+	<identification>
+		<encoding>
+			<encoding-date>2009-01-24</encoding-date>
+			<encoding-description>MusicXML 1.0 file</encoding-description>
+		</encoding>
+	</identification>
+	<part-list>
+		<score-part id="P1">
+			<part-name></part-name>
+		</score-part>
+	</part-list>
+	<part id="P1">
+		<measure number="1">
+			<attributes>
+				<divisions>2</divisions>
+				<time>
+					<beats>4</beats>
+					<beat-type>4</beat-type>
+				</time>
+			</attributes>
+			<note>
+				<pitch> <step>E</step> <octave>5</octave> </pitch>
+				<duration>4</duration>
+			</note>
+			<note>
+				<pitch> <step>D</step> <octave>5</octave> </pitch>
+				<duration>2</duration>
+			</note>
+			<note>
+				<pitch> <step>C</step> <octave>5</octave> </pitch>
+				<duration>2</duration>
+			</note>
+		</measure>
+		<measure number="2">
+			<note>
+				<pitch> <step>A</step> <octave>4</octave> </pitch>
+				<duration>2</duration>
+			</note>
+			<note>
+				<pitch> <step>D</step> <octave>5</octave> </pitch>
+				<duration>4</duration>
+			</note>
+			<note>
+				<pitch> <step>C</step> <octave>5</octave> </pitch>
+				<duration>2</duration>
+			</note>
+		</measure>
+		<measure number="3">
+			<note>
+				<pitch> <step>A</step> <octave>4</octave> </pitch>
+				<duration>2</duration>
+			</note>
+			<note>
+				<pitch> <step>E</step> <octave>5</octave> </pitch>
+				<duration>4</duration>
+			</note>
+			<note>
+				<pitch> <step>D</step> <octave>5</octave> </pitch>
+				<duration>2</duration>
+			</note>
+		</measure>
+		<measure number="4">
+			<note>
+				<pitch> <step>C</step> <octave>5</octave> </pitch>
+				<duration>4</duration>
+			</note>
+			<note>
+				<pitch> <step>F</step> <octave>5</octave> </pitch>
+				<duration>2</duration>
+			</note>
+			<note>
+				<pitch> <step>E</step> <octave>5</octave> </pitch>
+				<duration>2</duration>
+			</note>
+		</measure>
+		<measure number="5">
+			<note>
+				<pitch> <step>D</step> <octave>5</octave> </pitch>
+				<duration>2</duration>
+			</note>
+			<note>
+				<pitch> <step>G</step> <octave>5</octave> </pitch>
+				<duration>4</duration>
+			</note>
+			<note>
+				<pitch> <step>F</step> <octave>5</octave> </pitch>
+				<duration>2</duration>
+			</note>
+		</measure>
+		<measure number="6">
+			<note>
+				<pitch> <step>E</step> <octave>5</octave> </pitch>
+				<duration>2</duration>
+			</note>
+			<note>
+				<pitch> <step>C</step> <octave>5</octave> </pitch>
+				<duration>2</duration>
+			</note>
+			<note>
+				<pitch> <step>A</step> <octave>5</octave> </pitch>
+				<duration>2</duration>
+			</note>
+			<note>
+				<pitch> <step>C</step> <octave>5</octave> </pitch>
+				<duration>2</duration>
+			</note>
+		</measure>
+		<measure number="7">
+			<note>
+				<pitch> <step>B</step> <octave>4</octave> </pitch>
+				<duration>1</duration>
+			</note>
+			<note>
+				<pitch> <step>C</step> <octave>5</octave> </pitch>
+				<duration>1</duration>
+			</note>
+			<note>
+				<pitch> <step>D</step> <octave>5</octave> </pitch>
+				<duration>1</duration>
+			</note>
+			<note>
+				<pitch> <step>E</step> <octave>5</octave> </pitch>
+				<duration>1</duration>
+			</note>
+			<note>
+				<pitch> <step>F</step> <octave>5</octave> </pitch>
+				<duration>1</duration>
+			</note>
+			<note>
+				<pitch> <step>G</step> <octave>5</octave> </pitch>
+				<duration>1</duration>
+			</note>
+			<note>
+				<pitch> <step>A</step> <octave>5</octave> </pitch>
+				<duration>1</duration>
+			</note>
+			<note>
+				<pitch> <step>B</step> <octave>5</octave> </pitch>
+				<duration>1</duration>
+			</note>
+		</measure>
+		<measure number="8">
+			<note>
+				<pitch> <step>C</step> <octave>6</octave> </pitch>
+				<duration>4</duration>
+			</note>
+			<note>
+				<rest/>
+				<duration>4</duration>
+			</note>
+			<barline location="right">
+				<bar-style>light-heavy</bar-style>
+			</barline>
+		</measure>
+	</part>
+</score-partwise>
