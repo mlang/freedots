@@ -1,9 +1,7 @@
-import junit.framework.TestCase;
-
 import org.delysid.freedots.model.AugmentedFraction;
 import org.delysid.freedots.model.Fraction;
 
-public class TestAugmentedFraction extends TestCase {
+public class TestAugmentedFraction extends junit.framework.TestCase {
   public void testDotInference() {
     AugmentedFraction af = new AugmentedFraction(new Fraction(3, 4));
     assertTrue("3/4 => 1", af.getNumerator() == 1);
