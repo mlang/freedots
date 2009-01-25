@@ -54,7 +54,7 @@ public final class Transcriber {
 
         for (int staffIndex = 0; staffIndex < staffCount; staffIndex++) {
 	  Staff staff = segment.getStaff(staffIndex);
-	  MusicList measure = new MusicList();
+	  BrailleMeasure measure = new BrailleMeasure();
 
           if (characterCount > 0) newLine();
           indentTo(2);
@@ -65,31 +65,17 @@ public final class Transcriber {
 	    Event event = staff.get(staffElementIndex);
 
 	    if (event instanceof EndBar) {
-	      List<Voice> voices = measure.getVoices();
-	      int voiceCount = voices.size();
+              String braille = measure.toString();
+              if (characterCount+braille.length() > options.getPageWidth()) {
+                newLine();
+              }
+              printString(braille);
+              printString(" ");
 
-	      for (int voiceIndex = 0; voiceIndex < voiceCount; voiceIndex++) {
-		BrailleMeasure bm = new BrailleMeasure();
-		for (Event voiceEvent:voices.get(voiceIndex)) {
-                  bm.add(voiceEvent);
-		}
- 
-                String braille = bm.toString();
-                if (characterCount+braille.length() > options.getPageWidth()) {
-                  newLine();
-                }
-		printString(braille);
-
-		if (voiceIndex < voiceCount-1) {
-		  printString(Braille.fullVoiceSeparator.toString());
-		}
-	      }
-	      printString(" ");
-
-	      measure = new MusicList();
-	    } else {
-	      measure.add(event);
-	    }
+              measure = new BrailleMeasure(measure);
+            } else {
+              measure.add(event);
+            }
           }
         }
       }
@@ -182,33 +168,51 @@ public final class Transcriber {
     }
   }
   class BrailleMeasure {
-    List<Object> elements = new ArrayList<Object>();
-    public void add(Event staffElement) {
-      elements.add(staffElement);
+    private BrailleMeasure previous = null;
+    private MusicList events = new MusicList();
+    private AbstractPitch finalPitch = null;
+    BrailleMeasure() {}
+    BrailleMeasure(BrailleMeasure previous) {
+      this();
+      this.previous = previous;
     }
+    public void add(Event event) { events.add(event); }
+    public AbstractPitch getFinalPitch() { return finalPitch; }
+
     public String toString() {
       String output = "";
-      AbstractPitch lastPitch = null;
-      for (Object element:elements) {
-	if (element instanceof Note) {
-	  Note note = (Note)element;
-	  AbstractPitch pitch = (AbstractPitch)note.getPitch();
-          if (pitch != null) {
-            Braille octaveSign = pitch.getOctaveSign(lastPitch);
+      AbstractPitch lastPitch = previous != null? previous.getFinalPitch(): null;
+      List<Voice> voices = events.getVoices();
+      int voiceCount = voices.size();
+
+      for (int voiceIndex = 0; voiceIndex < voiceCount; voiceIndex++) {
+        for (Event element:voices.get(voiceIndex)) {
+          if (element instanceof Note) {
+            Note note = (Note)element;
+            AbstractPitch pitch = (AbstractPitch)note.getPitch();
+            if (pitch != null) {
+              Braille octaveSign = pitch.getOctaveSign(lastPitch);
+              if (octaveSign != null) { output += octaveSign; }
+              lastPitch = pitch;
+            }
+            output += note.getAugmentedFraction().toBrailleString(pitch);
+          } else if (element instanceof VoiceChord) {
+            Note firstNote = (Note)((VoiceChord)element).get(0);
+            AbstractPitch firstPitch = (AbstractPitch)firstNote.getPitch();
+            Braille octaveSign = firstPitch.getOctaveSign(lastPitch);
             if (octaveSign != null) { output += octaveSign; }
-            lastPitch = pitch;
+            lastPitch = firstPitch;
+            output += firstNote.getAugmentedFraction().toBrailleString(firstPitch);
+            output += "()";
           }
-          output += note.getAugmentedFraction().toBrailleString(pitch);
-	} else if (element instanceof VoiceChord) {
-          Note firstNote = (Note)((VoiceChord)element).get(0);
-          AbstractPitch firstPitch = (AbstractPitch)firstNote.getPitch();
-          Braille octaveSign = firstPitch.getOctaveSign(lastPitch);
-          if (octaveSign != null) { output += octaveSign; }
-          lastPitch = firstPitch;
-          output += firstNote.getAugmentedFraction().toBrailleString(firstPitch);
-          output += "()";
+        }
+        if (voiceIndex < voiceCount-1) {
+          output += Braille.fullVoiceSeparator;
         }
       }
+
+      if (voiceCount == 1) finalPitch = lastPitch;
+
       return output;
     }
   }
