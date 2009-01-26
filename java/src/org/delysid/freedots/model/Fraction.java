@@ -25,6 +25,11 @@ public class Fraction implements Comparable<Fraction> {
     return Float.compare(this.toFloat(), other.toFloat());
   }
 
+  @Override
+  public String toString() {
+    return denominator == 1? Integer.toString(numerator):
+                             Integer.toString(numerator) + "/" + Integer.toString(denominator);
+  }
   public Fraction add(Fraction other) {
     Fraction newFraction = new Fraction(this.numerator * other.denominator +
 					other.numerator * this.denominator,
