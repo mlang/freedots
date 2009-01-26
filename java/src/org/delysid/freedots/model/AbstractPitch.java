@@ -17,7 +17,7 @@ public abstract class AbstractPitch {
       AbstractPitch other = (AbstractPitch)object;
       if (this.getStep() == other.getStep() &&
           this.getAlter() == other.getAlter() &&
-          this.getOctave == other.getOctave) return true;
+          this.getOctave() == other.getOctave()) return true;
     }
     return false;
   }
