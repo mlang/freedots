@@ -3,6 +3,7 @@ package org.delysid.freedots.model;
 
 public class Staff extends MusicList {
   String name;
+  private int chordDirection = 1;
   Timeline<KeySignature> keySignatureList = new Timeline<KeySignature>(
     new KeySignature(0));
 
@@ -16,5 +17,10 @@ public class Staff extends MusicList {
       return true;
     }
     return false;
+  }
+
+  public int getChordDirection() { return chordDirection; }
+  public void setChordDirection(int direction) {
+    chordDirection = direction;
   }
 }

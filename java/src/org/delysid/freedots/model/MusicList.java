@@ -59,6 +59,7 @@ public class MusicList extends java.util.ArrayList<Event> {
           if (!staffNames.containsKey(staffName))
             staffNames.put(staffName, staves.get(usedStaves++));
           staffNames.get(staffName).add(staffChord);
+          staffChord.setStaff(staffNames.get(staffName));
         }
       }
     }

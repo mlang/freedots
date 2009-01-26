@@ -59,7 +59,16 @@ public final class Transcriber {
           if (characterCount > 0) newLine();
           indentTo(2);
 
-	  for (int staffElementIndex = 0; staffElementIndex < staff.size();
+          if (staffCount == 2) {
+            if (staffIndex == 0) {
+              staff.setChordDirection(1);
+              printString(Braille.rightHandPart.toString());
+            } else if (staffIndex == 1) {
+              staff.setChordDirection(-1);
+              printString(Braille.leftHandPart.toString());
+            }
+          }
+          for (int staffElementIndex = 0; staffElementIndex < staff.size();
 	       staffElementIndex++) {
 	    
 	    Event event = staff.get(staffElementIndex);
@@ -198,6 +207,7 @@ public final class Transcriber {
             output += note.getAugmentedFraction().toBrailleString(pitch);
           } else if (element instanceof VoiceChord) {
             VoiceChord chord = (VoiceChord)element;
+            int direction = chord.getStaff().getChordDirection();
             Note firstNote = (Note)chord.get(0);
             AbstractPitch firstPitch = (AbstractPitch)firstNote.getPitch();
             Braille octaveSign = firstPitch.getOctaveSign(lastPitch);

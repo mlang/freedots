@@ -10,10 +10,12 @@ VoiceChord extends AbstractChord<VoiceElement> implements VoiceElement {
     super(initialNote);
     this.staffName = initialNote.getStaffName();
     this.voiceName = initialNote.getVoiceName();
+    this.staff = initialNote.getStaff();
   }
 
   private Staff staff = null;
 
+  public Staff getStaff() { return staff; }
   public void setStaff(Staff staff) { this.staff = staff; }
   public String getStaffName() { return staffName; }
 
