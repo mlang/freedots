@@ -3,7 +3,7 @@ package org.delysid.freedots.model;
 
 import org.delysid.freedots.Braille;
 
-public abstract class AbstractPitch {
+public abstract class AbstractPitch implements Comparable {
   public abstract int getStep();
   public abstract int getAlter();
   public abstract int getOctave();
@@ -34,7 +34,12 @@ public abstract class AbstractPitch {
     return Braille.octave(getOctave());
   }
   public int diatonicDifference(AbstractPitch other) {
-    return ((other.getOctave()*7) + other.getStep()) -
-           ((this.getOctave()*7) + this.getStep());
+    return ((this.getOctave()*7) + this.getStep()) -
+           ((other.getOctave()*7) + other.getStep());
+  }
+  public int compareTo(AbstractPitch other) {
+    int diatonicDifference = diatonicDifference(other);
+    if (diatonicDifference != 0) return diatonicDifference;
+    else return getAlter() < other.getAlter()? -1: getAlter()==other.getAlter()? 0: 1;
   }
 }

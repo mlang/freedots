@@ -5,10 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class
-StaffChord extends AbstractChord<VoiceElement> implements StaffElement {
+StaffChord extends AbstractChord<RhythmicElement> implements StaffElement {
   private String staffName;
 
-  public StaffChord(VoiceElement initialNote) {
+  public StaffChord(RhythmicElement initialNote) {
     super(initialNote);
     this.staffName = initialNote.getStaffName();
   }
@@ -30,7 +30,7 @@ StaffChord extends AbstractChord<VoiceElement> implements StaffElement {
     VoiceChord currentVoiceChord = new VoiceChord(get(0));
     chords.add(currentVoiceChord);
     for (int index = 1; index < size(); index++) {
-      VoiceElement note = get(index);
+      RhythmicElement note = get(index);
       String noteVoiceName = note.getVoiceName();
       if ((noteVoiceName == null && currentVoiceChord.getVoiceName() == null) ||
           (noteVoiceName != null &&

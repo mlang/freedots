@@ -8,13 +8,13 @@ import org.delysid.freedots.model.Accidental;
 import org.delysid.freedots.model.AugmentedFraction;
 import org.delysid.freedots.model.Fraction;
 import org.delysid.freedots.model.Staff;
-import org.delysid.freedots.model.VoiceElement;
+import org.delysid.freedots.model.RhythmicElement;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 
-public final class Note extends Musicdata implements VoiceElement {
+public final class Note extends Musicdata implements RhythmicElement {
   Fraction offset;
   Staff staff = null;
 

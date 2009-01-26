@@ -1,12 +1,15 @@
 /* -*- c-basic-offset: 2; -*- */
 package org.delysid.freedots.model;
 
+import java.util.Collections;
+import java.util.Comparator;
+
 public final class
-VoiceChord extends AbstractChord<VoiceElement> implements VoiceElement {
+VoiceChord extends AbstractChord<RhythmicElement> implements VoiceElement {
   private String staffName;
   private String voiceName;
 
-  public VoiceChord(VoiceElement initialNote) {
+  public VoiceChord(RhythmicElement initialNote) {
     super(initialNote);
     this.staffName = initialNote.getStaffName();
     this.voiceName = initialNote.getVoiceName();
@@ -26,5 +29,24 @@ VoiceChord extends AbstractChord<VoiceElement> implements VoiceElement {
   public void setVoiceName(String voiceName) {
     this.voiceName = voiceName;
     for (VoiceElement element:this) { element.setVoiceName(voiceName); }
+  }
+
+  public VoiceChord getSorted() {
+
+    VoiceChord newChord = (VoiceChord)this.clone();
+    Collections.sort(newChord, getStaff().getChordDirection() > 0?
+                                 new AscendingNoteComparator():
+                                 new DescendingNoteComparator());
+    return newChord;
+  }
+  private class AscendingNoteComparator implements Comparator<RhythmicElement> {
+    public int compare(RhythmicElement n1, RhythmicElement n2) {
+      return n1.getPitch().compareTo(n2.getPitch());
+    }
+  }
+  private class DescendingNoteComparator implements Comparator<RhythmicElement> {
+    public int compare(RhythmicElement n1, RhythmicElement n2) {
+      return -n1.getPitch().compareTo(n2.getPitch());
+    }
   }
 }
