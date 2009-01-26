@@ -3,7 +3,7 @@ package org.delysid.freedots.model;
 
 import org.delysid.freedots.Braille;
 
-public abstract class AbstractPitch implements Comparable {
+public abstract class AbstractPitch implements Comparable<AbstractPitch> {
   public abstract int getStep();
   public abstract int getAlter();
   public abstract int getOctave();

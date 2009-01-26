@@ -220,6 +220,10 @@ public final class Transcriber {
               Note currentNote = (Note)chord.get(chordElementIndex);
               AbstractPitch currentPitch = (AbstractPitch)currentNote.getPitch();
               int diatonicDifference = currentPitch.diatonicDifference(previousPitch);
+              if (diatonicDifference > 7) {
+                output += currentPitch.getOctaveSign(null);
+                diatonicDifference %= 8;
+              }
               output += Braille.interval(diatonicDifference);
               previousPitch = currentPitch;
             }

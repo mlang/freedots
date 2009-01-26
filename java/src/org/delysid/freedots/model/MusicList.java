@@ -83,9 +83,14 @@ public class MusicList extends java.util.ArrayList<Event> {
       } else if (event instanceof StaffChord) {
         for (VoiceElement voiceElement:((StaffChord)event).getVoiceChords()) {
           String voiceName = voiceElement.getVoiceName();
-          if (!voices.containsKey(voiceName))
-            voices.put(voiceName, new Voice(voiceName));
-          voices.get(voiceName).add(voiceElement);
+          if (voiceName == null) {
+            if (defaultVoice == null) defaultVoice = new Voice(null);
+            defaultVoice.add(voiceElement);
+          } else {
+            if (!voices.containsKey(voiceName))
+              voices.put(voiceName, new Voice(voiceName));
+            voices.get(voiceName).add(voiceElement);
+          }
         }
       }
     }
