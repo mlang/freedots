@@ -56,10 +56,24 @@ public class MusicList extends java.util.ArrayList<Event> {
       } else if (event instanceof Chord) {
         for (StaffElement staffChord:((Chord)event).getStaffChords()) {
           String staffName = staffChord.getStaffName();
-          if (!staffNames.containsKey(staffName))
-            staffNames.put(staffName, staves.get(usedStaves++));
-          staffNames.get(staffName).add(staffChord);
-          staffChord.setStaff(staffNames.get(staffName));
+          if (staffName == null && staves.size() == 1) {
+            staves.get(0).add(staffChord);
+            staffChord.setStaff(staves.get(0));
+          } else {
+            if (!staffNames.containsKey(staffName))
+              staffNames.put(staffName, staves.get(usedStaves++));
+            staffNames.get(staffName).add(staffChord);
+            staffChord.setStaff(staffNames.get(staffName));
+          }
+        }
+      } else if (event instanceof ClefChange) {
+        ClefChange clefChange = (ClefChange)event;
+        if (clefChange.getStaffName() == null) { /* all staves */
+          for (Staff staff:staves) staff.add(clefChange);
+        } else {
+          if (!staffNames.containsKey(clefChange.getStaffName()))
+            staffNames.put(clefChange.getStaffName(), staves.get(usedStaves++));
+          staffNames.get(clefChange.getStaffName()).add(clefChange);
         }
       }
     }

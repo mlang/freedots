@@ -59,12 +59,15 @@ public final class Transcriber {
           if (characterCount > 0) newLine();
           indentTo(2);
 
-          if (staffCount == 2) {
+          if (staffCount == 1 && staff.containsChords()) {
+            if (staff.getClef().getChordDirection() > 1)
+              printString(Braille.leftHandPart.toString());
+            else
+              printString(Braille.rightHandPart.toString());
+          } else if (staffCount == 2) {
             if (staffIndex == 0) {
-              staff.setChordDirection(1);
               printString(Braille.rightHandPart.toString());
             } else if (staffIndex == 1) {
-              staff.setChordDirection(-1);
               printString(Braille.leftHandPart.toString());
             }
           }
@@ -219,10 +222,13 @@ public final class Transcriber {
             for (int chordElementIndex = 1; chordElementIndex < chord.size(); chordElementIndex++) {
               Note currentNote = (Note)chord.get(chordElementIndex);
               AbstractPitch currentPitch = (AbstractPitch)currentNote.getPitch();
-              int diatonicDifference = currentPitch.diatonicDifference(previousPitch);
-              if (diatonicDifference > 7) {
+              int diatonicDifference = Math.abs(currentPitch.diatonicDifference(previousPitch));
+              if (diatonicDifference == 0) {
                 output += currentPitch.getOctaveSign(null);
-                diatonicDifference %= 8;
+                diatonicDifference = 7;
+              } else if (diatonicDifference > 7) {
+                output += currentPitch.getOctaveSign(null);
+                while (diatonicDifference > 7) diatonicDifference -= 7;
               }
               output += Braille.interval(diatonicDifference);
               previousPitch = currentPitch;

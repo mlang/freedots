@@ -1,6 +1,9 @@
 /* -*- c-basic-offset: 2; -*- */
 package org.delysid.freedots.musicxml;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.delysid.freedots.model.KeySignature;
 import org.delysid.freedots.model.TimeSignature;
 
@@ -33,6 +36,14 @@ public final class Attributes {
     }
     return 0;
   }
+  public List<Clef> getClefs() {
+    NodeList nodeList = element.getElementsByTagName("clef");
+    List<Clef> clefs = new ArrayList<Clef>();
+    for (int index = 0; index < nodeList.getLength(); index++) {
+      clefs.add(new Clef((Element)nodeList.item(index)));
+    }
+    return clefs;
+  }
   public Time getTime() {
     NodeList nodeList = element.getElementsByTagName("time");
     if (nodeList.getLength() == 1) {
@@ -51,14 +62,23 @@ public final class Attributes {
     }
     return null;
   }
-  public class Time extends TimeSignature {
+  class Clef extends org.delysid.freedots.model.Clef {
+    Element element = null;
+    String staffName = null;
+    public Clef(Element element) {
+      super(getClefSignFromElement(element), getClefLineFromElement(element));
+      staffName = element.getAttribute("number");
+    }
+    public String getStaffName() { return staffName; }
+  }
+  class Time extends TimeSignature {
     Element element = null;
     public Time(Element element) {
       super(getBeatsFromElement(element), getBeatTypeFromElement(element));
       this.element = element;
     }
   }
-  public class Key extends KeySignature {
+  class Key extends KeySignature {
     Element element = null;
     public Key(Element element) {
       super(getFifthsFromElement(element));
@@ -94,5 +114,24 @@ public final class Attributes {
       return Integer.parseInt(textNode.getNodeValue());
     }
     throw new MusicXMLParseException("missing <fifths> element");
+  }
+  static Clef.Sign getClefSignFromElement(Element element) throws MusicXMLParseException {
+    NodeList nodeList = element.getElementsByTagName("sign");
+    int nodeCount = nodeList.getLength();
+    if (nodeCount >= 1) {
+      Node textNode = nodeList.item(nodeCount-1).getChildNodes().item(0);
+      return Enum.valueOf(Clef.Sign.class, textNode.getNodeValue());
+    }
+    throw new MusicXMLParseException("missing <sign> element");
+  }
+  static int getClefLineFromElement(Element element) throws MusicXMLParseException {
+    NodeList nodeList = element.getElementsByTagName("line");
+    int nodeCount = nodeList.getLength();
+    if (nodeCount >= 1) {
+      Node textNode = nodeList.item(nodeCount-1).getChildNodes().item(0);
+
+      return Integer.parseInt(textNode.getNodeValue());
+    }
+    throw new MusicXMLParseException("missing <line> element");
   }
 }

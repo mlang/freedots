@@ -11,7 +11,7 @@ import org.delysid.freedots.model.Event;
 
 public class MIDISequence extends javax.sound.midi.Sequence {
   public MIDISequence (Score score) throws InvalidMidiDataException {
-    super(PPQ, score.getDivisions());
+    super(PPQ, calculatePPQ(score.getDivisions()));
     for (Part part:score.getParts()) {
       Track track = createTrack();
       int channel = 0;
@@ -51,5 +51,14 @@ public class MIDISequence extends javax.sound.midi.Sequence {
         e.printStackTrace();
       }
     }
+  }
+
+  private static int calculatePPQ(int ppq) {
+    if (ppq < 5) return ppq * 80;
+    else if (ppq < 10) return ppq * 40;
+    else if (ppq < 20) return ppq * 20;
+    else if (ppq < 40) return ppq * 10;
+    else if (ppq < 100) return ppq * 4;
+    return ppq;
   }
 }

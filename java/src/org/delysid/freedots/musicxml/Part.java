@@ -1,11 +1,14 @@
 /* -*- c-basic-offset: 2; -*- */
 package org.delysid.freedots.musicxml;
 
+import java.util.List;
+
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
+import org.delysid.freedots.model.ClefChange;
 import org.delysid.freedots.model.Fraction;
 import org.delysid.freedots.model.MusicList;
 import org.delysid.freedots.model.StartBar;
@@ -77,6 +80,12 @@ public final class Part {
 		eventList.add(new TimeSignatureChange(measureOffset.add(offset),
 						      lastTimeSignature));
 	      }
+              List<Attributes.Clef> clefs = attributes.getClefs();
+              if (clefs.size() > 0) {
+                for (Attributes.Clef clef:clefs)
+                  eventList.add(new ClefChange(measureOffset.add(offset),
+                                clef, clef.getStaffName()));
+              }
 	    } else if ("note".equals(measureChild.getNodeName())) {
 	      Note note = new Note(measureOffset.add(offset),
                                    musicdata, divisions, durationMultiplier);
