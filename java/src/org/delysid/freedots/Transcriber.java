@@ -71,6 +71,9 @@ public final class Transcriber {
               printString(Braille.leftHandPart.toString());
             }
           }
+
+          String lyric = staff.getLyricText();
+          if (lyric.length() > 0) printLine(lyric);
           for (int staffElementIndex = 0; staffElementIndex < staff.size();
 	       staffElementIndex++) {
 	    
@@ -172,7 +175,9 @@ public final class Transcriber {
            (options.multiStaffMeasures == Options.MultiStaffMeasures.ELEVEN &&
             measureCount == 11) ||
            (options.multiStaffMeasures == Options.MultiStaffMeasures.TWELVE &&
-            measureCount == 12)))) {
+            measureCount == 12))) ||
+          (currentSegment.getLyricText().length() >= options.getPageWidth() ||
+           startBar.getNewSystem())) {
 	currentSegment = new Segment();
 	segments.add(currentSegment);
         measureCount = 0;

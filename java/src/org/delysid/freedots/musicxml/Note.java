@@ -9,6 +9,7 @@ import org.delysid.freedots.model.AugmentedFraction;
 import org.delysid.freedots.model.Fraction;
 import org.delysid.freedots.model.Staff;
 import org.delysid.freedots.model.RhythmicElement;
+import org.delysid.freedots.model.Syllabic;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -45,6 +46,9 @@ public final class Note extends Musicdata implements RhythmicElement {
       put("flat", Accidental.FLAT); put("sharp", Accidental.SHARP);
     }
   };
+
+  Lyric lyric = null;
+
   Note(
     Fraction offset, Element element,
     int divisions, int durationMultiplier
@@ -79,6 +83,11 @@ public final class Note extends Musicdata implements RhythmicElement {
         accidental = accidentalMap.get(santizedName);
       else
         throw new MusicXMLParseException("Illegal <accidental>"+accidentalName+"</accidental>");
+    }
+
+    nodeList = element.getElementsByTagName("lyric");
+    if (nodeList.getLength() >= 1) {
+      lyric = new Lyric((Element)nodeList.item(nodeList.getLength()-1));
     }
   }
 
@@ -145,4 +154,25 @@ public final class Note extends Musicdata implements RhythmicElement {
     int getNumerator() { return numerator; }
     int getDenominator() { return denominator; }      
   }
+
+  class Lyric implements org.delysid.freedots.model.Lyric {
+    Element element;
+
+    Lyric(Element element) {
+      this.element = element;
+    }
+    public String getText() {
+      Text textNode = Score.getTextContent(element, "text");
+      if (textNode != null) return textNode.getWholeText();
+      return "";
+    }
+    public Syllabic getSyllabic() {
+      Text textNode = Score.getTextContent(element, "syllabic");
+      if (textNode != null) {      
+        return Enum.valueOf(Syllabic.class, textNode.getWholeText().toUpperCase());
+      }
+      return null;
+    }
+  }
+  public Lyric getLyric() { return lyric; }
 }

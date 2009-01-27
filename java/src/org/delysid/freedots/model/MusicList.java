@@ -50,9 +50,13 @@ public class MusicList extends java.util.ArrayList<Event> {
         for (Staff staff:staves) staff.add(event);
       } else if (event instanceof StaffElement) {
         String staffName = ((StaffElement)event).getStaffName();
-        if (!staffNames.containsKey(staffName))
-          staffNames.put(staffName, staves.get(usedStaves++));
-        staffNames.get(staffName).add(event);
+        if (staffName == null && staves.size() == 1) {
+          staves.get(0).add(event);
+        } else {
+          if (!staffNames.containsKey(staffName))
+            staffNames.put(staffName, staves.get(usedStaves++));
+          staffNames.get(staffName).add(event);
+        }
       } else if (event instanceof Chord) {
         for (StaffElement staffChord:((Chord)event).getStaffChords()) {
           String staffName = staffChord.getStaffName();
@@ -115,5 +119,21 @@ public class MusicList extends java.util.ArrayList<Event> {
     List<Voice> voiceList = new ArrayList<Voice>(voices.values());    
     if (defaultVoice != null) voiceList.add(defaultVoice);
     return voiceList;
+  }
+  public String getLyricText() {
+    StringBuilder stringBuilder = new StringBuilder();
+    for (Event event:this) {
+      if (event instanceof org.delysid.freedots.musicxml.Note) {
+        org.delysid.freedots.musicxml.Note note = (org.delysid.freedots.musicxml.Note)event;
+        Lyric lyric = note.getLyric();
+        if (lyric != null) {
+          stringBuilder.append(lyric.getText());
+          if (lyric.getSyllabic() == Syllabic.SINGLE ||
+              lyric.getSyllabic() == Syllabic.END)
+            stringBuilder.append(" ");
+        }
+      }
+    }
+    return stringBuilder.toString();
   }
 }
