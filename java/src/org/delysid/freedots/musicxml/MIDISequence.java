@@ -41,6 +41,20 @@ public class MIDISequence extends javax.sound.midi.Sequence {
             addNote(track, note, channel, velocity, offset);
         else if (event instanceof StartBar) {
           if (repeatStartIndex == -1) repeatStartIndex = i;
+          StartBar startBar = (StartBar)event;
+          if (startBar.getEndingStart() > 0 &&
+              startBar.getEndingStart() != round) {
+            for (int j = i + 1; j < events.size(); j++) {
+              if (events.get(j) instanceof EndBar) {
+                EndBar endBar = (EndBar)events.get(j);
+                if (endBar.getEndingStop() == startBar.getEndingStart()) {
+                  offset = offset.subtract(endBar.getOffset().subtract(startBar.getOffset()));
+                  i = j + 1;
+                  break;
+                }
+              }
+            }
+          }
         } else if (event instanceof EndBar) {
           EndBar endbar = (EndBar)event;
           if (endbar.getRepeat()) {

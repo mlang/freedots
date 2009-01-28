@@ -73,12 +73,16 @@ public final class Transcriber {
 
           String lyric = staff.getLyricText();
           if (lyric.length() > 0) printLine(lyric);
-          for (int staffElementIndex = 0; staffElementIndex < staff.size();
-	       staffElementIndex++) {
-	    
-	    Event event = staff.get(staffElementIndex);
 
-	    if (event instanceof EndBar) {
+          StartBar startBar = null;
+
+          for (int staffElementIndex = 0; staffElementIndex < staff.size();
+               staffElementIndex++) {
+            Event event = staff.get(staffElementIndex);
+
+            if (event instanceof StartBar) {
+              startBar = (StartBar)event;
+            } else if (event instanceof EndBar) {
               EndBar rightBar = (EndBar)event;
               int charactersLeft = options.getPageWidth() - characterCount;
               if (charactersLeft <= 2) {
@@ -94,6 +98,12 @@ public final class Transcriber {
                 charactersLeft = options.getPageWidth() - characterCount;
                 head = measure.head(charactersLeft, lastLine);
                 tail = measure.tail();
+              }
+              if (startBar != null && startBar.getEndingStart() > 0) {
+                String braille = Braille.numberSign.toString();
+                braille += Braille.lowerDigit(startBar.getEndingStart());
+                braille += Braille.unicodeBraille(Braille.dotsToBits(3));
+                printString(braille);
               }
               printString(head);
               if (tail.length() > 0) {

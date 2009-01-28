@@ -11,4 +11,8 @@ public class StartBar extends VerticalEvent {
   boolean newSystem = false;
   public boolean getNewSystem() { return newSystem; }
   public void setNewSystem(boolean newSystem) { this.newSystem = newSystem; }
+
+  int endingStart = 0;
+  public int getEndingStart() { return endingStart; }
+  public void setEndingStart(int endingStart) { this.endingStart = endingStart; }
 }

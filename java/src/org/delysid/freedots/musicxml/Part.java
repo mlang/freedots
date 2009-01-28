@@ -55,6 +55,7 @@ public final class Part {
 	eventList.add(startBar);
 
         boolean repeatBackward = false;
+        int endingStop = 0;
 
 	Chord currentChord = null;
 	Fraction offset = new Fraction(0, 1);
@@ -130,13 +131,24 @@ public final class Part {
               eventList.add(invisibleRest);
               offset = offset.add(invisibleRest.getDuration());
 	    } else if ("print".equals(measureChild.getNodeName())) {
-	      Print print = new Print((Element)kid);
+	      Print print = new Print(musicdata);
 	      if (print.isNewSystem()) startBar.setNewSystem(true);
             } else if ("barline".equals(measureChild.getNodeName())) {
-              Barline barline = new Barline((Element)kid);
-              if (barline.getLocation() == Barline.Location.RIGHT &&
-                  barline.getRepeat() == Barline.Repeat.BACKWARD) {
-                repeatBackward = true;
+              Barline barline = new Barline(musicdata);
+
+              if (barline.getLocation() == Barline.Location.LEFT) {
+                if (barline.getEnding() > 0 &&
+                    barline.getEndingType() == Barline.EndingType.START) {
+                  startBar.setEndingStart(barline.getEnding());
+                }
+              } else if (barline.getLocation() == Barline.Location.RIGHT) {
+                if (barline.getRepeat() == Barline.Repeat.BACKWARD) {
+                  repeatBackward = true;
+                }
+                if (barline.getEnding() > 0 &&
+                    barline.getEndingType() == Barline.EndingType.STOP) {
+                  endingStop = barline.getEnding();
+                }
               }
             } else
               System.err.println("Unsupported musicdata element " + measureChild.getNodeName());
@@ -146,6 +158,7 @@ public final class Part {
 
         endbar = new EndBar(measureOffset);
         if (repeatBackward) endbar.setRepeat(true);
+        if (endingStop > 0) endbar.setEndingStop(endingStop);
         eventList.add(endbar);
       }
     }
