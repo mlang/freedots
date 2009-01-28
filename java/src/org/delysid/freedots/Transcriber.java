@@ -78,6 +78,7 @@ public final class Transcriber {
 	    Event event = staff.get(staffElementIndex);
 
 	    if (event instanceof EndBar) {
+              EndBar rightBar = (EndBar)event;
               int charactersLeft = options.getPageWidth() - characterCount;
               if (charactersLeft <= 2) {
                 newLine();
@@ -93,6 +94,10 @@ public final class Transcriber {
                 newLine();
                 printString(tail);
               }
+
+              if (rightBar.getRepeat())
+                printString(Braille.dottedDoubleBar.toString());
+
               printString(" ");
 
               measure = new BrailleMeasure(measure);

@@ -53,6 +53,8 @@ public final class Part {
 	startBar.setStaffCount(staffCount);
 	eventList.add(startBar);
 
+        boolean repeatBackward = false;
+
 	Chord currentChord = null;
 	Fraction offset = new Fraction(0, 1);
 	NodeList measureChildNodes = xmlMeasure.getChildNodes();
@@ -129,13 +131,21 @@ public final class Part {
 	    } else if ("print".equals(measureChild.getNodeName())) {
 	      Print print = new Print((Element)kid);
 	      if (print.isNewSystem()) startBar.setNewSystem(true);
-	    } else
-	      System.err.println("Unsupported musicdata element " + measureChild.getNodeName());
+            } else if ("barline".equals(measureChild.getNodeName())) {
+              Barline barline = new Barline((Element)kid);
+              if (barline.getLocation() == Barline.Location.RIGHT &&
+                  barline.getRepeat() == Barline.Repeat.BACKWARD) {
+                repeatBackward = true;
+              }
+            } else
+              System.err.println("Unsupported musicdata element " + measureChild.getNodeName());
 	  }
 	}
 	measureOffset = measureOffset.add(timeSignature);
 
-        eventList.add(new EndBar(measureOffset));
+        EndBar endbar = new EndBar(measureOffset);
+        if (repeatBackward) endbar.setRepeat(true);
+        eventList.add(endbar);
       }
     }
   }
