@@ -31,7 +31,6 @@ public class Barline {
   }
   public int getEnding() {
     if (ending != null) {
-System.err.println("Ending is "+Integer.parseInt(ending.getAttribute("number")));
       return Integer.parseInt(ending.getAttribute("number"));
     }
     return 0;
