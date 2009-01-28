@@ -4234,6 +4234,9 @@
 			</note>
 		</measure>
 		<measure number="19">
+			<barline location="left">
+				<ending number="1" type="start"/>
+			</barline>
 			<note>
 				<pitch>
 					<step>G</step>
@@ -4350,10 +4353,14 @@
 			</note>
 			<barline location="right">
 				<bar-style>light-heavy</bar-style>
+				<ending number="1" type="stop"/>
 				<repeat direction="backward"/>
 			</barline>
 		</measure>
 		<measure number="20">
+			<barline location="left">
+				<ending number="2" type="start"/>
+			</barline>
 			<print new-system="yes"/>
 			<note>
 				<pitch>
@@ -4564,6 +4571,9 @@
 					<slur type="stop" number="1"/>
 				</notations>
 			</note>
+			<barline location="right">
+				<ending number="2" type="discontinue"/>
+			</barline>
 		</measure>
 		<measure number="21">
 			<note>
