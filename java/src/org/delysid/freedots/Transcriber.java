@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.delysid.freedots.model.AbstractPitch;
+import org.delysid.freedots.model.Accidental;
 import org.delysid.freedots.model.Event;
 import org.delysid.freedots.model.Staff;
 import org.delysid.freedots.model.MusicList;
@@ -233,6 +234,10 @@ public final class Transcriber {
           if (element instanceof Note) {
             String braille = "";
             Note note = (Note)element;
+            Accidental accidental = note.getAccidental();
+            if (accidental != null) {
+              braille += accidental.toBraille().toString();
+            }
             AbstractPitch pitch = (AbstractPitch)note.getPitch();
             if (pitch != null) {
               Braille octaveSign = pitch.getOctaveSign(lastPitch);
@@ -252,6 +257,10 @@ public final class Transcriber {
             VoiceChord chord = (VoiceChord)element;
             chord = chord.getSorted();
             Note firstNote = (Note)chord.get(0);
+            Accidental accidental = firstNote.getAccidental();
+            if (accidental != null) {
+              braille += accidental.toBraille().toString();
+            }
             AbstractPitch firstPitch = (AbstractPitch)firstNote.getPitch();
             Braille octaveSign = firstPitch.getOctaveSign(lastPitch);
             if (octaveSign != null) { braille += octaveSign; }
@@ -261,6 +270,10 @@ public final class Transcriber {
 
             for (int chordElementIndex = 1; chordElementIndex < chord.size(); chordElementIndex++) {
               Note currentNote = (Note)chord.get(chordElementIndex);
+              accidental = currentNote.getAccidental();
+              if (accidental != null) {
+                braille += accidental.toBraille().toString();
+              }
               AbstractPitch currentPitch = (AbstractPitch)currentNote.getPitch();
               int diatonicDifference = Math.abs(currentPitch.diatonicDifference(previousPitch));
               if (diatonicDifference == 0) {
