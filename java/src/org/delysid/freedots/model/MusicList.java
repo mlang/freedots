@@ -70,14 +70,12 @@ public class MusicList extends java.util.ArrayList<Event> {
             staffChord.setStaff(staffNames.get(staffName));
           }
         }
-      } else if (event instanceof ClefChange) {
-        ClefChange clefChange = (ClefChange)event;
-        if (clefChange.getStaffName() == null) { /* all staves */
-          for (Staff staff:staves) staff.add(clefChange);
-        } else {
-          if (!staffNames.containsKey(clefChange.getStaffName()))
-            staffNames.put(clefChange.getStaffName(), staves.get(usedStaves++));
-          staffNames.get(clefChange.getStaffName()).add(clefChange);
+      } else if (event instanceof GlobalClefChange) {
+        GlobalClefChange globalClefChange = (GlobalClefChange)event;
+        for (Staff staff:staves) {
+          ClefChange clefChange = new ClefChange(globalClefChange.getOffset(),
+                                                 globalClefChange.getClef(), null);
+          staff.add(clefChange);
         }
       }
     }

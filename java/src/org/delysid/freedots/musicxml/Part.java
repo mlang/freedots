@@ -10,6 +10,7 @@ import javax.xml.xpath.XPathFactory;
 
 import org.delysid.freedots.model.ClefChange;
 import org.delysid.freedots.model.Fraction;
+import org.delysid.freedots.model.GlobalClefChange;
 import org.delysid.freedots.model.MusicList;
 import org.delysid.freedots.model.StartBar;
 import org.delysid.freedots.model.EndBar;
@@ -82,9 +83,13 @@ public final class Part {
 	      }
               List<Attributes.Clef> clefs = attributes.getClefs();
               if (clefs.size() > 0) {
-                for (Attributes.Clef clef:clefs)
-                  eventList.add(new ClefChange(measureOffset.add(offset),
-                                clef, clef.getStaffName()));
+                for (Attributes.Clef clef:clefs) {
+                  if (clef.getStaffName() == null)
+                    eventList.add(new GlobalClefChange(measureOffset.add(offset), clef));
+                  else
+                    eventList.add(new ClefChange(measureOffset.add(offset),
+                                  clef, clef.getStaffName()));
+                }
               }
 	    } else if ("note".equals(measureChild.getNodeName())) {
 	      Note note = new Note(measureOffset.add(offset),

@@ -10,7 +10,11 @@ public enum Braille {
   second(34), third(346), fourth(3456), fifth(35), sixth(356), seventh(25),
   octave(36),
 
-  rightHandPart(46, 345), leftHandPart(456,345),
+  rightHandPart(46, 345), leftHandPart(456, 345),
+
+  hyphen(5),
+
+  dottedDoubleBar(126, 23), doubleBar(126, 13),
 
   digit0(245), digit1(1), digit2(12), digit3(14), digit4(145),
   digit5(15), digit6(124), digit7(1245), digit8(125), digit9(24),

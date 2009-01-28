@@ -55,15 +55,13 @@ public final class Transcriber {
         for (int staffIndex = 0; staffIndex < staffCount; staffIndex++) {
 	  Staff staff = segment.getStaff(staffIndex);
 	  BrailleMeasure measure = new BrailleMeasure();
+          boolean displayClefChange = false;
 
           if (characterCount > 0) newLine();
           indentTo(2);
 
           if (staffCount == 1 && staff.containsChords()) {
-            if (staff.getClef().getChordDirection() > 1)
-              printString(Braille.leftHandPart.toString());
-            else
-              printString(Braille.rightHandPart.toString());
+            displayClefChange = true;
           } else if (staffCount == 2) {
             if (staffIndex == 0) {
               printString(Braille.rightHandPart.toString());
@@ -80,11 +78,21 @@ public final class Transcriber {
 	    Event event = staff.get(staffElementIndex);
 
 	    if (event instanceof EndBar) {
-              String braille = measure.toString();
-              if (characterCount+braille.length() > options.getPageWidth()) {
+              int charactersLeft = options.getPageWidth() - characterCount;
+              if (charactersLeft <= 2) {
                 newLine();
+                charactersLeft = options.getPageWidth() - characterCount;
               }
-              printString(braille);
+                            
+              boolean lastLine = (lineCount == (options.getPageHeight() - 1));
+              String head = measure.head(charactersLeft, lastLine);
+              String tail = measure.tail();
+              printString(head);
+              if (tail.length() > 0) {
+                printString(Braille.hyphen.toString());
+                newLine();
+                printString(tail);
+              }
               printString(" ");
 
               measure = new BrailleMeasure(measure);
@@ -196,8 +204,13 @@ public final class Transcriber {
     public void add(Event event) { events.add(event); }
     public AbstractPitch getFinalPitch() { return finalPitch; }
 
-    public String toString() {
+    String tail;
+    public String tail() { return tail; }
+    public String head(int width, boolean lastLine) {
+      tail = "";
       String output = "";
+      boolean hyphenated = false;
+
       AbstractPitch lastPitch = previous != null? previous.getFinalPitch(): null;
       List<Voice> voices = events.getVoices();
       int voiceCount = voices.size();
@@ -205,23 +218,32 @@ public final class Transcriber {
       for (int voiceIndex = 0; voiceIndex < voiceCount; voiceIndex++) {
         for (Event element:voices.get(voiceIndex)) {
           if (element instanceof Note) {
+            String braille = "";
             Note note = (Note)element;
             AbstractPitch pitch = (AbstractPitch)note.getPitch();
             if (pitch != null) {
               Braille octaveSign = pitch.getOctaveSign(lastPitch);
-              if (octaveSign != null) { output += octaveSign; }
+              if (octaveSign != null) { braille += octaveSign; }
               lastPitch = pitch;
             }
-            output += note.getAugmentedFraction().toBrailleString(pitch);
+            braille += note.getAugmentedFraction().toBrailleString(pitch);
+            if (braille.length() < width && !hyphenated) {
+              output += braille;
+              width -= braille.length();
+            } else {
+              hyphenated = true;
+              tail += braille;
+            }
           } else if (element instanceof VoiceChord) {
+            String braille = "";
             VoiceChord chord = (VoiceChord)element;
             chord = chord.getSorted();
             Note firstNote = (Note)chord.get(0);
             AbstractPitch firstPitch = (AbstractPitch)firstNote.getPitch();
             Braille octaveSign = firstPitch.getOctaveSign(lastPitch);
-            if (octaveSign != null) { output += octaveSign; }
+            if (octaveSign != null) { braille += octaveSign; }
             lastPitch = firstPitch;
-            output += firstNote.getAugmentedFraction().toBrailleString(firstPitch);
+            braille += firstNote.getAugmentedFraction().toBrailleString(firstPitch);
             AbstractPitch previousPitch = firstPitch;
 
             for (int chordElementIndex = 1; chordElementIndex < chord.size(); chordElementIndex++) {
@@ -229,20 +251,35 @@ public final class Transcriber {
               AbstractPitch currentPitch = (AbstractPitch)currentNote.getPitch();
               int diatonicDifference = Math.abs(currentPitch.diatonicDifference(previousPitch));
               if (diatonicDifference == 0) {
-                output += currentPitch.getOctaveSign(null);
+                braille += currentPitch.getOctaveSign(null);
                 diatonicDifference = 7;
               } else if (diatonicDifference > 7) {
-                output += currentPitch.getOctaveSign(null);
+                braille += currentPitch.getOctaveSign(null);
                 while (diatonicDifference > 7) diatonicDifference -= 7;
               }
-              output += Braille.interval(diatonicDifference);
+              braille += Braille.interval(diatonicDifference);
               previousPitch = currentPitch;
+            }
+
+            if (braille.length() < width && !hyphenated) {
+              output += braille;
+              width -= braille.length();
+            } else {
+              tail += braille;
+              hyphenated = true;
             }
           }
         }
 
         if (voiceIndex < voiceCount-1) {
-          output += Braille.fullMeasureInAccord;
+          String braille = Braille.fullMeasureInAccord.toString();
+          if (braille.length() < width && !hyphenated) {
+            output += braille;
+            width -= braille.length();
+          } else {
+            tail += braille;
+            hyphenated = true;
+          }
 
           /* The octave mark must be shown for
            * the first note after an in-accord.

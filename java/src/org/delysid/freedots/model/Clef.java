@@ -10,6 +10,9 @@ public class Clef {
     this.sign = sign;
     this.line = line;
   }
+  public boolean isTreble() { return (sign == Sign.G && line == 2); }
+  public boolean isBass() { return (sign == Sign.F && line == 4); }
+
   public int getChordDirection() {
     switch (sign) {
       case G: switch (line) {
