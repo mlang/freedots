@@ -7,7 +7,11 @@ import javax.sound.midi.MidiEvent;
 import javax.sound.midi.ShortMessage;
 import javax.sound.midi.Track;
 
+import org.delysid.freedots.model.EndBar;
 import org.delysid.freedots.model.Event;
+import org.delysid.freedots.model.Fraction;
+import org.delysid.freedots.model.MusicList;
+import org.delysid.freedots.model.StartBar;
 
 public class MIDISequence extends javax.sound.midi.Sequence {
   public MIDISequence (Score score) throws InvalidMidiDataException {
@@ -22,19 +26,39 @@ public class MIDISequence extends javax.sound.midi.Sequence {
       metaMessage.setMessage(0x03, trackName.getBytes(), trackName.length());
       track.add(new MidiEvent(metaMessage, 0));
 
-      for (Event event:part.getMusicList())
-	if (event instanceof Note)
-          addNote(track, (Note)event, channel, velocity);
+      MusicList events = part.getMusicList();
+
+      int round = 1;
+      int repeatStartIndex = -1;
+
+      Fraction offset = new Fraction(0, 1);
+      for (int i = 0; i < events.size(); i++) {
+        Event event = events.get(i);
+        if (event instanceof Note)
+          addNote(track, (Note)event, channel, velocity, offset);
 	else if (event instanceof Chord)
           for (Note note:(Chord)event)
-            addNote(track, note, channel, velocity);
+            addNote(track, note, channel, velocity, offset);
+        else if (event instanceof StartBar) {
+          if (repeatStartIndex == -1) repeatStartIndex = i;
+        } else if (event instanceof EndBar) {
+          EndBar endbar = (EndBar)event;
+          if (endbar.getRepeat()) {
+            if (round == 1) {
+              offset = endbar.getOffset();
+              i = repeatStartIndex;
+              round += 1;
+            }
+          }
+        }
+      }
     }
   }
-  private void addNote(Track track, Note note, int channel, int velocity) {
+  private void addNote(Track track, Note note, int channel, int velocity, Fraction add) {
     if (!note.isGrace()) {
       Pitch pitch = note.getPitch();
       try {
-        int offset = note.getOffset().toInteger(resolution);
+        int offset = note.getOffset().add(add).toInteger(resolution);
         int duration = note.getDuration().toInteger(resolution);
         if (pitch != null) {
           int midiPitch = pitch.getMIDIPitch();
