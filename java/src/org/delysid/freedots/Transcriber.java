@@ -88,6 +88,12 @@ public final class Transcriber {
               boolean lastLine = (lineCount == (options.getPageHeight() - 1));
               String head = measure.head(charactersLeft, lastLine);
               String tail = measure.tail();
+              if (head.length() <= tail.length() / 10) {
+                newLine();
+                charactersLeft = options.getPageWidth() - characterCount;
+                head = measure.head(charactersLeft, lastLine);
+                tail = measure.tail();
+              }
               printString(head);
               if (tail.length() > 0) {
                 printString(Braille.hyphen.toString());
@@ -97,6 +103,8 @@ public final class Transcriber {
 
               if (rightBar.getRepeat())
                 printString(Braille.dottedDoubleBar.toString());
+              else if (rightBar.getEndOfMusic())
+                printString(Braille.doubleBar.toString());
 
               printString(" ");
 

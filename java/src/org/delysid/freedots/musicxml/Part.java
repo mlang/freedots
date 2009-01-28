@@ -41,6 +41,7 @@ public final class Part {
     Fraction measureOffset = new Fraction(0, 1);
     TimeSignature lastTimeSignature = null;
     int staffCount = 1;
+    EndBar endbar = null;
 
     NodeList partChildNodes = part.getChildNodes();
     for (int i = 0; i<partChildNodes.getLength(); i++) {
@@ -143,11 +144,12 @@ public final class Part {
 	}
 	measureOffset = measureOffset.add(timeSignature);
 
-        EndBar endbar = new EndBar(measureOffset);
+        endbar = new EndBar(measureOffset);
         if (repeatBackward) endbar.setRepeat(true);
         eventList.add(endbar);
       }
     }
+    if (endbar != null) endbar.setEndOfMusic(true);
   }
 
   public TimeSignature getTimeSignature() { return timeSignature; }

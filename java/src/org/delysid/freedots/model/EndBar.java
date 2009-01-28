@@ -6,4 +6,8 @@ public class EndBar extends VerticalEvent {
   boolean repeat = false;
   public boolean getRepeat() { return repeat; }
   public void setRepeat(boolean repeat) { this.repeat = repeat; }
+
+  boolean endOfMusic = false;
+  public boolean getEndOfMusic() { return endOfMusic; }
+  public void setEndOfMusic(boolean endOfMusic) { this.endOfMusic = endOfMusic; }
 }
