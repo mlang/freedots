@@ -4576,6 +4576,9 @@
 			</barline>
 		</measure>
 		<measure number="21">
+			<barline location="left">
+				<repeat direction="forward"/>
+			</barline>
 			<note>
 				<pitch>
 					<step>E</step>

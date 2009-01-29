@@ -15,4 +15,8 @@ public class StartBar extends VerticalEvent {
   int endingStart = 0;
   public int getEndingStart() { return endingStart; }
   public void setEndingStart(int endingStart) { this.endingStart = endingStart; }
+
+  boolean repeatForward = false;
+  public boolean getRepeatForward() { return repeatForward; }
+  public void setRepeatForward(boolean flag) { repeatForward = flag; }
 }

@@ -137,6 +137,9 @@ public final class Part {
               Barline barline = new Barline(musicdata);
 
               if (barline.getLocation() == Barline.Location.LEFT) {
+                if (barline.getRepeat() == Barline.Repeat.FORWARD) {
+                  startBar.setRepeatForward(true);
+                }
                 if (barline.getEnding() > 0 &&
                     barline.getEndingType() == Barline.EndingType.START) {
                   startBar.setEndingStart(barline.getEnding());
