@@ -12,6 +12,7 @@ import org.xml.sax.SAXException;
 public class MusicXMLEntityResolver implements org.xml.sax.EntityResolver {
   private static Map<String, String> map = new HashMap<String, String>() {
     {
+      put("-//Recordare//DTD MusicXML 1.0 Partwise//EN", "partwise.dtd");
       put("-//Recordare//DTD MusicXML 1.1 Partwise//EN", "partwise.dtd");
       put("-//Recordare//DTD MusicXML 2.0 Partwise//EN", "partwise.dtd");
       put("-//Recordare//ELEMENTS MusicXML 2.0 Common//EN", "common.mod");
