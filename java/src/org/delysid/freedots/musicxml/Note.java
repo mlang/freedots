@@ -175,4 +175,24 @@ public final class Note extends Musicdata implements RhythmicElement {
     }
   }
   public Lyric getLyric() { return lyric; }
+
+  @Override
+  public boolean equals(Object object) {
+    if (object instanceof Note) {
+      Note other = (Note)object;
+
+      if (this.getOffset().equals(other.getOffset())) {
+        if (this.getAugmentedFraction().equals(other.getAugmentedFraction())) {
+          if (this.getAccidental() == other.getAccidental()) {
+            if (this.getPitch() == null) {
+              return other.getPitch() == null;
+            } else {
+              return (this.getPitch().equals(other.getPitch()));
+            }
+          }
+        }
+      }
+    }
+    return false;
+  }
 }

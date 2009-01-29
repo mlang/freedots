@@ -21,6 +21,14 @@ public class Fraction implements Comparable<Fraction> {
     return this.divide(new Fraction(1, 4*divisions)).numerator;
   }
 
+  @Override
+  public boolean equals(Object object) {
+    if (object instanceof Fraction) {
+      Fraction other = (Fraction)object;
+      return this.toFloat() == other.toFloat();
+    }
+    return false;
+  }
   public int compareTo(Fraction other) {
     return Float.compare(this.toFloat(), other.toFloat());
   }
@@ -52,7 +60,7 @@ public class Fraction implements Comparable<Fraction> {
     return newFraction;
   }
 
-  public void simplify() {
+  void simplify() {
     int gcd = calcGcd(Math.max(numerator, denominator),
 		      Math.min(numerator, denominator));
     numerator /= gcd;
