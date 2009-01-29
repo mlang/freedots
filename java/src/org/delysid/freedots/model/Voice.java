@@ -9,6 +9,20 @@ public class Voice extends MusicList {
     this.name = name;
   }
 
+  public int countEqualsAtBeginning(Voice other) {
+    int elementCount = Math.min(this.size(), other.size());
+    int index = 0;
+    for (index = 0; index < elementCount; index++) {
+      if (!this.get(index).equals(other.get(index))) break;
+    }
+    return index;
+  }
+  public int countEqualsAtEnd(Voice other) {
+    int count = 0;
+
+    // FIXME: Implement it
+    return count;
+  }
   public boolean restsOnly() {
     for (Event event:this)
       if (event instanceof StaffElement)

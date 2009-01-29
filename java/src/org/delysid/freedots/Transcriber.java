@@ -91,6 +91,7 @@ public final class Transcriber {
               }
                             
               boolean lastLine = (lineCount == (options.getPageHeight() - 1));
+              measure.process();
               String head = measure.head(charactersLeft, lastLine);
               String tail = measure.tail();
               if (head.length() <= tail.length() / 10) {
@@ -233,101 +234,152 @@ public final class Transcriber {
       this.previous = previous;
     }
     public void add(Event event) { events.add(event); }
+    List<Object> brailleVoices = new ArrayList<Object>();
+    public void process() {
+      brailleVoices = new ArrayList<Object>();
+
+      List<Voice> voices = events.getVoices();
+      int voiceCount = voices.size();
+      if (voiceCount == 1) {
+        FullMeasure measure = new FullMeasure(voices.get(0));
+        brailleVoices.add(measure);
+      } else if (voiceCount > 1) {
+        FullMeasureInAccord fmia = new FullMeasureInAccord();
+        PartMeasureInAccord pmia = new PartMeasureInAccord();
+
+        while (voices.size() > 0) {
+          for (int i = 0; i < voices.size(); i++) {
+            Voice voice = voices.get(i);
+            boolean found = false;
+            int headLength = 0;
+
+            for (int j = 0; j < voices.size(); j++) {
+              if (i == j) continue;
+              int equalsAtBeginning = voice.countEqualsAtBeginning(voices.get(j));
+              if (equalsAtBeginning > 0) {
+                headLength = equalsAtBeginning;
+                MusicList head = new MusicList();
+                for (int k = 0; k < equalsAtBeginning; k++) {
+                  head.add(voice.get(k));
+                  voices.get(j).remove(k);
+                }
+                pmia.setHead(head);
+                pmia.addPart(voices.get(j));
+                voices.remove(voices.get(j));
+                found = true;
+              } else if (found && equalsAtBeginning == headLength) {
+                for (int k = 0; k < equalsAtBeginning; k++) {
+                  voices.get(j).remove(k);
+                }
+                pmia.addPart(voices.get(j));
+                voices.remove(voices.get(j));
+              }
+            }
+
+            if (found) {
+              for (int k = 0; k < headLength; k++) {
+                voice.remove(k);
+              }
+              pmia.addPart(voice);
+              voices.remove(voice);
+            } else {
+              fmia.addPart(voice);
+              voices.remove(voice);
+            }
+          }
+        }
+	if (fmia.getParts().size() > 0) brailleVoices.add(fmia);
+	if (pmia.getParts().size() > 0) brailleVoices.add(pmia);
+      }
+    }
     public AbstractPitch getFinalPitch() { return finalPitch; }
 
     String tail;
     public String tail() { return tail; }
-    public String head(int width, boolean lastLine) {
-      tail = "";
-      String output = "";
+    class State {
+      int width;
+      AbstractPitch lastPitch;
+      String head = "";
+      String tail = "";
       boolean hyphenated = false;
+      State(int width, AbstractPitch lastPitch) {
+        super();
+        this.width = width;
+        this.lastPitch = lastPitch;
+      }
+      void append(String braille) {
+        if (braille.length() <= width && !hyphenated) {
+          head += braille;
+          width -= braille.length();
+        } else {
+          hyphenated = true;
+          tail += braille;
+        }
+      }
+      AbstractPitch getLastPitch() { return lastPitch; }
+      void setLastPitch(AbstractPitch lastPitch) { this.lastPitch = lastPitch; }
 
-      AbstractPitch lastPitch = previous != null? previous.getFinalPitch(): null;
+      String getHead() { return head; }
+      String getTail() { return tail; }
+    }
+    public String head(int width, boolean lastLine) {
+      State state = new State(width,
+                              previous != null? previous.getFinalPitch(): null);
+
       List<Voice> voices = events.getVoices();
       int voiceCount = voices.size();
 
-      for (int voiceIndex = 0; voiceIndex < voiceCount; voiceIndex++) {
-        for (Event element:voices.get(voiceIndex)) {
-          if (element instanceof Note) {
-            String braille = "";
-            Note note = (Note)element;
-            Accidental accidental = note.getAccidental();
-            if (accidental != null) {
-              braille += accidental.toBraille().toString();
-            }
-            AbstractPitch pitch = (AbstractPitch)note.getPitch();
-            if (pitch != null) {
-              Braille octaveSign = pitch.getOctaveSign(lastPitch);
-              if (octaveSign != null) { braille += octaveSign; }
-              lastPitch = pitch;
-            }
-            braille += note.getAugmentedFraction().toBrailleString(pitch);
-            if (braille.length() < width && !hyphenated) {
-              output += braille;
-              width -= braille.length();
-            } else {
-              hyphenated = true;
-              tail += braille;
-            }
-          } else if (element instanceof VoiceChord) {
-            String braille = "";
-            VoiceChord chord = (VoiceChord)element;
-            chord = chord.getSorted();
-            Note firstNote = (Note)chord.get(0);
-            Accidental accidental = firstNote.getAccidental();
-            if (accidental != null) {
-              braille += accidental.toBraille().toString();
-            }
-            AbstractPitch firstPitch = (AbstractPitch)firstNote.getPitch();
-            Braille octaveSign = firstPitch.getOctaveSign(lastPitch);
-            if (octaveSign != null) { braille += octaveSign; }
-            lastPitch = firstPitch;
-            braille += firstNote.getAugmentedFraction().toBrailleString(firstPitch);
-            AbstractPitch previousPitch = firstPitch;
-
-            for (int chordElementIndex = 1; chordElementIndex < chord.size(); chordElementIndex++) {
-              Note currentNote = (Note)chord.get(chordElementIndex);
-              accidental = currentNote.getAccidental();
-              if (accidental != null) {
-                braille += accidental.toBraille().toString();
-              }
-              AbstractPitch currentPitch = (AbstractPitch)currentNote.getPitch();
-              int diatonicDifference = Math.abs(currentPitch.diatonicDifference(previousPitch));
-              if (diatonicDifference == 0) {
-                braille += currentPitch.getOctaveSign(null);
-                diatonicDifference = 7;
-              } else if (diatonicDifference > 7) {
-                braille += currentPitch.getOctaveSign(null);
-                while (diatonicDifference > 7) diatonicDifference -= 7;
-              }
-              braille += Braille.interval(diatonicDifference);
-              previousPitch = currentPitch;
-            }
-
-            if (braille.length() < width && !hyphenated) {
-              output += braille;
-              width -= braille.length();
-            } else {
-              tail += braille;
-              hyphenated = true;
-            }
+      for (int i = 0; i < brailleVoices.size(); i++) {
+        if (brailleVoices.get(i) instanceof FullMeasure) {
+	  FullMeasure fm = (FullMeasure)brailleVoices.get(i);
+	  printNoteList(fm.getEvents(), state);
+	} else if (brailleVoices.get(i) instanceof PartMeasureInAccord) {
+	  PartMeasureInAccord pmia = (PartMeasureInAccord)brailleVoices.get(i);
+          if (i > 0) {
+	    String braille = Braille.fullMeasureInAccord.toString();
+	    state.append(braille);
+	    
+	    /* The octave mark must be shown for
+	     * the first note after an in-accord.
+	     ************************************/
+	    state.setLastPitch(null);
           }
-        }
-
-        if (voiceIndex < voiceCount-1) {
-          String braille = Braille.fullMeasureInAccord.toString();
-          if (braille.length() < width && !hyphenated) {
-            output += braille;
-            width -= braille.length();
-          } else {
-            tail += braille;
-            hyphenated = true;
+          MusicList pmiaHead = pmia.getHead();
+          if (pmiaHead.size() > 0) {
+            printNoteList(pmiaHead, state);
+            state.append(Braille.partMeasureInAccord.toString());
           }
+          for (int p = 0; p < pmia.getParts().size(); p++) {
+            printNoteList(pmia.getParts().get(p), state);
+	    if (p < pmia.getParts().size() - 1) {
+	      String braille = Braille.partMeasureInAccordDivision.toString();
+	      state.append(braille);
 
-          /* The octave mark must be shown for
-           * the first note after an in-accord.
-           ************************************/
-          lastPitch = null;
+	      /* The octave mark must be shown for
+	       * the first note after an in-accord.
+	       ************************************/
+	      state.setLastPitch(null);
+	    }
+          }
+          MusicList pmiaTail = pmia.getTail();
+          if (pmiaTail.size() > 0) {
+            state.append(Braille.partMeasureInAccord.toString());
+            printNoteList(pmiaTail, state);
+          }
+	} else if (brailleVoices.get(i) instanceof FullMeasureInAccord) {
+	  FullMeasureInAccord fmia = (FullMeasureInAccord)brailleVoices.get(i);
+          for (int p = 0; p < fmia.getParts().size(); p++) {
+            printNoteList(fmia.getParts().get(p), state);
+	    if (p < fmia.getParts().size() - 1) {
+	      String braille = Braille.fullMeasureInAccord.toString();
+	      state.append(braille);
+
+	      /* The octave mark must be shown for
+	       * the first note after an in-accord.
+	       ************************************/
+	      state.setLastPitch(null);
+	    }
+          }
         }
       }
 
@@ -335,9 +387,89 @@ public final class Transcriber {
        * in-accord and _at the beginning of the next measure_, whether or not
        * that measure contains an in-accord.
        ***********************************************************************/
-      if (voiceCount == 1) finalPitch = lastPitch;
+      if (brailleVoices.size() == 1 && brailleVoices.get(0) instanceof FullMeasure)
+	finalPitch = state.getLastPitch();
 
-      return output;
+      tail = state.getTail();
+      return state.getHead();
     }
+    void printNoteList(MusicList musicList, State state) {
+      for (Event element:musicList) {
+        if (element instanceof Note) {
+          String braille = "";
+          Note note = (Note)element;
+          Accidental accidental = note.getAccidental();
+          if (accidental != null) {
+            braille += accidental.toBraille().toString();
+          }
+          AbstractPitch pitch = (AbstractPitch)note.getPitch();
+          if (pitch != null) {
+            Braille octaveSign = pitch.getOctaveSign(state.getLastPitch());
+            if (octaveSign != null) { braille += octaveSign; }
+            state.setLastPitch(pitch);
+          }
+          braille += note.getAugmentedFraction().toBrailleString(pitch);
+          state.append(braille);
+        } else if (element instanceof VoiceChord) {
+          String braille = "";
+          VoiceChord chord = (VoiceChord)element;
+          chord = chord.getSorted();
+          Note firstNote = (Note)chord.get(0);
+          Accidental accidental = firstNote.getAccidental();
+          if (accidental != null) {
+            braille += accidental.toBraille().toString();
+          }
+          AbstractPitch firstPitch = (AbstractPitch)firstNote.getPitch();
+          Braille octaveSign = firstPitch.getOctaveSign(state.getLastPitch());
+          if (octaveSign != null) { braille += octaveSign; }
+          state.setLastPitch(firstPitch);
+          braille += firstNote.getAugmentedFraction().toBrailleString(firstPitch);
+          AbstractPitch previousPitch = firstPitch;
+
+          for (int chordElementIndex = 1; chordElementIndex < chord.size(); chordElementIndex++) {
+            Note currentNote = (Note)chord.get(chordElementIndex);
+            accidental = currentNote.getAccidental();
+            if (accidental != null) {
+              braille += accidental.toBraille().toString();
+            }
+            AbstractPitch currentPitch = (AbstractPitch)currentNote.getPitch();
+            int diatonicDifference = Math.abs(currentPitch.diatonicDifference(previousPitch));
+            if (diatonicDifference == 0) {
+              braille += currentPitch.getOctaveSign(null);
+              diatonicDifference = 7;
+            } else if (diatonicDifference > 7) {
+              braille += currentPitch.getOctaveSign(null);
+              while (diatonicDifference > 7) diatonicDifference -= 7;
+            }
+            braille += Braille.interval(diatonicDifference);
+            previousPitch = currentPitch;
+          }
+
+          state.append(braille);
+        }
+      }
+    }
+  }
+
+  class FullMeasure {
+    MusicList events = new MusicList();
+    FullMeasure(MusicList events) { this.events = events; }
+    MusicList getEvents() { return events; }
+  }
+  class FullMeasureInAccord {
+    List<MusicList> parts = new ArrayList<MusicList>();
+    FullMeasureInAccord() { super(); }
+    public void setParts(List<MusicList> parts) { this.parts = parts; }
+    public void addPart(MusicList part) { parts.add(part); }
+    public List<MusicList> getParts() { return parts; }
+  }
+  class PartMeasureInAccord extends FullMeasureInAccord {
+    MusicList head = new MusicList();
+    MusicList tail = new MusicList();
+    PartMeasureInAccord() { super(); }
+    MusicList getHead() { return head; }
+    public void setHead(MusicList head) { this.head = head; }
+    MusicList getTail() { return tail; }
+    public void setTail(MusicList tail) { this.tail = tail; }
   }
 }
