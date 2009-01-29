@@ -99,11 +99,18 @@ public final class Transcriber {
                 head = measure.head(charactersLeft, lastLine);
                 tail = measure.tail();
               }
-              if (startBar != null && startBar.getEndingStart() > 0) {
-                String braille = Braille.numberSign.toString();
-                braille += Braille.lowerDigit(startBar.getEndingStart());
-                braille += Braille.unicodeBraille(Braille.dotsToBits(3));
-                printString(braille);
+              if (startBar != null) {
+                if (startBar.getRepeatForward()) {
+                  String braille = Braille.postDottedDoubleBar.toString();
+                  braille += Braille.unicodeBraille(Braille.dotsToBits(3));
+                  printString(braille);
+                }
+                if (startBar.getEndingStart() > 0) {
+                  String braille = Braille.numberSign.toString();
+                  braille += Braille.lowerDigit(startBar.getEndingStart());
+                  braille += Braille.unicodeBraille(Braille.dotsToBits(3));
+                  printString(braille);
+                }
               }
               printString(head);
               if (tail.length() > 0) {
