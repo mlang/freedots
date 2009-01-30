@@ -1,0 +1,20 @@
+Emacs support code for MusicXML and Braille Music Notation
+----------------------------------------------------------
+
+This directory contains an Emacs-Lisp implementation of MusicXML
+and Braille Music Notation support code.  It is not a complete
+braille music transcription system.  It was originally written
+as an experimental platform for trying various approaches to
+MusicXML processing and Braille Music representation/transcription.
+
+While it is not complete and currently not actively developed, there
+is probably enough code already to be useful in a few special situations.
+For instance, MusicXML to MIDI export is something people might
+be interested in.
+
+The biggest showstopper in this experiment was/is performance.  As a result
+of various optimisation attempts, a patch was committed to GNU Emacs
+in fall 2008 which enhanced XML parsing performance by roughly 30%.  However,
+this speedup is still not enough for comfortable load times when it
+comes to big MusicXML scores.
+
