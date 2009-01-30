@@ -1,4 +1,4 @@
-⠀FreeDots⠀⠀⠀⠀⢀⣀⡤⠤⠴⠒⠒⠒⠒⠦⠤⢤⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀V0.1⠀
+⠀FreeDots⠀⠀⠀⠀⢀⣀⡤⠤⠴⠒⠒⠒⠒⠦⠤⢤⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀V0.6⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡤⠖⠉⠉⠀⢆⠀⠀⠀⠀⠽⠀⠀⠀⡔⠀⠉⠑⠲⢄⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⣠⠚⠁⠀⠿⠀⠀⠀⠘⡄⠀⠀⠀⠀⠀⠀⢠⠃⠀⠀⠀⠷⠀⠈⠳⣄⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⡰⠞⢄⠀⠀⠀⠀⠀⠀⠀⠀⢣⠀⠀⠀⡀⠀⠀⡜⠀⠀⠀⠀⠀⠀⠀⠀⡠⠙⢆⠀⠀⠀⠀⠀
@@ -24,26 +24,28 @@ It can handle input in MusicXML format, a file format
 typically produced by optical music recognition software.
 
 A user can use their favourite OMR software to scan (and possibly
-correct) a piece of music, and use FreeDots to transform
+correct) a piece of music, and use FreeDots to transcribe
 the resulting XML file to braille music notation.
 Optionally, the music can also be played back.
 
 Braille output is currently implemented using the Unicode Braille row.
 You will need your environment to be configured to use UTF-8.
-If you are on Linux, you will also need the braille fonts from
+If you are on Linux console, you will also need the braille fonts from
 http://brl.thefreecat.org/linux-brl-console.tgz
 
 Requirements:
-  You will need to have the python setuptools package installed.
-  For playback, pygame is required.
+  A Java6 Runtime Environment
 
-To install FreeDots, simply execute:
+To run freedots, use the -jar option to the "java" command:
 
-  # python setup.py install
+  $ java -jar freedots.jar
 
-To run freedots, use the 'freedots' command-line utility:
+If you prefer to use FreeDots without the graphical user interface for
+batch operations or as a pure command-line tool, supply the -nw
+option (no-window) on the command-line:
 
-  $ freedots bwv1013.xml
+  $ java -jar freedots.jar -nw bwv1013.xml
+
 
 Output format:
 --------------
@@ -52,7 +54,7 @@ This has the big advantage that it works independently of the users
 braille translation table.  Therefore, output of FreeDots
 can easily be shared between people living in different countries.
 
-When a proper font is used, the dot patterns are also displayed on screen.
+In the graphical user interface the dot patterns are also displayed on screen.
 This allows sighted people that have knowledge of braille music notation
 to work together with a blind user on a computer.
 It also allows seamless interchange of digital braille music notation
@@ -62,8 +64,8 @@ used.  This guarantees the readability of braille music by everyone,
 no matter what translation table is in use.
 
 Unfortunately, many screen readers do not support unicode braille patterns
-yet.  On Linux console, you will need the latest development version of
-BRLTTY.  If you are using Orca on Linux, Unicode braille patterns
+yet.  On Linux console, you will need BRLTTY starting from version 3.10.
+If you are using Orca on Linux, Unicode braille patterns
 do work in GNOME terminal even with older versions of BRLTTY.
 In the meantime, you can use iconv to convert Unicode Braille to BRF format.
 See the FAQ for details.
@@ -88,8 +90,6 @@ the data from musedata.org yourself, we can not provide
 preconverted MusicXML files for you.
 Our tests have shown that hum2xml does not always produce correct
 results when it comes to multiple voices inside a staff.
-We might implement humdrum input format in FreeDots directly one day to
-get around this problem.
 
 www.wikifonia.org has a growing collection of lead-sheets
 for popular and traditional music.  While FreeDots does
@@ -104,11 +104,10 @@ usually be processed with OMR software quite easily.
 There will still be scanning errors, but at least there is
 a relatively big repository of free sheet music you can readily play with.
 We will collect MusicXML files produced from mutopiaproject.org sources,
-since these are free to distribute.  If you produce any
-freely distributable MusicXML files from public domain sources,
-please consider sending them to mlang@delysid.org so that we
-can include them with FreeDots to avoid duplicate work
-by other people.
+since these are free to distribute.
+
+If you produce any freely distributable MusicXML files from public domain
+sources, we encourage you to consider sending them to mlang@delysid.org so
+that we can include them with FreeDots to avoid duplicate work by other people.
 
  -- Mario Lang <mlang@delysid.org>
-
