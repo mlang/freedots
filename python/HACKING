@@ -1,3 +1,5 @@
+This implementation prototype is currently unmaintained.
+
 Overall layout of files in this project:
 ----------------------------------------
 setup.py                 Python setuptools script used to build and install
@@ -10,14 +12,3 @@ freedots/                The top-level python package
         ElementTree.py   The ElementTree module for XML processing
         ElementPath.py   XPath support for ElementTree
         midi.py          Classes to work with Standard MIDI Files
-emacs/                   Top-level of a Emacs-Lisp implementation
-    musicxml.el          elisp code for MusicXML and braille music transcription
-input/                   Various sample input files in MusicXML format
-    audiveris/           MusicXML output from Audiveris (Open Source OMR)
-    capella-scan/        MusicXML output Capella-Scan from Capella Software
-    photoscore/          MusicXML output from Neuratron PhotoScore
-    sharpeye/            MusicXML output from SharpEye2
-    sources/             Sources used to feed the OMR engines
-doc/                     User Documentation
-    manual.xml           DocBook XML 4.5 User Manual
-    *.xsl                DocBook-XSL customisation layer
