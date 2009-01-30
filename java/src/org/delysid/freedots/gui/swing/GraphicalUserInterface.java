@@ -155,10 +155,13 @@ public final class GraphicalUserInterface extends JFrame {
 	quit();
       }
     });
+
+    pack();
+    setVisible(true);
   }
+
   public void setScore(Score score) {
     this.score = score;
-    textArea.append("Hello "+Character.toString((char)(0X2800+0X07)));
   }
   public void setTranscriber(Transcriber transcriber) {
     if (transcriber != null) {

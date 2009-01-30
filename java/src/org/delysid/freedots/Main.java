@@ -59,8 +59,6 @@ public final class Main {
       try {
         GraphicalUserInterface gui = new GraphicalUserInterface();
         if (transcriber != null) gui.setTranscriber(transcriber);
-        gui.pack();
-        gui.setVisible(true);
       } catch (HeadlessException e) {
         options.setWindowSystem(false);
       }
