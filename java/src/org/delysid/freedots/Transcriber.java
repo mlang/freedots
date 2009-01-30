@@ -30,6 +30,12 @@ public final class Transcriber {
   private int lineCount;
   private int pageNumber;
 
+  public Object getObjectAtIndex(int characterIndex) {
+    // FIXME: Return musical object (Note, VoiceChord...) responsible
+    //        the character at characterIndex.
+    return null;
+  }
+
   private static String lineSeparator = System.getProperty("line.separator");
 
   public Transcriber(Score score, Options options) {
