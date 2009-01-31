@@ -246,57 +246,52 @@ public final class Transcriber {
 
       List<Voice> voices = events.getVoices();
       int voiceCount = voices.size();
-      if (voiceCount == 1) {
-        FullMeasure measure = new FullMeasure(voices.get(0));
-        brailleVoices.add(measure);
-      } else if (voiceCount > 1) {
-        FullMeasureInAccord fmia = new FullMeasureInAccord();
-        PartMeasureInAccord pmia = new PartMeasureInAccord();
+      FullMeasureInAccord fmia = new FullMeasureInAccord();
+      PartMeasureInAccord pmia = new PartMeasureInAccord();
 
-        while (voices.size() > 0) {
-          for (int i = 0; i < voices.size(); i++) {
-            Voice voice = voices.get(i);
-            boolean found = false;
-            int headLength = 0;
+      while (voices.size() > 0) {
+        for (int i = 0; i < voices.size(); i++) {
+          Voice voice = voices.get(i);
+          boolean found = false;
+          int headLength = 0;
 
-            for (int j = 0; j < voices.size(); j++) {
-              if (i == j) continue;
-              int equalsAtBeginning = voice.countEqualsAtBeginning(voices.get(j));
-              if (equalsAtBeginning > 0) {
-                headLength = equalsAtBeginning;
-                MusicList head = new MusicList();
-                for (int k = 0; k < equalsAtBeginning; k++) {
-                  head.add(voice.get(k));
-                  voices.get(j).remove(k);
-                }
-                pmia.setHead(head);
-                pmia.addPart(voices.get(j));
-                voices.remove(voices.get(j));
-                found = true;
-              } else if (found && equalsAtBeginning == headLength) {
-                for (int k = 0; k < equalsAtBeginning; k++) {
-                  voices.get(j).remove(k);
-                }
-                pmia.addPart(voices.get(j));
-                voices.remove(voices.get(j));
+          for (int j = 0; j < voices.size(); j++) {
+            if (i == j) continue;
+            int equalsAtBeginning = voice.countEqualsAtBeginning(voices.get(j));
+            if (equalsAtBeginning > 0) {
+              headLength = equalsAtBeginning;
+              MusicList head = new MusicList();
+              for (int k = 0; k < equalsAtBeginning; k++) {
+                head.add(voice.get(k));
+                voices.get(j).remove(k);
               }
-            }
-
-            if (found) {
-              for (int k = 0; k < headLength; k++) {
-                voice.remove(k);
+              pmia.setHead(head);
+              pmia.addPart(voices.get(j));
+              voices.remove(voices.get(j));
+              found = true;
+            } else if (found && equalsAtBeginning == headLength) {
+              for (int k = 0; k < equalsAtBeginning; k++) {
+                voices.get(j).remove(k);
               }
-              pmia.addPart(voice);
-              voices.remove(voice);
-            } else {
-              fmia.addPart(voice);
-              voices.remove(voice);
+              pmia.addPart(voices.get(j));
+              voices.remove(voices.get(j));
             }
           }
+
+          if (found) {
+            for (int k = 0; k < headLength; k++) {
+              voice.remove(k);
+            }
+            pmia.addPart(voice);
+            voices.remove(voice);
+          } else {
+            fmia.addPart(voice);
+            voices.remove(voice);
+          }
         }
-	if (fmia.getParts().size() > 0) brailleVoices.add(fmia);
-	if (pmia.getParts().size() > 0) brailleVoices.add(pmia);
       }
+      if (fmia.getParts().size() > 0) brailleVoices.add(fmia);
+      if (pmia.getParts().size() > 0) brailleVoices.add(pmia);
     }
     public AbstractPitch getFinalPitch() { return finalPitch; }
 
@@ -336,10 +331,7 @@ public final class Transcriber {
       int voiceCount = voices.size();
 
       for (int i = 0; i < brailleVoices.size(); i++) {
-        if (brailleVoices.get(i) instanceof FullMeasure) {
-	  FullMeasure fm = (FullMeasure)brailleVoices.get(i);
-	  printNoteList(fm.getEvents(), state);
-	} else if (brailleVoices.get(i) instanceof PartMeasureInAccord) {
+	if (brailleVoices.get(i) instanceof PartMeasureInAccord) {
 	  PartMeasureInAccord pmia = (PartMeasureInAccord)brailleVoices.get(i);
           if (i > 0) {
 	    String braille = Braille.fullMeasureInAccord.toString();
@@ -393,7 +385,7 @@ public final class Transcriber {
        * in-accord and _at the beginning of the next measure_, whether or not
        * that measure contains an in-accord.
        ***********************************************************************/
-      if (brailleVoices.size() == 1 && brailleVoices.get(0) instanceof FullMeasure)
+      if (brailleVoices.size() == 1 && !((FullMeasureInAccord)brailleVoices.get(0)).isInAccord())
 	finalPitch = state.getLastPitch();
 
       tail = state.getTail();
@@ -457,17 +449,13 @@ public final class Transcriber {
     }
   }
 
-  class FullMeasure {
-    MusicList events = new MusicList();
-    FullMeasure(MusicList events) { this.events = events; }
-    MusicList getEvents() { return events; }
-  }
   class FullMeasureInAccord {
     List<MusicList> parts = new ArrayList<MusicList>();
     FullMeasureInAccord() { super(); }
     public void setParts(List<MusicList> parts) { this.parts = parts; }
     public void addPart(MusicList part) { parts.add(part); }
     public List<MusicList> getParts() { return parts; }
+    public boolean isInAccord() { return parts.size() > 1; }
   }
   class PartMeasureInAccord extends FullMeasureInAccord {
     MusicList head = new MusicList();
