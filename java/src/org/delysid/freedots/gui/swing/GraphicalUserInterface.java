@@ -27,19 +27,47 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JToolBar;
+import javax.swing.event.CaretEvent;
 
 import org.delysid.freedots.MIDIPlayer;
 import org.delysid.freedots.Transcriber;
 import org.delysid.freedots.musicxml.MIDISequence;
+import org.delysid.freedots.musicxml.Note;
 import org.delysid.freedots.musicxml.Score;
 
 import org.delysid.StandardMidiFileWriter;
 
-public final class GraphicalUserInterface extends JFrame {
+public final class GraphicalUserInterface extends JFrame implements javax.swing.event.CaretListener {
   protected Score score = null;
-  protected Transcriber transcriber = null;
 
+  protected Transcriber transcriber = null;
   protected JTextArea textArea;
+  Object lastObject = null;
+  public void caretUpdate(CaretEvent caretEvent) {
+    int index = caretEvent.getDot();
+    Object object = null;
+    if (transcriber != null) {
+      object = transcriber.getObjectAtIndex(index);
+    }
+    if (object != lastObject) {
+      if (object != null) {
+        System.out.println("At index "+index+" there is "+object.toString());
+        if (object instanceof Note) {
+          Note note = (Note)object;
+          midiPlayer.stop();
+          try {
+            MIDISequence sequence = new MIDISequence(note);
+            midiPlayer.setSequence(sequence);
+            midiPlayer.start();
+          } catch (javax.sound.midi.InvalidMidiDataException e) {
+            e.printStackTrace();
+          }
+        }
+      }
+      lastObject = object;
+    }
+  }
+
   protected String newline = "\n";
   protected MIDIPlayer midiPlayer;
 
@@ -139,6 +167,7 @@ public final class GraphicalUserInterface extends JFrame {
     textArea = new JTextArea(5, 30);
     Font font = new Font("DejaVu Serif", Font.PLAIN, 14);
     textArea.setFont(font);
+    textArea.addCaretListener(this);
     JScrollPane scrollPane = new JScrollPane(textArea);
 
     // Lay out the content pane.

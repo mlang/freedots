@@ -38,6 +38,10 @@ public class Fraction implements Comparable<Fraction> {
     return denominator == 1? Integer.toString(numerator):
                              Integer.toString(numerator) + "/" + Integer.toString(denominator);
   }
+
+  public Fraction negate() {
+    return new Fraction(-numerator, denominator);
+  }
   public Fraction add(Fraction other) {
     Fraction newFraction = new Fraction(this.numerator * other.denominator +
 					other.numerator * this.denominator,
