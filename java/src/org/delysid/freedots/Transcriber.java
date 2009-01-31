@@ -25,14 +25,68 @@ public final class Transcriber {
 
   Options options;
 
-  private String textStore;
+  class BrailleString {
+    Object model = null;
+    String string;
+    BrailleString(String string) { this.string = string; }
+    BrailleString(String string, Object model) {
+      this(string);
+      this.model = model;
+    }
+    public Object getModel() { return model; }
+    @Override
+    public String toString() { return string; }
+    public int length() { return toString().length(); }
+  }
+  class BrailleSymbols extends ArrayList<BrailleString> {
+    @Override
+    public String toString() {
+      StringBuilder stringBuilder = new StringBuilder();
+      for (BrailleString brailleString:this)
+        stringBuilder.append(brailleString.toString());
+      return stringBuilder.toString();
+    }
+    public int length() { return toString().length(); }
+  }
+  class BrailleNote extends BrailleString {
+    private AbstractPitch lastPitch;
+    BrailleNote(Note note, AbstractPitch lastPitch) {
+      super(null, note);
+      this.lastPitch = lastPitch;
+    }
+    public AbstractPitch getPitch() {
+      Note note = (Note)model;
+      return note.getPitch();
+    }
+    public String toString() {
+      String braille = "";
+      Note note = (Note)model;
+      Accidental accidental = note.getAccidental();
+      if (accidental != null) {
+        braille += accidental.toBraille().toString();
+      }
+      AbstractPitch pitch = (AbstractPitch)note.getPitch();
+      if (pitch != null) {
+        Braille octaveSign = pitch.getOctaveSign(lastPitch);
+        if (octaveSign != null) { braille += octaveSign; }
+      }
+      braille += note.getAugmentedFraction().toBrailleString(pitch);
+
+      return braille;
+    }
+  }
+  private BrailleSymbols strings;
   private int characterCount;
   private int lineCount;
   private int pageNumber;
 
   public Object getObjectAtIndex(int characterIndex) {
-    // FIXME: Return musical object (Note, VoiceChord...) responsible
-    //        the character at characterIndex.
+    StringBuilder stringBuilder = new StringBuilder();
+    for (BrailleString brailleString:strings) {
+      if (stringBuilder.length() + brailleString.length() >= characterIndex)
+        return brailleString.getModel();
+      stringBuilder.append(brailleString.toString());
+    }
     return null;
   }
 
@@ -47,7 +101,7 @@ public final class Transcriber {
       catch (Exception e) { e.printStackTrace(); }
   }
   private void clear() {
-    textStore = "";
+    strings = new BrailleSymbols();
     characterCount = 0;
     lineCount = 0;
     pageNumber = 1;
@@ -98,8 +152,8 @@ public final class Transcriber {
                             
               boolean lastLine = (lineCount == (options.getPageHeight() - 1));
               measure.process();
-              String head = measure.head(charactersLeft, lastLine);
-              String tail = measure.tail();
+              BrailleSymbols head = measure.head(charactersLeft, lastLine);
+              BrailleSymbols tail = measure.tail();
               if (head.length() <= tail.length() / 10) {
                 newLine();
                 charactersLeft = options.getPageWidth() - characterCount;
@@ -143,20 +197,27 @@ public final class Transcriber {
     }
   }
   private void printString(String text) {
-    textStore += text;
+    printString(new BrailleString(text));
+  }
+  private void printString(BrailleString text) {
+    strings.add(text);
+    characterCount += text.length();
+  }
+  private void printString(BrailleSymbols text) {
+    strings.addAll(text);
     characterCount += text.length();
   }
   private void printLine(String text) {
-    textStore += text;
+    strings.add(new BrailleString(text));
     newLine();
   }
   private void newLine() {
-    textStore += lineSeparator;
+    strings.add(new BrailleString(lineSeparator));
     characterCount = 0;
     lineCount += 1;
     if (lineCount == options.getPageHeight()) {
       indentTo(options.getPageWidth()-5);
-      textStore += Integer.toString(pageNumber++) + lineSeparator;
+      strings.add(new BrailleString(Integer.toString(pageNumber++) + lineSeparator));
       characterCount = 0;
       lineCount = 0;
     }
@@ -164,13 +225,13 @@ public final class Transcriber {
   private void indentTo(int column) {
     int difference = column - characterCount;
     while (difference > 0) {
-      textStore += " ";
+      strings.add(new BrailleString(" "));
       characterCount += 1;
       difference -= 1;
     }
   }
   public String toString() {
-    return textStore;
+    return strings.toString();
   }
   class Segment extends MusicList {
     Segment() { super(); }
@@ -295,13 +356,13 @@ public final class Transcriber {
     }
     public AbstractPitch getFinalPitch() { return finalPitch; }
 
-    String tail;
-    public String tail() { return tail; }
+    BrailleSymbols tail;
+    public BrailleSymbols tail() { return tail; }
     class State {
       int width;
       AbstractPitch lastPitch;
-      String head = "";
-      String tail = "";
+      BrailleSymbols head = new BrailleSymbols();
+      BrailleSymbols tail = new BrailleSymbols();
       boolean hyphenated = false;
       State(int width, AbstractPitch lastPitch) {
         super();
@@ -309,21 +370,24 @@ public final class Transcriber {
         this.lastPitch = lastPitch;
       }
       void append(String braille) {
+        append(new BrailleString(braille));
+      }
+      void append(BrailleString braille) {
         if (braille.length() <= width && !hyphenated) {
-          head += braille;
+          head.add(braille);
           width -= braille.length();
         } else {
           hyphenated = true;
-          tail += braille;
+          tail.add(braille);
         }
       }
       AbstractPitch getLastPitch() { return lastPitch; }
       void setLastPitch(AbstractPitch lastPitch) { this.lastPitch = lastPitch; }
 
-      String getHead() { return head; }
-      String getTail() { return tail; }
+      BrailleSymbols getHead() { return head; }
+      BrailleSymbols getTail() { return tail; }
     }
-    public String head(int width, boolean lastLine) {
+    public BrailleSymbols head(int width, boolean lastLine) {
       State state = new State(width,
                               previous != null? previous.getFinalPitch(): null);
 
@@ -394,20 +458,13 @@ public final class Transcriber {
     void printNoteList(MusicList musicList, State state) {
       for (Event element:musicList) {
         if (element instanceof Note) {
-          String braille = "";
           Note note = (Note)element;
-          Accidental accidental = note.getAccidental();
-          if (accidental != null) {
-            braille += accidental.toBraille().toString();
-          }
+          BrailleNote brailleNote = new BrailleNote(note, state.getLastPitch());
           AbstractPitch pitch = (AbstractPitch)note.getPitch();
           if (pitch != null) {
-            Braille octaveSign = pitch.getOctaveSign(state.getLastPitch());
-            if (octaveSign != null) { braille += octaveSign; }
             state.setLastPitch(pitch);
           }
-          braille += note.getAugmentedFraction().toBrailleString(pitch);
-          state.append(braille);
+          state.append(brailleNote);
         } else if (element instanceof VoiceChord) {
           String braille = "";
           VoiceChord chord = (VoiceChord)element;
