@@ -2,6 +2,10 @@
 <!--MusicXML 1.1 file created by CapToMusic.py CapXML to MusicXML converter version 1.13-->
 <!DOCTYPE score-partwise PUBLIC "-//Recordare//DTD MusicXML 1.1 Partwise//EN" "http://www.musicxml.org/dtds/partwise.dtd">
 <score-partwise version="1.1">
+	<work>
+		<work-title>Aria con 30 Variazioni</work-title>
+		<work-number>BWV988</work-number>
+	</work>
 	<identification>
 		<encoding>
 			<encoding-date>2008-02-27</encoding-date>
@@ -101,12 +105,6 @@
 					<slur number="1" placement="above" type="start"/>
 				</notations>
 			</note>
-			<direction placement="above">
-				<direction-type>
-					<words default-x="-7" default-y="22" font-family="Arial" font-size="11">4_</words>
-				</direction-type>
-				<staff>1</staff>
-			</direction>
 			<note>
 				<pitch>
 					<step>A</step>
@@ -120,6 +118,7 @@
 				<beam number="1">begin</beam>
 				<notations>
 					<slur number="1" type="stop"/>
+					<ornaments><mordent/></ornaments>
 				</notations>
 			</note>
 			<note>
@@ -217,12 +216,6 @@
 				<staff>1</staff>
 				<beam number="1">begin</beam>
 			</note>
-			<direction placement="above">
-				<direction-type>
-					<words default-x="149" default-y="200" font-family="Times New Roman" font-size="13" font-weight="bold" justify="center">Aria con 30 Variazioni</words>
-				</direction-type>
-				<staff>1</staff>
-			</direction>
 			<direction placement="above">
 				<direction-type>
 					<words default-x="149" default-y="168" font-family="Times New Roman" font-size="9" font-weight="bold" justify="center">&quot;Goldbergsche Variationen&quot;</words>
@@ -363,6 +356,9 @@
 				<voice>1</voice>
 				<type>quarter</type>
 				<staff>1</staff>
+				<notations>
+					<ornaments><mordent/></ornaments>
+				</notations>
 			</note>
 			<note>
 				<pitch>
