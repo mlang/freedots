@@ -24,7 +24,9 @@ import org.w3c.dom.NodeList;
 public final class Part {
   private Element part;
   private Element scorePart;
+
   private Score score;
+  public Score getScore() { return score; }
 
   private TimeSignature timeSignature = new TimeSignature(4, 4);
   private MusicList eventList = new MusicList();
@@ -97,7 +99,7 @@ public final class Part {
               }
 	    } else if ("note".equals(measureChild.getNodeName())) {
 	      Note note = new Note(measureOffset.add(offset),
-                                   musicdata, divisions, durationMultiplier);
+                                   musicdata, divisions, durationMultiplier, this);
 	      boolean advanceTime = !note.isGrace();
 	      boolean addNoteToEventList = true;
 
@@ -127,7 +129,7 @@ public final class Part {
 	      offset = offset.subtract(backup.getDuration());
             } else if ("forward".equals(measureChild.getNodeName())) {
               Note invisibleRest = new Note(measureOffset.add(offset), musicdata,
-                                            divisions, durationMultiplier);
+                                            divisions, durationMultiplier, this);
               eventList.add(invisibleRest);
               offset = offset.add(invisibleRest.getDuration());
 	    } else if ("print".equals(measureChild.getNodeName())) {

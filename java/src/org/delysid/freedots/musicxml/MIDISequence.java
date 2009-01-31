@@ -74,6 +74,15 @@ public class MIDISequence extends javax.sound.midi.Sequence {
       }
     }
   }
+  public MIDISequence (Note note) throws InvalidMidiDataException {
+    super(PPQ, calculatePPQ(note.getPart().getScore().getDivisions()));
+    Track track = createTrack();
+    int channel = 0;
+    int velocity = 64;
+
+    Fraction offset = note.getOffset().negate();
+    addNote(track, note, channel, velocity, offset);
+  }
   private void addNote(Track track, Note note, int channel, int velocity, Fraction add) {
     if (!note.isGrace()) {
       Pitch pitch = note.getPitch();

@@ -16,6 +16,9 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 
 public final class Note extends Musicdata implements RhythmicElement {
+  Part part;
+  public Part getPart() { return part; }
+
   Fraction offset;
   Staff staff = null;
 
@@ -51,9 +54,11 @@ public final class Note extends Musicdata implements RhythmicElement {
 
   Note(
     Fraction offset, Element element,
-    int divisions, int durationMultiplier
+    int divisions, int durationMultiplier,
+    Part part
   ) throws MusicXMLParseException {
     super(element, divisions, durationMultiplier);
+    this.part = part;
     this.offset = offset;
     NodeList nodeList = element.getElementsByTagName("grace");
     if (nodeList.getLength() >= 1) {
