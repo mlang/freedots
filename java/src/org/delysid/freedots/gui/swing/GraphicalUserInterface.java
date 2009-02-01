@@ -68,7 +68,6 @@ public final class GraphicalUserInterface extends JFrame implements javax.swing.
     }
   }
 
-  protected String newline = "\n";
   protected MIDIPlayer midiPlayer;
 
   public GraphicalUserInterface() {

@@ -83,7 +83,7 @@ public final class Transcriber {
   public Object getObjectAtIndex(int characterIndex) {
     StringBuilder stringBuilder = new StringBuilder();
     for (BrailleString brailleString:strings) {
-      if (stringBuilder.length() + brailleString.length() >= characterIndex)
+      if (stringBuilder.length() + brailleString.length() > characterIndex)
         return brailleString.getModel();
       stringBuilder.append(brailleString.toString());
     }
