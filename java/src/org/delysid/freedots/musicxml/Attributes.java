@@ -62,12 +62,22 @@ public final class Attributes {
     }
     return null;
   }
+  public List<Key> getKeys() {
+    NodeList nodeList = element.getElementsByTagName("key");
+    List<Key> keys = new ArrayList<Key>();
+    for (int index = 0; index < nodeList.getLength(); index++) {
+      keys.add(new Key((Element)nodeList.item(index)));
+    }
+    return keys;
+  }
   class Clef extends org.delysid.freedots.model.Clef {
     Element element = null;
     String staffName = null;
     public Clef(Element element) {
       super(getClefSignFromElement(element), getClefLineFromElement(element));
+      this.element = element;
       staffName = element.getAttribute("number");
+      if (staffName.equals("")) staffName = null;
     }
     public String getStaffName() { return staffName; }
   }
@@ -80,10 +90,14 @@ public final class Attributes {
   }
   class Key extends KeySignature {
     Element element = null;
+    String staffName = null;
     public Key(Element element) {
       super(getFifthsFromElement(element));
       this.element = element;
+      staffName = element.getAttribute("number");
+      if (staffName.equals("")) staffName = null;
     }
+    public String getStaffName() { return staffName; }
   }
   static int getBeatsFromElement(Element element) throws MusicXMLParseException {
     NodeList nodeList = element.getElementsByTagName("beats");

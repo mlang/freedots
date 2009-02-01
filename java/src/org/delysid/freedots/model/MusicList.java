@@ -77,6 +77,13 @@ public class MusicList extends java.util.ArrayList<Event> {
                                                  globalClefChange.getClef(), null);
           staff.add(clefChange);
         }
+      } else if (event instanceof GlobalKeyChange) {
+        GlobalKeyChange globalKeyChange = (GlobalKeyChange)event;
+        for (Staff staff:staves) {
+          KeyChange keyChange = new KeyChange(globalKeyChange.getOffset(),
+                                              globalKeyChange.getKeySignature(), null);
+          staff.add(keyChange);
+        }
       }
     }
     return staves.get(index);
@@ -133,5 +140,21 @@ public class MusicList extends java.util.ArrayList<Event> {
       }
     }
     return stringBuilder.toString();
+  }
+  public boolean noteGroupingIsLegal() {
+    if (size() > 1 && get(0) instanceof RhythmicElement) {
+      RhythmicElement start = (RhythmicElement)get(0);
+      AugmentedFraction firstAugmentedFraction = start.getAugmentedFraction();
+      for (int index = 1; index < size(); index++) {
+        if (get(index) instanceof RhythmicElement) {
+          RhythmicElement element = (RhythmicElement)get(index);
+          if (element.getPitch() != null)
+            if (!firstAugmentedFraction.equals(element.getAugmentedFraction()))
+              return false;
+          else return false;
+        } else return false;
+      }
+    }
+    return false;
   }
 }

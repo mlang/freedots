@@ -45,6 +45,15 @@ public enum Braille {
   static public Braille lowerDigit(int digit) { return lowerDigits[digit]; }
   static public Braille interval(int interval) { return intervals[interval - 1]; }
 
+  public static String nTimes(Braille item, int count) {
+    if (count <= 0) return "";
+    else if (count == 1) return item.toString();
+    else if (count == 2) return item.toString()+item.toString();
+    else if (count == 3) return item.toString()+item.toString()+item.toString();
+    else if (count >= 4 && count < 10)
+      return numberSign.toString()+upperDigit(count).toString()+item;
+    else return "ERR";
+  }
   static public char unicodeBraille(int bits) {
     return (char)(0X2800 | bits);
   }
@@ -58,4 +67,3 @@ public enum Braille {
     return bits;
   }
 }
-

@@ -109,10 +109,10 @@ public final class Transcriber {
   void transcribe() throws Exception {
     for (Part part:score.getParts()) {
       printLine(part.getName());
-      printLine(part.getTimeSignature().toBraille());
+      printLine(part.getKeySignature().toBraille() +
+                part.getTimeSignature().toBraille());
       for (Segment segment:getSegments(part)) {
         int staffCount = segment.getStaffCount();
-
         for (int staffIndex = 0; staffIndex < staffCount; staffIndex++) {
 	  Staff staff = segment.getStaff(staffIndex);
 	  BrailleMeasure measure = new BrailleMeasure();
@@ -313,7 +313,7 @@ public final class Transcriber {
       while (voices.size() > 0) {
         for (int i = 0; i < voices.size(); i++) {
           Voice voice = voices.get(i);
-          boolean found = false;
+          boolean foundOverlap = false;
           int headLength = 0;
 
           for (int j = 0; j < voices.size(); j++) {
@@ -329,8 +329,8 @@ public final class Transcriber {
               pmia.setHead(head);
               pmia.addPart(voices.get(j));
               voices.remove(voices.get(j));
-              found = true;
-            } else if (found && equalsAtBeginning == headLength) {
+              foundOverlap = true;
+            } else if (foundOverlap && equalsAtBeginning == headLength) {
               for (int k = 0; k < equalsAtBeginning; k++) {
                 voices.get(j).remove(k);
               }
@@ -339,7 +339,7 @@ public final class Transcriber {
             }
           }
 
-          if (found) {
+          if (foundOverlap) {
             for (int k = 0; k < headLength; k++) {
               voice.remove(k);
             }

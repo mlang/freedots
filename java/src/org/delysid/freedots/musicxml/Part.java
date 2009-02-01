@@ -11,6 +11,9 @@ import javax.xml.xpath.XPathFactory;
 import org.delysid.freedots.model.ClefChange;
 import org.delysid.freedots.model.Fraction;
 import org.delysid.freedots.model.GlobalClefChange;
+import org.delysid.freedots.model.GlobalKeyChange;
+import org.delysid.freedots.model.KeyChange;
+import org.delysid.freedots.model.KeySignature;
 import org.delysid.freedots.model.MusicList;
 import org.delysid.freedots.model.StartBar;
 import org.delysid.freedots.model.EndBar;
@@ -97,6 +100,16 @@ public final class Part {
                                   clef, clef.getStaffName()));
                 }
               }
+              List<Attributes.Key> keys = attributes.getKeys();
+              if (keys.size() > 0) {
+                for (Attributes.Key key:keys) {
+                  if (key.getStaffName() == null)
+                    eventList.add(new GlobalKeyChange(measureOffset.add(offset), key));
+                  else
+                    eventList.add(new KeyChange(measureOffset.add(offset),
+                                  key, key.getStaffName()));
+                }
+              }
 	    } else if ("note".equals(measureChild.getNodeName())) {
 	      Note note = new Note(measureOffset.add(offset),
                                    musicdata, divisions, durationMultiplier, this);
@@ -171,6 +184,15 @@ public final class Part {
   }
 
   public TimeSignature getTimeSignature() { return timeSignature; }
+  public KeySignature getKeySignature() {
+    for (Object event:eventList) {
+      if (event instanceof GlobalKeyChange) {
+        GlobalKeyChange globalKeyChange = (GlobalKeyChange)event;
+        return globalKeyChange.getKeySignature();
+      }
+    }
+    return new KeySignature(0);
+  }
   public MusicList getMusicList () { return eventList; }
 
   public String getName() {

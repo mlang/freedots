@@ -1,6 +1,8 @@
 /* -*- c-basic-offset: 2; -*- */
 package org.delysid.freedots.model;
 
+import org.delysid.freedots.Braille;
+
 public class KeySignature {
   private final int type; // number of sharps (+) or flats (-)
   private final int[] modifiers;
@@ -27,4 +29,10 @@ public class KeySignature {
 
   private static final int[] sharps = {3, 0, 4, 1, 5, 2, 6};
   private static final int[] flats  = {6, 2, 5, 1, 4, 0, 3};
+
+  public String toBraille() {
+    if (type == 0) return "";
+    else if (type < 0) return Braille.nTimes(Braille.flat, Math.abs(type));
+    else return Braille.nTimes(Braille.sharp, type);
+  }
 }

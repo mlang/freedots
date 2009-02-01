@@ -3,7 +3,7 @@ package org.delysid.freedots.model;
 
 public class Staff extends MusicList {
   String name;
-  Timeline<KeySignature> keySignatureList = new Timeline<KeySignature>(
+  Timeline<KeySignature> keyList = new Timeline<KeySignature>(
     new KeySignature(0));
   Timeline<Clef> clefList = new Timeline<Clef>(new Clef(Clef.Sign.G, 2));
   public Clef getClef() { return clefList.get(new Fraction(0, 1)); }
@@ -19,6 +19,9 @@ public class Staff extends MusicList {
       if (event instanceof ClefChange) {
         ClefChange clefChange = (ClefChange)event;
         clefList.put(clefChange.getOffset(), clefChange.getClef());
+      } else if (event instanceof KeyChange) {
+        KeyChange keyChange = (KeyChange)event;
+        keyList.put(keyChange.getOffset(), keyChange.getKeySignature());
       }
       return true;
     }
