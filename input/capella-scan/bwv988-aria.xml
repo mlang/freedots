@@ -926,17 +926,22 @@
 			</backup>
 			<note>
 				<rest/>
-				<duration>960</duration>
-				<voice>2</voice>
-				<type>half</type>
-				<staff>1</staff>
-			</note>
-			<note>
-				<rest/>
-				<duration>480</duration>
+				<duration>720</duration>
 				<voice>2</voice>
 				<type>quarter</type>
-				<staff>1</staff>
+				<dot/>
+				<staff>2</staff>
+			</note>
+			<note>
+				<pitch>
+					<step>E</step>
+					<octave>4</octave>
+				</pitch>
+				<duration>720</duration>
+				<voice>2</voice>
+				<type>quarter</type>
+				<dot/>
+				<staff>2</staff>
 			</note>
 			<backup>
 				<duration>1440</duration>
@@ -947,19 +952,39 @@
 					<octave>3</octave>
 				</pitch>
 				<duration>960</duration>
+				<tie type="start"/>
 				<voice>3</voice>
 				<type>half</type>
 				<stem>down</stem>
 				<staff>2</staff>
 				<notations>
-					<slur number="1" placement="below" type="start"/>
+					<tied type="start"/>
 				</notations>
 			</note>
 			<note>
-				<rest/>
-				<duration>480</duration>
+				<pitch>
+					<step>C</step>
+					<octave>3</octave>
+				</pitch>
+				<duration>240</duration>
+				<tie type="stop"/>
 				<voice>3</voice>
-				<type>quarter</type>
+				<type>eighth</type>
+				<stem>down</stem>
+				<staff>2</staff>
+				<notations>
+					<tied type="stop"/>
+				</notations>
+			</note>
+			<note>
+				<pitch>
+					<step>D</step>
+					<octave>3</octave>
+				</pitch>
+				<duration>240</duration>
+				<voice>3</voice>
+				<type>eighth</type>
+				<stem>down</stem>
 				<staff>2</staff>
 			</note>
 			<backup>
@@ -967,33 +992,26 @@
 			</backup>
 			<note>
 				<rest/>
-				<duration>960</duration>
+				<duration>480</duration>
 				<voice>4</voice>
-				<type>half</type>
+				<type>quarter</type>
 				<staff>2</staff>
 			</note>
 			<note>
 				<rest/>
-				<duration>960</duration>
+				<duration>480</duration>
 				<voice>4</voice>
-				<type>half</type>
-				<staff>2</staff>
-			</note>
-			<backup>
-				<duration>1920</duration>
-			</backup>
-			<note>
-				<rest/>
-				<duration>960</duration>
-				<voice>5</voice>
-				<type>half</type>
+				<type>quarter</type>
 				<staff>2</staff>
 			</note>
 			<note>
-				<rest/>
-				<duration>960</duration>
-				<voice>5</voice>
-				<type>half</type>
+				<pitch>
+					<step>A</step>
+					<octave>3</octave>
+				</pitch>
+				<duration>480</duration>
+				<voice>4</voice>
+				<type>quarter</type>
 				<staff>2</staff>
 			</note>
 		</measure>

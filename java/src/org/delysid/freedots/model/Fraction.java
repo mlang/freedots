@@ -16,7 +16,7 @@ public class Fraction implements Comparable<Fraction> {
   public int getNumerator() { return numerator; }
   public int getDenominator() { return denominator; }
 
-  public float toFloat() { return numerator / denominator; }
+  public float toFloat() { return (float)numerator / denominator; }
   public int toInteger(int divisions) {
     return this.divide(new Fraction(1, 4*divisions)).numerator;
   }

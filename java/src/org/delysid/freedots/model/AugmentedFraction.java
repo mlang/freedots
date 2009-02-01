@@ -40,10 +40,11 @@ public final class AugmentedFraction extends Fraction {
   }
   public int getDots() { return dots; }
 
+  @Override
   public float toFloat() {
-    final float undottedValue = numerator / denominator;
+    final float undottedValue = super.toFloat();
     float rest = undottedValue;
-    for (int dot = 0; dot < dots; dot++) rest /= 2;
+    for (int dot = 0; dot < dots; dot++) rest /= 2.;
     return (undottedValue * 2) - rest;    
   }
   public String toBrailleString(AbstractPitch pitch) {

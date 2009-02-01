@@ -98,5 +98,10 @@ public class TestAugmentedFraction extends junit.framework.TestCase {
     assertEquals("numerator of "+f, af.getNumerator(), 1);
     assertEquals("denominator of "+f, af.getDenominator(), 2);
     assertEquals("dots of "+f, af.getDots(), 4);
+
+    f = new Fraction(1, 4);
+    af = new AugmentedFraction(1, 4, 1);
+    assertFalse("1/4 != 1/4.", f.equals(af));
+
   }
 }
