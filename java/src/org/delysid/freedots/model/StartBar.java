@@ -2,7 +2,11 @@
 package org.delysid.freedots.model;
 
 public class StartBar extends VerticalEvent {
-  public StartBar(Fraction offset) { super(offset); }
+  int measureNumber;
+  public StartBar(Fraction offset, int measureNumber) {
+    super(offset);
+    this.measureNumber = measureNumber;
+  }
 
   int staffCount;
   public int getStaffCount() { return staffCount; }

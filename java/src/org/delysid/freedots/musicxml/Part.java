@@ -43,6 +43,7 @@ public final class Part {
     int divisions = score.getDivisions();
     int durationMultiplier = 1;
 
+    int measureNumber = 0;
     Fraction measureOffset = new Fraction(0, 1);
     TimeSignature lastTimeSignature = null;
     int staffCount = 1;
@@ -55,7 +56,7 @@ public final class Part {
 	  "measure".equals(kid.getNodeName())) {
 	Element xmlMeasure = (Element)kid;
 
-	StartBar startBar = new StartBar(measureOffset);
+	StartBar startBar = new StartBar(measureOffset, ++measureNumber);
 	startBar.setStaffCount(staffCount);
 	eventList.add(startBar);
 
