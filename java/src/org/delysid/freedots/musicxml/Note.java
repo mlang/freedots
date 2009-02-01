@@ -50,6 +50,8 @@ public final class Note extends Musicdata implements RhythmicElement {
     }
   };
 
+  Element tie = null;
+
   Lyric lyric = null;
 
   Note(
@@ -88,6 +90,11 @@ public final class Note extends Musicdata implements RhythmicElement {
         accidental = accidentalMap.get(santizedName);
       else
         throw new MusicXMLParseException("Illegal <accidental>"+accidentalName+"</accidental>");
+    }
+
+    nodeList = element.getElementsByTagName("tie");
+    if (nodeList.getLength() >= 1) {
+      tie = (Element)nodeList.item(nodeList.getLength()-1);
     }
 
     nodeList = element.getElementsByTagName("lyric");
@@ -138,6 +145,11 @@ public final class Note extends Musicdata implements RhythmicElement {
 
   public Accidental getAccidental() {
     return accidental;
+  }
+
+  public boolean isTieStart() {
+    if (tie != null && tie.getAttribute("type").equals("start")) return true;
+    return false;
   }
 
   public Fraction getOffset() { return offset; }

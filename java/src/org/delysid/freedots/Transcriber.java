@@ -72,6 +72,8 @@ public final class Transcriber {
       }
       braille += note.getAugmentedFraction().toBrailleString(pitch);
 
+      if (note.isTieStart()) braille += Braille.tie;
+
       return braille;
     }
   }
