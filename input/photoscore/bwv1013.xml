@@ -8889,16 +8889,6 @@
 			<print new-system="yes"/>
 			<note>
 				<pitch>
-					<step>A</step>
-					<octave>4</octave>
-				</pitch>
-				<duration>16</duration>
-				<voice>1</voice>
-				<type>half</type>
-				<stem>down</stem>
-			</note>
-			<note>
-				<pitch>
 					<step>G</step>
 					<alter>1</alter>
 					<octave>5</octave>
@@ -9006,6 +8996,125 @@
 			<note>
 				<pitch>
 					<step>E</step>
+					<octave>5</octave>
+				</pitch>
+				<duration>2</duration>
+				<voice>1</voice>
+				<type>16th</type>
+				<stem>down</stem>
+				<beam number="1">end</beam>
+				<beam number="2">end</beam>
+				<notations>
+					<slur type="stop" number="1"/>
+				</notations>
+			</note>
+			<note>
+				<pitch>
+					<step>B</step>
+					<octave>5</octave>
+				</pitch>
+				<duration>2</duration>
+				<voice>1</voice>
+				<type>16th</type>
+				<stem>down</stem>
+				<beam number="1">begin</beam>
+				<beam number="2">begin</beam>
+				<notations>
+					<articulations>
+						<tenuto/>
+					</articulations>
+				</notations>
+			</note>
+			<note>
+				<pitch>
+					<step>E</step>
+					<octave>5</octave>
+				</pitch>
+				<duration>2</duration>
+				<voice>1</voice>
+				<type>16th</type>
+				<stem>down</stem>
+				<beam number="1">continue</beam>
+				<beam number="2">continue</beam>
+				<notations>
+					<slur type="start" number="1"/>
+				</notations>
+			</note>
+			<note>
+				<pitch>
+					<step>F</step>
+					<octave>5</octave>
+				</pitch>
+				<duration>2</duration>
+				<voice>1</voice>
+				<type>16th</type>
+				<stem>down</stem>
+				<beam number="1">continue</beam>
+				<beam number="2">continue</beam>
+			</note>
+			<note>
+				<pitch>
+					<step>E</step>
+					<octave>5</octave>
+				</pitch>
+				<duration>2</duration>
+				<voice>1</voice>
+				<type>16th</type>
+				<stem>down</stem>
+				<beam number="1">end</beam>
+				<beam number="2">end</beam>
+				<notations>
+					<slur type="stop" number="1"/>
+				</notations>
+			</note>
+			<note>
+				<pitch>
+					<step>D</step>
+					<octave>5</octave>
+				</pitch>
+				<duration>2</duration>
+				<voice>1</voice>
+				<type>16th</type>
+				<stem>down</stem>
+				<beam number="1">end</beam>
+				<beam number="2">end</beam>
+				<notations>
+					<slur type="stop" number="1"/>
+				</notations>
+			</note>
+			<note>
+				<pitch>
+					<step>F</step>
+					<octave>5</octave>
+				</pitch>
+				<duration>2</duration>
+				<voice>1</voice>
+				<type>16th</type>
+				<stem>down</stem>
+				<beam number="1">end</beam>
+				<beam number="2">end</beam>
+				<notations>
+					<slur type="stop" number="1"/>
+				</notations>
+			</note>
+			<note>
+				<pitch>
+					<step>E</step>
+					<octave>5</octave>
+				</pitch>
+				<duration>2</duration>
+				<voice>1</voice>
+				<type>16th</type>
+				<stem>down</stem>
+				<beam number="1">end</beam>
+				<beam number="2">end</beam>
+				<notations>
+					<slur type="stop" number="1"/>
+				</notations>
+			</note>
+			<note>
+				<pitch>
+					<step>D</step>
 					<octave>5</octave>
 				</pitch>
 				<duration>2</duration>
