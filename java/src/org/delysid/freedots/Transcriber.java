@@ -33,6 +33,7 @@ public final class Transcriber {
   }
 
   Options options;
+  public Options getOptions() { return options; }
 
   class BrailleString {
     Object model = null;

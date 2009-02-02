@@ -173,7 +173,8 @@ public final class GraphicalUserInterface extends JFrame implements javax.swing.
     toolBar.add(openButton);
 
     // Create the text area
-    textArea = new JTextArea(5, 30);
+    textArea = new JTextArea(transcriber.getOptions().getPageHeight(),
+                             transcriber.getOptions().getPageWidth());
     Font font = new Font("DejaVu Serif", Font.PLAIN, 14);
     textArea.setFont(font);
     textArea.addCaretListener(this);
