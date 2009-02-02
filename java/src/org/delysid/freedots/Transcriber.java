@@ -48,7 +48,7 @@ public final class Transcriber {
     public String toString() { return string; }
     public int length() { return toString().length(); }
   }
-  class BrailleSymbols extends ArrayList<BrailleString> {
+  class BrailleList extends ArrayList<BrailleString> {
     @Override
     public String toString() {
       StringBuilder stringBuilder = new StringBuilder();
@@ -87,7 +87,7 @@ public final class Transcriber {
       return braille;
     }
   }
-  private BrailleSymbols strings;
+  private BrailleList strings;
   private int characterCount;
   private int lineCount;
   private int pageNumber;
@@ -113,7 +113,7 @@ public final class Transcriber {
     setScore(score);
   }
   private void clear() {
-    strings = new BrailleSymbols();
+    strings = new BrailleList();
     characterCount = 0;
     lineCount = 0;
     pageNumber = 1;
@@ -164,8 +164,8 @@ public final class Transcriber {
                             
               boolean lastLine = (lineCount == (options.getPageHeight() - 1));
               measure.process();
-              BrailleSymbols head = measure.head(charactersLeft, lastLine);
-              BrailleSymbols tail = measure.tail();
+              BrailleList head = measure.head(charactersLeft, lastLine);
+              BrailleList tail = measure.tail();
               if (head.length() <= tail.length() / 10) {
                 newLine();
                 charactersLeft = options.getPageWidth() - characterCount;
@@ -215,7 +215,7 @@ public final class Transcriber {
     strings.add(text);
     characterCount += text.length();
   }
-  private void printString(BrailleSymbols text) {
+  private void printString(BrailleList text) {
     strings.addAll(text);
     characterCount += text.length();
   }
@@ -368,13 +368,13 @@ public final class Transcriber {
     }
     public AbstractPitch getFinalPitch() { return finalPitch; }
 
-    BrailleSymbols tail;
-    public BrailleSymbols tail() { return tail; }
+    BrailleList tail;
+    public BrailleList tail() { return tail; }
     class State {
       int width;
       AbstractPitch lastPitch;
-      BrailleSymbols head = new BrailleSymbols();
-      BrailleSymbols tail = new BrailleSymbols();
+      BrailleList head = new BrailleList();
+      BrailleList tail = new BrailleList();
       boolean hyphenated = false;
       State(int width, AbstractPitch lastPitch) {
         super();
@@ -396,10 +396,10 @@ public final class Transcriber {
       AbstractPitch getLastPitch() { return lastPitch; }
       void setLastPitch(AbstractPitch lastPitch) { this.lastPitch = lastPitch; }
 
-      BrailleSymbols getHead() { return head; }
-      BrailleSymbols getTail() { return tail; }
+      BrailleList getHead() { return head; }
+      BrailleList getTail() { return tail; }
     }
-    public BrailleSymbols head(int width, boolean lastLine) {
+    public BrailleList head(int width, boolean lastLine) {
       State state = new State(width,
                               previous != null? previous.getFinalPitch(): null);
 
