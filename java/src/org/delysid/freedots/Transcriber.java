@@ -22,10 +22,14 @@ public final class Transcriber {
   private Score score;
 
   public Score getScore() { return score; }
-  public void setScore(Score score) throws Exception {
+  public void setScore(Score score) {
     this.score = score;
     clear();
-    transcribe();
+    try {
+      transcribe();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
   }
 
   Options options;
@@ -99,13 +103,13 @@ public final class Transcriber {
 
   private static String lineSeparator = System.getProperty("line.separator");
 
-  public Transcriber(Score score, Options options) {
-    this.score = score;
+  public Transcriber(Options options) {
     this.options = options;
     clear();
-    if (score != null)
-      try { transcribe(); }
-      catch (Exception e) { e.printStackTrace(); }
+  }
+  public Transcriber(Score score, Options options) {
+    this(options);
+    setScore(score);
   }
   private void clear() {
     strings = new BrailleSymbols();

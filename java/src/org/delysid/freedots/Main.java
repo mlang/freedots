@@ -24,7 +24,7 @@ import org.xml.sax.SAXParseException;
 public final class Main {
   public static void main(String[] args) {
     Options options = new Options(args);
-    Transcriber transcriber = null;
+    Transcriber transcriber = new Transcriber(options);
     Score score = null;
     if (options.getLocation() != null) {
       try {
@@ -45,7 +45,7 @@ public final class Main {
         e.printStackTrace();
         System.exit(1);
       }
-      if (score != null) transcriber = new Transcriber(score, options);
+      if (score != null) transcriber.setScore(score);
     }
 //     try {
 //       Display display = new Display();
@@ -58,7 +58,7 @@ public final class Main {
     if (options.getWindowSystem()) {
       try {
         GraphicalUserInterface gui = new GraphicalUserInterface();
-        if (transcriber != null) gui.setTranscriber(transcriber);
+        gui.setTranscriber(transcriber);
       } catch (HeadlessException e) {
         options.setWindowSystem(false);
       }
