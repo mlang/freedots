@@ -57,8 +57,7 @@ public final class Main {
 //     } catch (SWTError e) {
     if (options.getWindowSystem()) {
       try {
-        GraphicalUserInterface gui = new GraphicalUserInterface();
-        gui.setTranscriber(transcriber);
+        GraphicalUserInterface gui = new GraphicalUserInterface(transcriber);
       } catch (HeadlessException e) {
         options.setWindowSystem(false);
       }

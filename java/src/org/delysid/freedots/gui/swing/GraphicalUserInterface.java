@@ -80,8 +80,9 @@ public final class GraphicalUserInterface extends JFrame implements javax.swing.
 
   protected MIDIPlayer midiPlayer;
 
-  public GraphicalUserInterface() {
+  public GraphicalUserInterface(Transcriber transcriber) {
     super("FreeDots");
+    this.transcriber = transcriber;
 
     try {
       MIDIPlayer player = new MIDIPlayer();
@@ -210,21 +211,5 @@ public final class GraphicalUserInterface extends JFrame implements javax.swing.
     if (midiPlayer != null)
       midiPlayer.close();
     System.exit(0);
-  }
-  public static void main(String[] args) {
-    Score score = null;
-    try {
-      if (java.lang.reflect.Array.getLength(args) == 1)
-        score = new Score(args[0]);
-      GraphicalUserInterface gui = new GraphicalUserInterface(); // Extends Frame.
-      if (score != null) gui.setScore(score);
-      gui.pack();
-      gui.setVisible(true);
-    } catch (HeadlessException e) {
-      System.err.println("No graphical environment available, exiting...");
-      System.exit(0);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
   }
 }
