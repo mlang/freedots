@@ -22,6 +22,11 @@ public final class Transcriber {
   private Score score;
 
   public Score getScore() { return score; }
+  public void setScore(Score score) throws Exception {
+    this.score = score;
+    clear();
+    transcribe();
+  }
 
   Options options;
 

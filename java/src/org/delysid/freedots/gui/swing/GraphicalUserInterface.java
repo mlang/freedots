@@ -41,6 +41,16 @@ public final class GraphicalUserInterface extends JFrame implements javax.swing.
   protected Score score = null;
 
   protected Transcriber transcriber = null;
+  public void setScore(Score score) {
+    this.score = score;
+    try {
+      transcriber.setScore(score);
+      textArea.append(transcriber.toString());
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+
   protected JTextArea textArea;
   Object lastObject = null;
   public void caretUpdate(CaretEvent caretEvent) {
@@ -188,9 +198,6 @@ public final class GraphicalUserInterface extends JFrame implements javax.swing.
     setVisible(true);
   }
 
-  public void setScore(Score score) {
-    this.score = score;
-  }
   public void setTranscriber(Transcriber transcriber) {
     if (transcriber != null) {
       this.transcriber = transcriber;
