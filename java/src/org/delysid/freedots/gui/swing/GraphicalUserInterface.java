@@ -178,6 +178,8 @@ public final class GraphicalUserInterface extends JFrame implements javax.swing.
                              transcriber.getOptions().getPageWidth());
     Font font = new Font("DejaVu Serif", Font.PLAIN, 14);
     textArea.setFont(font);
+    setTranscriber(transcriber);
+
     textArea.addCaretListener(this);
     JScrollPane scrollPane = new JScrollPane(textArea);
 
