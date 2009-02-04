@@ -20,7 +20,6 @@
 	<part-list>
 		<score-part id="P1">
 			<part-name>Flute</part-name>
-			<part-abbreviation></part-abbreviation>
 			<score-instrument id="P1-I1">
 				<instrument-name>Flute</instrument-name>
 			</score-instrument>
@@ -4576,9 +4575,6 @@
 			</barline>
 		</measure>
 		<measure number="21">
-			<barline location="left">
-				<repeat direction="forward"/>
-			</barline>
 			<note>
 				<pitch>
 					<step>E</step>
@@ -10557,6 +10553,9 @@
 			</note>
 		</measure>
 		<measure number="47">
+			<barline location="left">
+				<ending number="1" type="start"/>
+			</barline>
 			<note>
 				<pitch>
 					<step>A</step>
@@ -10880,10 +10879,14 @@
 			</note>
 			<barline location="right">
 				<bar-style>light-heavy</bar-style>
+				<ending number="1" type="stop"/>
 				<repeat direction="backward"/>
 			</barline>
 		</measure>
 		<measure number="49">
+			<barline location="left">
+				<ending number="2" type="start"/>
+			</barline>
 			<note>
 				<pitch>
 					<step>A</step>
@@ -10988,16 +10991,12 @@
 			<note>
 				<pitch>
 					<step>A</step>
-					<octave>5</octave>
+					<octave>6</octave>
 				</pitch>
 				<duration>16</duration>
-				<tie type="start"/>
 				<voice>1</voice>
 				<type>half</type>
 				<stem>down</stem>
-				<notations>
-					<tied type="start"/>
-				</notations>
 			</note>
 			<barline location="right">
 				<bar-style>light-heavy</bar-style>
