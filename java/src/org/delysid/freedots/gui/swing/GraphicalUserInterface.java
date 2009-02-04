@@ -38,9 +38,11 @@ import org.delysid.freedots.musicxml.Score;
 import org.delysid.StandardMidiFileWriter;
 
 public final class GraphicalUserInterface extends JFrame implements javax.swing.event.CaretListener {
+  
   protected Score score = null;
-
   protected Transcriber transcriber = null;
+  protected StatusBar statusBar=null;
+
   public void setScore(Score score) {
     this.score = score;
     try {
@@ -62,6 +64,10 @@ public final class GraphicalUserInterface extends JFrame implements javax.swing.
     if (object != lastObject) {
       if (object != null) {
         System.out.println("At index "+index+" there is "+object.toString());
+        if (statusBar !=null){
+        	statusBar.setMessage("At index "+index+" there is "+object.toString());
+        }
+        	
         if (object instanceof Note) {
           Note note = (Note)object;
           midiPlayer.stop();
@@ -189,6 +195,8 @@ public final class GraphicalUserInterface extends JFrame implements javax.swing.
     contentPane.setPreferredSize(new Dimension(400, 100));
     contentPane.add(toolBar, BorderLayout.NORTH);
     contentPane.add(scrollPane, BorderLayout.CENTER);
+    statusBar = new StatusBar();
+    contentPane.add(statusBar, java.awt.BorderLayout.SOUTH);
     setContentPane(contentPane);
 
     addWindowListener(new WindowAdapter() {
