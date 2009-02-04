@@ -1,3 +1,4 @@
+/* -*- c-basic-offset: 2; -*- */
 package org.delysid.freedots.gui.swing;
 
 
