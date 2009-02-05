@@ -71,9 +71,9 @@ public final class Main {
             player.setSequence(new MIDISequence(score));
             player.start();
             try {
-              while (player.isRunning())
-                Thread.sleep(100);
+              while (player.isRunning()) Thread.sleep(250);
             } catch (InterruptedException ie) {}
+            player.close();
           } catch (MidiUnavailableException mue) {
             System.err.println("MIDI playback not available.");
           } catch (InvalidMidiDataException imde) {
