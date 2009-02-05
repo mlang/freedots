@@ -13,7 +13,14 @@ import javax.sound.midi.Sequencer;
 import javax.sound.midi.Synthesizer;
 
 /**
- * Class <code>MIDIPlayer</code> is a composite that provides MIDI playback
+ * Class <code>MIDIPlayer</code> is a composite that coordinates
+ * <link>javax.sound.midi.Sequencer</link> and
+ * <link>javax.sound.midi.Synthesizer</link> to provide MIDI playback.
+ *
+ * Optionally it can use <link>MetaEventRelay</link> to resolve object
+ * references embedded in <link>org.delysid.freedots.musicxml.MIDISequence</link>
+ * and cause <link>PlaybackObserver</link> clients to be notified when a
+ * certain object is played.
  */
 public final class MIDIPlayer implements Closeable {
   private Synthesizer synthesizer;
