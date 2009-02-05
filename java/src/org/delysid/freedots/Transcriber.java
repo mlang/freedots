@@ -101,7 +101,16 @@ public final class Transcriber {
     }
     return null;
   }
+  public int getIndexOfObject(Object object) {
+    StringBuilder stringBuilder = new StringBuilder();
+    for (BrailleString brailleString:strings) {
+      if (brailleString.getModel() == object)
+        return stringBuilder.length();
+      stringBuilder.append(brailleString.toString());
+    }
+    return -1;
 
+  }
   private static String lineSeparator = System.getProperty("line.separator");
 
   public Transcriber(Options options) {

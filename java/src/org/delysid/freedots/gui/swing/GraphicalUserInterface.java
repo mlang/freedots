@@ -30,6 +30,7 @@ import javax.swing.JToolBar;
 import javax.swing.event.CaretEvent;
 
 import org.delysid.freedots.MIDIPlayer;
+import org.delysid.freedots.MetaEventRelay;
 import org.delysid.freedots.Transcriber;
 import org.delysid.freedots.musicxml.MIDISequence;
 import org.delysid.freedots.musicxml.Note;
@@ -37,7 +38,10 @@ import org.delysid.freedots.musicxml.Score;
 
 import org.delysid.StandardMidiFileWriter;
 
-public final class GraphicalUserInterface extends JFrame implements javax.swing.event.CaretListener {
+public final class GraphicalUserInterface
+  extends JFrame
+  implements javax.swing.event.CaretListener,
+             org.delysid.freedots.PlaybackObserver {
   
   protected Score score = null;
   protected Transcriber transcriber = null;
@@ -55,6 +59,7 @@ public final class GraphicalUserInterface extends JFrame implements javax.swing.
 
   protected JTextArea textArea;
   Object lastObject = null;
+  boolean autoPlay = false;
   public void caretUpdate(CaretEvent caretEvent) {
     int index = caretEvent.getDot();
     Object object = null;
@@ -68,7 +73,7 @@ public final class GraphicalUserInterface extends JFrame implements javax.swing.
         	statusBar.setMessage("At index "+index+" there is "+object.toString());
         }
         	
-        if (object instanceof Note) {
+        if (autoPlay && object instanceof Note) {
           Note note = (Note)object;
           midiPlayer.stop();
           try {
@@ -85,13 +90,20 @@ public final class GraphicalUserInterface extends JFrame implements javax.swing.
   }
 
   protected MIDIPlayer midiPlayer;
+  protected MetaEventRelay metaEventRelay = new MetaEventRelay(this);
+  public void objectPlaying(Object object) {
+    int pos = transcriber.getIndexOfObject(object);
+    if (pos >= 0) {
+      textArea.setCaretPosition(pos);
+    }
+  }
 
   public GraphicalUserInterface(Transcriber transcriber) {
     super("FreeDots");
     this.transcriber = transcriber;
 
     try {
-      MIDIPlayer player = new MIDIPlayer();
+      MIDIPlayer player = new MIDIPlayer(metaEventRelay);
       midiPlayer = player;
     } catch (MidiUnavailableException e) {
       e.printStackTrace();
@@ -127,7 +139,7 @@ public final class GraphicalUserInterface extends JFrame implements javax.swing.
 	public void actionPerformed(ActionEvent e) {
 	  if (score != null)
       try {
-	      midiPlayer.setSequence(new MIDISequence(score));
+	      midiPlayer.setSequence(new MIDISequence(score, metaEventRelay));
 	      midiPlayer.start();
 	    } catch (javax.sound.midi.InvalidMidiDataException exception) {
 	      exception.printStackTrace();

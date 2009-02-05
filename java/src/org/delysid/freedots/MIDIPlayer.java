@@ -14,6 +14,13 @@ public final class MIDIPlayer implements Closeable {
   private Synthesizer synthesizer;
   private Sequencer sequencer;
 
+  public MIDIPlayer(MetaEventRelay metaEventRelay)
+  throws MidiUnavailableException, InvalidMidiDataException {
+    this();
+    if (!sequencer.addMetaEventListener(metaEventRelay)) {
+      System.out.println("Cant add metaeventlistener to sequencer");
+    }
+  }
   public MIDIPlayer() throws MidiUnavailableException,
 			     InvalidMidiDataException {
     sequencer = MidiSystem.getSequencer();

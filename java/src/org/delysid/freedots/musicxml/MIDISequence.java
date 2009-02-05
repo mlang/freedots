@@ -7,6 +7,7 @@ import javax.sound.midi.MidiEvent;
 import javax.sound.midi.ShortMessage;
 import javax.sound.midi.Track;
 
+import org.delysid.freedots.MetaEventRelay;
 import org.delysid.freedots.model.EndBar;
 import org.delysid.freedots.model.Event;
 import org.delysid.freedots.model.Fraction;
@@ -35,10 +36,70 @@ public class MIDISequence extends javax.sound.midi.Sequence {
       for (int i = 0; i < events.size(); i++) {
         Event event = events.get(i);
         if (event instanceof Note)
-          addNote(track, (Note)event, channel, velocity, offset);
+          addNote(track, (Note)event, channel, velocity, offset, null);
 	else if (event instanceof Chord)
           for (Note note:(Chord)event)
-            addNote(track, note, channel, velocity, offset);
+            addNote(track, note, channel, velocity, offset, null);
+        else if (event instanceof StartBar) {
+          if (repeatStartIndex == -1) repeatStartIndex = i;
+
+          StartBar startBar = (StartBar)event;
+          if (startBar.getRepeatForward()) {
+            repeatStartIndex = i;
+            round = 1;
+          }
+          if (startBar.getEndingStart() > 0 &&
+              startBar.getEndingStart() != round) { /* skip to EndBar */
+            for (int j = i + 1; j < events.size(); j++) {
+              if (events.get(j) instanceof EndBar) {
+                EndBar endBar = (EndBar)events.get(j);
+                if (endBar.getEndingStop() == startBar.getEndingStart()) {
+                  offset = offset.subtract(endBar.getOffset().subtract(startBar.getOffset()));
+                  i = j + 1;
+                  break;
+                }
+              }
+            }
+          }
+        } else if (event instanceof EndBar) {
+          EndBar endbar = (EndBar)event;
+          if (endbar.getRepeat()) {
+            if (round == 1) {
+              StartBar repeatStart = (StartBar)events.get(repeatStartIndex);
+              offset = offset.add(endbar.getOffset().subtract(repeatStart.getOffset()));
+              i = repeatStartIndex;
+              round += 1;
+            }
+          }
+        }
+      }
+    }
+  }
+  public MIDISequence (Score score, MetaEventRelay metaEventRelay) throws InvalidMidiDataException {
+    super(PPQ, calculatePPQ(score.getDivisions()));
+    for (Part part:score.getParts()) {
+      Track track = createTrack();
+      int channel = 0;
+      int velocity = 64;
+
+      String trackName = new String(part.getName());
+      MetaMessage metaMessage = new MetaMessage();
+      metaMessage.setMessage(0x03, trackName.getBytes(), trackName.length());
+      track.add(new MidiEvent(metaMessage, 0));
+
+      MusicList events = part.getMusicList();
+
+      int round = 1;
+      int repeatStartIndex = -1;
+
+      Fraction offset = new Fraction(0, 1);
+      for (int i = 0; i < events.size(); i++) {
+        Event event = events.get(i);
+        if (event instanceof Note) {
+          addNote(track, (Note)event, channel, velocity, offset, metaEventRelay);
+	} else if (event instanceof Chord)
+          for (Note note:(Chord)event)
+            addNote(track, note, channel, velocity, offset, null);
         else if (event instanceof StartBar) {
           if (repeatStartIndex == -1) repeatStartIndex = i;
 
@@ -81,15 +142,19 @@ public class MIDISequence extends javax.sound.midi.Sequence {
     int velocity = 64;
 
     Fraction offset = note.getOffset().negate();
-    addNote(track, note, channel, velocity, offset);
+    addNote(track, note, channel, velocity, offset, null);
   }
-  private void addNote(Track track, Note note, int channel, int velocity, Fraction add) {
+  private void addNote(Track track, Note note, int channel, int velocity,
+                       Fraction add, MetaEventRelay metaEventRelay) {
     if (!note.isGrace()) {
       Pitch pitch = note.getPitch();
       try {
         int offset = note.getOffset().add(add).toInteger(resolution);
         int duration = note.getDuration().toInteger(resolution);
         if (pitch != null) {
+	  if (metaEventRelay != null) {
+	    track.add(new MidiEvent(metaEventRelay.add(note), offset));
+	  }
           int midiPitch = pitch.getMIDIPitch();
           ShortMessage msg = new ShortMessage();
           msg.setMessage(ShortMessage.NOTE_ON, channel, midiPitch, velocity);
