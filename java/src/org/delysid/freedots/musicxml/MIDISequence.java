@@ -26,8 +26,8 @@ public class MIDISequence extends javax.sound.midi.Sequence {
   /**
    * Create an instance of MIDISequence
    *
-   * @param score   the score to convert
-   * @param score   factory to use for object reference meta message creation
+   * @param score           the score to convert
+   * @param metaEventRelay  factory for object reference meta message creation
    */
   public MIDISequence (Score score, MetaEventRelay metaEventRelay)
   throws InvalidMidiDataException {
