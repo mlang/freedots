@@ -15,7 +15,6 @@ import javax.sound.midi.Synthesizer;
 public final class MIDIPlayer implements Closeable {
   private Synthesizer synthesizer;
   private Sequencer sequencer;
-  private boolean isPlaying = false;
 
   public MIDIPlayer(MetaEventRelay metaEventRelay)
   throws MidiUnavailableException, InvalidMidiDataException {
@@ -32,11 +31,6 @@ public final class MIDIPlayer implements Closeable {
     synthesizer.open();
     sequencer.getTransmitter().setReceiver(synthesizer.getReceiver());
     //sequencer.setTempoInBPM(120);
-    sequencer.addMetaEventListener(new MetaEventListener() {
-      public void meta(MetaMessage message) {
-        if (message.getType() == 0X2F) isPlaying = false;
-      }
-    });
   }
 
   public void setSequence(Sequence sequence) throws InvalidMidiDataException {
@@ -44,12 +38,10 @@ public final class MIDIPlayer implements Closeable {
   }
   public void start() {
     sequencer.start();
-    isPlaying = true;
   }
-  public boolean isRunning() { return sequencer.isRunning() && isPlaying; }
+  public boolean isRunning() { return sequencer.isRunning(); }
   public void stop() {
     sequencer.stop();
-    isPlaying = false;
   }
   public void close() {
     if (isRunning()) stop();
