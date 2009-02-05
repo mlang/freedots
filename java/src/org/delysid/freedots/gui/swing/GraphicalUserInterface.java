@@ -29,19 +29,19 @@ import javax.swing.JTextArea;
 import javax.swing.JToolBar;
 import javax.swing.event.CaretEvent;
 
-import org.delysid.freedots.MIDIPlayer;
-import org.delysid.freedots.MetaEventRelay;
-import org.delysid.freedots.Transcriber;
 import org.delysid.freedots.musicxml.MIDISequence;
 import org.delysid.freedots.musicxml.Note;
 import org.delysid.freedots.musicxml.Score;
+import org.delysid.freedots.playback.MIDIPlayer;
+import org.delysid.freedots.playback.MetaEventRelay;
+import org.delysid.freedots.Transcriber;
 
 import org.delysid.StandardMidiFileWriter;
 
 public final class GraphicalUserInterface
   extends JFrame
   implements javax.swing.event.CaretListener,
-             org.delysid.freedots.PlaybackObserver {
+             org.delysid.freedots.playback.PlaybackObserver {
   
   protected Score score = null;
   protected Transcriber transcriber = null;

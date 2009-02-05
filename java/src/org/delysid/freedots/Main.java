@@ -14,6 +14,7 @@ import org.delysid.freedots.gui.swing.GraphicalUserInterface;
 
 import org.delysid.freedots.musicxml.MIDISequence;
 import org.delysid.freedots.musicxml.Score;
+import org.delysid.freedots.playback.MIDIPlayer;
 
 import org.eclipse.swt.SWTError;
 import org.eclipse.swt.widgets.Display;

@@ -1,5 +1,5 @@
 /* -*- c-basic-offset: 2; -*- */
-package org.delysid.freedots;
+package org.delysid.freedots.playback;
 
 import java.io.Closeable;
 

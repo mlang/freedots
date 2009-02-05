@@ -7,12 +7,12 @@ import javax.sound.midi.MidiEvent;
 import javax.sound.midi.ShortMessage;
 import javax.sound.midi.Track;
 
-import org.delysid.freedots.MetaEventRelay;
 import org.delysid.freedots.model.EndBar;
 import org.delysid.freedots.model.Event;
 import org.delysid.freedots.model.Fraction;
 import org.delysid.freedots.model.MusicList;
 import org.delysid.freedots.model.StartBar;
+import org.delysid.freedots.playback.MetaEventRelay;
 
 public class MIDISequence extends javax.sound.midi.Sequence {
   /**

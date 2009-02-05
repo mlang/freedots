@@ -33,13 +33,11 @@ import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.swt.widgets.Widget;
 import org.xml.sax.SAXException;
 
+import org.delysid.freedots.gui.Messages;
 import org.delysid.freedots.musicxml.MIDISequence;
 import org.delysid.freedots.musicxml.Score;
-import org.delysid.freedots.MIDIPlayer;
-import org.delysid.freedots.gui.Messages;
+import org.delysid.freedots.playback.MIDIPlayer;
 
-/**
- */
 public class MainFrame {
   public static void main(String[] args) {
     Display display = new Display();
