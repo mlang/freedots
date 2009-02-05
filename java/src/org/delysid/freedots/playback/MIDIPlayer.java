@@ -12,15 +12,19 @@ import javax.sound.midi.Sequence;
 import javax.sound.midi.Sequencer;
 import javax.sound.midi.Synthesizer;
 
+/**
+ * Class <code>MIDIPlayer</code> is a composite that provides MIDI playback
+ */
 public final class MIDIPlayer implements Closeable {
   private Synthesizer synthesizer;
   private Sequencer sequencer;
 
   public MIDIPlayer(MetaEventRelay metaEventRelay)
-  throws MidiUnavailableException, InvalidMidiDataException {
+  throws MidiUnavailableException, InvalidMidiDataException,
+         MetaEventListeningUnavailableException {
     this();
     if (!sequencer.addMetaEventListener(metaEventRelay)) {
-      System.out.println("Cant add metaeventlistener to sequencer");
+      throw new MetaEventListeningUnavailableException();
     }
   }
   public MIDIPlayer() throws MidiUnavailableException,

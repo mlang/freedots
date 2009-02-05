@@ -34,6 +34,7 @@ import org.delysid.freedots.musicxml.Note;
 import org.delysid.freedots.musicxml.Score;
 import org.delysid.freedots.playback.MIDIPlayer;
 import org.delysid.freedots.playback.MetaEventRelay;
+import org.delysid.freedots.playback.MetaEventListeningUnavailableException;
 import org.delysid.freedots.Transcriber;
 
 import org.delysid.StandardMidiFileWriter;
@@ -109,7 +110,11 @@ public final class GraphicalUserInterface
       e.printStackTrace();
     } catch (javax.sound.midi.InvalidMidiDataException e) {
       e.printStackTrace();
+    } catch (MetaEventListeningUnavailableException e) {
+      e.printStackTrace();
     }
+
+    /* Load a font capable of displaying unicode braille */
     try {
       GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
       ge.registerFont(Font.createFont(Font.TRUETYPE_FONT,
