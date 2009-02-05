@@ -121,13 +121,13 @@ public class MIDISequence extends javax.sound.midi.Sequence {
       try {
         int offset = note.getOffset().add(add).toInteger(resolution);
         int duration = note.getDuration().toInteger(resolution);
-        if (pitch != null) {
-          if (metaEventRelay != null) {
-            MetaMessage metaMessage = metaEventRelay.createMetaMessage(note);
-            if (metaMessage != null) {
-              track.add(new MidiEvent(metaMessage, offset));
-            }
+        if (metaEventRelay != null) {
+          MetaMessage metaMessage = metaEventRelay.createMetaMessage(note);
+          if (metaMessage != null) {
+            track.add(new MidiEvent(metaMessage, offset));
           }
+        }
+        if (pitch != null) {
           int midiPitch = pitch.getMIDIPitch();
           ShortMessage msg = new ShortMessage();
           msg.setMessage(ShortMessage.NOTE_ON, channel, midiPitch, velocity);
