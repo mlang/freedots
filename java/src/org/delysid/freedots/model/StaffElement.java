@@ -2,7 +2,7 @@
 package org.delysid.freedots.model;
 
 public interface StaffElement extends Event {
-  public String getStaffName();
+  public int getStaffNumber();
   public Staff getStaff();
   public void setStaff(Staff staff);
   public boolean isRest();

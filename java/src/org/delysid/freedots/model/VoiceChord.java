@@ -6,12 +6,12 @@ import java.util.Comparator;
 
 public final class
 VoiceChord extends AbstractChord<RhythmicElement> implements VoiceElement {
-  private String staffName;
+  private int staffNumber;
   private String voiceName;
 
   public VoiceChord(RhythmicElement initialNote) {
     super(initialNote);
-    this.staffName = initialNote.getStaffName();
+    this.staffNumber = initialNote.getStaffNumber();
     this.voiceName = initialNote.getVoiceName();
     this.staff = initialNote.getStaff();
   }
@@ -20,7 +20,7 @@ VoiceChord extends AbstractChord<RhythmicElement> implements VoiceElement {
 
   public Staff getStaff() { return staff; }
   public void setStaff(Staff staff) { this.staff = staff; }
-  public String getStaffName() { return staffName; }
+  public int getStaffNumber() { return staffNumber; }
 
   /* FIXME: Seems inappropriate to have to impelement this */
   public boolean isRest() { return false; }

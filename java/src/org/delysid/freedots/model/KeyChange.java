@@ -1,23 +1,21 @@
 /* -*- c-basic-offset: 2; -*- */
 package org.delysid.freedots.model;
 
-import org.delysid.freedots.Braille;
-
 public class KeyChange implements StaffElement {
   private Fraction offset;
   private KeySignature keySignature;
-  private String staffName = null;
+  private int staffNumber;
   private Staff staff;
 
-  public KeyChange(Fraction offset, KeySignature keySignature, String staffName) {
+  public KeyChange(Fraction offset, KeySignature keySignature, int staffNumber) {
     this.offset = offset;
     this.keySignature = keySignature;
-    this.staffName = staffName;
+    this.staffNumber = staffNumber;
   }
 
   public KeySignature getKeySignature() { return keySignature; }
 
-  public String getStaffName() { return staffName; }
+  public int getStaffNumber() { return staffNumber; }
 
   public Fraction getOffset() { return offset; }
 

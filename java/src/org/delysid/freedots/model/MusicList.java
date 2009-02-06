@@ -7,10 +7,8 @@ package org.delysid.freedots.model;
  */
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
@@ -40,8 +38,6 @@ public class MusicList extends java.util.ArrayList<Event> {
   }
   public Staff getStaff(int index) {
     List<Staff> staves = new ArrayList<Staff>();
-    Map<String, Staff> staffNames = new HashMap<String, Staff>();
-    int usedStaves = 0;
 
     for (int i = 0; i < getStaffCount(); i++) staves.add(new Staff());
 
@@ -49,40 +45,26 @@ public class MusicList extends java.util.ArrayList<Event> {
       if (event instanceof VerticalEvent) {
         for (Staff staff:staves) staff.add(event);
       } else if (event instanceof StaffElement) {
-        String staffName = ((StaffElement)event).getStaffName();
-        if (staffName == null && staves.size() == 1) {
-          staves.get(0).add(event);
-        } else {
-          if (!staffNames.containsKey(staffName))
-            staffNames.put(staffName, staves.get(usedStaves++));
-          staffNames.get(staffName).add(event);
-        }
+        staves.get(((StaffElement)event).getStaffNumber()).add(event);
       } else if (event instanceof Chord) {
         for (StaffElement staffChord:((Chord)event).getStaffChords()) {
-          String staffName = staffChord.getStaffName();
-          if (staffName == null && staves.size() == 1) {
-            staves.get(0).add(staffChord);
-            staffChord.setStaff(staves.get(0));
-          } else {
-            if (!staffNames.containsKey(staffName))
-              staffNames.put(staffName, staves.get(usedStaves++));
-            staffNames.get(staffName).add(staffChord);
-            staffChord.setStaff(staffNames.get(staffName));
-          }
+          int staffNumber = staffChord.getStaffNumber();
+          staves.get(staffNumber).add(staffChord);
+          staffChord.setStaff(staves.get(staffNumber));
         }
       } else if (event instanceof GlobalClefChange) {
         GlobalClefChange globalClefChange = (GlobalClefChange)event;
-        for (Staff staff:staves) {
+        for (int i = 0; i < staves.size(); i++) {
           ClefChange clefChange = new ClefChange(globalClefChange.getOffset(),
-                                                 globalClefChange.getClef(), null);
-          staff.add(clefChange);
+                                                 globalClefChange.getClef(), i);
+          staves.get(i).add(clefChange);
         }
       } else if (event instanceof GlobalKeyChange) {
         GlobalKeyChange globalKeyChange = (GlobalKeyChange)event;
-        for (Staff staff:staves) {
+        for (int i = 0; i < staves.size(); i++) {
           KeyChange keyChange = new KeyChange(globalKeyChange.getOffset(),
-                                              globalKeyChange.getKeySignature(), null);
-          staff.add(keyChange);
+                                              globalKeyChange.getKeySignature(), i);
+          staves.get(i).add(keyChange);
         }
       }
     }

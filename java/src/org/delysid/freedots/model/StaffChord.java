@@ -6,11 +6,11 @@ import java.util.List;
 
 public final class
 StaffChord extends AbstractChord<RhythmicElement> implements StaffElement {
-  private String staffName;
+  private int staffNumber;
 
   public StaffChord(RhythmicElement initialNote) {
     super(initialNote);
-    this.staffName = initialNote.getStaffName();
+    this.staffNumber = initialNote.getStaffNumber();
   }
 
   private Staff staff = null;
@@ -18,9 +18,9 @@ StaffChord extends AbstractChord<RhythmicElement> implements StaffElement {
   public Staff getStaff() { return staff; }
   public void setStaff(Staff staff) {
     this.staff = staff;
-    for  (VoiceElement element:this) element.setStaff(staff);
+    for (StaffElement element:this) element.setStaff(staff);
   }
-  public String getStaffName() { return staffName; }
+  public int getStaffNumber() { return staffNumber; }
 
   /* FIXME: Seems inappropriate to have to impelement this */
   public boolean isRest() { return false; }
@@ -50,4 +50,3 @@ StaffChord extends AbstractChord<RhythmicElement> implements StaffElement {
     return chords;
   }
 }
-

@@ -24,7 +24,7 @@ public final class Note extends Musicdata implements RhythmicElement {
 
   Element grace = null;
   Pitch pitch = null;
-  Text staffName;
+  Text staffNumber;
   Text voiceName;
   Type type = Type.NONE;
   private static Map<String, Type> typeMap = new HashMap<String, Type>() {
@@ -70,7 +70,7 @@ public final class Note extends Musicdata implements RhythmicElement {
     if (nodeList.getLength() >= 1) {
       pitch = new Pitch((Element)nodeList.item(nodeList.getLength()-1));
     }
-    staffName = Score.getTextContent(element, "staff");
+    staffNumber = Score.getTextContent(element, "staff");
     voiceName = Score.getTextContent(element, "voice");
 
     Text textNode = Score.getTextContent(element, "type");
@@ -116,11 +116,11 @@ public final class Note extends Musicdata implements RhythmicElement {
   public Pitch getPitch() {
     return pitch;
   }
-  public String getStaffName() {
-    if (staffName != null) {
-      return staffName.getWholeText();
+  public int getStaffNumber() {
+    if (staffNumber != null) {
+      return Integer.parseInt(staffNumber.getWholeText()) - 1;
     }
-    return null;
+    return 0;
   }
   public String getVoiceName() {
     if (voiceName != null) {

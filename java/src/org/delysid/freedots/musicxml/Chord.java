@@ -18,21 +18,20 @@ public final class Chord extends AbstractChord<Note> {
     chords.add(currentStaffChord);
     for (int index = 1; index < size(); index++) {
       Note note = get(index);
-      String noteStaffName = note.getStaffName();
-      if ((noteStaffName == null && currentStaffChord.getStaffName() == null) ||
-          (noteStaffName != null &&
-           noteStaffName.equals(currentStaffChord.getStaffName()))) {
+      int noteStaffNumber = note.getStaffNumber();
+      if (noteStaffNumber == currentStaffChord.getStaffNumber()) {
         currentStaffChord.add(note);
       } else {
         currentStaffChord = new StaffChord(note);
         chords.add(currentStaffChord);
       }
     }
-    for (int index = 0; index < chords.size(); index++)
+    for (int index = 0; index < chords.size(); index++) {
       if (chords.get(index) instanceof StaffChord) {
         StaffChord staffChord = (StaffChord)chords.get(index);
         if (staffChord.size() == 1) chords.set(index, staffChord.get(0));
       }
+    }
 
     return chords;
   }

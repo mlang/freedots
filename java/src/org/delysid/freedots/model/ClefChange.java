@@ -6,18 +6,18 @@ import org.delysid.freedots.Braille;
 public class ClefChange implements StaffElement {
   private Fraction offset;
   private Clef clef;
-  private String staffName = null;
+  private int staffNumber;
   private Staff staff;
 
-  public ClefChange(Fraction offset, Clef clef, String staffName) {
+  public ClefChange(Fraction offset, Clef clef, int staffNumber) {
     this.offset = offset;
     this.clef = clef;
-    this.staffName = staffName;
+    this.staffNumber = staffNumber;
   }
 
   public Clef getClef() { return clef; }
 
-  public String getStaffName() { return staffName; }
+  public int getStaffNumber() { return staffNumber; }
 
   public Fraction getOffset() { return offset; }
 

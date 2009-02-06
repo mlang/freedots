@@ -97,8 +97,7 @@ public final class Part {
                   if (clef.getStaffName() == null)
                     eventList.add(new GlobalClefChange(measureOffset.add(offset), clef));
                   else
-                    eventList.add(new ClefChange(measureOffset.add(offset),
-                                  clef, clef.getStaffName()));
+                    eventList.add(new ClefChange(measureOffset.add(offset), clef, Integer.parseInt(clef.getStaffName()) - 1));
                 }
               }
               List<Attributes.Key> keys = attributes.getKeys();
@@ -107,8 +106,7 @@ public final class Part {
                   if (key.getStaffName() == null)
                     eventList.add(new GlobalKeyChange(measureOffset.add(offset), key));
                   else
-                    eventList.add(new KeyChange(measureOffset.add(offset),
-                                  key, key.getStaffName()));
+                    eventList.add(new KeyChange(measureOffset.add(offset), key, Integer.parseInt(key.getStaffName()) - 1));
                 }
               }
 	    } else if ("note".equals(measureChild.getNodeName())) {
