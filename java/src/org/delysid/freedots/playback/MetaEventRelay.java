@@ -25,6 +25,8 @@ public class MetaEventRelay implements javax.sound.midi.MetaEventListener {
   private List<PlaybackObserver>
   playbackObservers = new ArrayList<PlaybackObserver>(2);
 
+  private static final int PROPRIETARY = 0X7F;
+
   /**
    * Create an instance of MetaEventRelay.
    *
@@ -57,7 +59,7 @@ public class MetaEventRelay implements javax.sound.midi.MetaEventListener {
 
       MetaMessage metaMessage = new MetaMessage();
       try {
-        metaMessage.setMessage(0x7F, key.getBytes(), key.length());
+        metaMessage.setMessage(PROPRIETARY, key.getBytes(), key.length());
       } catch (InvalidMidiDataException e) {
         return null;
       }
@@ -71,7 +73,7 @@ public class MetaEventRelay implements javax.sound.midi.MetaEventListener {
    * @param meta   the MetaMessage to handle
    */
   public void meta(MetaMessage meta) {
-    if (meta.getType() == 0X7F) {
+    if (meta.getType() == PROPRIETARY) {
       String key = new String(meta.getData());
       if (objects.containsKey(key)) {
         Object object = objects.get(key);
