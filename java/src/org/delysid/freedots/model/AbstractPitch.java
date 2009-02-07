@@ -9,7 +9,7 @@ public abstract class AbstractPitch implements Comparable<AbstractPitch> {
   public abstract int getOctave();
   public int getMIDIPitch() {
     int[] stepToChromatic = { 0, 2, 4, 5, 7, 9, 11 };
-    int midiPitch = getOctave()*12 + stepToChromatic[getStep()] + getAlter();
+    int midiPitch = (getOctave()+1)*12 + stepToChromatic[getStep()] + getAlter();
     return midiPitch;
   }
   @Override
