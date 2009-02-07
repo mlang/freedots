@@ -12,7 +12,7 @@ public class MidiInstrument {
 
   public MidiInstrument(Element xml) {
     this.xml = xml;
-    midiChannel = Score.getTextNode(xml, "midi-chnnael");
+    midiChannel = Score.getTextNode(xml, "midi-channel");
     midiProgram = Score.getTextNode(xml, "midi-program");
   }
 
