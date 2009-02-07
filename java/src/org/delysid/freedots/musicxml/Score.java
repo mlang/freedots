@@ -33,7 +33,8 @@ import org.xml.sax.SAXException;
 
 public final class Score {
   private Document document;
-  private XPathFactory xPathFactory = XPathFactory.newInstance();
+
+  private static XPathFactory xPathFactory = XPathFactory.newInstance();
 
   private List<Part> parts;
 
@@ -79,6 +80,7 @@ public final class Score {
       }
     } else
       document = documentBuilder.parse(inputStream);
+
     document.getDocumentElement().normalize();
 
     parts = new ArrayList<Part>();
