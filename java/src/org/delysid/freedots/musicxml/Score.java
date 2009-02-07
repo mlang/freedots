@@ -144,7 +144,7 @@ public final class Score {
     return parts;
   }
 
-  static Text getTextContent(Element element, String childTagName) {
+  static Text getTextNode(Element element, String childTagName) {
     NodeList nodeList = element.getElementsByTagName(childTagName);
     if (nodeList.getLength() >= 1) {
       nodeList = nodeList.item(nodeList.getLength()-1).getChildNodes();

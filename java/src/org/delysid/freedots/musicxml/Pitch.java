@@ -12,9 +12,9 @@ public final class Pitch extends org.delysid.freedots.model.AbstractPitch {
 
   public Pitch(Element element) throws MusicXMLParseException {
     this.element = element;
-    step = Score.getTextContent(element, "step");
-    alter = Score.getTextContent(element, "alter");
-    octave = Score.getTextContent(element, "octave");
+    step = Score.getTextNode(element, "step");
+    alter = Score.getTextNode(element, "alter");
+    octave = Score.getTextNode(element, "octave");
     if (step == null || octave == null) {
       throw new MusicXMLParseException("Missing step or octave element");
     }

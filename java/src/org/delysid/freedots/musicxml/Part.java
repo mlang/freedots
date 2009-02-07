@@ -182,6 +182,17 @@ public final class Part {
     if (endbar != null) endbar.setEndOfMusic(true);
   }
 
+  public MidiInstrument getMidiInstrument(String id) {
+    NodeList nodeList = scorePart.getElementsByTagName("midi-instrument");
+    for (int index = 0; index < nodeList.getLength(); index++) {
+      MidiInstrument instrument = new MidiInstrument((Element)nodeList.item(index));
+      if (id == null) return instrument;
+      if (id.equals(instrument.getId())) return instrument;
+    }
+
+    return null;
+  }
+
   public TimeSignature getTimeSignature() { return timeSignature; }
   public KeySignature getKeySignature() {
     for (Object event:eventList) {

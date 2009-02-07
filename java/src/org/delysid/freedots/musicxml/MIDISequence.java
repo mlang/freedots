@@ -35,13 +35,14 @@ public class MIDISequence extends javax.sound.midi.Sequence {
 
     for (Part part:score.getParts()) {
       Track track = createTrack();
-      int channel = 0;
       int velocity = 64;
 
       String trackName = new String(part.getName());
       MetaMessage metaMessage = new MetaMessage();
       metaMessage.setMessage(0x03, trackName.getBytes(), trackName.length());
       track.add(new MidiEvent(metaMessage, 0));
+
+      initializeMidiPrograms(track, part);
 
       MusicList events = part.getMusicList();
 
@@ -52,7 +53,7 @@ public class MIDISequence extends javax.sound.midi.Sequence {
       for (int i = 0; i < events.size(); i++) {
         Event event = events.get(i);
         if (event instanceof Note) {
-          addToTrack(track, (Note)event, channel, velocity, offset, metaEventRelay);
+          addToTrack(track, (Note)event, velocity, offset, metaEventRelay);
         } else if (event instanceof Chord) {
           int midiTick = event.getOffset().add(offset).toInteger(resolution);
           if (metaEventRelay != null) {
@@ -62,7 +63,7 @@ public class MIDISequence extends javax.sound.midi.Sequence {
             }
           }
           for (Note note:(Chord)event)
-            addToTrack(track, note, channel, velocity, offset, null);
+            addToTrack(track, note, velocity, offset, null);
         } else if (event instanceof StartBar) {
           if (repeatStartIndex == -1) repeatStartIndex = i;
 
@@ -106,15 +107,16 @@ public class MIDISequence extends javax.sound.midi.Sequence {
   public MIDISequence (Note note) throws InvalidMidiDataException {
     super(PPQ, calculatePPQ(note.getPart().getScore().getDivisions()));
     Track track = createTrack();
-    int channel = 0;
     int velocity = 64;
 
+    initializeMidiPrograms(track, note.getPart());
+
     Fraction offset = note.getOffset().negate();
-    addToTrack(track, note, channel, velocity, offset, null);
+    addToTrack(track, note, velocity, offset, null);
   }
 
   private void addToTrack(Track track,
-                          Note note, int channel, int velocity,
+                          Note note, int velocity,
                           Fraction add, MetaEventRelay metaEventRelay) {
     if (!note.isGrace()) {
       Pitch pitch = note.getPitch();
@@ -130,10 +132,10 @@ public class MIDISequence extends javax.sound.midi.Sequence {
         if (pitch != null) {
           int midiPitch = pitch.getMIDIPitch();
           ShortMessage msg = new ShortMessage();
-          msg.setMessage(ShortMessage.NOTE_ON, channel, midiPitch, velocity);
+          msg.setMessage(ShortMessage.NOTE_ON, note.getMidiChannel(), midiPitch, velocity);
           track.add(new MidiEvent(msg, offset));
           msg = new ShortMessage();
-          msg.setMessage(ShortMessage.NOTE_OFF, channel, midiPitch, 0);
+          msg.setMessage(ShortMessage.NOTE_OFF, note.getMidiChannel(), midiPitch, 0);
           track.add(new MidiEvent(msg, offset+duration));
         }
       } catch (MusicXMLParseException e) {
@@ -151,5 +153,16 @@ public class MIDISequence extends javax.sound.midi.Sequence {
     else if (ppq < 40) return ppq * 10;
     else if (ppq < 100) return ppq * 4;
     return ppq;
+  }
+
+  private static void initializeMidiPrograms(Track track, Part part)
+  throws InvalidMidiDataException {
+    MidiInstrument instrument = part.getMidiInstrument(null);
+    if (instrument != null) {
+      ShortMessage msg = new ShortMessage();
+      msg.setMessage(ShortMessage.PROGRAM_CHANGE,
+                     instrument.getMidiChannel(), instrument.getMidiProgram(), 0);
+      track.add(new MidiEvent(msg, 0));
+    }
   }
 }

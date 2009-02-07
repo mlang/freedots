@@ -70,10 +70,10 @@ public final class Note extends Musicdata implements RhythmicElement {
     if (nodeList.getLength() >= 1) {
       pitch = new Pitch((Element)nodeList.item(nodeList.getLength()-1));
     }
-    staffNumber = Score.getTextContent(element, "staff");
-    voiceName = Score.getTextContent(element, "voice");
+    staffNumber = Score.getTextNode(element, "staff");
+    voiceName = Score.getTextNode(element, "voice");
 
-    Text textNode = Score.getTextContent(element, "type");
+    Text textNode = Score.getTextNode(element, "type");
     if (textNode != null) {
       String typeName = textNode.getWholeText();
       String santizedTypeName = typeName.trim().toLowerCase();
@@ -82,7 +82,7 @@ public final class Note extends Musicdata implements RhythmicElement {
       else
         throw new MusicXMLParseException("Illegal <type> content '"+typeName+"'");
     }
-    textNode = Score.getTextContent(element, "accidental");
+    textNode = Score.getTextNode(element, "accidental");
     if (textNode != null) {
       String accidentalName = textNode.getWholeText();
       String santizedName = accidentalName.trim().toLowerCase();
@@ -179,12 +179,12 @@ public final class Note extends Musicdata implements RhythmicElement {
       this.element = element;
     }
     public String getText() {
-      Text textNode = Score.getTextContent(element, "text");
+      Text textNode = Score.getTextNode(element, "text");
       if (textNode != null) return textNode.getWholeText();
       return "";
     }
     public Syllabic getSyllabic() {
-      Text textNode = Score.getTextContent(element, "syllabic");
+      Text textNode = Score.getTextNode(element, "syllabic");
       if (textNode != null) {      
         return Enum.valueOf(Syllabic.class, textNode.getWholeText().toUpperCase());
       }
@@ -211,5 +211,16 @@ public final class Note extends Musicdata implements RhythmicElement {
       }
     }
     return false;
+  }
+
+  public int getMidiChannel() {
+    MidiInstrument instrument = part.getMidiInstrument(null);
+    if (instrument != null) return instrument.getMidiChannel();
+    return 0;
+  }
+  public int getMidiProgram() {
+    MidiInstrument instrument = part.getMidiInstrument(null);
+    if (instrument != null) return instrument.getMidiProgram();
+    return 0;
   }
 }
