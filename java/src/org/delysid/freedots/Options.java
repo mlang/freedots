@@ -9,6 +9,7 @@ public final class Options {
   String location = null;
   boolean windowSystem = true;
   boolean playScore = false;
+  String exportMidiFile = null;
 
   public Options(String[] args) {
     for (int index = 0; index < args.length; index++) {
@@ -55,6 +56,10 @@ public final class Options {
         windowSystem = false;
       } else if ("-p".equals(option) || "--play".equals(option)) {
         playScore = true;
+      } else if ("-emf".equals(option) || "--export-midi-file".equals(option)) {
+        if (index < args.length-1) {
+          exportMidiFile = args[++index];
+        }
       } else {
         if (index == args.length-1) {
           location = args[index];
@@ -74,6 +79,8 @@ public final class Options {
     this.windowSystem = windowSystem;
   }
   public boolean getPlayScore() { return playScore; }
+
+  public String getExportMidiFile() { return exportMidiFile; }
 
   public enum MultiStaffMeasures {
     VISUAL, /* break at new system */

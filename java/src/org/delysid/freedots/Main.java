@@ -1,17 +1,17 @@
 package org.delysid.freedots;
 
-import java.io.IOException;
-
 import java.awt.HeadlessException;
-
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
 
+import org.delysid.StandardMidiFileWriter;
 import org.delysid.freedots.gui.swt.MainFrame;
 import org.delysid.freedots.gui.swing.GraphicalUserInterface;
-
 import org.delysid.freedots.musicxml.MIDISequence;
 import org.delysid.freedots.musicxml.Score;
 import org.delysid.freedots.playback.MIDIPlayer;
@@ -65,20 +65,37 @@ public final class Main {
     }
     if (!options.getWindowSystem()) {
       if (transcriber != null) {
-        System.out.println(transcriber.toString());
-        if (options.getPlayScore() && score != null) {
+        if (options.getExportMidiFile() != null) {
+          File file = new File(options.getExportMidiFile());
           try {
-            MIDIPlayer player = new MIDIPlayer();
-            player.setSequence(new MIDISequence(score));
-            player.start();
+            FileOutputStream fileOutputStream = new FileOutputStream(file);
             try {
-              while (player.isRunning()) Thread.sleep(250);
-            } catch (InterruptedException ie) {}
-            player.close();
-          } catch (MidiUnavailableException mue) {
-            System.err.println("MIDI playback not available.");
-          } catch (InvalidMidiDataException imde) {
-            imde.printStackTrace();
+              StandardMidiFileWriter smfw = new StandardMidiFileWriter();
+              smfw.write(new MIDISequence(score), 1, fileOutputStream);
+            } catch (Exception exception) {
+              exception.printStackTrace();
+            } finally {
+              fileOutputStream.close();
+            }
+          } catch (IOException exception) {
+            exception.printStackTrace();
+          }
+        } else {
+          System.out.println(transcriber.toString());
+          if (options.getPlayScore() && score != null) {
+            try {
+              MIDIPlayer player = new MIDIPlayer();
+              player.setSequence(new MIDISequence(score));
+              player.start();
+              try {
+                while (player.isRunning()) Thread.sleep(250);
+              } catch (InterruptedException ie) {}
+              player.close();
+            } catch (MidiUnavailableException mue) {
+              System.err.println("MIDI playback not available.");
+            } catch (InvalidMidiDataException imde) {
+              imde.printStackTrace();
+            }
           }
         }
       } else {

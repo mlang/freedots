@@ -215,6 +215,7 @@ public final class Transcriber {
           }
         }
       }
+      newLine();
     }
   }
   private void printString(String text) {
