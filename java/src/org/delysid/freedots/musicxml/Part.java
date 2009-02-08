@@ -143,10 +143,15 @@ public final class Part {
 	    } else if ("backup".equals(measureChild.getNodeName())) { 
               if (currentChord != null) {
                 offset = offset.add(currentChord.get(0).getDuration());
+                currentChord = null;
               }
               Backup backup = new Backup(musicdata, divisions, durationMultiplier);
               offset = offset.subtract(backup.getDuration());
             } else if ("forward".equals(measureChild.getNodeName())) {
+              if (currentChord != null) {
+                offset = offset.add(currentChord.get(0).getDuration());
+                currentChord = null;
+              }
               Note invisibleRest = new Note(measureOffset.add(offset), musicdata,
                                             divisions, durationMultiplier, this);
               eventList.add(invisibleRest);
