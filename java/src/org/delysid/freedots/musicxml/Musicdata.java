@@ -22,7 +22,8 @@ public abstract class Musicdata {
     if (nodeList.getLength() == 1) {
       Node textNode = nodeList.item(0).getChildNodes().item(0);
       int duration = Integer.parseInt(textNode.getNodeValue());
-      return new Fraction(duration * durationMultiplier, 4 * divisions);
+      Fraction fraction = new Fraction(duration * durationMultiplier, 4 * divisions);
+      return fraction;
     }
     throw new MusicXMLParseException("Missing <duration> element");
   }

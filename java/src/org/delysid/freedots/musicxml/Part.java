@@ -65,6 +65,7 @@ public final class Part {
 
 	Chord currentChord = null;
 	Fraction offset = new Fraction(0, 1);
+        Fraction measureDuration = new Fraction(0, 1);
 	NodeList measureChildNodes = xmlMeasure.getChildNodes();
 	for (int index = 0; index < measureChildNodes.getLength(); index++) {
 	  Node measureChild = measureChildNodes.item(index);
@@ -184,11 +185,24 @@ public final class Part {
               }
             } else
               System.err.println("Unsupported musicdata element " + measureChild.getNodeName());
+            if (offset.compareTo(measureDuration) > 0) measureDuration = offset;
 	  }
 	}
 
-	measureOffset = measureOffset.add(timeSignature);
-
+        if (currentChord != null) {
+          offset = offset.add(currentChord.get(0).getDuration());
+          if (offset.compareTo(measureDuration) > 0) measureDuration = offset;
+          currentChord = null;
+        }
+        if (xmlMeasure.getAttribute("number").equals("0") &&
+            measureDuration.compareTo(timeSignature) < 0) {
+          measureOffset = measureOffset.add(measureDuration);
+        } else {
+          if (measureDuration.compareTo(timeSignature) != 0) {
+            System.err.println("WARNING: Incomplete measure "+xmlMeasure.getAttribute("number")+": "+timeSignature+" "+measureDuration);
+          }
+          measureOffset = measureOffset.add(timeSignature);
+        }
         endbar = new EndBar(measureOffset);
         if (repeatBackward) endbar.setRepeat(true);
         if (endingStop > 0) endbar.setEndingStop(endingStop);
