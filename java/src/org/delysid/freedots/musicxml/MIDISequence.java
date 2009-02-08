@@ -52,6 +52,12 @@ public class MIDISequence extends javax.sound.midi.Sequence {
       Fraction offset = new Fraction(0, 1);
       for (int i = 0; i < events.size(); i++) {
         Event event = events.get(i);
+        if (event instanceof Direction) {
+          Direction direction = (Direction)event;
+          if (direction.getSound() != null)
+            event = direction.getSound();
+        }          
+
         if (event instanceof Note) {
           addToTrack(track, (Note)event, velocity, offset, metaEventRelay);
         } else if (event instanceof Chord) {
@@ -70,6 +76,10 @@ public class MIDISequence extends javax.sound.midi.Sequence {
           if (tempoMessage != null) {
             int midiTick = sound.getOffset().add(offset).toInteger(resolution);
             tempoTrack.add(new MidiEvent(tempoMessage, midiTick));
+          }
+          Integer newVelocity = sound.getMidiVelocity();
+          if (newVelocity != null) {
+            velocity = newVelocity;
           }
         } else if (event instanceof StartBar) {
           if (repeatStartIndex == -1) repeatStartIndex = i;

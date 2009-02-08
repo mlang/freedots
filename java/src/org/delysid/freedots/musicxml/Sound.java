@@ -37,5 +37,12 @@ public class Sound implements Event {
     return null;
   }
 
+  public Integer getMidiVelocity() {
+    if (xml.hasAttribute("dynamics")) {
+      Float dynamics = Float.parseFloat(xml.getAttribute("dynamics"));
+      return new Integer(Math.round(((float)90 / (float)100) * dynamics));
+    }
+    return null;
+  }
   public Fraction getOffset() { return offset; }
 }

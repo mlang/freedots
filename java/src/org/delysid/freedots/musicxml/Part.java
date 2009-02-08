@@ -136,6 +136,9 @@ public final class Part {
 	      if (advanceTime) {
 		offset = offset.add(note.getDuration());
 	      }
+            } else if ("direction".equals(measureChild.getNodeName())) {
+              Direction direction = new Direction(musicdata, measureOffset.add(offset));
+              eventList.add(direction);
 	    } else if ("backup".equals(measureChild.getNodeName())) { 
 	      Backup backup = new Backup(musicdata, divisions, durationMultiplier);
 	      offset = offset.subtract(backup.getDuration());
