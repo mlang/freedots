@@ -21,12 +21,14 @@ public class Sound implements Event {
   public MetaMessage getTempoMessage() {
     if (xml.hasAttribute("tempo")) {
       float tempo = Float.parseFloat(xml.getAttribute("tempo"));
-      int midiTempo = Math.round(60000 / tempo * 1000);
+      int midiTempo = Math.round((float)60000.0 / tempo * 1000);
       MetaMessage message = new MetaMessage();
       byte[] bytes = new byte[3];
       bytes[0] = (byte) (midiTempo / 0X10000);
-      bytes[1] = (byte) ((midiTempo - bytes[0] * 0x10000) / 0x100);
-      bytes[2] = (byte) (midiTempo - bytes[0] * 0x10000 - bytes[1] * 0x100);
+      midiTempo %= 0X10000;
+      bytes[1] = (byte) (midiTempo / 0X100);
+      midiTempo %= 0X100;
+      bytes[2] = (byte) midiTempo;
       try {
         message.setMessage(0X51, bytes, bytes.length);
         return message;
