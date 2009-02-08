@@ -147,6 +147,9 @@ public final class Part {
 	    } else if ("print".equals(measureChild.getNodeName())) {
 	      Print print = new Print(musicdata);
 	      if (print.isNewSystem()) startBar.setNewSystem(true);
+            } else if ("sound".equals(measureChild.getNodeName())) {
+              Sound sound = new Sound(musicdata, measureOffset.add(offset));
+              eventList.add(sound);
             } else if ("barline".equals(measureChild.getNodeName())) {
               Barline barline = new Barline(musicdata);
 

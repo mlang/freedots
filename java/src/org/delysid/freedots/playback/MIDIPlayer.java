@@ -39,7 +39,7 @@ public final class MIDIPlayer implements Closeable {
     sequencer.open();
     synthesizer.open();
     sequencer.getTransmitter().setReceiver(synthesizer.getReceiver());
-    sequencer.setTempoInBPM(60);
+    //sequencer.setTempoInBPM(60);
   }
 
   public void setSequence(Sequence sequence) throws InvalidMidiDataException {

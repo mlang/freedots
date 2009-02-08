@@ -23,6 +23,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -107,7 +108,9 @@ public final class GraphicalUserInterface
       MIDIPlayer player = new MIDIPlayer(metaEventRelay);
       midiPlayer = player;
     } catch (MidiUnavailableException e) {
-      e.printStackTrace();
+      String message = "MIDI playback unavailable";
+      JOptionPane.showMessageDialog(this, message, "Alert",
+                                    JOptionPane.ERROR_MESSAGE);
     } catch (javax.sound.midi.InvalidMidiDataException e) {
       e.printStackTrace();
     } catch (MetaEventListeningUnavailableException e) {

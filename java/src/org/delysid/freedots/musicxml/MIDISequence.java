@@ -32,7 +32,7 @@ public class MIDISequence extends javax.sound.midi.Sequence {
   public MIDISequence (Score score, MetaEventRelay metaEventRelay)
   throws InvalidMidiDataException {
     super(PPQ, calculatePPQ(score.getDivisions()));
-
+    Track tempoTrack = createTrack();
     for (Part part:score.getParts()) {
       Track track = createTrack();
       int velocity = 64;
@@ -64,6 +64,13 @@ public class MIDISequence extends javax.sound.midi.Sequence {
           }
           for (Note note:(Chord)event)
             addToTrack(track, note, velocity, offset, null);
+        } else if (event instanceof Sound) {
+          Sound sound = (Sound)event;
+          MetaMessage tempoMessage = sound.getTempoMessage();
+          if (tempoMessage != null) {
+            int midiTick = sound.getOffset().add(offset).toInteger(resolution);
+            tempoTrack.add(new MidiEvent(tempoMessage, midiTick));
+          }
         } else if (event instanceof StartBar) {
           if (repeatStartIndex == -1) repeatStartIndex = i;
 
