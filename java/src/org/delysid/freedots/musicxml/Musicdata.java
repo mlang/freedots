@@ -21,7 +21,7 @@ public abstract class Musicdata {
     NodeList nodeList = element.getElementsByTagName("duration");
     if (nodeList.getLength() == 1) {
       Node textNode = nodeList.item(0).getChildNodes().item(0);
-      int duration = Integer.parseInt(textNode.getNodeValue());
+      int duration = Math.round(Float.parseFloat(textNode.getNodeValue()));
       Fraction fraction = new Fraction(duration * durationMultiplier, 4 * divisions);
       return fraction;
     }

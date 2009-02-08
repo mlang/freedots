@@ -131,7 +131,7 @@ public final class Score {
       BigInteger result = BigInteger.ONE;
       for (int index = 0; index < count; index++) {
 	Node node = nodeList.item(index);
-	BigInteger divisions = new BigInteger(node.getNodeValue());
+	BigInteger divisions = new BigInteger(new Integer(Math.round(Float.parseFloat(node.getNodeValue()))).toString());
 	result = result.multiply(divisions).divide(result.gcd(divisions));
       }
       return result.intValue();

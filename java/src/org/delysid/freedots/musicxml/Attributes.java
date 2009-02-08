@@ -22,7 +22,7 @@ public final class Attributes {
     NodeList nodeList = element.getElementsByTagName("divisions");
     if (nodeList.getLength() == 1) {
       Node textNode = nodeList.item(0).getChildNodes().item(0);
-      int divisions = Integer.parseInt(textNode.getNodeValue());
+      int divisions = Math.round(Float.parseFloat(textNode.getNodeValue()));
       return divisions;
     }
     return 0;
