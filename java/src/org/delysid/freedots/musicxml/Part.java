@@ -121,6 +121,7 @@ public final class Part {
 		  advanceTime = false;
 		  addNoteToEventList = false;
 		} else {
+                  offset = offset.add(currentChord.get(0).getDuration());
 		  currentChord = null;
 		}
 	      }
@@ -140,8 +141,11 @@ public final class Part {
               Direction direction = new Direction(musicdata, measureOffset.add(offset));
               eventList.add(direction);
 	    } else if ("backup".equals(measureChild.getNodeName())) { 
-	      Backup backup = new Backup(musicdata, divisions, durationMultiplier);
-	      offset = offset.subtract(backup.getDuration());
+              if (currentChord != null) {
+                offset = offset.add(currentChord.get(0).getDuration());
+              }
+              Backup backup = new Backup(musicdata, divisions, durationMultiplier);
+              offset = offset.subtract(backup.getDuration());
             } else if ("forward".equals(measureChild.getNodeName())) {
               Note invisibleRest = new Note(measureOffset.add(offset), musicdata,
                                             divisions, durationMultiplier, this);
@@ -177,6 +181,7 @@ public final class Part {
               System.err.println("Unsupported musicdata element " + measureChild.getNodeName());
 	  }
 	}
+
 	measureOffset = measureOffset.add(timeSignature);
 
         endbar = new EndBar(measureOffset);

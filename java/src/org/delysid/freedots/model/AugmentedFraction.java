@@ -7,10 +7,18 @@ import org.delysid.freedots.Util;
 public final class AugmentedFraction extends Fraction {
   private int dots;
 
+  private int normalNotes, actualNotes;
+
   public AugmentedFraction(int numerator, int denominator, int dots) {
+    this(numerator, denominator, dots, 1, 1);
+  }
+  public AugmentedFraction(int numerator, int denominator, int dots,
+                           int normalNotes, int actualNotes) {
     super(numerator, denominator);
-    this.dots = dots;
     simplify();
+    this.dots = dots;
+    this.normalNotes = normalNotes;
+    this.actualNotes = actualNotes;    
   }
   public AugmentedFraction(Fraction duration) {
     this(duration.getNumerator(), duration.getDenominator(), 0);
@@ -45,8 +53,20 @@ public final class AugmentedFraction extends Fraction {
     final float undottedValue = super.toFloat();
     float rest = undottedValue;
     for (int dot = 0; dot < dots; dot++) rest /= 2.;
-    return (undottedValue * 2) - rest;    
+    return (((undottedValue * 2) - rest) * (float)normalNotes) / (float)actualNotes;    
   }
+
+  @Override
+  public Fraction basicFraction() {
+    Fraction undotted = new Fraction(numerator, denominator);
+    Fraction rest = new Fraction(numerator, denominator);
+    for (int i = 0; i < dots; i++) {
+      rest = rest.divide(new Fraction(2, 1));
+    }
+    Fraction basicFraction = undotted.multiply(new Fraction(2, 1)).subtract(rest).multiply(new Fraction(normalNotes, 1)).divide(new Fraction(actualNotes, 1));
+    return basicFraction;
+  }
+
   public String toBrailleString(AbstractPitch pitch) {
     String braille = "";
     int log = Util.log2(denominator);

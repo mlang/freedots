@@ -103,5 +103,9 @@ public class TestAugmentedFraction extends junit.framework.TestCase {
     af = new AugmentedFraction(1, 4, 1);
     assertFalse("1/4 != 1/4.", f.equals(af));
 
+    f = new Fraction(1, 24);
+    af = new AugmentedFraction(1, 16, 0, 4, 6);
+    assertTrue("1/16 (6 in 4) == 1/24", f.equals(af));
+    assertEquals("1/16 (6 in 4) at 48 divisions", af.toInteger(48), 8);
   }
 }

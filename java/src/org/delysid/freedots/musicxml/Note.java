@@ -136,8 +136,17 @@ public final class Note extends Musicdata implements RhythmicElement {
 
   public AugmentedFraction getAugmentedFraction() {
     if (type != Type.NONE) {
+      int normalNotes = 1;
+      int actualNotes = 1;
+      NodeList nodes = element.getElementsByTagName("time-modification");
+      if (nodes.getLength() > 0) {
+        Element timeModification = (Element)nodes.item(nodes.getLength() - 1);
+        normalNotes = Integer.parseInt(Score.getTextNode(timeModification, "normal-notes").getWholeText());
+        actualNotes = Integer.parseInt(Score.getTextNode(timeModification, "actual-notes").getWholeText());
+      }
       return new AugmentedFraction(type.getNumerator(), type.getDenominator(),
-                                   element.getElementsByTagName("dot").getLength());
+                                   element.getElementsByTagName("dot").getLength(),
+                                   normalNotes, actualNotes);
     } else {
       return new AugmentedFraction(getDuration());
     }

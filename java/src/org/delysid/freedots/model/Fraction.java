@@ -32,6 +32,7 @@ public class Fraction implements Comparable<Fraction> {
   public int compareTo(Fraction other) {
     return Float.compare(this.toFloat(), other.toFloat());
   }
+  public Fraction basicFraction() { return this; }
 
   @Override
   public String toString() {
@@ -40,26 +41,34 @@ public class Fraction implements Comparable<Fraction> {
   }
 
   public Fraction negate() {
-    return new Fraction(-numerator, denominator);
+    Fraction basic = basicFraction();
+    return new Fraction(-basic.numerator, basic.denominator);
   }
   public Fraction add(Fraction other) {
-    Fraction newFraction = new Fraction(this.numerator * other.denominator +
-					other.numerator * this.denominator,
-					this.denominator * other.denominator);
+    Fraction newFraction = new Fraction(this.basicFraction().numerator * other.basicFraction().denominator +
+					other.basicFraction().numerator * this.basicFraction().denominator,
+					this.basicFraction().denominator * other.basicFraction().denominator);
     newFraction.simplify();
     return newFraction;
   }
   public Fraction subtract(Fraction other) {
-    Fraction newFraction = new Fraction(this.numerator * other.denominator +
-					-other.numerator * this.denominator,
-					this.denominator * other.denominator);
+    Fraction newFraction = new Fraction(this.basicFraction().numerator * other.basicFraction().denominator +
+					-other.basicFraction().numerator * this.basicFraction().denominator,
+					this.basicFraction().denominator * other.basicFraction().denominator);
     newFraction.simplify();
     return newFraction;
   }
 
   public Fraction divide(Fraction other) {
-    Fraction newFraction = new Fraction(this.numerator * other.denominator,
-					this.denominator * other.numerator);
+    Fraction newFraction = new Fraction(this.basicFraction().numerator * other.basicFraction().denominator,
+					this.basicFraction().denominator * other.basicFraction().numerator);
+    newFraction.simplify();
+    return newFraction;
+  }
+
+  public Fraction multiply(Fraction other) {
+    Fraction newFraction = new Fraction(this.basicFraction().numerator * other.basicFraction().numerator,
+                                        this.basicFraction().denominator * other.basicFraction().denominator);
     newFraction.simplify();
     return newFraction;
   }
