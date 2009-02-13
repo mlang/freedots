@@ -2,8 +2,8 @@
 <!DOCTYPE score-partwise PUBLIC "-//Recordare//DTD MusicXML 1.0 Partwise//EN" "http://www.musicxml.org/dtds/partwise.dtd">
 <score-partwise>
 	<work>
-		<work-number>BWV1013</work-number>
-		<work-title>Partita</work-title>
+		<work-number>BWV 1013</work-number>
+		<work-title>Partita in A minor</work-title>
 	</work>
 	<movement-number>1</movement-number>
 	<movement-title>Allemande</movement-title>
@@ -33,6 +33,10 @@
 		<measure number="1">
 			<attributes>
 				<divisions>8</divisions>
+				<key>
+					<fifths>0</fifths>
+					<mode>minor</mode>
+				</key>
 				<time symbol="common">
 					<beats>4</beats>
 					<beat-type>4</beat-type>
