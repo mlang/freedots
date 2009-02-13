@@ -12,6 +12,7 @@ import org.delysid.freedots.model.RhythmicElement;
 import org.delysid.freedots.model.Syllabic;
 
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 
@@ -231,5 +232,16 @@ public final class Note extends Musicdata implements RhythmicElement {
     MidiInstrument instrument = part.getMidiInstrument(null);
     if (instrument != null) return instrument.getMidiProgram();
     return 0;
+  }
+  @Override
+  public Fraction getDuration() throws MusicXMLParseException {
+    NodeList nodeList = element.getElementsByTagName("duration");
+    if (nodeList.getLength() == 1) {
+      Node textNode = nodeList.item(0).getChildNodes().item(0);
+      int duration = Math.round(Float.parseFloat(textNode.getNodeValue()));
+      Fraction fraction = new Fraction(duration * durationMultiplier, 4 * divisions);
+      return fraction;
+    }
+    return getAugmentedFraction().basicFraction(); 
   }
 }
