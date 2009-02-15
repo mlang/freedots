@@ -501,7 +501,6 @@ public final class Transcriber {
           if (octaveSign != null) { braille += octaveSign; }
           state.setLastPitch(firstPitch);
           braille += firstNote.getAugmentedFraction().toBrailleString(firstPitch);
-          AbstractPitch previousPitch = firstPitch;
 
           for (int chordElementIndex = 1; chordElementIndex < chord.size(); chordElementIndex++) {
             Note currentNote = (Note)chord.get(chordElementIndex);
@@ -510,7 +509,7 @@ public final class Transcriber {
               braille += accidental.toBraille().toString();
             }
             AbstractPitch currentPitch = (AbstractPitch)currentNote.getPitch();
-            int diatonicDifference = Math.abs(currentPitch.diatonicDifference(previousPitch));
+            int diatonicDifference = Math.abs(currentPitch.diatonicDifference(firstPitch));
             if (diatonicDifference == 0) {
               braille += currentPitch.getOctaveSign(null);
               diatonicDifference = 7;
@@ -519,7 +518,6 @@ public final class Transcriber {
               while (diatonicDifference > 7) diatonicDifference -= 7;
             }
             braille += Braille.interval(diatonicDifference);
-            previousPitch = currentPitch;
           }
 
           state.append(braille);
