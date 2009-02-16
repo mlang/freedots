@@ -2,6 +2,8 @@ package org.delysid.freedots.gui.swt;
 
 import java.awt.HeadlessException;
 
+import org.delysid.freedots.Transcriber;
+
 import org.eclipse.swt.SWTError;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
