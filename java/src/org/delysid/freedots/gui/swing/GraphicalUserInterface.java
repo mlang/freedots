@@ -71,9 +71,8 @@ public final class GraphicalUserInterface
     }
     if (object != lastObject) {
       if (object != null) {
-        System.out.println("At index "+index+" there is "+object.toString());
-        if (statusBar !=null){
-        	statusBar.setMessage("At index "+index+" there is "+object.toString());
+        if (statusBar != null){
+          statusBar.setMessage("At index "+index+" there is "+object.toString());
         }
         	
         if (autoPlay && object instanceof Note) {
