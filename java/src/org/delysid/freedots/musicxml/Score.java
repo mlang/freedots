@@ -39,6 +39,13 @@ public final class Score {
   private List<Part> parts;
 
   public Score(
+    InputStream inputStream, String extension
+  ) throws ParserConfigurationException,
+           IOException, SAXException, XPathExpressionException {
+
+    parse(inputStream, extension);
+  }
+  public Score(
     String filename
   ) throws ParserConfigurationException,
 	   IOException, SAXException, XPathExpressionException {
@@ -54,13 +61,17 @@ public final class Score {
       URL url = new URL(filename);
       inputStream = url.openConnection().getInputStream();
     }
-    DocumentBuilderFactory documentBuilderFactory =
-      DocumentBuilderFactory.newInstance();
-    DocumentBuilder documentBuilder =
-      documentBuilderFactory.newDocumentBuilder();
+    parse(inputStream, extension);
+  }
+  private void parse(InputStream inputStream, String extension)
+  throws ParserConfigurationException, IOException, SAXException, XPathExpressionException {
+    DocumentBuilderFactory
+    documentBuilderFactory = DocumentBuilderFactory.newInstance();
+    DocumentBuilder
+    documentBuilder = documentBuilderFactory.newDocumentBuilder();
     documentBuilder.setEntityResolver(new MusicXMLEntityResolver());
 
-    if ("mxl".equals(extension.toLowerCase())) {
+    if ("mxl".equalsIgnoreCase(extension)) {
       String zipEntryName = null;
       ZipInputStream zipInputStream = new ZipInputStream(inputStream);
       ZipEntry zipEntry = null;

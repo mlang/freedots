@@ -30,6 +30,7 @@ import javax.swing.JTextArea;
 import javax.swing.JToolBar;
 import javax.swing.event.CaretEvent;
 
+import org.delysid.freedots.musicxml.Library;
 import org.delysid.freedots.musicxml.MIDISequence;
 import org.delysid.freedots.musicxml.Note;
 import org.delysid.freedots.musicxml.Score;
@@ -191,6 +192,33 @@ public final class GraphicalUserInterface
     fileMenu.add(quitItem);
 
     menuBar.add(fileMenu);
+
+    JMenu libraryMenu = new JMenu("Library");
+    libraryMenu.setMnemonic(KeyEvent.VK_L);
+
+    JMenu baroqueMenu = new JMenu("Baroque");
+    baroqueMenu.setMnemonic(KeyEvent.VK_B);
+
+    JMenu jsBachMenu = new JMenu("Johann Sebastian Bach");
+    jsBachMenu.setMnemonic(KeyEvent.VK_B);
+
+    JMenuItem bwv1013Item = new JMenuItem("BWV 1013 1. Allemande", KeyEvent.VK_A);
+    bwv1013Item.getAccessibleContext().setAccessibleDescription(
+      "Partita in A minor for solo flute: first movement (Allemande)");
+    bwv1013Item.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        Library library = new Library();
+        setScore(library.loadScore("bwv1013-1.xml"));
+      }
+    });
+    jsBachMenu.add(bwv1013Item);
+
+    baroqueMenu.add(jsBachMenu);
+
+    libraryMenu.add(baroqueMenu);
+
+    menuBar.add(libraryMenu);
+
     setJMenuBar(menuBar);
 
     // Create the toolbar.

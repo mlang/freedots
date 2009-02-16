@@ -7,11 +7,15 @@
 		<work-number>BWV 988</work-number>
 	</work>
 	<identification>
+		<creator type="composer">Johann Sebastian Bach</creator>
+		<rights>Creative Commons Attribution-ShareAlike 3.0</rights>
 		<encoding>
+			<encoder>Mario Lang</encoder>
 			<encoding-date>2008-02-27</encoding-date>
 			<software>CapToMusic.py CapXML to MusicXML converter version 1.13</software>
 			<encoding-description>Options: FinaleDolet33=1, ChordCaseMatters=1, ExportToSibelius=0</encoding-description>
 		</encoding>
+		<source>Bach-Gesellschaft</source>
 	</identification>
 	<defaults>
 		<scaling>
@@ -3405,12 +3409,6 @@
 				<stem>down</stem>
 				<staff>2</staff>
 			</note>
-			<direction placement="below">
-				<direction-type>
-					<words default-x="95" default-y="-113" font-family="Times New Roman" font-size="10">Creative Commons Attribution-ShareAlike 3. 0</words>
-				</direction-type>
-				<staff>2</staff>
-			</direction>
 			<note>
 				<pitch>
 					<step>B</step>

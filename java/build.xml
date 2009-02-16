@@ -68,6 +68,8 @@
     <mkdir dir="${build}/org/delysid/freedots/gui/swing"/>
     <copy file="/usr/share/fonts/truetype/ttf-dejavu/DejaVuSerif.ttf"
           tofile="${build}/org/delysid/freedots/gui/swing/DejaVuSerif.ttf"/>
+    <copy file="../scores/bwv1013-1.xml"
+          tofile="${build}/org/delysid/freedots/musicxml/bwv1013-1.xml"/>
   </target>
 
   <target name="compile" depends="init" description="compile the source">
