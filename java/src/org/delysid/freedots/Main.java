@@ -4,6 +4,7 @@ import java.awt.HeadlessException;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.xml.parsers.ParserConfigurationException;
@@ -11,7 +12,7 @@ import javax.xml.xpath.XPathExpressionException;
 
 import org.delysid.StandardMidiFileWriter;
 import org.delysid.freedots.gui.swt.MainFrame;
-import org.delysid.freedots.gui.swing.GraphicalUserInterface;
+import org.delysid.freedots.gui.GraphicalUserInterface;
 import org.delysid.freedots.musicxml.MIDISequence;
 import org.delysid.freedots.musicxml.Score;
 import org.delysid.freedots.playback.MIDIPlayer;
@@ -57,9 +58,17 @@ public final class Main {
 //     } catch (SWTError e) {
     if (options.getWindowSystem()) {
       try {
-        GraphicalUserInterface gui = new GraphicalUserInterface(transcriber);
+        GraphicalUserInterface gui = null;
+        Class guiClass = Class.forName("org.delysid.freedots.gui.swing.Main");
+        if (GraphicalUserInterface.class.isAssignableFrom(guiClass)) {
+          Constructor constructor = guiClass.getConstructor(new Class []{Transcriber.class});
+          gui = (GraphicalUserInterface)constructor.newInstance(new Object[]{transcriber});
+          gui.run();
+        }
       } catch (HeadlessException e) {
         options.setWindowSystem(false);
+      } catch (Exception e) {
+        e.printStackTrace();
       }
     }
     if (!options.getWindowSystem()) {

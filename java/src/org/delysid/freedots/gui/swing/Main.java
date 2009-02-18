@@ -41,9 +41,10 @@ import org.delysid.freedots.transcription.Transcriber;
 
 import org.delysid.StandardMidiFileWriter;
 
-public final class GraphicalUserInterface
+public final class Main
   extends JFrame
   implements javax.swing.event.CaretListener,
+             org.delysid.freedots.gui.GraphicalUserInterface,
              org.delysid.freedots.playback.PlaybackObserver {
   
   protected Score score = null;
@@ -100,7 +101,7 @@ public final class GraphicalUserInterface
     }
   }
 
-  public GraphicalUserInterface(Transcriber transcriber) {
+  public Main(Transcriber transcriber) {
     super("FreeDots");
     this.transcriber = transcriber;
 
@@ -254,6 +255,8 @@ public final class GraphicalUserInterface
     });
 
     pack();
+  }
+  public void run() {
     setVisible(true);
   }
 

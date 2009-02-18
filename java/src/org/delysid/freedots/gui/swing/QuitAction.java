@@ -4,13 +4,12 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 
 public final class QuitAction extends AbstractAction {
-  GraphicalUserInterface gui;
-  public QuitAction(GraphicalUserInterface gui) {
+  Main gui;
+  QuitAction(Main gui) {
     super("Quit");
     this.gui = gui;
   }
   public void actionPerformed(ActionEvent event) {
-    System.out.println("Quit invoked...");
     gui.quit();
   }
 }

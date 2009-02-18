@@ -10,8 +10,8 @@ import javax.swing.filechooser.FileFilter;
 import org.delysid.freedots.musicxml.Score;
 
 public final class FileOpenAction extends AbstractAction {
-  GraphicalUserInterface gui;
-  public FileOpenAction(GraphicalUserInterface gui) {
+  Main gui;
+  public FileOpenAction(Main gui) {
     super("Open");
     this.gui = gui;
   }
