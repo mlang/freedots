@@ -206,6 +206,7 @@ public class MainFrame {
         handleExtendedModify(e);
       }
     });
+    text.setText(transcriber.toString());
   }
 
   void createToolBar() {
