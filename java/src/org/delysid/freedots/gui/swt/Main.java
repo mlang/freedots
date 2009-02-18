@@ -8,7 +8,7 @@ import org.eclipse.swt.SWTError;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
-class Main {
+public class Main implements org.delysid.freedots.gui.GraphicalUserInterface {
   Transcriber transcriber;
 
   public Main(Transcriber transcriber) {
@@ -18,7 +18,7 @@ class Main {
   public void run() {
     try {
       Display display = new Display();
-      MainFrame frame = new MainFrame();
+      MainFrame frame = new MainFrame(transcriber);
       Shell shell = frame.open(display);
       while (!shell.isDisposed())
         if (!display.readAndDispatch()) display.sleep();

@@ -59,7 +59,7 @@ public final class Main {
     if (options.getWindowSystem()) {
       try {
         GraphicalUserInterface gui = null;
-        Class guiClass = Class.forName("org.delysid.freedots.gui.swing.Main");
+        Class guiClass = Class.forName(options.getUI().getClassName());
         if (GraphicalUserInterface.class.isAssignableFrom(guiClass)) {
           Constructor constructor = guiClass.getConstructor(new Class []{Transcriber.class});
           gui = (GraphicalUserInterface)constructor.newInstance(new Object[]{transcriber});

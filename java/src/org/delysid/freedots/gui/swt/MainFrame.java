@@ -37,17 +37,9 @@ import org.delysid.freedots.gui.Messages;
 import org.delysid.freedots.musicxml.MIDISequence;
 import org.delysid.freedots.musicxml.Score;
 import org.delysid.freedots.playback.MIDIPlayer;
+import org.delysid.freedots.transcription.Transcriber;
 
 public class MainFrame {
-  public static void main(String[] args) {
-    Display display = new Display();
-    MainFrame frame = new MainFrame();
-    Shell shell = frame.open(display);
-    while (!shell.isDisposed())
-      if (!display.readAndDispatch())
-        display.sleep();
-    display.dispose();
-  }
   Shell shell;
   ToolBar toolBar;
   StyledText text;
@@ -61,8 +53,10 @@ public class MainFrame {
 
   Score score;
   MIDIPlayer player;
+  Transcriber transcriber;
 
-  public MainFrame() {
+  public MainFrame(Transcriber transcriber) {
+    this.transcriber = transcriber;
     try {
       player = new MIDIPlayer();
     } catch (MidiUnavailableException e) {
@@ -156,6 +150,8 @@ public class MainFrame {
               // TODO Auto-generated catch block
               e.printStackTrace();
             }
+            transcriber.setScore(score);
+            text.setText(transcriber.toString());
           }
         }
       }
@@ -210,7 +206,6 @@ public class MainFrame {
         handleExtendedModify(e);
       }
     });
-    text.setText("Test text "+java.lang.Character.toString((char)(0X2800+7)));
   }
 
   void createToolBar() {

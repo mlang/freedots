@@ -70,6 +70,12 @@
           tofile="${build}/org/delysid/freedots/gui/swing/DejaVuSerif.ttf"/>
     <copy file="../scores/bwv1013-1.xml"
           tofile="${build}/org/delysid/freedots/musicxml/bwv1013-1.xml"/>
+
+    <copy todir="${build}">
+      <fileset dir="${src}">
+        <include name="**/*.properties"/>
+      </fileset>
+    </copy>
   </target>
 
   <target name="compile" depends="init" description="compile the source">

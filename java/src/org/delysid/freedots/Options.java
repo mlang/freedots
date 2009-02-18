@@ -10,6 +10,7 @@ public final class Options {
   boolean windowSystem = true;
   boolean playScore = false;
   String exportMidiFile = null;
+  UI ui = UI.Swing;
 
   public Options(String[] args) {
     for (int index = 0; index < args.length; index++) {
@@ -60,6 +61,8 @@ public final class Options {
         if (index < args.length-1) {
           exportMidiFile = args[++index];
         }
+      } else if ("-swt".equals(option)) {
+        ui = UI.SWT;
       } else {
         if (index == args.length-1) {
           location = args[index];
@@ -81,9 +84,17 @@ public final class Options {
   public boolean getPlayScore() { return playScore; }
 
   public String getExportMidiFile() { return exportMidiFile; }
+  public UI getUI() { return ui; }
 
   public enum MultiStaffMeasures {
     VISUAL, /* break at new system */
     TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, ELEVEN, TWELVE;
+  }
+  public enum UI {
+    Swing("swing.Main"), SWT("swt.Main");
+
+    String className;
+    UI(String name) { className = "org.delysid.freedots.gui." + name; }
+    public String getClassName() { return className; }
   }
 }
