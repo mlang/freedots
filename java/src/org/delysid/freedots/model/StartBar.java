@@ -23,4 +23,10 @@ public class StartBar extends VerticalEvent {
   boolean repeatForward = false;
   public boolean getRepeatForward() { return repeatForward; }
   public void setRepeatForward(boolean flag) { repeatForward = flag; }
+
+  private TimeSignature timeSignature = null;
+  public TimeSignature getTimeSignature() { return timeSignature; }
+  public void setTimeSignature(TimeSignature timeSignature) {
+    this.timeSignature = timeSignature;
+  }
 }

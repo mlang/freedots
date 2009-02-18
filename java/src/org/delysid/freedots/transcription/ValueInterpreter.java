@@ -13,7 +13,20 @@ import org.delysid.freedots.model.TimeSignature;
 import org.delysid.freedots.musicxml.Note;
 import org.delysid.freedots.Util;
 
+/**
+ * In braille music there are only 4 different types of note values.
+ * The full range of whole to 128th notes is covered by reusing the same
+ * types twice, a whole can also mean a 16th and so on.
+ *
+ * However, this only works out if there is no ambiguity in the measure
+ * to be rendered.
+ *
+ * Class <code>ValueInterpreter</code> calculates the possible interpretations
+ * of a list of notes relative to a given time signature.
+ */
 class ValueInterpreter {
+  private Set<Interpretation> interpretations;
+
   ValueInterpreter(MusicList music, TimeSignature timeSignature) {
     ArrayList<Set<RhythmicPossibility>>
     candidates = new ArrayList<Set<RhythmicPossibility>>();
@@ -26,12 +39,13 @@ class ValueInterpreter {
         candidate.add(large);
         candidate.add(small);
         candidates.add(candidate);
-      }
+      } /* FIXME: Handle chords as well */
     }
-    Set<Interpretation>
     interpretations = findInterpretations(candidates, timeSignature);
   }
-  public Set<Interpretation>
+  public Set<Interpretation> getInterpretations() { return interpretations; }
+
+  private Set<Interpretation>
   findInterpretations(
     ArrayList<Set<RhythmicPossibility>> candidates, Fraction timeSignature
   ) {
@@ -46,8 +60,8 @@ class ValueInterpreter {
       }
     } else {
       Set<RhythmicPossibility> head = candidates.get(0);
-      candidates.remove(head);
-      ArrayList<Set<RhythmicPossibility>> tail = candidates;
+      ArrayList<Set<RhythmicPossibility>> tail = (ArrayList<Set<RhythmicPossibility>>)candidates.clone();
+      tail.remove(head);
       for (RhythmicPossibility rhythmicPossibility:head) {
         if (rhythmicPossibility.getAugmentedFraction().compareTo(timeSignature) < 0) {
           for (Interpretation interpretation:findInterpretations(tail, timeSignature.subtract(rhythmicPossibility.getAugmentedFraction()))) {
@@ -62,6 +76,14 @@ class ValueInterpreter {
 
   class Interpretation extends ArrayList<RhythmicPossibility> {
     Interpretation() {super();}
+    public String toString() {
+      StringBuilder sb = new StringBuilder();
+      for (RhythmicPossibility rp:this) {
+        sb.append(rp.toString());
+        sb.append(" ");
+      }
+      return sb.toString();
+    }
   }
   class RhythmicPossibility {
     Note note;
@@ -70,7 +92,7 @@ class ValueInterpreter {
       this.note = note;
       this.larger = larger;
     }
-    public AugmentedFraction getAugmentedFraction() {
+    public Fraction getAugmentedFraction() {
       AugmentedFraction augmentedFraction = note.getAugmentedFraction();
       int log = Util.log2(augmentedFraction.getDenominator());
       if (larger) {
@@ -79,7 +101,8 @@ class ValueInterpreter {
         if (log < 4) log = log + 4;
       }
       augmentedFraction.setDenominator((int)Math.round(Math.pow(2, log)));
-      return augmentedFraction;
+      return augmentedFraction.basicFraction();
     }
+    public String toString() { return getAugmentedFraction().toString(); }
   }
 }

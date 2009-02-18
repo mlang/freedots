@@ -91,6 +91,9 @@ public final class Part {
                 lastTimeSignature = newTimeSignature;
 		eventList.add(new TimeSignatureChange(measureOffset.add(offset),
 						      lastTimeSignature));
+                if (offset.compareTo(new Fraction(0, 1)) == 0) {
+                  startBar.setTimeSignature(newTimeSignature);
+                }
 	      }
               List<Attributes.Clef> clefs = attributes.getClefs();
               if (clefs.size() > 0) {
@@ -203,6 +206,10 @@ public final class Part {
           }
           measureOffset = measureOffset.add(timeSignature);
         }
+        if (startBar.getTimeSignature() == null) {
+          startBar.setTimeSignature(lastTimeSignature);
+        }
+
         endbar = new EndBar(measureOffset);
         if (repeatBackward) endbar.setRepeat(true);
         if (endingStop > 0) endbar.setEndingStop(endingStop);

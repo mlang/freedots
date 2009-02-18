@@ -3,17 +3,19 @@ package org.delysid.freedots.transcription;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.delysid.freedots.Braille;
 import org.delysid.freedots.Options;
 
 import org.delysid.freedots.model.AbstractPitch;
 import org.delysid.freedots.model.Accidental;
-import org.delysid.freedots.model.Event;
-import org.delysid.freedots.model.Staff;
-import org.delysid.freedots.model.MusicList;
-import org.delysid.freedots.model.StartBar;
 import org.delysid.freedots.model.EndBar;
+import org.delysid.freedots.model.Event;
+import org.delysid.freedots.model.MusicList;
+import org.delysid.freedots.model.Staff;
+import org.delysid.freedots.model.StartBar;
+import org.delysid.freedots.model.TimeSignature;
 import org.delysid.freedots.model.Voice;
 import org.delysid.freedots.model.VoiceChord;
 
@@ -114,6 +116,7 @@ public final class Transcriber {
 
             if (event instanceof StartBar) {
               startBar = (StartBar)event;
+              measure.setTimeSignature(startBar.getTimeSignature());
             } else if (event instanceof EndBar) {
               EndBar rightBar = (EndBar)event;
               int charactersLeft = options.getPageWidth() - characterCount;
@@ -268,12 +271,16 @@ public final class Transcriber {
     private BrailleMeasure previous = null;
     private MusicList events = new MusicList();
     private AbstractPitch finalPitch = null;
+    private TimeSignature timeSignature = null;
     BrailleMeasure() {}
     BrailleMeasure(BrailleMeasure previous) {
       this();
       this.previous = previous;
     }
     public void add(Event event) { events.add(event); }
+    void setTimeSignature(TimeSignature timeSignature) {
+      this.timeSignature = timeSignature;
+    }
     List<Object> brailleVoices = new ArrayList<Object>();
     public void process() {
       brailleVoices = new ArrayList<Object>();
@@ -286,6 +293,16 @@ public final class Transcriber {
       while (voices.size() > 0) {
         for (int i = 0; i < voices.size(); i++) {
           Voice voice = voices.get(i);
+          ValueInterpreter valueInterpreter = new ValueInterpreter(voice, timeSignature);
+          Set<ValueInterpreter.Interpretation>
+          interpretations = valueInterpreter.getInterpretations();
+          if (interpretations.size() > 1) {
+            System.err.println("WARNING: "+interpretations.size()+" possible interpretations:");
+            for (ValueInterpreter.Interpretation
+                 interpretation:interpretations) {
+              System.err.println(interpretation.toString());
+            }
+          }
           boolean foundOverlap = false;
           int headLength = 0;
 
