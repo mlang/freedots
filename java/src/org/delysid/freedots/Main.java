@@ -62,12 +62,16 @@ public final class Main {
         Class guiClass = Class.forName(options.getUI().getClassName());
         if (GraphicalUserInterface.class.isAssignableFrom(guiClass)) {
           Constructor constructor = guiClass.getConstructor(new Class []{Transcriber.class});
-          gui = (GraphicalUserInterface)constructor.newInstance(new Object[]{transcriber});
+          try {
+            gui = (GraphicalUserInterface)constructor.newInstance(new Object[]{transcriber});
+          } catch (java.lang.reflect.InvocationTargetException e) {
+            throw e.getCause();
+          }
           gui.run();
         }
       } catch (HeadlessException e) {
         options.setWindowSystem(false);
-      } catch (Exception e) {
+      } catch (Throwable e) {
         e.printStackTrace();
       }
     }
