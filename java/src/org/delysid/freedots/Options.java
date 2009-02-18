@@ -4,7 +4,7 @@ package org.delysid.freedots;
 public final class Options {
   int pageWidth = 32;
   int pageHeight = 20;
-  MultiStaffMeasures multiStaffMeasures = MultiStaffMeasures.VISUAL;
+  public MultiStaffMeasures multiStaffMeasures = MultiStaffMeasures.VISUAL;
 
   String location = null;
   boolean windowSystem = true;

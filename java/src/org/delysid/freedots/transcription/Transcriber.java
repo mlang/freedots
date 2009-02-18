@@ -1,8 +1,11 @@
 /* -*- c-basic-offset: 2; -*- */
-package org.delysid.freedots;
+package org.delysid.freedots.transcription;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.delysid.freedots.Braille;
+import org.delysid.freedots.Options;
 
 import org.delysid.freedots.model.AbstractPitch;
 import org.delysid.freedots.model.Accidental;
@@ -35,58 +38,6 @@ public final class Transcriber {
   Options options;
   public Options getOptions() { return options; }
 
-  class BrailleString {
-    Object model = null;
-    String string;
-    BrailleString(String string) { this.string = string; }
-    BrailleString(String string, Object model) {
-      this(string);
-      this.model = model;
-    }
-    public Object getModel() { return model; }
-    @Override
-    public String toString() { return string; }
-    public int length() { return toString().length(); }
-  }
-  class BrailleList extends ArrayList<BrailleString> {
-    @Override
-    public String toString() {
-      StringBuilder stringBuilder = new StringBuilder();
-      for (BrailleString brailleString:this)
-        stringBuilder.append(brailleString.toString());
-      return stringBuilder.toString();
-    }
-    public int length() { return toString().length(); }
-  }
-  class BrailleNote extends BrailleString {
-    private AbstractPitch lastPitch;
-    BrailleNote(Note note, AbstractPitch lastPitch) {
-      super(null, note);
-      this.lastPitch = lastPitch;
-    }
-    public AbstractPitch getPitch() {
-      Note note = (Note)model;
-      return note.getPitch();
-    }
-    public String toString() {
-      String braille = "";
-      Note note = (Note)model;
-      Accidental accidental = note.getAccidental();
-      if (accidental != null) {
-        braille += accidental.toBraille().toString();
-      }
-      AbstractPitch pitch = (AbstractPitch)note.getPitch();
-      if (pitch != null) {
-        Braille octaveSign = pitch.getOctaveSign(lastPitch);
-        if (octaveSign != null) { braille += octaveSign; }
-      }
-      braille += note.getAugmentedFraction().toBrailleString(pitch);
-
-      if (note.isTieStart()) braille += Braille.tie;
-
-      return braille;
-    }
-  }
   private BrailleList strings;
   private int characterCount;
   private int lineCount;
@@ -524,23 +475,5 @@ public final class Transcriber {
         }
       }
     }
-  }
-
-  class FullMeasureInAccord {
-    List<MusicList> parts = new ArrayList<MusicList>();
-    FullMeasureInAccord() { super(); }
-    public void setParts(List<MusicList> parts) { this.parts = parts; }
-    public void addPart(MusicList part) { parts.add(part); }
-    public List<MusicList> getParts() { return parts; }
-    public boolean isInAccord() { return parts.size() > 1; }
-  }
-  class PartMeasureInAccord extends FullMeasureInAccord {
-    MusicList head = new MusicList();
-    MusicList tail = new MusicList();
-    PartMeasureInAccord() { super(); }
-    MusicList getHead() { return head; }
-    public void setHead(MusicList head) { this.head = head; }
-    MusicList getTail() { return tail; }
-    public void setTail(MusicList tail) { this.tail = tail; }
   }
 }

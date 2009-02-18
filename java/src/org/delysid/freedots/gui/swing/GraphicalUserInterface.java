@@ -37,7 +37,7 @@ import org.delysid.freedots.musicxml.Score;
 import org.delysid.freedots.playback.MIDIPlayer;
 import org.delysid.freedots.playback.MetaEventRelay;
 import org.delysid.freedots.playback.MetaEventListeningUnavailableException;
-import org.delysid.freedots.Transcriber;
+import org.delysid.freedots.transcription.Transcriber;
 
 import org.delysid.StandardMidiFileWriter;
 

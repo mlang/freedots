@@ -16,6 +16,8 @@ import org.delysid.freedots.musicxml.MIDISequence;
 import org.delysid.freedots.musicxml.Score;
 import org.delysid.freedots.playback.MIDIPlayer;
 
+import org.delysid.freedots.transcription.Transcriber;
+
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
