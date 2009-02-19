@@ -19,16 +19,16 @@ import org.delysid.freedots.Util;
  * types twice, a whole can also mean a 16th and so on.
  *
  * However, this only works out if there is no ambiguity in the measure
- * to be rendered.
+ * to be printed.
  *
  * Class <code>ValueInterpreter</code> calculates the possible interpretations
  * of a list of notes relative to a given time signature.
  */
 class ValueInterpreter {
-  private Set<Interpretation> interpretations;
+  private Set<Interpretation> interpretations = new HashSet<Interpretation>();
 
   ValueInterpreter(MusicList music, TimeSignature timeSignature) {
-    ArrayList<Set<RhythmicPossibility>>
+    List<Set<RhythmicPossibility>>
     candidates = new ArrayList<Set<RhythmicPossibility>>();
     for (Event event:music) {
       if (event instanceof Note) {
@@ -41,13 +41,17 @@ class ValueInterpreter {
         candidates.add(candidate);
       } /* FIXME: Handle chords as well */
     }
-    interpretations = findInterpretations(candidates, timeSignature);
+
+    if (!candidates.isEmpty()) {
+      interpretations = findInterpretations(candidates, timeSignature);
+    }
   }
+
   public Set<Interpretation> getInterpretations() { return interpretations; }
 
   private Set<Interpretation>
   findInterpretations(
-    ArrayList<Set<RhythmicPossibility>> candidates, Fraction timeSignature
+    List<Set<RhythmicPossibility>> candidates, Fraction timeSignature
   ) {
     Set<Interpretation> result = new HashSet<Interpretation>();
     if (candidates.size() == 1) {
@@ -60,8 +64,8 @@ class ValueInterpreter {
       }
     } else {
       Set<RhythmicPossibility> head = candidates.get(0);
-      ArrayList<Set<RhythmicPossibility>> tail = (ArrayList<Set<RhythmicPossibility>>)candidates.clone();
-      tail.remove(head);
+      List<Set<RhythmicPossibility>>
+      tail = candidates.subList(1, candidates.size());
       for (RhythmicPossibility rhythmicPossibility:head) {
         if (rhythmicPossibility.getAugmentedFraction().compareTo(timeSignature) < 0) {
           for (Interpretation interpretation:findInterpretations(tail, timeSignature.subtract(rhythmicPossibility.getAugmentedFraction()))) {
@@ -71,6 +75,7 @@ class ValueInterpreter {
         }
       }
     }
+
     return result;
   }
 
@@ -86,8 +91,9 @@ class ValueInterpreter {
     }
   }
   class RhythmicPossibility {
-    Note note;
-    boolean larger;
+    private Note note;
+    private boolean larger;
+
     RhythmicPossibility(Note note, boolean larger) {
       this.note = note;
       this.larger = larger;
