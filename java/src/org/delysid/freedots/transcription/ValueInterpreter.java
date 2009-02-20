@@ -49,6 +49,35 @@ class ValueInterpreter {
 
   public Set<Interpretation> getInterpretations() { return interpretations; }
 
+  public Object getSplitPoint() {
+    for (Interpretation interpretation:interpretations) {
+      if (interpretation.isCorrect()) {
+        int begin = 0;
+        int end = interpretation.size() - 1;
+
+        if (end > begin) {
+          int beginLog = Util.log2(interpretation.get(begin).getAugmentedFraction().getDenominator());        
+          int endLog = Util.log2(interpretation.get(end).getAugmentedFraction().getDenominator());
+          boolean beginLarge = beginLog < 4;
+          boolean endLarge = endLog < 4;
+
+          if ((beginLarge && !endLarge) || (!beginLarge && endLarge)) {
+            int leftIndex = begin;
+            while (Util.log2(interpretation.get(leftIndex).getAugmentedFraction().getDenominator())<4 == beginLarge)
+              leftIndex++;
+            int rightIndex = end;
+            while (Util.log2(interpretation.get(rightIndex).getAugmentedFraction().getDenominator())<4 == endLarge)
+              rightIndex--;
+            if (rightIndex == leftIndex - 1) {
+              return interpretation.get(leftIndex).getNote();
+            }
+          }
+        }
+      }
+    }
+    return null;
+  }
+
   private Set<Interpretation>
   findInterpretations(
     List<Set<RhythmicPossibility>> candidates, Fraction timeSignature
@@ -81,6 +110,14 @@ class ValueInterpreter {
 
   class Interpretation extends ArrayList<RhythmicPossibility> {
     Interpretation() {super();}
+    public boolean isCorrect() {
+      for (RhythmicPossibility rhythmicPossibility:this) {
+        if (rhythmicPossibility.getAugmentedFraction()
+            .compareTo(rhythmicPossibility.getNote().getAugmentedFraction()) != 0)
+          return false;
+      }
+      return true;
+    }
     public String toString() {
       StringBuilder sb = new StringBuilder();
       for (RhythmicPossibility rp:this) {
@@ -98,6 +135,7 @@ class ValueInterpreter {
       this.note = note;
       this.larger = larger;
     }
+    public Note getNote() { return note; }
     public Fraction getAugmentedFraction() {
       AugmentedFraction augmentedFraction = note.getAugmentedFraction();
       int log = Util.log2(augmentedFraction.getDenominator());

@@ -293,16 +293,6 @@ public final class Transcriber {
       while (voices.size() > 0) {
         for (int i = 0; i < voices.size(); i++) {
           Voice voice = voices.get(i);
-          ValueInterpreter valueInterpreter = new ValueInterpreter(voice, timeSignature);
-          Set<ValueInterpreter.Interpretation>
-          interpretations = valueInterpreter.getInterpretations();
-          if (interpretations.size() > 1) {
-            System.err.println("WARNING: "+interpretations.size()+" possible interpretations:");
-            for (ValueInterpreter.Interpretation
-                 interpretation:interpretations) {
-              System.err.println(interpretation.toString());
-            }
-          }
           boolean foundOverlap = false;
           int headLength = 0;
 
@@ -398,11 +388,11 @@ public final class Transcriber {
           }
           MusicList pmiaHead = pmia.getHead();
           if (pmiaHead.size() > 0) {
-            printNoteList(pmiaHead, state);
+            printNoteList(pmiaHead, state, null);
             state.append(Braille.partMeasureInAccord.toString());
           }
           for (int p = 0; p < pmia.getParts().size(); p++) {
-            printNoteList(pmia.getParts().get(p), state);
+            printNoteList(pmia.getParts().get(p), state, null);
 	    if (p < pmia.getParts().size() - 1) {
 	      String braille = Braille.partMeasureInAccordDivision.toString();
 	      state.append(braille);
@@ -416,12 +406,27 @@ public final class Transcriber {
           MusicList pmiaTail = pmia.getTail();
           if (pmiaTail.size() > 0) {
             state.append(Braille.partMeasureInAccord.toString());
-            printNoteList(pmiaTail, state);
+            printNoteList(pmiaTail, state, null);
           }
 	} else if (brailleVoices.get(i) instanceof FullMeasureInAccord) {
 	  FullMeasureInAccord fmia = (FullMeasureInAccord)brailleVoices.get(i);
           for (int p = 0; p < fmia.getParts().size(); p++) {
-            printNoteList(fmia.getParts().get(p), state);
+            Object splitPoint = null;
+            ValueInterpreter valueInterpreter = new ValueInterpreter(fmia.getParts().get(p), timeSignature);
+            Set<ValueInterpreter.Interpretation>
+            interpretations = valueInterpreter.getInterpretations();
+            if (interpretations.size() > 1) {
+              splitPoint = valueInterpreter.getSplitPoint();
+              if (splitPoint == null) {
+                System.err.println("WARNING: "+interpretations.size()+" possible interpretations:");
+                for (ValueInterpreter.Interpretation
+                     interpretation:interpretations) {
+                  System.err.println((interpretation.isCorrect()?" * ":"   ") +
+                                     interpretation.toString());
+                }
+              }
+            }
+            printNoteList(fmia.getParts().get(p), state, splitPoint);
 	    if (p < fmia.getParts().size() - 1) {
 	      String braille = Braille.fullMeasureInAccord.toString();
 	      state.append(braille);
@@ -445,10 +450,14 @@ public final class Transcriber {
       tail = state.getTail();
       return state.getHead();
     }
-    void printNoteList(MusicList musicList, State state) {
+    void printNoteList(MusicList musicList, State state, Object splitPoint) {
       for (Event element:musicList) {
         if (element instanceof Note) {
           Note note = (Note)element;
+          if (splitPoint != null && splitPoint == note) {
+            BrailleString brailleString = new BrailleString(Braille.valueDistinction.toString());
+            state.append(brailleString);
+          }
           BrailleNote brailleNote = new BrailleNote(note, state.getLastPitch());
           AbstractPitch pitch = (AbstractPitch)note.getPitch();
           if (pitch != null) {
