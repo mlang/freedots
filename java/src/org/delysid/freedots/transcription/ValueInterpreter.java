@@ -79,12 +79,12 @@ class ValueInterpreter {
 
   private Set<Interpretation>
   findInterpretations(
-    List<Set<RhythmicPossibility>> candidates, Fraction timeSignature
+    List<Set<RhythmicPossibility>> candidates, Fraction remaining
   ) {
     Set<Interpretation> result = new HashSet<Interpretation>();
     if (candidates.size() == 1) {
       for (RhythmicPossibility rhythmicPossibility:candidates.get(0)) {
-        if (rhythmicPossibility.compareTo(timeSignature) == 0) {
+        if (rhythmicPossibility.compareTo(remaining) == 0) {
           Interpretation interpretation = new Interpretation();
           interpretation.add(rhythmicPossibility);
           result.add(interpretation);
@@ -95,10 +95,10 @@ class ValueInterpreter {
       List<Set<RhythmicPossibility>>
       tail = candidates.subList(1, candidates.size());
       for (RhythmicPossibility rhythmicPossibility:head) {
-        if (rhythmicPossibility.compareTo(timeSignature) < 0) {
+        if (rhythmicPossibility.compareTo(remaining) <= 0) {
           for (Interpretation interpretation:
                findInterpretations(tail,
-                                   timeSignature.subtract(rhythmicPossibility))) {
+                                   remaining.subtract(rhythmicPossibility))) {
             interpretation.add(0, rhythmicPossibility);
             result.add(interpretation);
           }
@@ -112,11 +112,9 @@ class ValueInterpreter {
   class Interpretation extends ArrayList<RhythmicPossibility> {
     Interpretation() {super();}
     public boolean isCorrect() {
-      for (RhythmicPossibility rhythmicPossibility:this) {
-        if (rhythmicPossibility
-            .compareTo(rhythmicPossibility.getNote().getAugmentedFraction()) != 0)
-          return false;
-      }
+      for (RhythmicPossibility rhythmicPossibility:this)
+        if (rhythmicPossibility.isAltered()) return false;
+
       return true;
     }
     public String toString() {
@@ -130,12 +128,10 @@ class ValueInterpreter {
   }
   class RhythmicPossibility extends AugmentedFraction {
     private Note note;
-    private boolean larger;
 
     RhythmicPossibility(Note note, boolean larger) {
       super(note.getAugmentedFraction());
       this.note = note;
-      this.larger = larger;
       int log = note.getAugmentedFraction().getLog();
       if (larger) {
         if (log > 5) log = log - 4;
@@ -143,6 +139,9 @@ class ValueInterpreter {
         if (log < 6) log = log + 4;
       }
       setFromLog(log);
+    }
+    public boolean isAltered() {
+      return compareTo(note.getAugmentedFraction()) != 0;
     }
     public Note getNote() { return note; }
   }
