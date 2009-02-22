@@ -371,9 +371,6 @@ public final class Transcriber {
       State state = new State(width,
                               previous != null? previous.getFinalPitch(): null);
 
-      List<Voice> voices = events.getVoices();
-      int voiceCount = voices.size();
-
       for (int i = 0; i < brailleVoices.size(); i++) {
 	if (brailleVoices.get(i) instanceof PartMeasureInAccord) {
 	  PartMeasureInAccord pmia = (PartMeasureInAccord)brailleVoices.get(i);

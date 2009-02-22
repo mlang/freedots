@@ -3,13 +3,18 @@ package org.delysid.freedots.model;
 
 import org.delysid.freedots.Braille;
 
-public final class AugmentedFraction extends Fraction {
+public class AugmentedFraction extends Fraction {
   private int dots;
 
   private int normalNotes, actualNotes;
 
   public AugmentedFraction(int numerator, int denominator, int dots) {
     this(numerator, denominator, dots, 1, 1);
+  }
+  public AugmentedFraction(AugmentedFraction augmentedFraction) {
+    this(augmentedFraction.getNumerator(), augmentedFraction.getDenominator(),
+         augmentedFraction.getDots(),
+         augmentedFraction.normalNotes, augmentedFraction.actualNotes);
   }
   public AugmentedFraction(int numerator, int denominator, int dots,
                            int normalNotes, int actualNotes) {
@@ -53,6 +58,13 @@ public final class AugmentedFraction extends Fraction {
     float rest = undottedValue;
     for (int dot = 0; dot < dots; dot++) rest /= 2.;
     return (((undottedValue * 2) - rest) * (float)normalNotes) / (float)actualNotes;    
+  }
+
+  @Override
+  public String toString() {
+    String result = super.toString();
+    for (int i = 0; i < dots; i++) result += ".";
+    return result;
   }
 
   @Override

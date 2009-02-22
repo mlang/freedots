@@ -84,7 +84,7 @@ class ValueInterpreter {
     Set<Interpretation> result = new HashSet<Interpretation>();
     if (candidates.size() == 1) {
       for (RhythmicPossibility rhythmicPossibility:candidates.get(0)) {
-        if (rhythmicPossibility.getFraction().compareTo(timeSignature) == 0) {
+        if (rhythmicPossibility.compareTo(timeSignature) == 0) {
           Interpretation interpretation = new Interpretation();
           interpretation.add(rhythmicPossibility);
           result.add(interpretation);
@@ -95,11 +95,10 @@ class ValueInterpreter {
       List<Set<RhythmicPossibility>>
       tail = candidates.subList(1, candidates.size());
       for (RhythmicPossibility rhythmicPossibility:head) {
-        if (rhythmicPossibility.getFraction().compareTo(timeSignature) < 0) {
-          for (Interpretation
-               interpretation:
+        if (rhythmicPossibility.compareTo(timeSignature) < 0) {
+          for (Interpretation interpretation:
                findInterpretations(tail,
-                                   timeSignature.subtract(rhythmicPossibility.getFraction()))) {
+                                   timeSignature.subtract(rhythmicPossibility))) {
             interpretation.add(0, rhythmicPossibility);
             result.add(interpretation);
           }
@@ -114,7 +113,7 @@ class ValueInterpreter {
     Interpretation() {super();}
     public boolean isCorrect() {
       for (RhythmicPossibility rhythmicPossibility:this) {
-        if (rhythmicPossibility.getFraction()
+        if (rhythmicPossibility
             .compareTo(rhythmicPossibility.getNote().getAugmentedFraction()) != 0)
           return false;
       }
@@ -129,28 +128,22 @@ class ValueInterpreter {
       return sb.toString();
     }
   }
-  class RhythmicPossibility {
+  class RhythmicPossibility extends AugmentedFraction {
     private Note note;
     private boolean larger;
 
     RhythmicPossibility(Note note, boolean larger) {
+      super(note.getAugmentedFraction());
       this.note = note;
       this.larger = larger;
-    }
-    public Note getNote() { return note; }
-    public int getLog() { return note.getAugmentedFraction().getLog(); }
-    public Fraction getFraction() {
       int log = note.getAugmentedFraction().getLog();
-      int dots = note.getAugmentedFraction().getDots();
       if (larger) {
         if (log > 5) log = log - 4;
       } else {
         if (log < 6) log = log + 4;
       }
-      AugmentedFraction augmentedFraction = new AugmentedFraction(0, 1, dots);
-      augmentedFraction.setFromLog(log);
-      return augmentedFraction.basicFraction();
+      setFromLog(log);
     }
-    public String toString() { return getFraction().toString(); }
+    public Note getNote() { return note; }
   }
 }
