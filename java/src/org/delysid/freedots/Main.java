@@ -60,7 +60,7 @@ public final class Main {
       try {
         GraphicalUserInterface gui = null;
         Class guiClass = Class.forName(options.getUI().getClassName());
-        if (gui.getClass().isAssignableFrom(guiClass)) {
+        if (GraphicalUserInterface.class.isAssignableFrom(guiClass)) {
           Constructor constructor = guiClass.getConstructor(new Class []{Transcriber.class});
           try {
             gui = (GraphicalUserInterface)constructor.newInstance(new Object[]{transcriber});

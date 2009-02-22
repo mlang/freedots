@@ -7,6 +7,7 @@ package org.delysid.freedots.model;
 public class Fraction implements Comparable<Fraction> {
   int numerator;
   int denominator;
+  static final Fraction FOUR = new Fraction(4, 1);
     
   public Fraction(int numerator, int denominator) {
     this.numerator = numerator;
@@ -16,6 +17,17 @@ public class Fraction implements Comparable<Fraction> {
   public int getNumerator() { return numerator; }
   public int getDenominator() { return denominator; }
   public void setDenominator(int denominator) { this.denominator = denominator; }
+
+  public int getLog() {
+    Fraction normalized = new Fraction(numerator, denominator).divide(FOUR);
+    return (int)Math.round(Math.log(normalized.denominator) / Math.log(2));
+  }
+  public void setFromLog(int log) {
+    Fraction
+    wrapper = new Fraction(1, (int)Math.round(Math.pow(2, log))).multiply(FOUR);
+    numerator = wrapper.numerator;
+    denominator = wrapper.denominator;
+  }
 
   public float toFloat() { return (float)numerator / denominator; }
   public int toInteger(int divisions) {

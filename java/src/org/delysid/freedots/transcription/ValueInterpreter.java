@@ -11,7 +11,6 @@ import org.delysid.freedots.model.Fraction;
 import org.delysid.freedots.model.MusicList;
 import org.delysid.freedots.model.TimeSignature;
 import org.delysid.freedots.musicxml.Note;
-import org.delysid.freedots.Util;
 
 /**
  * In braille music there are only 4 different types of note values.
@@ -56,18 +55,20 @@ class ValueInterpreter {
         int end = interpretation.size() - 1;
 
         if (end > begin) {
-          int beginLog = Util.log2(interpretation.get(begin).getAugmentedFraction().getDenominator());        
-          int endLog = Util.log2(interpretation.get(end).getAugmentedFraction().getDenominator());
-          boolean beginLarge = beginLog < 4;
-          boolean endLarge = endLog < 4;
+          int beginLog = interpretation.get(begin).getLog();
+          int endLog = interpretation.get(end).getLog();
+          boolean beginLarge = beginLog < 6;
+          boolean endLarge = endLog < 6;
 
           if ((beginLarge && !endLarge) || (!beginLarge && endLarge)) {
+            System.err.println("begin is "+beginLarge+" and end is "+endLarge);
             int leftIndex = begin;
-            while (Util.log2(interpretation.get(leftIndex).getAugmentedFraction().getDenominator())<4 == beginLarge)
+            while (interpretation.get(leftIndex).getLog()<6 == beginLarge)
               leftIndex++;
             int rightIndex = end;
-            while (Util.log2(interpretation.get(rightIndex).getAugmentedFraction().getDenominator())<4 == endLarge)
+            while (interpretation.get(rightIndex).getLog()<6 == endLarge)
               rightIndex--;
+            System.err.println("Leftindex is "+leftIndex+" and rightindex is "+rightIndex);
             if (rightIndex == leftIndex - 1) {
               return interpretation.get(leftIndex).getNote();
             }
@@ -85,7 +86,7 @@ class ValueInterpreter {
     Set<Interpretation> result = new HashSet<Interpretation>();
     if (candidates.size() == 1) {
       for (RhythmicPossibility rhythmicPossibility:candidates.get(0)) {
-        if (rhythmicPossibility.getAugmentedFraction().compareTo(timeSignature) == 0) {
+        if (rhythmicPossibility.getFraction().compareTo(timeSignature) == 0) {
           Interpretation interpretation = new Interpretation();
           interpretation.add(rhythmicPossibility);
           result.add(interpretation);
@@ -96,8 +97,11 @@ class ValueInterpreter {
       List<Set<RhythmicPossibility>>
       tail = candidates.subList(1, candidates.size());
       for (RhythmicPossibility rhythmicPossibility:head) {
-        if (rhythmicPossibility.getAugmentedFraction().compareTo(timeSignature) < 0) {
-          for (Interpretation interpretation:findInterpretations(tail, timeSignature.subtract(rhythmicPossibility.getAugmentedFraction()))) {
+        if (rhythmicPossibility.getFraction().compareTo(timeSignature) < 0) {
+          for (Interpretation
+               interpretation:
+               findInterpretations(tail,
+                                   timeSignature.subtract(rhythmicPossibility.getFraction()))) {
             interpretation.add(0, rhythmicPossibility);
             result.add(interpretation);
           }
@@ -112,7 +116,7 @@ class ValueInterpreter {
     Interpretation() {super();}
     public boolean isCorrect() {
       for (RhythmicPossibility rhythmicPossibility:this) {
-        if (rhythmicPossibility.getAugmentedFraction()
+        if (rhythmicPossibility.getFraction()
             .compareTo(rhythmicPossibility.getNote().getAugmentedFraction()) != 0)
           return false;
       }
@@ -136,17 +140,19 @@ class ValueInterpreter {
       this.larger = larger;
     }
     public Note getNote() { return note; }
-    public Fraction getAugmentedFraction() {
-      AugmentedFraction augmentedFraction = note.getAugmentedFraction();
-      int log = Util.log2(augmentedFraction.getDenominator());
+    public int getLog() { return note.getAugmentedFraction().getLog(); }
+    public Fraction getFraction() {
+      int log = note.getAugmentedFraction().getLog();
+      int dots = note.getAugmentedFraction().getDots();
       if (larger) {
-        if (log > 3) log = log - 4;
+        if (log > 5) log = log - 4;
       } else {
-        if (log < 4) log = log + 4;
+        if (log < 6) log = log + 4;
       }
-      augmentedFraction.setDenominator((int)Math.round(Math.pow(2, log)));
+      AugmentedFraction augmentedFraction = new AugmentedFraction(0, 1, dots);
+      augmentedFraction.setFromLog(log);
       return augmentedFraction.basicFraction();
     }
-    public String toString() { return getAugmentedFraction().toString(); }
+    public String toString() { return getFraction().toString(); }
   }
 }
