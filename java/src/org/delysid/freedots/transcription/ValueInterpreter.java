@@ -84,7 +84,7 @@ class ValueInterpreter {
     Set<Interpretation> result = new HashSet<Interpretation>();
     if (candidates.size() == 1) {
       for (RhythmicPossibility rhythmicPossibility:candidates.get(0)) {
-        if (rhythmicPossibility.compareTo(remaining) == 0) {
+        if (rhythmicPossibility.equals(remaining)) {
           Interpretation interpretation = new Interpretation();
           interpretation.add(rhythmicPossibility);
           result.add(interpretation);
