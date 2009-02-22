@@ -61,14 +61,12 @@ class ValueInterpreter {
           boolean endLarge = endLog < 6;
 
           if ((beginLarge && !endLarge) || (!beginLarge && endLarge)) {
-            System.err.println("begin is "+beginLarge+" and end is "+endLarge);
             int leftIndex = begin;
             while (interpretation.get(leftIndex).getLog()<6 == beginLarge)
               leftIndex++;
             int rightIndex = end;
             while (interpretation.get(rightIndex).getLog()<6 == endLarge)
               rightIndex--;
-            System.err.println("Leftindex is "+leftIndex+" and rightindex is "+rightIndex);
             if (rightIndex == leftIndex - 1) {
               return interpretation.get(leftIndex).getNote();
             }
