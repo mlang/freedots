@@ -9079,9 +9079,6 @@
 				<stem>down</stem>
 				<beam number="1">begin</beam>
 				<beam number="2">begin</beam>
-				<notations>
-					<slur type="stop" number="1"/>
-				</notations>
 			</note>
 			<note>
 				<pitch>
@@ -9095,7 +9092,7 @@
 				<beam number="1">continue</beam>
 				<beam number="2">continue</beam>
 				<notations>
-					<slur type="stop" number="1"/>
+					<slur type="start" number="1"/>
 				</notations>
 			</note>
 			<note>
@@ -9109,9 +9106,6 @@
 				<stem>down</stem>
 				<beam number="1">continue</beam>
 				<beam number="2">continue</beam>
-				<notations>
-					<slur type="stop" number="1"/>
-				</notations>
 			</note>
 			<note>
 				<pitch>
