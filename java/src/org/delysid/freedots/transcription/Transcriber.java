@@ -437,6 +437,10 @@ public final class Transcriber {
         }
       }
 
+      if (brailleVoices.size() == 0) {
+        state.append("m");
+      }
+
       /* 5-12. The octave mark must be shown for the first note after an
        * in-accord and _at the beginning of the next measure_, whether or not
        * that measure contains an in-accord.

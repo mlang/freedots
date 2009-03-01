@@ -1,8 +1,10 @@
 /* -*- c-basic-offset: 2; -*- */
 package org.delysid.freedots.musicxml;
 
-import java.util.Map;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.delysid.freedots.model.Accidental;
 import org.delysid.freedots.model.AugmentedFraction;
@@ -44,8 +46,8 @@ public final class Note extends Musicdata implements RhythmicElement {
     }
   };
   Accidental accidental = null;
-  private static Map<String, Accidental> accidentalMap =
-    new HashMap<String, Accidental>() {
+  private static Map<String, Accidental>
+  accidentalMap = new HashMap<String, Accidental>() {
     { put("natural", Accidental.NATURAL);
       put("flat", Accidental.FLAT); put("sharp", Accidental.SHARP);
     }
@@ -54,6 +56,8 @@ public final class Note extends Musicdata implements RhythmicElement {
   Element tie = null;
 
   Lyric lyric = null;
+
+  Notations notations = null;
 
   Note(
     Fraction offset, Element element,
@@ -102,6 +106,11 @@ public final class Note extends Musicdata implements RhythmicElement {
     if (nodeList.getLength() >= 1) {
       lyric = new Lyric((Element)nodeList.item(nodeList.getLength()-1));
     }
+
+    nodeList = element.getElementsByTagName("notations");
+    if (nodeList.getLength() >= 1) {
+      notations = new Notations((Element)nodeList.item(nodeList.getLength() - 1));
+    }
   }
 
   public boolean isGrace() {
@@ -114,9 +123,7 @@ public final class Note extends Musicdata implements RhythmicElement {
       return true;
     return false;
   }
-  public Pitch getPitch() {
-    return pitch;
-  }
+  public Pitch getPitch() { return pitch; }
   public int getStaffNumber() {
     if (staffNumber != null) {
       return Integer.parseInt(staffNumber.getWholeText()) - 1;
@@ -153,9 +160,7 @@ public final class Note extends Musicdata implements RhythmicElement {
     }
   }
 
-  public Accidental getAccidental() {
-    return accidental;
-  }
+  public Accidental getAccidental() { return accidental; }
 
   public boolean isTieStart() {
     if (tie != null && tie.getAttribute("type").equals("start")) return true;
@@ -203,21 +208,30 @@ public final class Note extends Musicdata implements RhythmicElement {
   }
   public Lyric getLyric() { return lyric; }
 
+  public boolean equalsIgnoreOffset(Object object) {
+    if (object instanceof Note) {
+      Note other = (Note)object;
+
+      if (getAugmentedFraction().equals(other.getAugmentedFraction())) {
+        if (getAccidental() == other.getAccidental()) {
+          if (getPitch() == null) {
+            return other.getPitch() == null;
+          } else {
+            return getPitch().equals(other.getPitch());
+          }
+        }
+      }
+    }
+    return false;
+  }
+
   @Override
   public boolean equals(Object object) {
     if (object instanceof Note) {
       Note other = (Note)object;
 
-      if (this.getOffset().equals(other.getOffset())) {
-        if (this.getAugmentedFraction().equals(other.getAugmentedFraction())) {
-          if (this.getAccidental() == other.getAccidental()) {
-            if (this.getPitch() == null) {
-              return other.getPitch() == null;
-            } else {
-              return (this.getPitch().equals(other.getPitch()));
-            }
-          }
-        }
+      if (getOffset().equals(other.getOffset())) {
+        return equalsIgnoreOffset(other);
       }
     }
     return false;
@@ -244,4 +258,11 @@ public final class Note extends Musicdata implements RhythmicElement {
     }
     return getAugmentedFraction().basicFraction(); 
   }
+
+  public Notations getNotations() { return notations; }
+
+  private List<Slur> slurs = new ArrayList<Slur>(2);
+
+  public List<Slur> getSlurs() { return slurs; }
+  public void addSlur(Slur slur) { slurs.add(slur); }
 }

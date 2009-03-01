@@ -11,7 +11,7 @@
 		<creator type="composer">Johann Sebastian Bach</creator>
 		<encoding>
 			<encoding-date></encoding-date>
-			<encoder></encoder>
+			<encoder>Mario Lang</encoder>
 			<software>Neuratron PhotoScore</software>
 			<encoding-description>MusicXML 1.0 file</encoding-description>
 		</encoding>
@@ -59,7 +59,6 @@
 						<f/>
 					</dynamics>
 				</direction-type>
-				<offset>0</offset>
 				<sound dynamics="98"/>
 			</direction>
 			<note>
@@ -712,7 +711,6 @@
 						<f/>
 					</dynamics>
 				</direction-type>
-				<offset>0</offset>
 				<sound dynamics="98"/>
 			</direction>
 			<note>
@@ -1886,7 +1884,6 @@
 						<f/>
 					</dynamics>
 				</direction-type>
-				<offset>0</offset>
 				<sound dynamics="98"/>
 			</direction>
 			<note>
@@ -2002,7 +1999,6 @@
 						<p/>
 					</dynamics>
 				</direction-type>
-				<offset>0</offset>
 				<sound dynamics="54"/>
 			</direction>
 			<note>
@@ -2118,7 +2114,6 @@
 						<f/>
 					</dynamics>
 				</direction-type>
-				<offset>0</offset>
 				<sound dynamics="98"/>
 			</direction>
 			<note>
@@ -2233,7 +2228,6 @@
 						<p/>
 					</dynamics>
 				</direction-type>
-				<offset>0</offset>
 				<sound dynamics="54"/>
 			</direction>
 			<note>
@@ -2355,7 +2349,6 @@
 						<f/>
 					</dynamics>
 				</direction-type>
-				<offset>0</offset>
 				<sound dynamics="98"/>
 			</direction>
 			<note>
@@ -3706,7 +3699,6 @@
 						<f/>
 					</dynamics>
 				</direction-type>
-				<offset>0</offset>
 				<sound dynamics="98"/>
 			</direction>
 			<note>
@@ -4598,7 +4590,6 @@
 						<mf/>
 					</dynamics>
 				</direction-type>
-				<offset>0</offset>
 				<sound dynamics="83"/>
 			</direction>
 			<note>
@@ -5266,7 +5257,6 @@
 						<f/>
 					</dynamics>
 				</direction-type>
-				<offset>0</offset>
 				<sound dynamics="98"/>
 			</direction>
 			<note>
@@ -5709,7 +5699,6 @@
 						<p/>
 					</dynamics>
 				</direction-type>
-				<offset>0</offset>
 				<sound dynamics="54"/>
 			</direction>
 			<note>
@@ -6407,7 +6396,6 @@
 						<mf/>
 					</dynamics>
 				</direction-type>
-				<offset>0</offset>
 				<sound dynamics="83"/>
 			</direction>
 			<note>
@@ -6520,7 +6508,6 @@
 						<p/>
 					</dynamics>
 				</direction-type>
-				<offset>0</offset>
 				<sound dynamics="54"/>
 			</direction>
 			<note>
@@ -6635,7 +6622,6 @@
 						<mf/>
 					</dynamics>
 				</direction-type>
-				<offset>0</offset>
 				<sound dynamics="83"/>
 			</direction>
 			<note>
@@ -6741,7 +6727,6 @@
 						<p/>
 					</dynamics>
 				</direction-type>
-				<offset>0</offset>
 				<sound dynamics="54"/>
 			</direction>
 			<note>
@@ -6854,7 +6839,6 @@
 						<f/>
 					</dynamics>
 				</direction-type>
-				<offset>0</offset>
 				<sound dynamics="98"/>
 			</direction>
 			<note>
@@ -10682,7 +10666,6 @@
 						<mf/>
 					</dynamics>
 				</direction-type>
-				<offset>0</offset>
 				<sound dynamics="83"/>
 			</direction>
 			<note>

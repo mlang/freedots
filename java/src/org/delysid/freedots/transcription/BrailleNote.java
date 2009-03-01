@@ -3,6 +3,7 @@ package org.delysid.freedots.transcription;
 import org.delysid.freedots.Braille;
 import org.delysid.freedots.model.AbstractPitch;
 import org.delysid.freedots.model.Accidental;
+import org.delysid.freedots.model.Slur;
 import org.delysid.freedots.musicxml.Note;
 
 class BrailleNote extends BrailleString {
@@ -30,7 +31,20 @@ class BrailleNote extends BrailleString {
     }
     braille += note.getAugmentedFraction().toBrailleString(pitch);
 
-    if (note.isTieStart()) braille += Braille.tie;
+    if (note.isTieStart()) {
+      braille += Braille.tie;
+    } else {
+      boolean printSlur = false;
+      for (Slur slur:note.getSlurs()) {
+        if (!slur.lastNote(note)) {
+          printSlur = true;
+          break;
+        }
+      }
+      if (printSlur) {
+        braille += Braille.slur;
+      }
+    }
 
     return braille;
   }

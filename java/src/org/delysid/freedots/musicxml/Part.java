@@ -1,6 +1,7 @@
 /* -*- c-basic-offset: 2; -*- */
 package org.delysid.freedots.musicxml;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.xpath.XPath;
@@ -48,6 +49,8 @@ public final class Part {
     TimeSignature lastTimeSignature = null;
     int staffCount = 1;
     EndBar endbar = null;
+
+    List<Slur> slurs = new ArrayList<Slur>();
 
     NodeList partChildNodes = part.getChildNodes();
     for (int i = 0; i<partChildNodes.getLength(); i++) {
@@ -118,6 +121,30 @@ public final class Part {
                                    musicdata, divisions, durationMultiplier, this);
 	      boolean advanceTime = !note.isGrace();
 	      boolean addNoteToEventList = true;
+
+              Notations notations = note.getNotations();
+              if (notations != null) {
+                for (Notations.Slur nslur:notations.getSlurs()) {
+                  int number = nslur.getNumber() - 1;
+                  if (nslur.getType().equals("start")) {
+                    Slur slur = new Slur(note);
+                    if (slurs.size() == number) {
+                      slurs.add(slur);
+                    } else if (slurs.size() > number) {
+                      slurs.set(number, slur);
+                    }
+                  } else if (nslur.getType().equals("stop")) {
+                    Slur slur = slurs.get(number);
+                    slur.add(note);
+                    slurs.set(number, null);
+                  }
+                }
+              }
+              for (Slur slur:slurs) {
+                if (slur != null) {
+                  if (!slur.contains(note)) slur.add(note); 
+                }
+              }
 
 	      if (currentChord != null) {
 		if (elementHasChild(musicdata, "chord")) {
