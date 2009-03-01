@@ -212,6 +212,11 @@
 				<dot/>
 				<stem>down</stem>
 				<staff>2</staff>
+				<notations>
+					<technical>
+						<fingering>3</fingering>
+					</technical>
+				</notations>
 			</note>
 		</measure>
 		<measure number="2">
@@ -471,6 +476,11 @@
 				<dot/>
 				<stem>down</stem>
 				<staff>2</staff>
+				<notations>
+					<technical>
+						<fingering>5 4</fingering>
+					</technical>
+				</notations>
 			</note>
 		</measure>
 		<measure number="4">
@@ -649,6 +659,11 @@
 				<type>half</type>
 				<stem>up</stem>
 				<staff>2</staff>
+				<notations>
+					<technical>
+						<fingering>2</fingering>
+					</technical>
+				</notations>
 			</note>
 			<backup>
 				<duration>1440</duration>
@@ -695,6 +710,11 @@
 				<stem>down</stem>
 				<staff>2</staff>
 				<beam number="1">end</beam>
+				<notations>
+					<technical>
+						<fingering>4</fingering>
+					</technical>
+				</notations>
 			</note>
 		</measure>
 		<measure number="5">
@@ -989,6 +1009,9 @@
 				<staff>2</staff>
 				<notations>
 					<tied type="start"/>
+					<technical>
+						<fingering>4 5</fingering>
+					</technical>
 				</notations>
 			</note>
 			<note>

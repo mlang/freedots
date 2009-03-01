@@ -10,6 +10,8 @@ public enum Braille {
 
   tie(4, 14), slur(14),
 
+  grace(5, 26),
+
   fullMeasureInAccord(126, 345),
   partMeasureInAccord(46, 13), partMeasureInAccordDivision(5, 2),
 
@@ -37,6 +39,7 @@ public enum Braille {
   private final static Braille[] digits = { digit0, digit1, digit2, digit3, digit4, digit5, digit6, digit7, digit8, digit9 };
   private final static Braille[] lowerDigits = { lowerDigit0, lowerDigit1, lowerDigit2, lowerDigit3, lowerDigit4, lowerDigit5, lowerDigit6, lowerDigit7, lowerDigit8, lowerDigit9 };
   private final static Braille[] intervals = { second, third, fourth, fifth, sixth, seventh, octave };
+  private final static Braille[] fingers = { finger1, finger2, finger3, finger4, finger5 };
 
   private int[] dots;
   Braille(int dots) { this.dots = new int[] {dots}; }
@@ -52,6 +55,7 @@ public enum Braille {
   public static Braille upperDigit(int digit) { return digits[digit]; }
   public static Braille lowerDigit(int digit) { return lowerDigits[digit]; }
   public static Braille interval(int interval) { return intervals[interval - 1]; }
+  public static Braille finger(int finger) { return fingers[finger - 1]; }
 
   public static String nTimes(Braille item, int count) {
     if (count <= 0) return "";

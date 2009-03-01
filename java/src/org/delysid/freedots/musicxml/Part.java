@@ -135,8 +135,10 @@ public final class Part {
                     }
                   } else if (nslur.getType().equals("stop")) {
                     Slur slur = slurs.get(number);
-                    slur.add(note);
-                    slurs.set(number, null);
+                    if (slur != null) {
+                      slur.add(note);
+                      slurs.set(number, null);
+                    }
                   }
                 }
               }

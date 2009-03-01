@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.delysid.freedots.model.Accidental;
 import org.delysid.freedots.model.AugmentedFraction;
+import org.delysid.freedots.model.Fingering;
 import org.delysid.freedots.model.Fraction;
 import org.delysid.freedots.model.Staff;
 import org.delysid.freedots.model.RhythmicElement;
@@ -265,4 +266,15 @@ public final class Note extends Musicdata implements RhythmicElement {
 
   public List<Slur> getSlurs() { return slurs; }
   public void addSlur(Slur slur) { slurs.add(slur); }
+
+  public Fingering getFingering() {
+    if (notations != null) {
+      Notations.Technical technical = notations.getTechnical();
+      if (technical != null) {
+        return technical.getFingering();
+      }
+    }
+
+    return null;
+  }
 }
