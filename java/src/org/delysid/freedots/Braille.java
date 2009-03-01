@@ -10,7 +10,7 @@ public enum Braille {
 
   tie(4, 14), slur(14),
 
-  grace(5, 26),
+  grace(5, 26), mordent(5, 235, 123), turn(6, 256),
 
   fullMeasureInAccord(126, 345),
   partMeasureInAccord(46, 13), partMeasureInAccordDivision(5, 2),
@@ -44,6 +44,9 @@ public enum Braille {
   private int[] dots;
   Braille(int dots) { this.dots = new int[] {dots}; }
   Braille(int dots1, int dots2) { this.dots = new int[] {dots1, dots2}; }
+  Braille(int dots1, int dots2, int dots3) {
+    this.dots = new int[] {dots1, dots2, dots3};
+  }
   public String toString() {
     String result = "";
     for (int index = 0; index < dots.length; index++)

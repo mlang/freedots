@@ -1,12 +1,16 @@
 package org.delysid.freedots.musicxml;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
+import java.util.Set;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 
 import org.delysid.freedots.model.Fingering;
+import org.delysid.freedots.model.Ornament;
 
 class Notations {
   private Element element;
@@ -31,6 +35,30 @@ class Notations {
   }    
 
   public Technical getTechnical() { return technical; }
+
+  public Set<Ornament> getOrnaments() {
+    NodeList nodeList = element.getElementsByTagName("ornaments");
+    if (nodeList.getLength() >= 1) {
+      nodeList = ((Element)nodeList.item(nodeList.getLength()-1)).getChildNodes();
+      Set<Ornament> ornaments = EnumSet.noneOf(Ornament.class);
+      for (int i = 0; i < nodeList.getLength(); i++) {
+        Node node = nodeList.item(i);
+        if (node.getNodeType() == Node.ELEMENT_NODE) {
+          if (node.getNodeName().equals("mordent")) {
+            ornaments.add(Ornament.mordent);
+          } else if (node.getNodeName().equals("turn")) {
+            ornaments.add(Ornament.turn);
+          } else {
+            System.err.println("WARNING: Unhandled ornament "+node.getNodeName());
+          }
+        }
+      }
+
+      return ornaments;
+    }
+
+    return null;
+  }
 
   class Slur {
     Element element;

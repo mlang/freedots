@@ -32,12 +32,14 @@ class ValueInterpreter {
     for (Event event:music) {
       if (event instanceof Note) {
         Note note = (Note)event;
-        RhythmicPossibility large = new RhythmicPossibility(note, true);
-        RhythmicPossibility small = new RhythmicPossibility(note, false);
-        Set<RhythmicPossibility> candidate = new HashSet<RhythmicPossibility>();
-        candidate.add(large);
-        candidate.add(small);
-        candidates.add(candidate);
+        if (!note.isGrace()) {
+          RhythmicPossibility large = new RhythmicPossibility(note, true);
+          RhythmicPossibility small = new RhythmicPossibility(note, false);
+          Set<RhythmicPossibility> candidate = new HashSet<RhythmicPossibility>();
+          candidate.add(large);
+          candidate.add(small);
+          candidates.add(candidate);
+        }
       } /* FIXME: Handle chords as well */
     }
 
@@ -96,7 +98,7 @@ class ValueInterpreter {
       tail = candidates.subList(1, candidates.size());
       for (RhythmicPossibility rhythmicPossibility:head) {
         if (rhythmicPossibility.compareTo(remaining) <= 0) {
-          for (Interpretation interpretation:
+          for (Interpretation interpretation :
                findInterpretations(tail,
                                    remaining.subtract(rhythmicPossibility))) {
             interpretation.add(0, rhythmicPossibility);

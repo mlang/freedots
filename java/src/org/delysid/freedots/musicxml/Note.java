@@ -5,11 +5,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.delysid.freedots.model.Accidental;
 import org.delysid.freedots.model.AugmentedFraction;
 import org.delysid.freedots.model.Fingering;
 import org.delysid.freedots.model.Fraction;
+import org.delysid.freedots.model.Ornament;
 import org.delysid.freedots.model.Staff;
 import org.delysid.freedots.model.RhythmicElement;
 import org.delysid.freedots.model.Syllabic;
@@ -273,6 +275,15 @@ public final class Note extends Musicdata implements RhythmicElement {
       if (technical != null) {
         return technical.getFingering();
       }
+    }
+
+    return null;
+  }
+
+
+  public Set<Ornament> getOrnaments() {
+    if (notations != null) {
+      return notations.getOrnaments();
     }
 
     return null;

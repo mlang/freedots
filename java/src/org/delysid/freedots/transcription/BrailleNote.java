@@ -1,9 +1,12 @@
 package org.delysid.freedots.transcription;
 
+import java.util.Set;
+
 import org.delysid.freedots.Braille;
 import org.delysid.freedots.model.AbstractPitch;
 import org.delysid.freedots.model.Accidental;
 import org.delysid.freedots.model.Fingering;
+import org.delysid.freedots.model.Ornament;
 import org.delysid.freedots.model.Slur;
 import org.delysid.freedots.musicxml.Note;
 
@@ -24,6 +27,12 @@ class BrailleNote extends BrailleString {
 
     if (note.isGrace()) {
       braille += Braille.grace;
+    }
+
+    Set<Ornament> ornaments = note.getOrnaments();
+    if (ornaments != null) {
+      for (Ornament ornament:note.getOrnaments())
+        braille += ornament.toBraille();
     }
 
     Accidental accidental = note.getAccidental();

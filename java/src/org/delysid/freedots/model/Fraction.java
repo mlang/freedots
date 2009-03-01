@@ -15,6 +15,7 @@ public class Fraction implements Comparable<Fraction> {
   }
     
   public int getNumerator() { return numerator; }
+
   public int getDenominator() { return denominator; }
   public void setDenominator(int denominator) { this.denominator = denominator; }
 

@@ -16,6 +16,7 @@
 			<encoding-description>Options: FinaleDolet33=1, ChordCaseMatters=1, ExportToSibelius=0</encoding-description>
 		</encoding>
 		<source>Bach-Gesellschaft</source>
+		<source>Braille Edition</source>
 	</identification>
 	<defaults>
 		<scaling>
@@ -248,9 +249,6 @@
 				<stem>up</stem>
 				<staff>1</staff>
 				<beam number="1">end</beam>
-				<notations>
-					<slur number="1" type="start"/>
-				</notations>
 			</note>
 			<note>
 				<pitch>
@@ -264,7 +262,9 @@
 				<staff>1</staff>
 				<beam number="1">begin</beam>
 				<notations>
-					<slur number="1" type="stop"/>
+					<technical>
+						<fingering>3</fingering>
+					</technical>
 				</notations>
 			</note>
 			<note>
@@ -278,9 +278,6 @@
 				<stem>up</stem>
 				<staff>1</staff>
 				<beam number="1">end</beam>
-				<notations>
-					<slur number="1" type="start"/>
-				</notations>
 			</note>
 			<note>
 				<pitch>
@@ -291,9 +288,6 @@
 				<voice>1</voice>
 				<type>half</type>
 				<staff>1</staff>
-				<notations>
-					<slur number="1" type="stop"/>
-				</notations>
 			</note>
 			<backup>
 				<duration>1440</duration>
@@ -373,6 +367,9 @@
 				<staff>1</staff>
 				<notations>
 					<ornaments><mordent/></ornaments>
+					<technical>
+						<fingering>3</fingering>
+					</technical>
 				</notations>
 			</note>
 			<note>
@@ -594,7 +591,9 @@
 				<beam number="1">end</beam>
 				<beam number="2">end</beam>
 				<notations>
-					<slur number="1" type="start"/>
+					<technical>
+						<fingering>2</fingering>
+					</technical>
 				</notations>
 			</note>
 			<note>
@@ -606,9 +605,6 @@
 				<voice>1</voice>
 				<type>half</type>
 				<staff>1</staff>
-				<notations>
-					<slur number="1" type="stop"/>
-				</notations>
 			</note>
 			<backup>
 				<duration>1440</duration>
@@ -937,8 +933,12 @@
 				<duration>240</duration>
 				<voice>1</voice>
 				<type>eighth</type>
+				<accidental>sharp</accidental>
 				<stem>down</stem>
 				<staff>1</staff>
+				<notations>
+					<ornaments><turn/></ornaments>
+				</notations>
 			</note>
 			<backup>
 				<duration>1440</duration>
