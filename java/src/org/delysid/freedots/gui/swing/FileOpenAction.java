@@ -10,10 +10,11 @@ import javax.swing.filechooser.FileFilter;
 import org.delysid.freedots.musicxml.Score;
 
 public final class FileOpenAction extends AbstractAction {
-  Main gui;
+  private Main gui;
   public FileOpenAction(Main gui) {
     super("Open");
     this.gui = gui;
+    putValue(SHORT_DESCRIPTION, "Open an existing MusicXML file");
   }
   public void actionPerformed(ActionEvent event) {
     JFileChooser fileChooser = new JFileChooser();

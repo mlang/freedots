@@ -171,6 +171,7 @@ public class MainFrame {
     item.addSelectionListener(new SelectionAdapter() {
       @Override
       public void widgetSelected(SelectionEvent event) {
+        if (player != null) player.close();
         shell.close();
       }
     });
