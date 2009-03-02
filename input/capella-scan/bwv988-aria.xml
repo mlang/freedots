@@ -6,6 +6,8 @@
 		<work-title>Aria con 30 Variazioni</work-title>
 		<work-number>BWV 988</work-number>
 	</work>
+	<movement-number>1</movement-number>
+	<movement-title>Aria</movement-title>
 	<identification>
 		<creator type="composer">Johann Sebastian Bach</creator>
 		<rights>Creative Commons Attribution-ShareAlike 3.0</rights>
@@ -13,10 +15,8 @@
 			<encoder>Mario Lang</encoder>
 			<encoding-date>2008-02-27</encoding-date>
 			<software>CapToMusic.py CapXML to MusicXML converter version 1.13</software>
-			<encoding-description>Options: FinaleDolet33=1, ChordCaseMatters=1, ExportToSibelius=0</encoding-description>
 		</encoding>
-		<source>Bach-Gesellschaft</source>
-		<source>Braille Edition</source>
+		<source>Mutopia Project</source>
 	</identification>
 	<defaults>
 		<scaling>
