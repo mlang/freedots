@@ -173,6 +173,7 @@ public class MainFrame {
       public void widgetSelected(SelectionEvent event) {
         if (player != null) player.close();
         shell.close();
+        System.exit(0);
       }
     });
 
