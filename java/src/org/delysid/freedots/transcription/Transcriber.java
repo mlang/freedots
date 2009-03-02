@@ -459,7 +459,7 @@ public final class Transcriber {
             BrailleString brailleString = new BrailleString(Braille.valueDistinction.toString());
             state.append(brailleString);
           }
-          BrailleNote brailleNote = new BrailleNote(note, state.getLastPitch());
+          BrailleNote brailleNote = new BrailleNote(note, state.getLastPitch(), options);
           AbstractPitch pitch = (AbstractPitch)note.getPitch();
           if (pitch != null) {
             state.setLastPitch(pitch);

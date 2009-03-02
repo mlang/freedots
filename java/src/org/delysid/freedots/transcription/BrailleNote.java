@@ -3,6 +3,7 @@ package org.delysid.freedots.transcription;
 import java.util.Set;
 
 import org.delysid.freedots.Braille;
+import org.delysid.freedots.Options;
 import org.delysid.freedots.model.AbstractPitch;
 import org.delysid.freedots.model.Accidental;
 import org.delysid.freedots.model.Fingering;
@@ -12,14 +13,19 @@ import org.delysid.freedots.musicxml.Note;
 
 class BrailleNote extends BrailleString {
   private AbstractPitch lastPitch;
-  BrailleNote(Note note, AbstractPitch lastPitch) {
+  private Options options;
+
+  BrailleNote(Note note, AbstractPitch lastPitch, Options options) {
     super(null, note);
     this.lastPitch = lastPitch;
+    this.options = options;
   }
+
   AbstractPitch getPitch() {
     Note note = (Note)model;
     return note.getPitch();
   }
+
   @Override
   public String toString() {
     String braille = "";
@@ -46,9 +52,11 @@ class BrailleNote extends BrailleString {
     }
     braille += note.getAugmentedFraction().toBrailleString(pitch);
 
-    Fingering fingering = note.getFingering();
-    if (fingering != null) {
-      braille += fingering.toBrailleString();
+    if (options.getShowFingering()) {
+      Fingering fingering = note.getFingering();
+      if (fingering != null) {
+        braille += fingering.toBrailleString();
+      }
     }
     if (note.isTieStart()) {
       braille += Braille.tie;

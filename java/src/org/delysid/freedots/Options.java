@@ -12,6 +12,8 @@ public final class Options {
   String exportMidiFile = null;
   UI ui = UI.Swing;
 
+  boolean showFingering = true;
+
   public Options(String[] args) {
     for (int index = 0; index < args.length; index++) {
       String option = args[index];
@@ -63,6 +65,8 @@ public final class Options {
         }
       } else if ("-swt".equals(option)) {
         ui = UI.SWT;
+      } else if ("-nofg".equals(option)) {
+        showFingering = false;
       } else {
         if (index == args.length-1) {
           location = args[index];
@@ -85,6 +89,8 @@ public final class Options {
 
   public String getExportMidiFile() { return exportMidiFile; }
   public UI getUI() { return ui; }
+
+  public boolean getShowFingering() { return showFingering; }
 
   public enum MultiStaffMeasures {
     VISUAL, /* break at new system */
