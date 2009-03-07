@@ -9,7 +9,6 @@ import org.delysid.freedots.Braille;
 import org.delysid.freedots.Options;
 
 import org.delysid.freedots.model.AbstractPitch;
-import org.delysid.freedots.model.Accidental;
 import org.delysid.freedots.model.EndBar;
 import org.delysid.freedots.model.Event;
 import org.delysid.freedots.model.MusicList;
@@ -17,12 +16,13 @@ import org.delysid.freedots.model.Staff;
 import org.delysid.freedots.model.StartBar;
 import org.delysid.freedots.model.TimeSignature;
 import org.delysid.freedots.model.Voice;
-import org.delysid.freedots.model.VoiceChord;
 
 import org.delysid.freedots.musicxml.Score;
-import org.delysid.freedots.musicxml.Note;
 import org.delysid.freedots.musicxml.Part;
 
+/**
+ * Transcribes a {@link Score} to braille music code.
+ */
 public final class Transcriber {
   private Score score;
 
@@ -62,8 +62,8 @@ public final class Transcriber {
       stringBuilder.append(brailleString.toString());
     }
     return -1;
-
   }
+
   private static String lineSeparator = System.getProperty("line.separator");
 
   public Transcriber(Options options) {
@@ -80,7 +80,8 @@ public final class Transcriber {
     lineCount = 0;
     pageNumber = 1;
   }
-  void transcribe() throws Exception {
+
+  private void transcribe() throws Exception {
     for (Part part:score.getParts()) {
       printLine(part.getName());
       printLine(part.getKeySignature().toBraille() +
@@ -172,6 +173,7 @@ public final class Transcriber {
       newLine();
     }
   }
+
   private void printString(String text) {
     printString(new BrailleString(text));
   }
