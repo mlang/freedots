@@ -11,7 +11,6 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
 
 import org.delysid.StandardMidiFileWriter;
-import org.delysid.freedots.gui.swt.MainFrame;
 import org.delysid.freedots.gui.GraphicalUserInterface;
 import org.delysid.freedots.musicxml.MIDISequence;
 import org.delysid.freedots.musicxml.Score;

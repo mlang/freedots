@@ -62,7 +62,7 @@ class BrailleNote extends BrailleString {
       braille += Braille.tie;
     } else {
       boolean printSlur = false;
-      for (Slur slur:note.getSlurs()) {
+      for (Slur<Note> slur:note.getSlurs()) {
         if (!slur.lastNote(note)) {
           printSlur = true;
           break;

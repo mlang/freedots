@@ -26,7 +26,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 public final class Part {
-  private Element part;
   private Element scorePart;
 
   private Score score;
@@ -37,7 +36,6 @@ public final class Part {
 
   public Part(Element part, Element scorePart, Score score)
     throws MusicXMLParseException {
-    this.part = part;
     this.scorePart = scorePart;
     this.score = score;
 

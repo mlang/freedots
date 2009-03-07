@@ -47,10 +47,11 @@ public enum Braille {
   Braille(int dots1, int dots2, int dots3) {
     this.dots = new int[] {dots1, dots2, dots3};
   }
+  @Override
   public String toString() {
     String result = "";
-    for (int index = 0; index < dots.length; index++)
-      result += String.valueOf(unicodeBraille(dotsToBits(dots[index])));
+    for (int element : dots)
+      result += String.valueOf(unicodeBraille(dotsToBits(element)));
     return result;
   }
 

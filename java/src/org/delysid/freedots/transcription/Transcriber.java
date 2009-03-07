@@ -286,7 +286,6 @@ public final class Transcriber {
       brailleVoices = new ArrayList<Object>();
 
       List<Voice> voices = events.getVoices();
-      int voiceCount = voices.size();
       FullMeasureInAccord fmia = new FullMeasureInAccord();
       PartMeasureInAccord pmia = new PartMeasureInAccord();
 

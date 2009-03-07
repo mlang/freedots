@@ -70,9 +70,8 @@ public final class Options {
       } else {
         if (index == args.length-1) {
           location = args[index];
-        } else {
+        } else
           throw new IllegalArgumentException();
-        }
       }
     }
   }
