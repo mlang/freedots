@@ -1,3 +1,4 @@
+/* -*- c-basic-offset: 2; -*- */
 package org.delysid.freedots.transcription;
 
 import java.util.Set;
@@ -15,10 +16,10 @@ class BrailleNote extends BrailleString {
   private AbstractPitch lastPitch;
   private Options options;
 
-  BrailleNote(Note note, AbstractPitch lastPitch, Options options) {
+  BrailleNote(Note note, AbstractPitch lastPitch) {
     super(null, note);
     this.lastPitch = lastPitch;
-    this.options = options;
+    this.options = Options.getInstance();
   }
 
   AbstractPitch getPitch() {

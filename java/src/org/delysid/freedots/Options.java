@@ -2,6 +2,8 @@
 package org.delysid.freedots;
 
 public final class Options {
+  private static Options instance = null;
+
   int pageWidth = 32;
   int pageHeight = 20;
   public MultiStaffMeasures multiStaffMeasures = MultiStaffMeasures.VISUAL;
@@ -70,11 +72,13 @@ public final class Options {
       } else {
         if (index == args.length-1) {
           location = args[index];
-        } else
-          throw new IllegalArgumentException();
+        } else throw new IllegalArgumentException();
       }
     }
+    instance = this;
   }
+  public static Options getInstance() { return instance; }
+
   public String getLocation() {
     return location;
   }
