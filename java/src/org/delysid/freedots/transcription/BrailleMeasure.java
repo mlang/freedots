@@ -20,6 +20,7 @@ class BrailleMeasure {
   private MusicList events = new MusicList();
   private AbstractPitch finalPitch = null;
   private TimeSignature timeSignature = null;
+  private int voiceDirection = -1; /* By default, oder is to go from top to bottom */
   BrailleMeasure() {}
   BrailleMeasure(BrailleMeasure previous) {
     this();
@@ -31,56 +32,59 @@ class BrailleMeasure {
   public void setTimeSignature(TimeSignature timeSignature) {
     this.timeSignature = timeSignature;
   }
+  public void setVoiceDirection(int direction) {
+    voiceDirection = direction;
+  }
 
   private List<Object> brailleVoices = new ArrayList<Object>();
 
+  /**
+   * Find voice overlaps for part measure in-accord.
+   */
   public void process() {
     brailleVoices = new ArrayList<Object>();
 
-    List<Voice> voices = events.getVoices();
+    List<Voice> voices = events.getVoices(voiceDirection);
     FullMeasureInAccord fmia = new FullMeasureInAccord();
     PartMeasureInAccord pmia = new PartMeasureInAccord();
 
     while (voices.size() > 0) {
-      for (int i = 0; i < voices.size(); i++) {
-	Voice voice = voices.get(i);
-	boolean foundOverlap = false;
-	int headLength = 0;
+      Voice voice = voices.get(0);
+      boolean foundOverlap = false;
+      int headLength = 0;
 
-	for (int j = 0; j < voices.size(); j++) {
-	  if (i == j) continue;
-	  int equalsAtBeginning = voice.countEqualsAtBeginning(voices.get(j));
-	  if (equalsAtBeginning > 0) {
-	    headLength = equalsAtBeginning;
-	    MusicList head = new MusicList();
-	    for (int k = 0; k < equalsAtBeginning; k++) {
-	      head.add(voice.get(k));
-	      voices.get(j).remove(k);
-	    }
-	    pmia.setHead(head);
-	    pmia.addPart(voices.get(j));
-	    voices.remove(voices.get(j));
-	    foundOverlap = true;
-	  } else if (foundOverlap && equalsAtBeginning == headLength) {
-	    for (int k = 0; k < equalsAtBeginning; k++) {
-	      voices.get(j).remove(k);
-	    }
-	    pmia.addPart(voices.get(j));
-	    voices.remove(voices.get(j));
-	  }
-	}
-
-	if (foundOverlap) {
-	  for (int k = 0; k < headLength; k++) {
-	    voice.remove(k);
-	  }
-	  pmia.addPart(voice);
-	  voices.remove(voice);
-	} else {
-	  fmia.addPart(voice);
-	  voices.remove(voice);
-	}
+      for (int j = 1; j < voices.size(); j++) {
+        int equalsAtBeginning = voice.countEqualsAtBeginning(voices.get(j));
+        if (equalsAtBeginning > 0) {
+          headLength = equalsAtBeginning;
+          MusicList head = new MusicList();
+          for (int k = 0; k < equalsAtBeginning; k++) {
+            head.add(voice.get(k));
+            voices.get(j).remove(k);
+          }
+          pmia.setHead(head);
+          pmia.addPart(voice);
+          pmia.addPart(voices.get(j));
+          voices.remove(voices.get(j));
+          foundOverlap = true;
+        } else if (foundOverlap && equalsAtBeginning == headLength) {
+          for (int k = 0; k < equalsAtBeginning; k++) {
+            voices.get(j).remove(k);
+          }
+          pmia.addPart(voices.get(j));
+          voices.remove(voices.get(j));
+        }
       }
+
+      if (foundOverlap) {
+        for (int k = 0; k < headLength; k++) {
+          voice.remove(k);
+        }
+      } else {
+        fmia.addPart(voice);
+      }
+
+      voices.remove(voice);
     }
     if (fmia.getParts().size() > 0) brailleVoices.add(fmia);
     if (pmia.getParts().size() > 0) brailleVoices.add(pmia);

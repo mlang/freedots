@@ -8,7 +8,6 @@ import org.delysid.freedots.model.MusicList;
 class FullMeasureInAccord {
   List<MusicList> parts = new ArrayList<MusicList>();
   FullMeasureInAccord() { super(); }
-  void setParts(List<MusicList> parts) { this.parts = parts; }
   void addPart(MusicList part) { parts.add(part); }
   List<MusicList> getParts() { return parts; }
   boolean isInAccord() { return parts.size() > 1; }

@@ -7,6 +7,7 @@ package org.delysid.freedots.model;
  */
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.SortedMap;
@@ -107,6 +108,24 @@ public class MusicList extends java.util.ArrayList<Event> {
     if (defaultVoice != null) voiceList.add(defaultVoice);
     return voiceList;
   }
+  public List<Voice> getVoices(int ordering) {
+    List<Voice> voices = getVoices();
+    Collections.sort(voices, new VoiceComparator(ordering));
+    return voices;
+  }
+  private class VoiceComparator implements java.util.Comparator<Voice> {
+    private int direction;
+    VoiceComparator(int direction) {
+      this.direction = direction;
+    }
+    public int compare(Voice v1, Voice v2) {
+      int v1Pitch = v1.averagePitch();
+      int v2Pitch = v2.averagePitch();
+      int result = (v1Pitch < v2Pitch ? -1 : (v1Pitch == v2Pitch ? 0 : 1));
+      if (direction > 0) return result;
+      return -result;
+    }
+  } 
   public String getLyricText() {
     StringBuilder stringBuilder = new StringBuilder();
     for (Event event:this) {

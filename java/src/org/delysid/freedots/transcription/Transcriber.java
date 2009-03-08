@@ -92,6 +92,7 @@ public final class Transcriber {
 	  Staff staff = section.getStaff(staffIndex);
 	  BrailleMeasure measure = new BrailleMeasure();
           boolean displayClefChange = false;
+          int voiceDirection = -1;
 
           if (characterCount > 0) newLine();
           indentTo(2);
@@ -101,8 +102,12 @@ public final class Transcriber {
           } else if (staffCount == 2) {
             if (staffIndex == 0) {
               printString(Braille.rightHandPart.toString());
+              voiceDirection = -1;
+              measure.setVoiceDirection(voiceDirection);
             } else if (staffIndex == 1) {
               printString(Braille.leftHandPart.toString());
+              voiceDirection = 1;
+              measure.setVoiceDirection(voiceDirection);
             }
           }
 
@@ -164,6 +169,7 @@ public final class Transcriber {
               printString(" ");
 
               measure = new BrailleMeasure(measure);
+              measure.setVoiceDirection(voiceDirection);
             } else {
               measure.add(event);
             }

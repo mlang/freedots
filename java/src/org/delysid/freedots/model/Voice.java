@@ -29,6 +29,22 @@ public class Voice extends MusicList {
         if (!((StaffElement)event).isRest()) return false;
     return true;
   }
+  public int averagePitch() {
+    double value = 0;
+    int count = 0;
+    for (Event event : this) {
+      if (event instanceof RhythmicElement) {
+        RhythmicElement rhythmicElement = (RhythmicElement) event;
+        AbstractPitch pitch = rhythmicElement.getPitch();
+        if (pitch != null) {
+          value += pitch.getMIDIPitch();
+          count += 1;
+        }
+      }
+    }
+    if (count == 0) return 0;
+    return (int)Math.round(value / count);
+  }
   public void swapPosition(Voice other) {
     String oldName = this.name;
     String newName = other.name;
