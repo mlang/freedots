@@ -86,10 +86,10 @@ public final class Transcriber {
       printLine(part.getName());
       printLine(part.getKeySignature().toBraille() +
                 part.getTimeSignature().toBraille());
-      for (Segment segment:getSegments(part)) {
-        int staffCount = segment.getStaffCount();
+      for (Section section:getSections(part)) {
+        int staffCount = section.getStaffCount();
         for (int staffIndex = 0; staffIndex < staffCount; staffIndex++) {
-	  Staff staff = segment.getStaff(staffIndex);
+	  Staff staff = section.getStaff(staffIndex);
 	  BrailleMeasure measure = new BrailleMeasure();
           boolean displayClefChange = false;
 
@@ -211,13 +211,13 @@ public final class Transcriber {
   public String toString() {
     return strings.toString();
   }
-  class Segment extends MusicList {
-    Segment() { super(); }
+  class Section extends MusicList {
+    Section() { super(); }
   }
-  List<Segment> getSegments(Part part) throws Exception {
-    List<Segment> segments = new ArrayList<Segment>();
-    Segment currentSegment = new Segment();
-    segments.add(currentSegment);
+  List<Section> getSections(Part part) throws Exception {
+    List<Section> sections = new ArrayList<Section>();
+    Section currentSection = new Section();
+    sections.add(currentSection);
     MusicList musicList = part.getMusicList();
     int index = 0;
     int measureCount = 0;
@@ -225,18 +225,18 @@ public final class Transcriber {
     while (true) {
       while (index < musicList.size()) {
 	Event event = musicList.get(index++);
-	currentSegment.add(event);
+	currentSection.add(event);
 	if (event instanceof EndBar) { measureCount++; break; }
       }
 
-      if (index == musicList.size()) return segments;
+      if (index == musicList.size()) return sections;
 
       if (!(musicList.get(index) instanceof StartBar))
 	throw new Exception();
 
       StartBar startBar = (StartBar)musicList.get(index);
-      if ((startBar.getStaffCount() != currentSegment.getStaffCount()) ||
-          (currentSegment.getStaffCount() > 1 && (
+      if ((startBar.getStaffCount() != currentSection.getStaffCount()) ||
+          (currentSection.getStaffCount() > 1 && (
            (options.multiStaffMeasures == Options.MultiStaffMeasures.VISUAL &&
             startBar.getNewSystem()) ||
            (options.multiStaffMeasures == Options.MultiStaffMeasures.TWO &&
@@ -261,10 +261,10 @@ public final class Transcriber {
             measureCount == 11) ||
            (options.multiStaffMeasures == Options.MultiStaffMeasures.TWELVE &&
             measureCount == 12))) ||
-          (currentSegment.getLyricText().length() >= options.getPageWidth() ||
+          (currentSection.getLyricText().length() >= options.getPageWidth() ||
            startBar.getNewSystem())) {
-	currentSegment = new Segment();
-	segments.add(currentSegment);
+	currentSection = new Section();
+	sections.add(currentSection);
         measureCount = 0;
       }
     }
