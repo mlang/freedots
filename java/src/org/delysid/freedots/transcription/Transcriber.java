@@ -267,8 +267,7 @@ public final class Transcriber {
             measureCount == 11) ||
            (options.multiStaffMeasures == Options.MultiStaffMeasures.TWELVE &&
             measureCount == 12))) ||
-          (currentSection.getLyricText().length() >= options.getPageWidth() ||
-           startBar.getNewSystem())) {
+          (currentSection.getLyricText().length() >= options.getPageWidth())) {
 	currentSection = new Section();
 	sections.add(currentSection);
         measureCount = 0;
