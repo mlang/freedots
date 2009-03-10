@@ -154,6 +154,24 @@ canonical format to distribute musical notation over the Internet.
 Therefore, there is a fairly good chance that the music you are looking for is
 already available on the Internet in MusicXML format.
       </para>
+      <para>
+Below is a list of some internet resources that offer MusicXML files
+for download.
+      </para>
+      <variablelist>
+	<varlistentry>
+	  <term><ulink url="http://www.hausmusik.ch/notenregal/">Hausmusik Notenregal</ulink></term>
+	  <listitem><para>A repository of scores in various formats, including MusicXML, from <quote>Verein zur Förderung der Hausmusik</quote> in Switzerland.</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term><ulink url="http://wikifonia.org/">Wikifonia.Org</ulink></term>
+	  <listitem><para>Wikifonia is a collection of Lead Sheets (lyrics, melody and chords) of pop songs.</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term><ulink url="http://www.pjb.com.au/mus/xml/">Peter J Billam's arrangements of JS Bach for recorder</ulink></term>
+	  <listitem><para><personname><firstname>Peter</firstname><othername>J</othername><surname>Billam</surname></personname> provides a few of his <ulink url="http://www.pjb.com.au/mus/">arrangements</ulink> for recorder in MusicXML format for free.</para></listitem>
+	</varlistentry>
+      </variablelist>
     </chapter>
   </part>
   <part><title>Using &App;</title>
