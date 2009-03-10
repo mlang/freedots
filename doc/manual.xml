@@ -187,8 +187,9 @@ to &bmn;.
 	    <question id="q-windows"><para>Does &App; work on
 	      <productname class="trade"><indexterm zone="q-windows">
 	        <primary>Windows</primary></indexterm>Windows</productname>?</para></question>
-	    <answer><para>Yes.  You will need to install <application>Python</application>, <application>setuptools</application> and <application>pygame</application> and their
-	      associated dependencies.  An installer for &App; on <productname class="trade">Windows</productname>
+	    <answer><para>Yes.  You will need to install <application>Java 1.6</application>.
+            For proper accessibility support you will also need the Java-Access-Bridge installed.
+            An installer for &App; on <productname class="trade">Windows</productname>
 	      is currently not available, but could be built.
 	      Volunteers for maintaining a <productname class="trade">Windows</productname> version of &App; are very welcome!</para></answer>
 	  </qandaentry>
