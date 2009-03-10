@@ -110,7 +110,7 @@ character.
 		 <entry><symbol role="symbolfont">&brl246;</symbol></entry>
 		 <entry><symbol role="symbolfont">&brl2456;</symbol></entry>
 	    </row>
-	    <row><entry>eight</entry>
+	    <row><entry>eighth</entry>
   	         <entry><symbol role="symbolfont">&brl145;</symbol></entry>
 		 <entry><symbol role="symbolfont">&brl15;</symbol></entry>
 		 <entry><symbol role="symbolfont">&brl124;</symbol></entry>
@@ -122,6 +122,17 @@ character.
 	  </tbody>
 	</tgroup>
 	</table>
+	<para>
+However, since 6-dot braille has a fairly limited amount of available
+patterns (64) an ambiguity had to be introduced to allow for values smaller
+than eighth notes.  The same patterns are reused again, from sixteenth
+notes to 128th notes.  I.e., the dot pattern for a whole note can either
+mean a whole or a sixteenth note.  In most cases it is immediately
+clear by knowing the time signature which of the possibilities
+is right.  In those rare cases where it is not clear to the reader,
+special symbols are used to indicate which of the two possibilities is refered
+to.
+	</para>
       </sect1>
     </chapter>
   </part>
