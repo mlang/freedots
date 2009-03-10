@@ -134,17 +134,12 @@ Section "install"
 
 	SetOutPath "$INSTDIR"
 	SetShellVarContext all
-
-	
-	File ${DISTDIR}\${FREEDOTSFILENAME} 
-	File /r ${READMEFILENAME}
-
-	
-	SetOverwrite off
-	
 	SetOverwrite IfNewer
 
-	
+	File ${DISTDIR}\${FREEDOTSFILENAME} 
+	File /r ${READMEFILENAME}
+	File doc\manual.html
+
 	;Store installation folder
 	WriteRegStr HKLM "Software\${PRODUCT}" "" $INSTDIR
 
@@ -162,7 +157,7 @@ Section "install"
 		CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
 		CreateShortCut "$SMPROGRAMS\$StartMenuFolder\FreeDots.lnk" "$INSTDIR\${FREEDOTSFILENAME}" -r
 		CreateShortCut "$SMPROGRAMS\$StartMenuFolder\README.JAWS.lnk" "$INSTDIR\${READMEFILENAME}" -r
-
+		CreateShortCut "$SMPROGRAMS\$StartMenuFolder\User Manual.lnk" "$INSTDIR\manual.html" -r
 
 	!insertmacro MUI_STARTMENU_WRITE_END
 
