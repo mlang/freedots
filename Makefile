@@ -1,4 +1,4 @@
-all: program documentation
+all: program documentation installer
 
 program:
 	cd java && ant
@@ -9,7 +9,11 @@ documentation: doc/manual.xml
 	         --stringparam man.output.in.separate.dir 1 \
 	/usr/share/xml/docbook/stylesheet/nwalsh/manpages/docbook.xsl $<
 
+installer:
+	makensis WindowsInstaller.nsi
+
 clean:
 	cd java && ant clean
 	rm -f doc/manual.txt doc/man1/freedots.1
+	rm -f FreeDotsInstaller.exe
 
