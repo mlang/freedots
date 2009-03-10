@@ -4,6 +4,7 @@
 <!ENTITY app "freedots">
 <!ENTITY App "FreeDots">
 <!ENTITY bmn "braille music notation">
+<!ENTITY Bmn "Braille music notation">
 <!ENTITY omr "optical music recognition">
 <!ENTITY XML "<acronym>XML</acronym>">
 <!ENTITY email "mlang@delysid.org">
@@ -39,7 +40,7 @@ in all copies.
       </para>
     </legalnotice>
 
-    <releaseinfo>$Id: manual.xml 233 2008-08-07 14:17:40Z mlang $</releaseinfo>
+    <releaseinfo>$Id$</releaseinfo>
 
     <abstract>
       <para>
@@ -57,14 +58,14 @@ familiar with it yet.  It is also the User's Manual for
   <part><title>Introduction to &bmn;</title>
     <partintro>
       <para>
-&bmn; is an internationally accepted standard for expressing musical ideas in
+&Bmn; is an internationally accepted standard for expressing musical ideas in
 tactile readable form.
       </para>
       <para>
 Since <application>&App;</application> is mostly useless to a user who does not
 know &bmn;, the first part of this book is dedicated to teaching the very
 basics of &bmn;.  If you are already familiar with the international &bmn;
-standard, you can saves skip over this section.
+standard, you can safely skip over this section.
       </para>
     </partintro>
 
@@ -163,6 +164,14 @@ detail how &App; can be used to automatically transcribe scanned sheet music
 to &bmn;.
       </para>
     </partintro>
+    <chapter><title>Overview</title>
+      <para>
+The user interface of &App; closely resembles a typical editor application.
+At the top there is a menu bar for conveient access to the most used actions.
+The main part of the application window is a text edit window which contains
+the result of transcribing the currently opened MusicXML file to &bmn;.
+      </para>
+    </chapter>
     <chapter><title>The Menubar</title>
       <para>This list briefly describes the actions available in the &App;
         menu.</para>
@@ -176,6 +185,16 @@ to &bmn;.
 	    <guimenuitem>Open</guimenuitem>
 	  </menuchoice></term>
 	  <listitem><para><action>Open a MusicXML document.</action></para></listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term><menuchoice>
+	    <shortcut>
+	      <keycombo><keycap>Alt</keycap><keycap>l</keycap></keycombo>
+	    </shortcut>
+	    <guimenu>Library</guimenu>
+	  </menuchoice></term>
+	  <listitem><para>For your convenience, &App; ships with a few,
+freely distributable scores.  This menu lists them.</para></listitem>
 	</varlistentry>
       </variablelist>
     </chapter>
