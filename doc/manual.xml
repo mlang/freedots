@@ -167,11 +167,11 @@ different music notation software, it is increasingly being used as the
 canonical format to distribute musical notation over the Internet.
       </para>
       <para>
-Therefore, there is a fairly good chance that the music you are looking for is
-already available on the Internet in MusicXML format.
+Therefore, there is a chance that the music you are looking for is already
+available on the Internet in MusicXML format.
       </para>
       <para>
-Below is a list of some internet resources that offer MusicXML files
+Below is a list of some Internet resources that offer MusicXML files
 for download.
       </para>
       <variablelist>
@@ -193,7 +193,8 @@ for download.
   <part><title>Using &App;</title>
     <partintro>
       <para>
-Now that we have acquainted ourselves with &bmn; we can go on and examine in
+Now that we have acquainted ourselves with &bmn; and know how to obtain
+MusicXML documents we can go on and examine in
 detail how &App; can be used to automatically transcribe scanned sheet music
 to &bmn;.
       </para>
@@ -201,12 +202,25 @@ to &bmn;.
     <chapter><title>Overview</title>
       <para>
 The user interface of &App; closely resembles a typical editor application.
-At the top there is a menu bar for conveient access to the most used actions.
-The main part of the application window is a text edit window which contains
+At the top is a menu bar for convenient access to the most used actions.
+The main part of the application is a text edit window which contains
 the result of transcribing the currently opened MusicXML file to &bmn;.
       </para>
+      <para>
+You can use the caret to navigate inside the resulting braille music
+document as in other editing applications.  The caret position is
+context sensitive.  For instance, if you move the caret the status
+area will automatically be updated with textual information about the braille
+symbol currently underneath the caret.
+      </para>
+      <para>
+&App; also offers the possibility to play back the score currently opened.
+During playback, the caret position will update synchronous to the music.
+Additionally, there is the possibility to play individual parts of a score,
+or just a single note.
+      </para>
     </chapter>
-    <chapter><title>The Menubar</title>
+    <chapter><title>The Menu bar</title>
       <para>This list briefly describes the actions available in the &App;
         menu.</para>
       <variablelist>
@@ -223,12 +237,36 @@ the result of transcribing the currently opened MusicXML file to &bmn;.
 	<varlistentry>
 	  <term><menuchoice>
 	    <shortcut>
+	      <keycombo><keycap>Ctrl</keycap><keycap>p</keycap></keycombo>
+	    </shortcut>
+	    <guimenu>File</guimenu>
+	    <guimenuitem>Play score</guimenuitem>
+	  </menuchoice></term>
+	  <listitem><para><action>Start playback of the whole score.</action></para></listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term><menuchoice>
+	    <guimenu>File</guimenu>
+	    <guimenuitem>Save as MIDI</guimenuitem>
+	  </menuchoice></term>
+	  <listitem><para><action>Export the currently opened MusicXML to a standard MIDI file.</action></para></listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term><menuchoice>
+	    <guimenu>File</guimenu>
+	    <guimenuitem>Quit</guimenuitem>
+	  </menuchoice></term>
+	  <listitem><para><action>Exit &App;</action></para></listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term><menuchoice>
+	    <shortcut>
 	      <keycombo><keycap>Alt</keycap><keycap>l</keycap></keycombo>
 	    </shortcut>
 	    <guimenu>Library</guimenu>
 	  </menuchoice></term>
 	  <listitem><para>For your convenience, &App; ships with a few,
-freely distributable scores.  This menu lists them.</para></listitem>
+freely distributable scores.  This menu allows you to choose one of the prepackaged scores for transcription and/or playback.</para></listitem>
 	</varlistentry>
       </variablelist>
     </chapter>
