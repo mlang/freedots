@@ -131,6 +131,8 @@ public final class Main
     // Create the menubar.
     JMenuBar menuBar = new JMenuBar();
     JMenu fileMenu = new JMenu("File");
+    JMenu playbackMenu = new JMenu("Playback");
+    
     fileMenu.setMnemonic(KeyEvent.VK_F);
 
     Action openAction = new FileOpenAction(this);
@@ -154,7 +156,7 @@ public final class Main
 	    }
 	}
       });
-    fileMenu.add(playItem);
+    playbackMenu.add(playItem);
 
     JMenuItem saveMidiItem = new JMenuItem("Save as MIDI", KeyEvent.VK_M);
     saveMidiItem.getAccessibleContext().setAccessibleDescription(
@@ -188,6 +190,7 @@ public final class Main
     quitItem.setMnemonic(KeyEvent.VK_Q);
     quitItem.getAccessibleContext().setAccessibleDescription(
       "Exit this application.");
+    fileMenu.addSeparator();
     fileMenu.add(quitItem);
 
     menuBar.add(fileMenu);
@@ -216,6 +219,7 @@ public final class Main
 
     libraryMenu.add(baroqueMenu);
 
+    menuBar.add(playbackMenu);
     menuBar.add(libraryMenu);
 
     setJMenuBar(menuBar);
