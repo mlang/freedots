@@ -8,6 +8,8 @@ import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -17,6 +19,7 @@ import java.io.FileOutputStream;
 import javax.sound.midi.MidiUnavailableException;
 import javax.swing.Action;
 import javax.swing.JButton;
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -63,6 +66,8 @@ public final class Main
   protected JTextArea textArea;
   Object lastObject = null;
   boolean autoPlay = false;
+  boolean caretFollowsPlayback = true;
+
   public void caretUpdate(CaretEvent caretEvent) {
     int index = caretEvent.getDot();
     Object object = null;
@@ -94,9 +99,11 @@ public final class Main
   protected MIDIPlayer midiPlayer;
   protected MetaEventRelay metaEventRelay = new MetaEventRelay(this);
   public void objectPlaying(Object object) {
-    int pos = transcriber.getIndexOfObject(object);
-    if (pos >= 0) {
-      textArea.setCaretPosition(pos);
+    if (caretFollowsPlayback) {
+      int pos = transcriber.getIndexOfObject(object);
+      if (pos >= 0) {
+        textArea.setCaretPosition(pos);
+      }
     }
   }
 
@@ -157,6 +164,15 @@ public final class Main
 
     Action playScoreAction = new PlayScoreAction(this);
     playbackMenu.add(playScoreAction);
+
+    JCheckBoxMenuItem caretFollowsPlaybackItem = new JCheckBoxMenuItem("Caret follows playback");
+    caretFollowsPlaybackItem.addItemListener(new ItemListener() {
+      public void itemStateChanged(ItemEvent e) {
+        caretFollowsPlayback = e.getStateChange() == ItemEvent.SELECTED;
+      }
+    });
+    caretFollowsPlaybackItem.setSelected(true);
+    playbackMenu.add(caretFollowsPlaybackItem);
 
     JMenuItem saveMidiItem = new JMenuItem("Save as MIDI", KeyEvent.VK_M);
     saveMidiItem.getAccessibleContext().setAccessibleDescription(
