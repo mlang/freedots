@@ -17,6 +17,7 @@ public final class FileOpenAction extends AbstractAction {
     super("Open");
     this.gui = gui;
     putValue(SHORT_DESCRIPTION, "Open an existing MusicXML file");
+    putValue(MNEMONIC_KEY, new Integer(KeyEvent.VK_O));
     putValue(ACCELERATOR_KEY,
              KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
   }

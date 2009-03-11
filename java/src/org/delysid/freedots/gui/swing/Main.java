@@ -65,6 +65,7 @@ public final class Main
 
   protected JTextArea textArea;
   Object lastObject = null;
+
   boolean autoPlay = false;
   boolean caretFollowsPlayback = true;
 
@@ -156,11 +157,7 @@ public final class Main
     fileMenu.setMnemonic(KeyEvent.VK_F);
 
     Action openAction = new FileOpenAction(this);
-    JMenuItem openItem = new JMenuItem(openAction);
-    openItem.setMnemonic(KeyEvent.VK_O);
-    openItem.getAccessibleContext().setAccessibleDescription(
-      "Open a MusicXML score file.");
-    fileMenu.add(openItem);
+    fileMenu.add(openAction);
 
     Action playScoreAction = new PlayScoreAction(this);
     playbackMenu.add(playScoreAction);
@@ -202,11 +199,12 @@ public final class Main
     });
     fileMenu.add(saveMidiItem);
 
+    fileMenu.addSeparator();
+
     JMenuItem quitItem = new JMenuItem(new QuitAction(this));
     quitItem.setMnemonic(KeyEvent.VK_Q);
     quitItem.getAccessibleContext().setAccessibleDescription(
       "Exit this application.");
-    fileMenu.addSeparator();
     fileMenu.add(quitItem);
 
     menuBar.add(fileMenu);
@@ -267,7 +265,7 @@ public final class Main
     contentPane.add(toolBar, BorderLayout.NORTH);
     contentPane.add(scrollPane, BorderLayout.CENTER);
     statusBar = new StatusBar();
-    contentPane.add(statusBar, java.awt.BorderLayout.SOUTH);
+    contentPane.add(statusBar, BorderLayout.SOUTH);
     setContentPane(contentPane);
 
     addWindowListener(new WindowAdapter() {
@@ -291,8 +289,7 @@ public final class Main
     }
   }
   public void quit() {
-    if (midiPlayer != null)
-      midiPlayer.close();
+    if (midiPlayer != null) midiPlayer.close();
     System.exit(0);
   }
 }
