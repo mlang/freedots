@@ -173,7 +173,7 @@ format can be found <ulink url="http://www.musicxml.org/xml/software.html#NowWri
     </chapter>
     <chapter><title>MusicXML on the Internet</title>
       <para>
-Since MusicXML is increasingly being used as a interchange format between
+Since MusicXML is increasingly being used as an interchange format between
 different music notation software, it is increasingly being used as the
 canonical format to distribute musical notation over the Internet.
       </para>
@@ -315,7 +315,7 @@ freely distributable scores.  This menu allows you to choose one of the prepacka
     <refentry id="freedots">
       <refmeta>
 	<refentrytitle>&app;</refentrytitle> <manvolnum>1</manvolnum>
-	<refmiscinfo class="version">0.2</refmiscinfo>
+	<refmiscinfo class="version">0.6</refmiscinfo>
       </refmeta>
 
       <refnamediv>

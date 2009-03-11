@@ -47,11 +47,6 @@
 		!define DISTDIR "java/dist"
 	!endif
 
-
-
-;OutFile "${FREEDOTSFILENAME}"
-	
-
 	SetCompressor /SOLID LZMA
 	SetOverwrite IfNewer
 
@@ -78,7 +73,7 @@
 ;Pages
 
 	!insertmacro MUI_PAGE_WELCOME
-;	!insertmacro MUI_PAGE_LICENSE "${DISTDIR}\LICENSE-GPL.txt"
+	!insertmacro MUI_PAGE_LICENSE "LICENSE.txt"
 	!insertmacro MUI_PAGE_DIRECTORY
 
 ;--------------------------------
