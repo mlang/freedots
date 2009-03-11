@@ -188,13 +188,11 @@ Function GetJRE
     Push $2
   
   ; 1) Check local JRE
-  CheckLocal:
     ClearErrors
     StrCpy $R0 "$EXEDIR\jre\bin\${JAVAEXE}"
     IfFileExists $R0 JreFound
   
   ; 2) Check for JAVA_HOME
-  CheckJavaHome:
     ClearErrors
     ReadEnvStr $R0 "JAVA_HOME"
     StrCpy $R0 "$R0\bin\${JAVAEXE}"
