@@ -19,8 +19,8 @@ installer: $(JARFILE)
 	makensis -DJARFILE=$< -DOUTFILE=$(WIN32FILE) WindowsInstaller.nsi
 
 distribute:
-	python googlecode_upload.py -s 'Java 1.6 JAR' -p freedots -u mlang@tugraz.at -w $(GC_PASSWORD) $(JARFILE)
-	python googlecode_upload.py -s 'Java 1.6 JAR' -p freedots -u mlang@tugraz.at -w $(GC_PASSWORD) $(WIN32FILE)
+	@python googlecode_upload.py -s 'Java 1.6 JAR' -p freedots -u mlang@tugraz.at -w $(GC_PASSWORD) $(JARFILE)
+	@python googlecode_upload.py -s 'MS Windows installer' -p freedots -u mlang@tugraz.at -w $(GC_PASSWORD) $(WIN32FILE)
 
 clean:
 	cd java && ant clean
