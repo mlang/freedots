@@ -225,6 +225,10 @@ public final class Main
     // setFloatable(false) to make the toolbar non movable
     JButton openButton = new JButton(openAction);
     toolBar.add(openButton);
+    
+    JButton playPause = new JButton();
+    playPause.setText("Play");
+    toolBar.add(playPause);
 
     // Create the text area
     textArea = new JTextArea(transcriber.getOptions().getPageHeight(),
