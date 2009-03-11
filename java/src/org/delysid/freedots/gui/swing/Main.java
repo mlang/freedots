@@ -103,7 +103,10 @@ public final class Main
     if (caretFollowsPlayback) {
       int pos = transcriber.getIndexOfObject(object);
       if (pos >= 0) {
+        boolean old = autoPlay;
+        autoPlay = false;
         textArea.setCaretPosition(pos);
+        autoPlay = old;
       }
     }
   }
@@ -162,13 +165,22 @@ public final class Main
     Action playScoreAction = new PlayScoreAction(this);
     playbackMenu.add(playScoreAction);
 
+    JCheckBoxMenuItem autoPlayItem = new JCheckBoxMenuItem("Play on caret move");
+    autoPlayItem.addItemListener(new ItemListener() {
+      public void itemStateChanged(ItemEvent e) {
+        autoPlay = e.getStateChange() == ItemEvent.SELECTED;
+      }
+    });
+    autoPlayItem.setSelected(autoPlay);
+    playbackMenu.add(autoPlayItem);
+
     JCheckBoxMenuItem caretFollowsPlaybackItem = new JCheckBoxMenuItem("Caret follows playback");
     caretFollowsPlaybackItem.addItemListener(new ItemListener() {
       public void itemStateChanged(ItemEvent e) {
         caretFollowsPlayback = e.getStateChange() == ItemEvent.SELECTED;
       }
     });
-    caretFollowsPlaybackItem.setSelected(true);
+    caretFollowsPlaybackItem.setSelected(caretFollowsPlayback);
     playbackMenu.add(caretFollowsPlaybackItem);
 
     JMenuItem saveMidiItem = new JMenuItem("Save as MIDI", KeyEvent.VK_M);
