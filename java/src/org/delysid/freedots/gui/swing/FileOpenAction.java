@@ -1,10 +1,12 @@
 package org.delysid.freedots.gui.swing;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.io.File;
 
 import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
+import javax.swing.KeyStroke;
 import javax.swing.filechooser.FileFilter;
 
 import org.delysid.freedots.musicxml.Score;
@@ -15,6 +17,8 @@ public final class FileOpenAction extends AbstractAction {
     super("Open");
     this.gui = gui;
     putValue(SHORT_DESCRIPTION, "Open an existing MusicXML file");
+    putValue(ACCELERATOR_KEY,
+             KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
   }
   public void actionPerformed(ActionEvent event) {
     JFileChooser fileChooser = new JFileChooser();
