@@ -10,7 +10,9 @@
 	!include "Library.nsh"
 !define VERSION "0.6p1" 
 
-!define FREEDOTSFILENAME "FreeDots-20090310.jar"
+!ifndef JARFILE
+        !error "JARFILE is not defined"
+!endif
 !define READMEFILENAME "README.JAWS.txt"
 
 
@@ -131,7 +133,7 @@ Section "install"
 	SetShellVarContext all
 	SetOverwrite IfNewer
 
-	File ${DISTDIR}\${FREEDOTSFILENAME} 
+	File ${JARFILE} 
 	File /r ${READMEFILENAME}
 	File doc\manual.html
 
@@ -150,7 +152,7 @@ Section "install"
 
 		;Create shortcuts
 		CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
-		CreateShortCut "$SMPROGRAMS\$StartMenuFolder\FreeDots.lnk" "$INSTDIR\${FREEDOTSFILENAME}" -r
+		CreateShortCut "$SMPROGRAMS\$StartMenuFolder\FreeDots.lnk" "$INSTDIR\${JARFILE}" -r
 		CreateShortCut "$SMPROGRAMS\$StartMenuFolder\README.JAWS.lnk" "$INSTDIR\${READMEFILENAME}" -r
 		CreateShortCut "$SMPROGRAMS\$StartMenuFolder\User Manual.lnk" "$INSTDIR\manual.html" -r
 
