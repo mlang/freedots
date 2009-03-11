@@ -100,6 +100,19 @@ public final class Main
     }
   }
 
+  public boolean startPlayback() {
+    if (score != null)
+      try {
+        midiPlayer.setSequence(new MIDISequence(score, metaEventRelay));
+        midiPlayer.start();
+        return true;
+      } catch (javax.sound.midi.InvalidMidiDataException exception) {
+        exception.printStackTrace();
+      }
+
+    return false;
+  }
+
   public Main(Transcriber transcriber) {
     super("FreeDots");
     this.transcriber = transcriber;
@@ -142,21 +155,8 @@ public final class Main
       "Open a MusicXML score file.");
     fileMenu.add(openItem);
 
-    JMenuItem playItem = new JMenuItem("Play score", KeyEvent.VK_P);
-    playItem.getAccessibleContext().setAccessibleDescription(
-      "Play the complete score.");
-    playItem.addActionListener(new ActionListener() {
-	public void actionPerformed(ActionEvent e) {
-	  if (score != null)
-      try {
-	      midiPlayer.setSequence(new MIDISequence(score, metaEventRelay));
-	      midiPlayer.start();
-	    } catch (javax.sound.midi.InvalidMidiDataException exception) {
-	      exception.printStackTrace();
-	    }
-	}
-      });
-    playbackMenu.add(playItem);
+    Action playScoreAction = new PlayScoreAction(this);
+    playbackMenu.add(playScoreAction);
 
     JMenuItem saveMidiItem = new JMenuItem("Save as MIDI", KeyEvent.VK_M);
     saveMidiItem.getAccessibleContext().setAccessibleDescription(
