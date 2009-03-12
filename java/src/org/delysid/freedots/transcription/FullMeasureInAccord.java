@@ -1,4 +1,4 @@
-package org.delysid.freedots.transcription;
+/* -*- c-basic-offset: 2; -*- */
 /*
  * FreeDots -- MusicXML to braille music transcription
  *
@@ -20,6 +20,7 @@ package org.delysid.freedots.transcription;
  *
  * This software is maintained by Mario Lang <mlang@delysid.org>.
  */
+package org.delysid.freedots.transcription;
 
 import java.util.ArrayList;
 import java.util.List;

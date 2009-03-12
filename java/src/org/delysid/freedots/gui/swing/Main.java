@@ -62,8 +62,6 @@ import org.delysid.freedots.playback.MetaEventRelay;
 import org.delysid.freedots.playback.MetaEventListeningUnavailableException;
 import org.delysid.freedots.transcription.Transcriber;
 
-import org.delysid.StandardMidiFileWriter;
-
 public final class Main
   extends JFrame
   implements javax.swing.event.CaretListener,
@@ -71,6 +69,8 @@ public final class Main
              org.delysid.freedots.playback.PlaybackObserver {
   
   protected Score score = null;
+  public Score getScore() { return score; }
+
   protected Transcriber transcriber = null;
   protected StatusBar statusBar=null;
 
@@ -78,7 +78,11 @@ public final class Main
     this.score = score;
     try {
       transcriber.setScore(score);
-      textArea.append(transcriber.toString());
+      textArea.setText(transcriber.toString());
+      textArea.setCaretPosition(0);
+      boolean scoreAvailable = score != null;
+      fileSaveAsMidiAction.setEnabled(scoreAvailable);
+      playScoreAction.setEnabled(scoreAvailable);
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -145,6 +149,9 @@ public final class Main
     return false;
   }
 
+  private Action playScoreAction = new PlayScoreAction(this);
+  private Action fileSaveAsMidiAction = new FileSaveAsMidiAction(this);
+
   public Main(Transcriber transcriber) {
     super("FreeDots");
     this.transcriber = transcriber;
@@ -183,7 +190,6 @@ public final class Main
     Action openAction = new FileOpenAction(this);
     fileMenu.add(openAction);
 
-    Action playScoreAction = new PlayScoreAction(this);
     playbackMenu.add(playScoreAction);
 
     JCheckBoxMenuItem autoPlayItem = new JCheckBoxMenuItem("Play on caret move");
@@ -204,33 +210,7 @@ public final class Main
     caretFollowsPlaybackItem.setSelected(caretFollowsPlayback);
     playbackMenu.add(caretFollowsPlaybackItem);
 
-    JMenuItem saveMidiItem = new JMenuItem("Save as MIDI", KeyEvent.VK_M);
-    saveMidiItem.getAccessibleContext().setAccessibleDescription(
-      "Save as Standard MIDI file.");
-    saveMidiItem.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-	if (score != null) {
-	  JFileChooser fileChooser = new JFileChooser();
-	  if (fileChooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
-	    File file = fileChooser.getSelectedFile();
-	    try {
-	      FileOutputStream fileOutputStream = new FileOutputStream(file);
-	      try {
-		StandardMidiFileWriter mfw = new StandardMidiFileWriter();
-		mfw.write(new MIDISequence(score), 1, fileOutputStream);
-	      } catch (Exception exception) {
-		exception.printStackTrace();
-	      } finally {
-		fileOutputStream.close();
-	      }
-	    } catch (java.io.IOException exception) {
-	      exception.printStackTrace();
-	    }
-	  }
-	}
-      }
-    });
-    fileMenu.add(saveMidiItem);
+    fileMenu.add(fileSaveAsMidiAction);
 
     fileMenu.addSeparator();
 
@@ -271,16 +251,6 @@ public final class Main
 
     setJMenuBar(menuBar);
 
-    // Create the toolbar.
-    JToolBar toolBar = new JToolBar();
-    // setFloatable(false) to make the toolbar non movable
-    JButton openButton = new JButton(openAction);
-    toolBar.add(openButton);
-    
-    JButton playPause = new JButton();
-    playPause.setText("Play");
-    toolBar.add(playPause);
-
     // Create the text area
     textArea = new JTextArea(transcriber.getOptions().getPageHeight(),
                              transcriber.getOptions().getPageWidth());
@@ -295,7 +265,6 @@ public final class Main
     JPanel contentPane = new JPanel();
     contentPane.setLayout(new BorderLayout());
     contentPane.setPreferredSize(new Dimension(400, 100));
-    contentPane.add(toolBar, BorderLayout.NORTH);
     contentPane.add(scrollPane, BorderLayout.CENTER);
     statusBar = new StatusBar();
     contentPane.add(statusBar, BorderLayout.SOUTH);
@@ -318,7 +287,11 @@ public final class Main
     if (transcriber != null) {
       this.transcriber = transcriber;
       this.score = transcriber.getScore();
-      textArea.append(transcriber.toString());
+      textArea.setText(transcriber.toString());
+
+      boolean scoreAvailable = score != null;
+      fileSaveAsMidiAction.setEnabled(scoreAvailable);
+      playScoreAction.setEnabled(scoreAvailable);
     }
   }
   public void quit() {
