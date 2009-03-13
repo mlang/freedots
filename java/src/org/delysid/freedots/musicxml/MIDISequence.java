@@ -56,12 +56,15 @@ public class MIDISequence extends javax.sound.midi.Sequence {
     Track tempoTrack = createTrack();
     for (Part part:score.getParts()) {
       Track track = createTrack();
+      MetaMessage metaMessage;
       int velocity = 64;
 
-      String trackName = new String(part.getName());
-      MetaMessage metaMessage = new MetaMessage();
-      metaMessage.setMessage(0x03, trackName.getBytes(), trackName.length());
-      track.add(new MidiEvent(metaMessage, 0));
+      if (part.getName() != null) {
+        String trackName = new String(part.getName());
+        metaMessage = new MetaMessage();
+        metaMessage.setMessage(0x03, trackName.getBytes(), trackName.length());
+        track.add(new MidiEvent(metaMessage, 0));
+      }
 
       initializeMidiPrograms(track, part);
 
