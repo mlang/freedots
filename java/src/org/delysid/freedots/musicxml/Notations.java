@@ -68,6 +68,8 @@ class Notations {
         if (node.getNodeType() == Node.ELEMENT_NODE) {
           if (node.getNodeName().equals("mordent")) {
             ornaments.add(Ornament.mordent);
+	  } else if (node.getNodeName().equals("trill-mark")) {
+	    ornaments.add(Ornament.trill);
           } else if (node.getNodeName().equals("turn")) {
             ornaments.add(Ornament.turn);
           } else {

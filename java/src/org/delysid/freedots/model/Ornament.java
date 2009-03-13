@@ -25,11 +25,12 @@ package org.delysid.freedots.model;
 import org.delysid.freedots.Braille;
 
 public enum Ornament {
-  mordent, turn;
+  mordent, trill, turn;
 
   public Braille toBraille() {
     switch (this) {
       case mordent: return Braille.mordent;
+      case trill: return Braille.trill;
       case turn: return Braille.turn;
     }
 

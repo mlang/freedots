@@ -31,7 +31,7 @@ public enum Braille {
 
   tie(4, 14), slur(14),
 
-  grace(5, 26), mordent(5, 235, 123), turn(6, 256),
+  grace(5, 26), mordent(5, 235, 123), trill(235), turn(6, 256),
 
   fullMeasureInAccord(126, 345),
   partMeasureInAccord(46, 13), partMeasureInAccordDivision(5, 2),
