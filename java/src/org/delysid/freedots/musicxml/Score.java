@@ -132,7 +132,8 @@ public final class Score {
 	  if (idValue.equals(elem.getAttribute("id"))) scorePart = elem;
 	}
       }
-      parts.add(new Part(part, scorePart, this));
+      if (scorePart != null)
+        parts.add(new Part(part, scorePart, this));
     }
   }
 
