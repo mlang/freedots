@@ -69,14 +69,6 @@ public final class Main {
       }
       if (score != null) transcriber.setScore(score);
     }
-//     try {
-//       Display display = new Display();
-//       MainFrame frame = new MainFrame();
-//       Shell shell = frame.open(display);
-//       while (!shell.isDisposed())
-//         if (!display.readAndDispatch()) display.sleep();
-//       display.dispose();
-//     } catch (SWTError e) {
     if (options.getWindowSystem()) {
       try {
         GraphicalUserInterface gui = null;
