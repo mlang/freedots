@@ -133,7 +133,7 @@ Section "install"
 	SetShellVarContext all
 	SetOverwrite IfNewer
 
-	File ${JARFILE} 
+	File java/dist/${JARFILE} 
 	File /r ${READMEFILENAME}
 	File doc\manual.html
 
