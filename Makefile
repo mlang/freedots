@@ -15,7 +15,7 @@ documentation: doc/manual.xml
 	         --stringparam man.output.in.separate.dir 1 \
 	/usr/share/xml/docbook/stylesheet/nwalsh/manpages/docbook.xsl $<
 
-installer: jav/dist/$(JARFILE)
+installer: java/dist/$(JARFILE)
 	makensis -DJARFILE=$(JARFILE) -DOUTFILE=$(WIN32FILE) WindowsInstaller.nsi
 
 distribute:
