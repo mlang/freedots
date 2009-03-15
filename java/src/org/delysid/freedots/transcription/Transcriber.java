@@ -58,7 +58,7 @@ public final class Transcriber {
     }
   }
 
-  Options options;
+  private Options options;
   public Options getOptions() { return options; }
 
   private BrailleList strings;
