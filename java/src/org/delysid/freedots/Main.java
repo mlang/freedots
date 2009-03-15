@@ -130,7 +130,7 @@ public final class Main {
       }
     }
   }
-  static void printUsage() {
+  private static void printUsage() {
     System.out.println("Usage: java -jar freedots.jar " +
                        "[-w PAGEWIDTH] [-nw] [-p] [FILENAME|URL]");
     System.out.println("Options:");

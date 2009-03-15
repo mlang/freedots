@@ -148,6 +148,9 @@ public final class Main
 
     return false;
   }
+  public void stopPlayback() {
+    if (midiPlayer != null) midiPlayer.stop();
+  }
 
   private Action playScoreAction = new PlayScoreAction(this);
   private Action fileSaveAsMidiAction = new FileSaveAsMidiAction(this);
@@ -191,6 +194,7 @@ public final class Main
     fileMenu.add(openAction);
 
     playbackMenu.add(playScoreAction);
+    playbackMenu.add(new StopPlaybackAction(this));
 
     JCheckBoxMenuItem autoPlayItem = new JCheckBoxMenuItem("Play on caret move");
     autoPlayItem.addItemListener(new ItemListener() {
@@ -264,7 +268,7 @@ public final class Main
     // Lay out the content pane.
     JPanel contentPane = new JPanel();
     contentPane.setLayout(new BorderLayout());
-    contentPane.setPreferredSize(new Dimension(400, 100));
+    //contentPane.setPreferredSize(new Dimension(400, 100));
     contentPane.add(scrollPane, BorderLayout.CENTER);
     statusBar = new StatusBar();
     contentPane.add(statusBar, BorderLayout.SOUTH);
