@@ -24,14 +24,26 @@ package org.delysid.freedots.model;
 
 import org.delysid.freedots.Braille;
 
+/**
+ * The time signature is a notational convention used in Western musical
+ * notation to specify how many beats are in each measure and what note value
+ * constitutes one beat.
+ *
+ * @see <a href="http://en.wikipedia.org/wiki/Time_signature">Wikipedia:Time_signature</a>
+ */
 public class TimeSignature extends Fraction {
   public TimeSignature(int numerator, int denominator) {
     super(numerator, denominator);
   }
+
+  /**
+   * 3/4 is not equal to 6/8 when it comes to time signatures
+   */
   public boolean equals(TimeSignature other) {
     return this.getNumerator()==other.getNumerator() &&
            this.getDenominator()==other.getDenominator();
   }
+
   public String toBraille() {
     String result = "";
     int number = denominator;

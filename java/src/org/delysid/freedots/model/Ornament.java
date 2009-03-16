@@ -24,6 +24,9 @@ package org.delysid.freedots.model;
 
 import org.delysid.freedots.Braille;
 
+/**
+ * @see <a href="http://en.wikipedia.org/wiki/Ornament_(music)">Wikipedia:Ornament_(music)</a>
+ */
 public enum Ornament {
   mordent, trill, turn;
 

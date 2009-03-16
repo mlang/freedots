@@ -27,6 +27,9 @@ import java.util.List;
 
 import org.delysid.freedots.Braille;
 
+/**
+ * @see <a href="http://en.wikipedia.org/wiki/Fingering">Wikipedia:Fingering</a>
+ */
 public class Fingering {
   private List<Integer> fingers = new ArrayList<Integer>(1);
 
