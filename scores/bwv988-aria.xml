@@ -6358,12 +6358,6 @@
 			<backup>
 				<duration>1440</duration>
 			</backup>
-			<direction placement="below">
-				<direction-type>
-					<words default-x="-32" default-y="-807" font-family="Times New Roman" font-size="9">Sheet music from www. MutopiaProject.org</words>
-				</direction-type>
-				<staff>2</staff>
-			</direction>
 			<note>
 				<pitch>
 					<step>G</step>
@@ -6694,12 +6688,6 @@
 				<staff>2</staff>
 				<beam number="1">continue</beam>
 			</note>
-			<direction placement="below">
-				<direction-type>
-					<words default-x="27" default-y="-807" font-family="Times New Roman" font-size="9">to download, with the</words>
-				</direction-type>
-				<staff>2</staff>
-			</direction>
 			<note>
 				<pitch>
 					<step>B</step>
@@ -6920,12 +6908,6 @@
 				<beam number="1">continue</beam>
 				<beam number="2">end</beam>
 			</note>
-			<direction placement="below">
-				<direction-type>
-					<words default-x="-15" default-y="-807" font-family="Times New Roman" font-size="9" font-style="italic">freedom</words>
-				</direction-type>
-				<staff>2</staff>
-			</direction>
 			<note>
 				<pitch>
 					<step>G</step>
@@ -6942,12 +6924,6 @@
 					</technical>
 				</notations>
 			</note>
-			<direction placement="below">
-				<direction-type>
-					<words default-x="19" default-y="-807" font-family="Times New Roman" font-size="9">to distribute, modify and perform.</words>
-				</direction-type>
-				<staff>2</staff>
-			</direction>
 			<note>
 				<pitch>
 					<step>B</step>
