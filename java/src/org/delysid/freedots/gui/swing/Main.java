@@ -235,6 +235,17 @@ public final class Main
     JMenu jsBachMenu = new JMenu("Johann Sebastian Bach");
     jsBachMenu.setMnemonic(KeyEvent.VK_B);
 
+    JMenuItem bwv988Item = new JMenuItem("BWV 988 Aria", KeyEvent.VK_G);
+    bwv988Item.getAccessibleContext().setAccessibleDescription(
+      "Aria from goldberg variations");
+    bwv988Item.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        Library library = new Library();
+        setScore(library.loadScore("bwv988-aria.xml"));
+      }
+    });
+    jsBachMenu.add(bwv988Item);
+
     JMenuItem bwv1013Item = new JMenuItem("BWV 1013 1. Allemande", KeyEvent.VK_A);
     bwv1013Item.getAccessibleContext().setAccessibleDescription(
       "Partita in A minor for solo flute: first movement (Allemande)");
