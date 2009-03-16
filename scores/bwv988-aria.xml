@@ -6903,7 +6903,7 @@
 					<octave>3</octave>
 				</pitch>
 				<duration>240</duration>
-				<voice>3</voice>
+				<voice>2</voice>
 				<type>eighth</type>
 				<staff>2</staff>
 				<beam number="1">begin</beam>
@@ -6914,7 +6914,7 @@
 					<octave>3</octave>
 				</pitch>
 				<duration>240</duration>
-				<voice>3</voice>
+				<voice>2</voice>
 				<type>eighth</type>
 				<staff>2</staff>
 				<beam number="1">continue</beam>
@@ -6932,7 +6932,7 @@
 					<octave>3</octave>
 				</pitch>
 				<duration>240</duration>
-				<voice>3</voice>
+				<voice>2</voice>
 				<type>eighth</type>
 				<staff>2</staff>
 				<beam number="1">continue</beam>
@@ -6954,7 +6954,7 @@
 					<octave>3</octave>
 				</pitch>
 				<duration>240</duration>
-				<voice>3</voice>
+				<voice>2</voice>
 				<type>eighth</type>
 				<staff>2</staff>
 				<beam number="1">continue</beam>
@@ -6966,7 +6966,7 @@
 					<octave>4</octave>
 				</pitch>
 				<duration>240</duration>
-				<voice>3</voice>
+				<voice>2</voice>
 				<type>eighth</type>
 				<staff>2</staff>
 				<beam number="1">continue</beam>
@@ -6977,7 +6977,7 @@
 					<octave>3</octave>
 				</pitch>
 				<duration>240</duration>
-				<voice>3</voice>
+				<voice>2</voice>
 				<type>eighth</type>
 				<staff>2</staff>
 				<beam number="1">end</beam>
@@ -7110,6 +7110,11 @@
 				<staff>1</staff>
 				<beam number="1">begin</beam>
 				<beam number="2">begin</beam>
+				<notations>
+					<technical>
+						<fingering>1</fingering>
+					</technical>
+				</notations>
 			</note>
 			<note>
 				<pitch>
@@ -7123,6 +7128,11 @@
 				<staff>1</staff>
 				<beam number="1">continue</beam>
 				<beam number="2">continue</beam>
+				<notations>
+					<technical>
+						<fingering>2</fingering>
+					</technical>
+				</notations>
 			</note>
 			<note>
 				<pitch>
@@ -7147,6 +7157,11 @@
 				<type>half</type>
 				<stem>down</stem>
 				<staff>1</staff>
+				<notations>
+					<technical>
+						<fingering>2 1</fingering>
+					</technical>
+				</notations>
 			</note>
 			<backup>
 				<duration>1440</duration>

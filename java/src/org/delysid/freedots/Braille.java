@@ -47,6 +47,7 @@ public enum Braille {
   hyphen(5),
 
   postDottedDoubleBar(126, 2356), dottedDoubleBar(126, 23), doubleBar(126, 13),
+  fermata(126, 123), fermataSquare(56, 126, 123), fermataTent(45, 126, 123),
 
   finger1(1), finger2(12), finger3(123), finger4(2), finger5(13),
 

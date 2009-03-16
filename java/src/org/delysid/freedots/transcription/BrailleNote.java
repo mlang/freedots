@@ -28,6 +28,7 @@ import org.delysid.freedots.Braille;
 import org.delysid.freedots.Options;
 import org.delysid.freedots.model.AbstractPitch;
 import org.delysid.freedots.model.Accidental;
+import org.delysid.freedots.model.Fermata;
 import org.delysid.freedots.model.Fingering;
 import org.delysid.freedots.model.Ornament;
 import org.delysid.freedots.model.Slur;
@@ -80,6 +81,12 @@ class BrailleNote extends BrailleString {
         braille += fingering.toBrailleString();
       }
     }
+
+    Fermata fermata = note.getFermata();
+    if (fermata != null) {
+      braille += fermata.toBraille();
+    }
+
     if (note.isTieStart()) {
       braille += Braille.tie;
     } else {

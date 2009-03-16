@@ -30,6 +30,7 @@ import java.util.Set;
 
 import org.delysid.freedots.model.Accidental;
 import org.delysid.freedots.model.AugmentedFraction;
+import org.delysid.freedots.model.Fermata;
 import org.delysid.freedots.model.Fingering;
 import org.delysid.freedots.model.Fraction;
 import org.delysid.freedots.model.Ornament;
@@ -302,6 +303,13 @@ public final class Note extends Musicdata implements RhythmicElement {
   }
 
 
+  public Fermata getFermata() {
+    if (notations != null) {
+      return notations.getFermata();
+    }
+
+    return null;
+  }
   public Set<Ornament> getOrnaments() {
     if (notations != null) {
       return notations.getOrnaments();

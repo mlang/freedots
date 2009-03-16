@@ -31,6 +31,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 
+import org.delysid.freedots.model.Fermata;
 import org.delysid.freedots.model.Fingering;
 import org.delysid.freedots.model.Ornament;
 
@@ -45,6 +46,20 @@ class Notations {
     if (nodeList.getLength() >= 1) {
       technical = new Technical((Element)nodeList.item(nodeList.getLength() - 1));
     }
+  }
+
+  Fermata getFermata() {
+    NodeList nodeList = element.getElementsByTagName("fermata");
+    if (nodeList.getLength() >= 1) {
+      Element fermata = (Element)nodeList.item(nodeList.getLength() - 1);
+      Fermata.Type fermataType = Fermata.Type.UPRIGHT;
+      Fermata.Shape fermataShape = Fermata.Shape.NORMAL;
+      if (fermata.hasAttribute("type") && fermata.getAttribute("type").equals("inverted"))
+	fermataType = Fermata.Type.INVERTED;
+      return new Fermata(fermataType, fermataShape);
+    }
+
+    return null;
   }
 
   public List<Slur> getSlurs() {
