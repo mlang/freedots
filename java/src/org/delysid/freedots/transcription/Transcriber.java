@@ -24,20 +24,14 @@ package org.delysid.freedots.transcription;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-
 import org.delysid.freedots.Braille;
 import org.delysid.freedots.Options;
 
-import org.delysid.freedots.model.AbstractPitch;
 import org.delysid.freedots.model.EndBar;
 import org.delysid.freedots.model.Event;
 import org.delysid.freedots.model.MusicList;
 import org.delysid.freedots.model.Staff;
 import org.delysid.freedots.model.StartBar;
-import org.delysid.freedots.model.TimeSignature;
-import org.delysid.freedots.model.Voice;
-
 import org.delysid.freedots.musicxml.Score;
 import org.delysid.freedots.musicxml.Part;
 

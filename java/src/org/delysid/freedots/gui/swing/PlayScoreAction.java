@@ -28,8 +28,6 @@ import java.awt.event.KeyEvent;
 import javax.swing.AbstractAction;
 import javax.swing.KeyStroke;
 
-import org.delysid.freedots.musicxml.Score;
-
 public final class PlayScoreAction extends AbstractAction {
   private Main gui;
   public PlayScoreAction(Main gui) {

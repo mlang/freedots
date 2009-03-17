@@ -26,10 +26,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileOutputStream;
-
 import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
-import javax.swing.KeyStroke;
 
 import org.delysid.StandardMidiFileWriter;
 import org.delysid.freedots.musicxml.MIDISequence;
