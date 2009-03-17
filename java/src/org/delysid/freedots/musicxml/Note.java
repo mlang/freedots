@@ -29,6 +29,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.delysid.freedots.model.Accidental;
+import org.delysid.freedots.model.Articulation;
 import org.delysid.freedots.model.AugmentedFraction;
 import org.delysid.freedots.model.Fermata;
 import org.delysid.freedots.model.Fingering;
@@ -306,6 +307,13 @@ public final class Note extends Musicdata implements RhythmicElement {
   public Fermata getFermata() {
     if (notations != null) {
       return notations.getFermata();
+    }
+
+    return null;
+  }
+  public Set<Articulation> getArticulations() {
+    if (notations != null) {
+      return notations.getArticulations();
     }
 
     return null;

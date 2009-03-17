@@ -31,6 +31,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 
+import org.delysid.freedots.model.Articulation;
 import org.delysid.freedots.model.Fermata;
 import org.delysid.freedots.model.Fingering;
 import org.delysid.freedots.model.Ornament;
@@ -72,6 +73,36 @@ class Notations {
   }    
 
   public Technical getTechnical() { return technical; }
+
+  public Set<Articulation> getArticulations() {
+    NodeList nodeList = element.getElementsByTagName("articulations");
+    if (nodeList.getLength() >= 1) {
+      nodeList = ((Element)nodeList.item(nodeList.getLength()-1)).getChildNodes();
+      Set<Articulation> articulations = EnumSet.noneOf(Articulation.class);
+      for (int i = 0; i < nodeList.getLength(); i++) {
+        Node node = nodeList.item(i);
+        if (node.getNodeType() == Node.ELEMENT_NODE) {
+          if (node.getNodeName().equals("accent")) {
+            articulations.add(Articulation.accent);
+	  } else if (node.getNodeName().equals("breath-mark")) {
+	    articulations.add(Articulation.breathMark);
+          } else if (node.getNodeName().equals("staccato")) {
+            articulations.add(Articulation.staccato);
+          } else if (node.getNodeName().equals("staccatissimo")) {
+            articulations.add(Articulation.staccatissimo);
+          } else if (node.getNodeName().equals("tenuto")) {
+            articulations.add(Articulation.tenuto);
+          } else {
+            System.err.println("WARNING: Unhandled articulation "+node.getNodeName());
+          }
+        }
+      }
+
+      return articulations;
+    }
+
+    return null;
+  }
 
   public Set<Ornament> getOrnaments() {
     NodeList nodeList = element.getElementsByTagName("ornaments");

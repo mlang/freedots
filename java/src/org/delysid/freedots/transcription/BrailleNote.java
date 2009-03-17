@@ -28,6 +28,7 @@ import org.delysid.freedots.Braille;
 import org.delysid.freedots.Options;
 import org.delysid.freedots.model.AbstractPitch;
 import org.delysid.freedots.model.Accidental;
+import org.delysid.freedots.model.Articulation;
 import org.delysid.freedots.model.Fermata;
 import org.delysid.freedots.model.Fingering;
 import org.delysid.freedots.model.Ornament;
@@ -62,6 +63,11 @@ class BrailleNote extends BrailleString {
     if (ornaments != null) {
       for (Ornament ornament:note.getOrnaments())
         braille += ornament.toBraille();
+    }
+    Set<Articulation> articulations = note.getArticulations();
+    if (articulations != null) {
+      for (Articulation articulation : articulations)
+        braille += articulation.toBraille();
     }
 
     Accidental accidental = note.getAccidental();
