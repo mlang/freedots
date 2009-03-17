@@ -30,7 +30,8 @@ public enum Braille {
   numberSign(3456),
 
   tie(4, 14), slur(14),
-  accent(46, 236), breathMark(6, 34), staccato(236), staccatissimo(6, 236),
+  accent(46, 236), martellato(56, 236), breathMark(6, 34),
+  staccato(236), mezzoStaccato(5, 236), staccatissimo(6, 236),
   tenuto(456, 236),
 
   grace(5, 26), mordent(5, 235, 123), trill(235), turn(6, 256),

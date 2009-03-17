@@ -84,8 +84,10 @@ class Notations {
         if (node.getNodeType() == Node.ELEMENT_NODE) {
           if (node.getNodeName().equals("accent")) {
             articulations.add(Articulation.accent);
-	  } else if (node.getNodeName().equals("breath-mark")) {
-	    articulations.add(Articulation.breathMark);
+          } else if (node.getNodeName().equals("strong-accent")) {
+            articulations.add(Articulation.strongAccent);
+          } else if (node.getNodeName().equals("breath-mark")) {
+            articulations.add(Articulation.breathMark);
           } else if (node.getNodeName().equals("staccato")) {
             articulations.add(Articulation.staccato);
           } else if (node.getNodeName().equals("staccatissimo")) {

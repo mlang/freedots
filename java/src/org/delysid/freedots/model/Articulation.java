@@ -35,12 +35,13 @@ import org.delysid.freedots.Braille;
  * @see <a href="http://en.wikipedia.org/wiki/Articulation_(music)">Wikipedia:Articulation_(music)</a>
  */
 public enum Articulation {
-  accent, breathMark,
+  accent, strongAccent, breathMark,
   staccato, staccatissimo, tenuto;
 
   public Braille toBraille() {
     switch (this) {
       case accent: return Braille.accent;
+      case strongAccent: return Braille.martellato;
       case breathMark: return Braille.breathMark;
       case staccato: return Braille.staccato;
       case staccatissimo: return Braille.staccatissimo;
