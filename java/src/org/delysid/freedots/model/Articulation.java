@@ -22,6 +22,9 @@
  */
 package org.delysid.freedots.model;
 
+import java.util.EnumSet;
+import java.util.Set;
+
 import org.delysid.freedots.Braille;
 
 /**
@@ -36,7 +39,7 @@ import org.delysid.freedots.Braille;
  */
 public enum Articulation {
   accent, strongAccent, breathMark,
-  staccato, staccatissimo, tenuto;
+  staccato, mezzoStaccato, staccatissimo, tenuto;
 
   public Braille toBraille() {
     switch (this) {
@@ -44,9 +47,13 @@ public enum Articulation {
       case strongAccent: return Braille.martellato;
       case breathMark: return Braille.breathMark;
       case staccato: return Braille.staccato;
+      case mezzoStaccato: return Braille.mezzoStaccato;
       case staccatissimo: return Braille.staccatissimo;
       case tenuto: return Braille.tenuto;
     }
     return null;
   }
+
+  public final static Set<Articulation>
+  mezzoStaccatoSet = EnumSet.of(staccato, tenuto);
 }

@@ -100,6 +100,11 @@ class Notations {
         }
       }
 
+      if (articulations.containsAll(Articulation.mezzoStaccatoSet)) {
+	articulations.removeAll(Articulation.mezzoStaccatoSet);
+	articulations.add(Articulation.mezzoStaccato);
+      }
+
       return articulations;
     }
 
