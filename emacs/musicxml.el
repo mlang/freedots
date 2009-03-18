@@ -895,7 +895,7 @@ buffer."
 (define-key musicxml-minor-mode-map (kbd "C-c | b") 'musicxml-to-braille-music)
 
 (defconst musicxml-lilypond-note-regexp
-  "\\([abcdefgrs]\\)\\(es\\|is\\)?\\([',]*\\)\\([1-8]+\\)\\(\\.*\\)\\(\\\\trill\\)?")
+  "\\([abcdefgrs]\\)\\(es\\|is\\)?\\([',]*\\)\\([1-8]+\\)\\(\\.*\\)\\(\\\\fermata\\|\\\\prall\\|\\\\trill\\)?")
 
 (defvar musicxml-lilypond-divisions 32)
 
@@ -938,10 +938,16 @@ buffer."
 	     ,@(loop for dot from 1 upto dots collect (list 'dot))
 	     ,@(when ornament
 		 `((notations nil
-			      (ornaments nil
-					 ,(cond
-					   ((string= ornament "\\trill")
-					    (list 'trill-mark)))))))))))
+			      ,(cond
+				((string= ornament "\\fermata")
+				 `(fermata))
+				((string= ornament "\\trill")
+				 `(ornaments nil
+					     (trill-mark)))
+				((string= ornament "\\prall")
+				 `(ornaments nil
+					     (inverted-mordent)))))))))))
+
 
 (provide 'musicxml)
 ;;; musicxml.el ends here
