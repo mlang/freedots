@@ -2065,7 +2065,7 @@
         <repeat direction="backward"/>
       </barline>
     </measure>
-    <measure number="23">
+    <measure number="23" implicit="yes">
       <!-- b'8 -->
       <barline location="left">
         <bar-style>heavy-light</bar-style>
