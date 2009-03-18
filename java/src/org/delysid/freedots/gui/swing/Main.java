@@ -241,16 +241,50 @@ public final class Main
     });
     jsBachMenu.add(bwv988Item);
 
-    JMenuItem bwv1013Item = new JMenuItem("BWV 1013 1. Allemande", KeyEvent.VK_A);
-    bwv1013Item.getAccessibleContext().setAccessibleDescription(
+    JMenu bwv1013Menu = new JMenu("BWV 1013: Partita in A minor for solo flute");
+
+    JMenuItem bwv1013_1Item = new JMenuItem("1. Allemande", KeyEvent.VK_A);
+    bwv1013_1Item.getAccessibleContext().setAccessibleDescription(
       "Partita in A minor for solo flute: first movement (Allemande)");
-    bwv1013Item.addActionListener(new ActionListener() {
+    bwv1013_1Item.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         Library library = new Library();
         setScore(library.loadScore("bwv1013-1.xml"));
       }
     });
-    jsBachMenu.add(bwv1013Item);
+    bwv1013Menu.add(bwv1013_1Item);
+    JMenuItem bwv1013_2Item = new JMenuItem("2. Corrente", KeyEvent.VK_C);
+    bwv1013_2Item.getAccessibleContext().setAccessibleDescription(
+      "Partita in A minor for solo flute: second movement (Corrente)");
+    bwv1013_2Item.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        Library library = new Library();
+        setScore(library.loadScore("bwv1013-2.xml"));
+      }
+    });
+    bwv1013Menu.add(bwv1013_2Item);
+    JMenuItem bwv1013_3Item = new JMenuItem("3. Sarabande", KeyEvent.VK_S);
+    bwv1013_3Item.getAccessibleContext().setAccessibleDescription(
+      "Partita in A minor for solo flute: second movement (Sarabande)");
+    bwv1013_3Item.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        Library library = new Library();
+        setScore(library.loadScore("bwv1013-3.xml"));
+      }
+    });
+    bwv1013Menu.add(bwv1013_3Item);
+    JMenuItem bwv1013_4Item = new JMenuItem("4. Bouree", KeyEvent.VK_B);
+    bwv1013_4Item.getAccessibleContext().setAccessibleDescription(
+      "Partita in A minor for solo flute: second movement (Bouree)");
+    bwv1013_4Item.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        Library library = new Library();
+        setScore(library.loadScore("bwv1013-4.xml"));
+      }
+    });
+    bwv1013Menu.add(bwv1013_4Item);
+
+    jsBachMenu.add(bwv1013Menu);
 
     baroqueMenu.add(jsBachMenu);
 
