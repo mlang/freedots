@@ -894,5 +894,54 @@ buffer."
 
 (define-key musicxml-minor-mode-map (kbd "C-c | b") 'musicxml-to-braille-music)
 
+(defconst musicxml-lilypond-note-regexp
+  "\\([abcdefgrs]\\)\\(es\\|is\\)?\\([',]*\\)\\([1-8]+\\)\\(\\.*\\)\\(\\\\trill\\)?")
+
+(defvar musicxml-lilypond-divisions 32)
+
+(defun musicxml-insert-from-lilypond-fragment (string)
+  (interactive "sLilypond expression: ")
+  (let ((lilynotes (split-string string " " t)))
+    (xml-print (mapcar #'musicxml-note-from-lilypond lilynotes))))
+
+(defconst musicxml-lilypond-octave-alist
+  '((",," . 1) ("," . 2) ("" . 3) ("'" . 4) ("''" . 5) ("'''" . 6)))
+(defconst musicxml-lilypond-type-alist
+  '((1 . "whole") (2 . "half") (4 . "quarter") (8 . "eighth")
+    (16 . "16th") (32 . "32nd") (64 . "64th") (128 . "128th")))
+
+(defun musicxml-note-from-lilypond (string)
+  (when (string-match musicxml-lilypond-note-regexp string)
+    (let* ((step (upcase (match-string 1 string)))
+	  (alter (match-string 2 string))
+	  (octave (cdr (assoc-string (match-string 3 string) musicxml-lilypond-octave-alist t)))
+	  (denominator (string-to-number (match-string 4 string)))
+	  (dots (length (match-string 5 string)))
+	  (ornament (match-string 6 string))
+
+	  (duration (round (/ (/ 1.0 denominator) (/ 0.25 musicxml-lilypond-divisions)))))
+      (if (> dots 0)
+	  (setq duration (+ duration (/ duration 2))))
+	  
+      `(note nil
+	     ,(if (string= step "R") (list 'rest)
+		`(pitch nil
+			(step nil ,step)
+			,@(when alter
+			      `((alter nil ,(cond
+					     ((string= alter "is") "1")
+					     ((string= alter "es") "-1")
+					     (t alter)))))
+			(octave nil ,(format "%d" octave))))
+	     (duration nil ,(format "%d" duration))
+	     (type nil ,(cdr (assoc denominator musicxml-lilypond-type-alist)))
+	     ,@(loop for dot from 1 upto dots collect (list 'dot))
+	     ,@(when ornament
+		 `((notations nil
+			      (ornaments nil
+					 ,(cond
+					   ((string= ornament "\\trill")
+					    (list 'trill-mark)))))))))))
+
 (provide 'musicxml)
 ;;; musicxml.el ends here
