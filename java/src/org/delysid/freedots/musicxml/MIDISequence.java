@@ -22,12 +22,14 @@
  */
 package org.delysid.freedots.musicxml;
 
+import java.util.Set;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MetaMessage;
 import javax.sound.midi.MidiEvent;
 import javax.sound.midi.ShortMessage;
 import javax.sound.midi.Track;
 
+import org.delysid.freedots.model.Articulation;
 import org.delysid.freedots.model.EndBar;
 import org.delysid.freedots.model.Event;
 import org.delysid.freedots.model.Fraction;
@@ -164,6 +166,16 @@ public class MIDISequence extends javax.sound.midi.Sequence {
       try {
         int offset = note.getOffset().add(add).toInteger(resolution);
         int duration = note.getDuration().toInteger(resolution);
+        Set<Articulation> articulations = note.getArticulations();
+        if (articulations != null) {
+          if (articulations.contains(Articulation.staccatissimo)) {
+            duration /= 4;
+          } else if (articulations.contains(Articulation.staccato)) {
+            duration /= 2;
+          } else if (articulations.contains(Articulation.mezzoStaccato)) {
+            duration -= duration / 4;
+          }
+        }
         if (metaEventRelay != null) {
           MetaMessage metaMessage = metaEventRelay.createMetaMessage(note);
           if (metaMessage != null) {
