@@ -31,6 +31,7 @@ import java.util.Set;
 import org.delysid.freedots.model.Accidental;
 import org.delysid.freedots.model.Articulation;
 import org.delysid.freedots.model.AugmentedFraction;
+import org.delysid.freedots.model.Clef;
 import org.delysid.freedots.model.Fermata;
 import org.delysid.freedots.model.Fingering;
 import org.delysid.freedots.model.Fraction;
@@ -323,6 +324,12 @@ public final class Note extends Musicdata implements RhythmicElement {
       return notations.getOrnaments();
     }
 
+    return null;
+  }
+  public Clef getClef() {
+    if (staff != null) {
+      return staff.getClef(offset);
+    }
     return null;
   }
 }

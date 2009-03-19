@@ -245,7 +245,7 @@ public final class Part {
           if (offset.compareTo(measureDuration) > 0) measureDuration = offset;
           currentChord = null;
         }
-        if (xmlMeasure.getAttribute("number").equals("0") &&
+        if (xmlMeasure.getAttribute("implicit").equalsIgnoreCase("yes") &&
             measureDuration.compareTo(timeSignature) < 0) {
           measureOffset = measureOffset.add(measureDuration);
         } else {
