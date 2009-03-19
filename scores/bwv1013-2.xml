@@ -2065,7 +2065,7 @@
         <repeat direction="backward"/>
       </barline>
     </measure>
-    <measure number="23" implicit="yes">
+    <measure number="22" implicit="yes">
       <!-- b'8 -->
       <barline location="left">
         <bar-style>heavy-light</bar-style>
@@ -2078,7 +2078,7 @@
         <type>eighth</type>
       </note>
     </measure>
-    <measure number="24">
+    <measure number="23">
       <!-- e'16 fis'16 gis'16 a'16 b'16 c''16 d''16 e''16 f''?8 e''16 d''16 -->
       <note>
         <pitch>
@@ -2182,7 +2182,7 @@
         <type>16th</type>
       </note>
     </measure>
-    <measure number="25">
+    <measure number="24">
       <!-- c''8 a'8 c'''4 g'?4 -->
       <note>
         <pitch>
@@ -2221,7 +2221,7 @@
         <type>quarter</type>
       </note>
     </measure>
-    <measure number="26">
+    <measure number="25">
       <!-- fis'8 c'''16 b''16 c'''8 e'8 d'8 c'''8 -->
       <note>
         <pitch>
@@ -2288,7 +2288,7 @@
         <type>eighth</type>
       </note>
     </measure>
-    <measure number="27">
+    <measure number="26">
       <!-- b''16 c'''16 d'''16 b''16 g''4~ g''16 f''16 e''16 d''16 -->
       <note>
         <pitch>
@@ -2380,7 +2380,7 @@
         <type>16th</type>
       </note>
     </measure>
-    <measure number="28">
+    <measure number="27">
       <!-- c''16 b'16 a'16 c''16 f''16 g''16 a''16 f''16 d''16 e''16 f''16 d''16 -->
       <note>
         <pitch>
@@ -2491,7 +2491,7 @@
         <type>16th</type>
       </note>
     </measure>
-    <measure number="29">
+    <measure number="28">
       <!-- c''16 b'16 a'16 g'16 e''16 f''16 g''16 e''16 c''16 d''16 e''16 c''16 -->
       <note>
         <pitch>
@@ -2602,7 +2602,7 @@
         <type>16th</type>
       </note>
     </measure>
-    <measure number="30">
+    <measure number="29">
       <!-- a'16 g'16 f'16 a'16 d''16 e''16 f''16 g''16 a''16 b''16 c'''16 a''16 -->
       <note>
         <pitch>
@@ -2713,7 +2713,7 @@
         <type>16th</type>
       </note>
     </measure>
-    <measure number="31">
+    <measure number="30">
       <!-- f''16 e''16 f''16 d''16 b'16 a'16 b'16 g'16 f'16 e'16 f'16 d'16 -->
       <note>
         <pitch>
@@ -2824,7 +2824,7 @@
         <type>16th</type>
       </note>
     </measure>
-    <measure number="32">
+    <measure number="31">
       <!-- e'16 c''16 g''16 g''16 e'16 c''16 g''16 c''16 a''16 c''16 bes''16 c''16 -->
       <note>
         <pitch>
@@ -2936,7 +2936,7 @@
         <type>16th</type>
       </note>
     </measure>
-    <measure number="33">
+    <measure number="32">
       <!-- f'16 c''16 a''16 f''16 e''16 d''16 c''16 bes'16 a'16 g'16 f'16 e'16 -->
       <note>
         <pitch>
@@ -3049,7 +3049,7 @@
         <type>16th</type>
       </note>
     </measure>
-    <measure number="34">
+    <measure number="33">
       <!-- fis'16 d''16 a''16 a''16 fis'16 d''16 a''16 d''16 b''16 d''16 c'''16 d''16 -->
       <note>
         <pitch>
@@ -3163,7 +3163,7 @@
         <type>16th</type>
       </note>
     </measure>
-    <measure number="35">
+    <measure number="34">
       <!-- g'16 d''16 b''16 g''16 f''16 e''16 d''16 c''16 b'16 a'16 g'16 f'16 -->
       <note>
         <pitch>
@@ -3274,7 +3274,7 @@
         <type>16th</type>
       </note>
     </measure>
-    <measure number="36">
+    <measure number="35">
       <!-- e'16 f'16 g'16 c''16 e''16 c''16 b'16 c''16 g'16 b'16 c''16 e''16 -->
       <note>
         <pitch>
@@ -3385,7 +3385,7 @@
         <type>16th</type>
       </note>
     </measure>
-    <measure number="37">
+    <measure number="36">
       <!-- f'16 g'16 a'16 c''16 e''16 c''16 b'16 c''16 a'16 b'16 c''16 e''16 -->
       <note>
         <pitch>
@@ -3496,7 +3496,7 @@
         <type>16th</type>
       </note>
     </measure>
-    <measure number="38">
+    <measure number="37">
       <!-- g'16 a'16 b'16 c''16 e''16 c''16 b'16 c''16 b'16 c''16 d''16 e''16 -->
       <note>
         <pitch>
@@ -3607,7 +3607,7 @@
         <type>16th</type>
       </note>
     </measure>
-    <measure number="39">
+    <measure number="38">
       <!-- a'16 b'16 c''16 e''16 f''16 a''16 f''16 e''16 d''16 f''16 d''16 c''16 -->
       <note>
         <pitch>
@@ -3718,7 +3718,7 @@
         <type>16th</type>
       </note>
     </measure>
-    <measure number="40">
+    <measure number="39">
       <!-- b'16 c''16 d''16 f''16 g''16 d'''16 b''16 a''16 g''16 b''16 g''16 f''16 -->
       <note>
         <pitch>
@@ -3829,7 +3829,7 @@
         <type>16th</type>
       </note>
     </measure>
-    <measure number="41">
+    <measure number="40">
       <!-- e''16 g''16 e''16 d''16 c''16 e''16 c''16 b'16 a'16 c''16 a'16 g'16 -->
       <note>
         <pitch>
@@ -3940,7 +3940,7 @@
         <type>16th</type>
       </note>
     </measure>
-    <measure number="42">
+    <measure number="41">
       <!-- f'16 e''16 a''16 d''16 e''16 b'16 c''16 fis'16 g'16 c''16 g'16 b'16 -->
       <note>
         <pitch>
@@ -4052,7 +4052,7 @@
         <type>16th</type>
       </note>
     </measure>
-    <measure number="43">
+    <measure number="42">
       <!-- dis'16 c''16 a''8 ~ a''16 c'''16 b''16 a''16 g''16 fis''16 e''16 dis''16 -->
       <note>
         <pitch>
@@ -4166,7 +4166,7 @@
       </note>
     </measure>
 
-    <measure number="44">
+    <measure number="43">
       <!-- b''16 a''16 c'''16 b''16 a''16 g''16 fis''16 e''16 b'8 dis''8 -->
       <note>
         <pitch>
@@ -4261,7 +4261,7 @@
         <type>eighth</type>
       </note>      
     </measure>
-    <measure number="45">
+    <measure number="44">
       <!-- e''4~ e''16 fis''16 g''16 a''16 bes''16 a''16 bes''16 g''16 -->
       <note>
         <pitch>
@@ -4356,7 +4356,7 @@
         <type>16th</type>
       </note>
     </measure>
-    <measure number="46">
+    <measure number="45">
       <!-- cis''16 d''16 e''16 f''?16 g''16 f''16 g''16 e''16 a'16 cis''16 e''16 g''16 -->
       <note>
         <pitch>
@@ -4469,7 +4469,7 @@
         <type>16th</type>
       </note>
     </measure>
-    <measure number="47">
+    <measure number="46">
       <!-- f''8 d'16 e'16 f'16 a'16 d''16 e''16 f''16 e''16 f''16 d''16 -->
       <note>
         <pitch>
@@ -4571,7 +4571,7 @@
         <type>16th</type>
       </note>
     </measure>
-    <measure number="48">
+    <measure number="47">
       <!-- gis'16 a'16 b'16 c''16 d''16 c''16 d''16 b'16 e'16 gis'16 b'16 d''16 -->
       <note>
         <pitch>
@@ -4684,7 +4684,7 @@
         <type>16th</type>
       </note>
     </measure>
-    <measure number="49">
+    <measure number="48">
       <!-- c''16 b'16 a'16 b'16 c''16 e''16 a''16 b''16 c'''16 b''16 c'''16 a''16 -->
       <note>
         <pitch>
@@ -4795,7 +4795,7 @@
         <type>16th</type>
       </note>
     </measure>
-    <measure number="50">
+    <measure number="49">
       <!-- dis''16 e''16 fis''16 g''16 a''16 g''16 a''16 fis''16 b'16 dis''16 fis''16 a''16 -->
       <note>
         <pitch>
@@ -4913,7 +4913,7 @@
         <type>16th</type>
       </note>
     </measure>
-    <measure number="51">
+    <measure number="50">
       <!-- gis''16 a''16 b''16 gis''16 e''16 gis''16 d''16 gis''16 c''16 gis''16 b'16 gis''16 -->
       <note>
         <pitch>
@@ -5031,7 +5031,7 @@
         <type>16th</type>
       </note>
     </measure>
-    <measure number="52">
+    <measure number="51">
       <!-- c''16 e''16 a''16 e''16 c''16 e''16 b'16 e''16 c''16 e''16 a'16 e''16 -->
       <note>
         <pitch>
@@ -5142,7 +5142,7 @@
         <type>16th</type>
       </note>
     </measure>
-    <measure number="53">
+    <measure number="52">
       <!-- gis'16 e''16 b''16 e''16 gis'16 e''16 fis'16 e''16 gis'16 e''16 e'16 e''16 -->
       <note>
         <pitch>
@@ -5259,7 +5259,7 @@
         <type>16th</type>
       </note>
     </measure>
-    <measure number="54">
+    <measure number="53">
       <!-- a'16 e''16 c'''16 e''16 f''16 d''16 a''16 d''16 c'''16 d''16 a''16 d''16 -->
       <note>
         <pitch>
@@ -5370,7 +5370,7 @@
         <type>16th</type>
       </note>
     </measure>
-    <measure number="55">
+    <measure number="54">
       <!-- b''16 d''16 g'16 d''16 e''16 c''16 g''16 c''16 bes''16 c''16 g''16 c''16 -->
       <note>
         <pitch>
@@ -5483,7 +5483,7 @@
         <type>16th</type>
       </note>
     </measure>
-    <measure number="56">
+    <measure number="55">
       <!-- a''16 c''16 f'16 a'16 d''16 e''16 f''16 d''16 b'16 c''16 d''16 b'16 -->
       <note>
         <pitch>
@@ -5594,7 +5594,7 @@
         <type>16th</type>
       </note>
     </measure>
-    <measure number="57">
+    <measure number="56">
       <!-- gis''16 a''16 b''16 gis''16 e''16 fis''16 gis''16 b''16 d'''16 c'''16 d'''16 b''16 -->
       <note>
         <pitch>
@@ -5709,7 +5709,7 @@
         <type>16th</type>
       </note>
     </measure>
-    <measure number="58">
+    <measure number="57">
       <!-- c'''16 a''16 f''?16 e''16 d''16 c'''16 b''16 a''16 e''16 b''16 a''16 gis''16 -->
       <note>
         <pitch>
@@ -5821,7 +5821,7 @@
         <type>16th</type>
       </note>
     </measure>
-    <measure number="59">
+    <measure number="58">
       <!-- a''16 f''16 d''16 c''16 b'16 a''16 g''?16 f''16 cis''16 g''16 f''16 e''16 -->
       <note>
         <pitch>
@@ -5933,7 +5933,7 @@
         <type>16th</type>
       </note>
     </measure>
-    <measure number="60">
+    <measure number="59">
       <!-- f''16 d''16 bes'16 a'16 gis'16 f''16 e''16 d''16 a'16 e''16 d''16 c''?16 -->
       <note>
         <pitch>
@@ -6046,7 +6046,7 @@
         <type>16th</type>
       </note>
     </measure>
-    <measure number="61">
+    <measure number="60">
       <!-- d''16 b'16 gis'16 fis'16 e'16 fis'16 gis'16 a'16 b'16 c''16 d''16 b'16 -->
       <note>
         <pitch>
@@ -6161,7 +6161,7 @@
         <type>16th</type>
       </note>
     </measure>
-    <measure number="62">
+    <measure number="61">
       <!-- c''16 a'16 c''16 e''16 a''16 b''16 c'''16 a''16 e''16 a''16 b''16 gis''16 -->
       <note>
         <pitch>
@@ -6273,7 +6273,7 @@
         <type>16th</type>
       </note>
     </measure>
-    <measure number="63">
+    <measure number="62">
       <!-- a''16 e''16 f''16 d''16 c''16 a''16 b'16 gis''16 a'8\fermata -->
       <note>
         <pitch>
