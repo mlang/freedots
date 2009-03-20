@@ -35,6 +35,7 @@ import org.delysid.freedots.model.Clef;
 import org.delysid.freedots.model.Fermata;
 import org.delysid.freedots.model.Fingering;
 import org.delysid.freedots.model.Fraction;
+import org.delysid.freedots.model.KeySignature;
 import org.delysid.freedots.model.Ornament;
 import org.delysid.freedots.model.Staff;
 import org.delysid.freedots.model.RhythmicElement;
@@ -329,6 +330,12 @@ public final class Note extends Musicdata implements RhythmicElement {
   public Clef getClef() {
     if (staff != null) {
       return staff.getClef(offset);
+    }
+    return null;
+  }
+  public KeySignature getActiveKeySignature() {
+    if (staff != null) {
+      return staff.getKeySignature(offset);
     }
     return null;
   }
