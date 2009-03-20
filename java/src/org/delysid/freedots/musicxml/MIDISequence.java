@@ -34,6 +34,7 @@ import org.delysid.freedots.model.EndBar;
 import org.delysid.freedots.model.Event;
 import org.delysid.freedots.model.Fraction;
 import org.delysid.freedots.model.MusicList;
+import org.delysid.freedots.model.Ornament;
 import org.delysid.freedots.model.StartBar;
 import org.delysid.freedots.playback.MetaEventRelay;
 
@@ -176,6 +177,13 @@ public class MIDISequence extends javax.sound.midi.Sequence {
             duration -= duration / 4;
           }
         }
+        boolean turn = false;
+        Set<Ornament> ornaments = note.getOrnaments();
+        if (ornaments != null) {
+          if (ornaments.contains(Ornament.turn)) {
+            turn = true;
+          }
+        }
         if (metaEventRelay != null) {
           MetaMessage metaMessage = metaEventRelay.createMetaMessage(note);
           if (metaMessage != null) {
@@ -184,12 +192,19 @@ public class MIDISequence extends javax.sound.midi.Sequence {
         }
         if (pitch != null) {
           int midiPitch = pitch.getMIDIPitch();
-          ShortMessage msg = new ShortMessage();
-          msg.setMessage(ShortMessage.NOTE_ON, note.getMidiChannel(), midiPitch, velocity);
-          track.add(new MidiEvent(msg, offset));
-          msg = new ShortMessage();
-          msg.setMessage(ShortMessage.NOTE_OFF, note.getMidiChannel(), midiPitch, 0);
-          track.add(new MidiEvent(msg, offset+duration));
+          int midiChannel = note.getMidiChannel();
+          if (turn) {
+            duration /= 4;
+            addNoteToTrack(track, midiChannel, midiPitch+1, velocity, offset, duration);
+            offset += duration;
+            addNoteToTrack(track, midiChannel, midiPitch, velocity, offset, duration);
+            offset += duration;
+            addNoteToTrack(track, midiChannel, midiPitch-1, velocity, offset, duration);
+            offset += duration;
+            addNoteToTrack(track, midiChannel, midiPitch, velocity, offset, duration);
+          } else {
+            addNoteToTrack(track, note.getMidiChannel(), midiPitch, velocity, offset, duration);
+          }
         }
       } catch (MusicXMLParseException e) {
         e.printStackTrace();
@@ -198,7 +213,18 @@ public class MIDISequence extends javax.sound.midi.Sequence {
       }
     }
   }
-
+  private void addNoteToTrack(
+    Track track,
+    int channel, int pitch, int velocity,
+    int tick, int duration
+  ) throws InvalidMidiDataException {
+    ShortMessage msg = new ShortMessage();
+    msg.setMessage(ShortMessage.NOTE_ON, channel, pitch, velocity);
+    track.add(new MidiEvent(msg, tick));
+    msg = new ShortMessage();
+    msg.setMessage(ShortMessage.NOTE_OFF, channel, pitch, 0);
+    track.add(new MidiEvent(msg, tick+duration));
+  }
   private static int calculatePPQ(int ppq) {
     if (ppq < 5) return ppq * 80;
     else if (ppq < 10) return ppq * 40;
