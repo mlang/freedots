@@ -25,6 +25,7 @@
   <target name="clean-compile-test">
     <delete> <fileset dir="${test}" includes="**/*.class" /> </delete>
   </target>
+  
   <target name="test" depends="compile-test">
     <junit failureProperty="test.failure">
       <classpath refid="class.path.test" />
@@ -68,6 +69,16 @@
     <mkdir dir="${build}/org/delysid/freedots/gui/swing"/>
     <copy file="/usr/share/fonts/truetype/ttf-dejavu/DejaVuSerif.ttf"
           tofile="${build}/org/delysid/freedots/gui/swing/DejaVuSerif.ttf"/>
+
+    <copy todir="${build}/org/delysid/freedots/gui/swing">
+		<fileset dir="../icons">
+			<include name="*.xml"/>
+		</fileset>	    
+    </copy>
+
+
+
+          
     <copy file="../scores/bwv1013-1.xml"
           tofile="${build}/org/delysid/freedots/musicxml/bwv1013-1.xml"/>
     <copy file="../scores/bwv1013-2.xml"
@@ -79,6 +90,8 @@
     <copy file="../scores/bwv988-aria.xml"
           tofile="${build}/org/delysid/freedots/musicxml/bwv988-aria.xml"/>
 
+
+	
     <copy todir="${build}">
       <fileset dir="${src}">
         <include name="**/*.properties"/>
