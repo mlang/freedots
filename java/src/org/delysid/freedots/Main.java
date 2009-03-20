@@ -118,6 +118,7 @@ public final class Main {
               player.close();
             } catch (MidiUnavailableException mue) {
               System.err.println("MIDI playback not available.");
+             
             } catch (InvalidMidiDataException imde) {
               imde.printStackTrace();
             }

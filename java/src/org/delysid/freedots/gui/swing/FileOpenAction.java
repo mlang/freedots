@@ -59,13 +59,14 @@ public final class FileOpenAction extends AbstractAction {
     fileChooser.showOpenDialog(gui);
     try {
       // Update status bar display
+      if (gui.statusBar!=null)
       gui.statusBar.setText("Loading "+fileChooser.getSelectedFile().toString()+"...");
       gui.update(gui.getGraphics());
       
       Score newScore = new Score(fileChooser.getSelectedFile().toString());
       gui.setScore(newScore);
     
-      gui.statusBar.setText("Ready.");
+      if (gui.statusBar!=null) gui.statusBar.setText("Ready.");
     } 
     catch (javax.xml.parsers.ParserConfigurationException exception) {
       exception.printStackTrace();

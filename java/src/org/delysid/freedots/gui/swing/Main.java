@@ -68,6 +68,7 @@ public final class Main
 
   protected Transcriber transcriber = null;
   protected StatusBar statusBar=null;
+  protected SingleNodeRenderer noteRenderer=null;
 
   public void setScore(Score score) {
     this.score = score;
@@ -77,6 +78,9 @@ public final class Main
       textArea.setCaretPosition(0);
       boolean scoreAvailable = score != null;
       fileSaveAsMidiAction.setEnabled(scoreAvailable);
+      
+      //this.midiPlayer
+      
       playScoreAction.setEnabled(scoreAvailable);
     } catch (Exception e) {
       e.printStackTrace();
@@ -97,6 +101,10 @@ public final class Main
     }
     if (object != lastObject) {
       if (object != null) {
+        
+        if (object instanceof Note)  noteRenderer.setNote((Note)object);
+            
+            
         if (statusBar != null){
           statusBar.setMessage("At index "+index+" there is "+object.toString());
         }
@@ -310,8 +318,10 @@ public final class Main
     contentPane.setLayout(new BorderLayout());
     //contentPane.setPreferredSize(new Dimension(400, 100));
     contentPane.add(scrollPane, BorderLayout.CENTER);
-    statusBar = new StatusBar();
-    contentPane.add(statusBar, BorderLayout.SOUTH);
+    //statusBar = new StatusBar();
+    //contentPane.add(statusBar, BorderLayout.SOUTH);
+    noteRenderer=new SingleNodeRenderer();
+    contentPane.add(noteRenderer,BorderLayout.AFTER_LAST_LINE);
     setContentPane(contentPane);
 
     addWindowListener(new WindowAdapter() {
