@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -58,7 +59,15 @@ public class SingleNodeRenderer extends JPanel {
     Document D=null;
     BufferedImage bImage=null;
     try {
-      D = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new File(filename));  //"/home/skainz/workspace/trunk/G_CLEF.xml"));
+      
+      InputStream inputStream = getClass().getResourceAsStream(filename);
+      
+      if (inputStream==null) 
+        {
+        System.err.println("File "+filename+" not found");
+        return;
+        }
+      D = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(inputStream);  //"/home/skainz/workspace/trunk/G_CLEF.xml"));
     } catch (SAXException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
@@ -125,15 +134,16 @@ public class SingleNodeRenderer extends JPanel {
   private void readNoteIcons() 
   {
     
-    readSingleIcon("/home/skainz/workspace/trunk/G_CLEF.xml", "G_CLEF", icons);
-    readSingleIcon("/home/skainz/tmp/audiveris/icons/WHOLE_NOTE.xml", "WHOLE_NOTE", icons);
-    readSingleIcon("/home/skainz/tmp/audiveris/icons/NOTEHEAD_BLACK.xml", "NOTEHEAD_BLACK", icons);
     
-    readSingleIcon("/home/skainz/tmp/audiveris/icons/COMBINING_FLAG_1.xml", "COMBINING_FLAG_1", icons);
-    readSingleIcon("/home/skainz/tmp/audiveris/icons/COMBINING_FLAG_2.xml", "COMBINING_FLAG_2", icons);
-    readSingleIcon("/home/skainz/tmp/audiveris/icons/COMBINING_FLAG_3.xml", "COMBINING_FLAG_3", icons);
-    readSingleIcon("/home/skainz/tmp/audiveris/icons/COMBINING_FLAG_4.xml", "COMBINING_FLAG_4", icons);
-    readSingleIcon("/home/skainz/tmp/audiveris/icons/COMBINING_FLAG_5.xml", "COMBINING_FLAG_5", icons);
+    readSingleIcon("G_CLEF.xml", "G_CLEF", icons);
+    readSingleIcon("WHOLE_NOTE.xml", "WHOLE_NOTE", icons);
+    readSingleIcon("NOTEHEAD_BLACK.xml", "NOTEHEAD_BLACK", icons);
+    
+    readSingleIcon("COMBINING_FLAG_1.xml", "COMBINING_FLAG_1", icons);
+    readSingleIcon("COMBINING_FLAG_2.xml", "COMBINING_FLAG_2", icons);
+    readSingleIcon("COMBINING_FLAG_3.xml", "COMBINING_FLAG_3", icons);
+    readSingleIcon("COMBINING_FLAG_4.xml", "COMBINING_FLAG_4", icons);
+    readSingleIcon("COMBINING_FLAG_5.xml", "COMBINING_FLAG_5", icons);
     
       
    
@@ -145,6 +155,7 @@ public class SingleNodeRenderer extends JPanel {
     readNoteIcons();
         
     noteDefs.put("1/1", new SingleIconSpecification("WHOLE_NOTE",null,false));
+    noteDefs.put("1/2", new SingleIconSpecification("WHOLE_NOTE",null,true));
     noteDefs.put("1/4", new SingleIconSpecification("NOTEHEAD_BLACK",null,true));
     noteDefs.put("1/8", new SingleIconSpecification("NOTEHEAD_BLACK","COMBINING_FLAG_1",true));
     noteDefs.put("1/16", new SingleIconSpecification("NOTEHEAD_BLACK","COMBINING_FLAG_2",true));
@@ -208,6 +219,8 @@ public class SingleNodeRenderer extends JPanel {
   
   protected void drawNote(Graphics g)
   {
+    
+    if (currentNote.getPitch()==null) return;
     Graphics2D g2=(Graphics2D)g;
     BufferedImage noteImage=null;
     BufferedImage noteHead=null;
@@ -228,10 +241,12 @@ public class SingleNodeRenderer extends JPanel {
     
     SingleIconSpecification iconSpec=noteDefs.get(currentNote.getAugmentedFraction().getNumerator()+"/"+currentNote.getAugmentedFraction().getDenominator());
     
-    //System.out.println(currentNote.getAugmentedFraction().getNumerator()+"/"+currentNote.getAugmentedFraction().getDenominator());
+   // System.out.println(currentNote.getAugmentedFraction().getNumerator()+"/"+currentNote.getAugmentedFraction().getDenominator());
         
 
      // First draw note head
+    
+   
      g2.drawImage(icons.get(iconSpec.getNoteHeadImage()),null,notePosX,notePosY);
       
       
