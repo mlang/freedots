@@ -871,70 +871,48 @@
         <staff>1</staff>
       </note>
       <note>
-        <pitch>
-          <step>F</step>
-          <alter>1</alter>
-          <octave>5</octave>
-        </pitch>
+        <pitch><step>F</step><alter>1</alter><octave>5</octave></pitch>
         <duration>1</duration>
         <voice>1</voice>
         <type>16th</type>
         <staff>1</staff>
       </note>
       <note>
-        <pitch>
-          <step>E</step>
-          <octave>5</octave>
-        </pitch>
+        <pitch><step>E</step><octave>5</octave></pitch>
         <duration>1</duration>
         <voice>1</voice>
         <type>16th</type>
         <staff>1</staff>
       </note>
       <note>
-        <pitch>
-          <step>F</step>
-          <alter>1</alter>
-          <octave>5</octave>
-        </pitch>
+        <pitch><step>F</step><alter>1</alter><octave>5</octave></pitch>
         <duration>2</duration>
         <voice>1</voice>
         <type>eighth</type>
         <staff>1</staff>
       </note>
       <note>
-        <pitch>
-          <step>D</step>
-          <octave>5</octave>
-        </pitch>
+        <pitch><step>D</step><octave>5</octave></pitch>
         <duration>2</duration>
         <voice>1</voice>
         <type>eighth</type>
         <staff>1</staff>
       </note>
       <note>
-        <pitch>
-          <step>A</step>
-          <octave>5</octave>
-        </pitch>
+        <pitch><step>A</step><octave>5</octave></pitch>
         <duration>2</duration>
         <voice>1</voice>
         <type>eighth</type>
         <staff>1</staff>
       </note>
       <note>
-        <pitch>
-          <step>C</step>
-          <octave>5</octave>
-        </pitch>
+        <pitch><step>C</step><octave>5</octave></pitch>
         <duration>2</duration>
         <tie type="start"/>
         <voice>1</voice>
         <type>eighth</type>
         <staff>1</staff>
-        <notations>
-          <tied type="start"/>
-        </notations>
+        <notations><tied type="start"/></notations>
       </note>
       <backup><duration>12</duration></backup>
       <!-- d16 cis16 d8_~ d16 a16 b16 c'16 d'16 e'16 fis'16 d'16 -->
@@ -1027,7 +1005,7 @@
       <note>
         <pitch><step>C</step><octave>5</octave></pitch>
         <duration>2</duration>
-        <tie type="start"/>
+        <tie type="stop"/>
         <voice>1</voice>
         <type>eighth</type>
         <staff>1</staff>
