@@ -50,7 +50,7 @@
 			</score-instrument>
 			<midi-instrument id="P1-I1">
 				<midi-channel>1</midi-channel>
-				<midi-program>1</midi-program>
+				<midi-program>7</midi-program>
 			</midi-instrument>
 		</score-part>
 	</part-list>
