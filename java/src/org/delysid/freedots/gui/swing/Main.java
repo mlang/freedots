@@ -67,6 +67,8 @@ public final class Main
   public Score getScore() { return score; }
 
   protected Transcriber transcriber = null;
+  public Transcriber getTranscriber() { return transcriber; }
+
   protected StatusBar statusBar=null;
   protected SingleNodeRenderer noteRenderer=null;
 
@@ -77,7 +79,7 @@ public final class Main
       textArea.setText(transcriber.toString());
       textArea.setCaretPosition(0);
       boolean scoreAvailable = score != null;
-      fileSaveAsMidiAction.setEnabled(scoreAvailable);
+      fileSaveAsAction.setEnabled(scoreAvailable);
       
       //this.midiPlayer
       
@@ -156,7 +158,7 @@ public final class Main
   }
 
   private Action playScoreAction = new PlayScoreAction(this);
-  private Action fileSaveAsMidiAction = new FileSaveAsMidiAction(this);
+  private Action fileSaveAsAction = new FileSaveAsAction(this);
 
   public Main(Transcriber transcriber) {
     super("FreeDots");
@@ -217,7 +219,7 @@ public final class Main
     caretFollowsPlaybackItem.setSelected(caretFollowsPlayback);
     playbackMenu.add(caretFollowsPlaybackItem);
 
-    fileMenu.add(fileSaveAsMidiAction);
+    fileMenu.add(fileSaveAsAction);
 
     fileMenu.addSeparator();
 
@@ -344,7 +346,7 @@ public final class Main
       textArea.setText(transcriber.toString());
 
       boolean scoreAvailable = score != null;
-      fileSaveAsMidiAction.setEnabled(scoreAvailable);
+      fileSaveAsAction.setEnabled(scoreAvailable);
       playScoreAction.setEnabled(scoreAvailable);
     }
   }
