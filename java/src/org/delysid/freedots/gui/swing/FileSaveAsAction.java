@@ -72,7 +72,7 @@ public final class FileSaveAsAction extends AbstractAction {
       if (fileChooser.showSaveDialog(gui) == JFileChooser.APPROVE_OPTION) {
 	File file = fileChooser.getSelectedFile();
         String ext = getExtension(file);
-        if (ext != null && ext.equals(".mid")) {
+        if (ext != null && ext.equals("mid")) {
           FileOutputStream fileOutputStream = null;
           try {
             fileOutputStream = new FileOutputStream(file);
@@ -87,7 +87,7 @@ public final class FileSaveAsAction extends AbstractAction {
           } catch (java.io.IOException exception) {
             exception.printStackTrace();
           }
-        } else if (ext != null && ext.equals(".brl")) {
+        } else if (ext != null && ext.equals("brl")) {
           FileWriter fileWriter = null;
           try {
             try {
