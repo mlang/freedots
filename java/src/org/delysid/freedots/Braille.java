@@ -23,7 +23,7 @@
 package org.delysid.freedots;
 
 public enum Braille {
-  dot(3), flat(126), natural(16), sharp(146), 
+  dot(3), flat(126), natural(16), sharp(146), doubleSharp(146, 146),
 
   valueDistinction(126, 2),
 

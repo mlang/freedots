@@ -28,6 +28,7 @@ public enum Accidental {
                        none(0),
                        NATURAL(0),
               FLAT(-1),           SHARP(1),
+                           DOUBLE_SHARP(2),
       QUARTER_FLAT(-0.5), QUARTER_SHARP(0.5);
 
   double alter;
@@ -38,6 +39,7 @@ public enum Accidental {
       case NATURAL: return Braille.natural;
       case FLAT:    return Braille.flat;
       case SHARP:   return Braille.sharp;
+      case DOUBLE_SHARP: return Braille.doubleSharp;
     }
     return null;
   }
