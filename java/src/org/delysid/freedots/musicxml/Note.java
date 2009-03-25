@@ -78,6 +78,7 @@ public final class Note extends Musicdata implements RhythmicElement {
   accidentalMap = new HashMap<String, Accidental>() {
     { put("natural", Accidental.NATURAL);
       put("flat", Accidental.FLAT);
+      put("flat-flat", Accidental.DOUBLE_FLAT);
       put("sharp", Accidental.SHARP);
       put("double-sharp", Accidental.DOUBLE_SHARP);
     }

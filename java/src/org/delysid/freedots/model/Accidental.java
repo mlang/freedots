@@ -28,7 +28,7 @@ public enum Accidental {
                        none(0),
                        NATURAL(0),
               FLAT(-1),           SHARP(1),
-                           DOUBLE_SHARP(2),
+       DOUBLE_FLAT(-2),    DOUBLE_SHARP(2),
       QUARTER_FLAT(-0.5), QUARTER_SHARP(0.5);
 
   double alter;
@@ -37,6 +37,7 @@ public enum Accidental {
   public Braille toBraille() {
     switch (this) {
       case NATURAL: return Braille.natural;
+      case DOUBLE_FLAT: return Braille.doubleFlat;
       case FLAT:    return Braille.flat;
       case SHARP:   return Braille.sharp;
       case DOUBLE_SHARP: return Braille.doubleSharp;
