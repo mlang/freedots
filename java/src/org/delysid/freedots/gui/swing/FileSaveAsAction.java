@@ -34,6 +34,7 @@ import java.text.StringCharacterIterator;
 import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
+import javax.swing.JOptionPane;
 
 import org.delysid.StandardMidiFileWriter;
 import org.delysid.freedots.Braille;
@@ -133,7 +134,11 @@ public final class FileSaveAsAction extends AbstractAction {
           } catch (IOException e) {
             e.printStackTrace();
           }
-        }
+        } else if (ext != null) {
+	  String message = "Unknown file extension '"+ext+"'";
+	  JOptionPane.showMessageDialog(gui, message, "Alert",
+					JOptionPane.ERROR_MESSAGE);
+	}
       }
     }
   }
