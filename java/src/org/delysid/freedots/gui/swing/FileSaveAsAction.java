@@ -28,11 +28,15 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Writer;
+import java.text.CharacterIterator;
+import java.text.StringCharacterIterator;
 import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 
 import org.delysid.StandardMidiFileWriter;
+import org.delysid.freedots.Braille;
 import org.delysid.freedots.musicxml.MIDISequence;
 import org.delysid.freedots.musicxml.Score;
 
@@ -57,6 +61,16 @@ public final class FileSaveAsAction extends AbstractAction {
         @Override
         public String getDescription() {
           return "Unicode braille (*.brl)";
+        }
+      });
+      fileChooser.setFileFilter(new FileFilter() {
+        @Override
+        public boolean accept(File f) {
+          return f.isDirectory() || f.getName().matches(".*\\.brf");
+        }
+        @Override
+        public String getDescription() {
+          return "Legacy BRF (*.brf)";
         }
       });
       fileChooser.setFileFilter(new FileFilter() {
@@ -88,11 +102,31 @@ public final class FileSaveAsAction extends AbstractAction {
             exception.printStackTrace();
           }
         } else if (ext != null && ext.equals("brl")) {
-          FileWriter fileWriter = null;
+          Writer fileWriter = null;
           try {
             try {
               fileWriter = new FileWriter(file);
               fileWriter.write(gui.getTranscriber().toString());
+            } finally {
+              fileWriter.close();
+            }
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
+        } else if (ext != null && ext.equals("brf")) {
+          Writer fileWriter = null;
+          try {
+            try {
+              fileWriter = new FileWriter(file);
+	      CharacterIterator iterator = new StringCharacterIterator(gui.getTranscriber().toString());
+	      for(char c = iterator.first(); c != CharacterIterator.DONE;
+		  c = iterator.next()) {
+		if (Braille.brfTable.containsKey(new Character(c))) {
+		  fileWriter = fileWriter.append(Braille.brfTable.get(new Character(c)));
+		} else {
+		  fileWriter = fileWriter.append(c);
+		}
+	      }
             } finally {
               fileWriter.close();
             }
