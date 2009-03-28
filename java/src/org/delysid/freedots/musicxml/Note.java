@@ -80,6 +80,7 @@ public final class Note extends Musicdata implements RhythmicElement {
       put("flat", Accidental.FLAT);
       put("flat-flat", Accidental.DOUBLE_FLAT);
       put("sharp", Accidental.SHARP);
+      put("sharp-sharp", Accidental.DOUBLE_SHARP);
       put("double-sharp", Accidental.DOUBLE_SHARP);
     }
   };
