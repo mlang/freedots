@@ -18,7 +18,7 @@
  * along with this work; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
  *
- * This software is maintained by Mario Lang <mlang@delysid.org>.
+ * This file is maintained by Mario Lang <mlang@delysid.org>.
  */
 package org.delysid.freedots.gui.swt;
 
