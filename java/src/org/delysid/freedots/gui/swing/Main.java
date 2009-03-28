@@ -189,14 +189,76 @@ public final class Main
     }
 
     // Create the menubar.
+    setJMenuBar(createMenuBar());
+
+    // Create the text area
+    textArea = new JTextArea(transcriber.getOptions().getPageHeight(),
+                             transcriber.getOptions().getPageWidth());
+    Font font = new Font("DejaVu Serif", Font.PLAIN, 14);
+    textArea.setFont(font);
+    setTranscriber(transcriber);
+
+    textArea.addCaretListener(this);
+    JScrollPane scrollPane = new JScrollPane(textArea);
+
+    // Lay out the content pane.
+    JPanel contentPane = new JPanel();
+    contentPane.setLayout(new BorderLayout());
+    //contentPane.setPreferredSize(new Dimension(400, 100));
+    contentPane.add(scrollPane, BorderLayout.CENTER);
+    //statusBar = new StatusBar();
+    //contentPane.add(statusBar, BorderLayout.SOUTH);
+    noteRenderer=new SingleNodeRenderer();
+    contentPane.add(noteRenderer,BorderLayout.AFTER_LAST_LINE);
+    setContentPane(contentPane);
+
+    addWindowListener(new WindowAdapter() {
+      @Override
+      public void windowClosing(WindowEvent e) {
+	quit();
+      }
+    });
+
+    pack();
+  }
+  public void run() {
+    setVisible(true);
+  }
+
+  public void setTranscriber(Transcriber transcriber) {
+    if (transcriber != null) {
+      this.transcriber = transcriber;
+      this.score = transcriber.getScore();
+      textArea.setText(transcriber.toString());
+
+      boolean scoreAvailable = score != null;
+      fileSaveAsAction.setEnabled(scoreAvailable);
+      playScoreAction.setEnabled(scoreAvailable);
+    }
+  }
+  public void quit() {
+    if (midiPlayer != null) midiPlayer.close();
+    System.exit(0);
+  }
+
+  private JMenuBar createMenuBar() {
     JMenuBar menuBar = new JMenuBar();
     JMenu fileMenu = new JMenu("File");
-    JMenu playbackMenu = new JMenu("Playback");
-    
     fileMenu.setMnemonic(KeyEvent.VK_F);
+    
+    fileMenu.add(new FileOpenAction(this));
+    fileMenu.add(fileSaveAsAction);
+    fileMenu.addSeparator();
+    JMenuItem quitItem = new JMenuItem(new QuitAction(this));
+    quitItem.setMnemonic(KeyEvent.VK_Q);
+    quitItem.getAccessibleContext().setAccessibleDescription(
+      "Exit this application.");
+    fileMenu.add(quitItem);
 
-    Action openAction = new FileOpenAction(this);
-    fileMenu.add(openAction);
+    menuBar.add(fileMenu);
+
+    JMenu playbackMenu = new JMenu("Playback");
+    playbackMenu.setMnemonic(KeyEvent.VK_P);
 
     playbackMenu.add(playScoreAction);
     playbackMenu.add(new StopPlaybackAction(this));
@@ -218,18 +280,7 @@ public final class Main
     });
     caretFollowsPlaybackItem.setSelected(caretFollowsPlayback);
     playbackMenu.add(caretFollowsPlaybackItem);
-
-    fileMenu.add(fileSaveAsAction);
-
-    fileMenu.addSeparator();
-
-    JMenuItem quitItem = new JMenuItem(new QuitAction(this));
-    quitItem.setMnemonic(KeyEvent.VK_Q);
-    quitItem.getAccessibleContext().setAccessibleDescription(
-      "Exit this application.");
-    fileMenu.add(quitItem);
-
-    menuBar.add(fileMenu);
+    menuBar.add(playbackMenu);
 
     JMenu libraryMenu = new JMenu("Library");
     libraryMenu.setMnemonic(KeyEvent.VK_L);
@@ -240,16 +291,30 @@ public final class Main
     JMenu jsBachMenu = new JMenu("Johann Sebastian Bach");
     jsBachMenu.setMnemonic(KeyEvent.VK_B);
 
-    JMenuItem bwv988Item = new JMenuItem("BWV 988 Aria", KeyEvent.VK_G);
-    bwv988Item.getAccessibleContext().setAccessibleDescription(
+    JMenu bwv988Menu = new JMenu("BWV 988: Aria con Variazioni");
+    JMenuItem bwv988_ariaItem = new JMenuItem("Aria", KeyEvent.VK_A);
+    bwv988_ariaItem.getAccessibleContext().setAccessibleDescription(
       "Aria from goldberg variations");
-    bwv988Item.addActionListener(new ActionListener() {
+    bwv988_ariaItem.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         Library library = new Library();
         setScore(library.loadScore("bwv988-aria.xml"));
       }
     });
-    jsBachMenu.add(bwv988Item);
+    bwv988Menu.add(bwv988_ariaItem);
+
+    JMenuItem bwv988_1Item = new JMenuItem("Variation 1", KeyEvent.VK_1);
+    bwv988_1Item.getAccessibleContext().setAccessibleDescription(
+      "Variation 1 from goldberg variations");
+    bwv988_1Item.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        Library library = new Library();
+        setScore(library.loadScore("bwv988-1.xml"));
+      }
+    });
+    bwv988Menu.add(bwv988_1Item);
+
+    jsBachMenu.add(bwv988Menu);
 
     JMenu bwv1013Menu = new JMenu("BWV 1013: Partita in A minor for solo flute");
 
@@ -300,58 +365,8 @@ public final class Main
 
     libraryMenu.add(baroqueMenu);
 
-    menuBar.add(playbackMenu);
     menuBar.add(libraryMenu);
 
-    setJMenuBar(menuBar);
-
-    // Create the text area
-    textArea = new JTextArea(transcriber.getOptions().getPageHeight(),
-                             transcriber.getOptions().getPageWidth());
-    Font font = new Font("DejaVu Serif", Font.PLAIN, 14);
-    textArea.setFont(font);
-    setTranscriber(transcriber);
-
-    textArea.addCaretListener(this);
-    JScrollPane scrollPane = new JScrollPane(textArea);
-
-    // Lay out the content pane.
-    JPanel contentPane = new JPanel();
-    contentPane.setLayout(new BorderLayout());
-    //contentPane.setPreferredSize(new Dimension(400, 100));
-    contentPane.add(scrollPane, BorderLayout.CENTER);
-    //statusBar = new StatusBar();
-    //contentPane.add(statusBar, BorderLayout.SOUTH);
-    noteRenderer=new SingleNodeRenderer();
-    contentPane.add(noteRenderer,BorderLayout.AFTER_LAST_LINE);
-    setContentPane(contentPane);
-
-    addWindowListener(new WindowAdapter() {
-      @Override
-      public void windowClosing(WindowEvent e) {
-	quit();
-      }
-    });
-
-    pack();
-  }
-  public void run() {
-    setVisible(true);
-  }
-
-  public void setTranscriber(Transcriber transcriber) {
-    if (transcriber != null) {
-      this.transcriber = transcriber;
-      this.score = transcriber.getScore();
-      textArea.setText(transcriber.toString());
-
-      boolean scoreAvailable = score != null;
-      fileSaveAsAction.setEnabled(scoreAvailable);
-      playScoreAction.setEnabled(scoreAvailable);
-    }
-  }
-  public void quit() {
-    if (midiPlayer != null) midiPlayer.close();
-    System.exit(0);
+    return menuBar;
   }
 }

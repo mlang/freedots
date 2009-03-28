@@ -89,6 +89,8 @@
           tofile="${build}/org/delysid/freedots/musicxml/bwv1013-4.xml"/>
     <copy file="../scores/bwv988-aria.xml"
           tofile="${build}/org/delysid/freedots/musicxml/bwv988-aria.xml"/>
+    <copy file="../scores/bwv988-1.xml"
+          tofile="${build}/org/delysid/freedots/musicxml/bwv988-1.xml"/>
 
 
 	
