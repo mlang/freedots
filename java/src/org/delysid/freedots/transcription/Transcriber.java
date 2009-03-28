@@ -235,7 +235,7 @@ public final class Transcriber {
   class Section extends MusicList {
     Section() { super(); }
   }
-  List<Section> getSections(Part part) throws Exception {
+  private List<Section> getSections(Part part) throws Exception {
     List<Section> sections = new ArrayList<Section>();
     Section currentSection = new Section();
     sections.add(currentSection);

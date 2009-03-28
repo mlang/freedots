@@ -23,6 +23,7 @@
 package org.delysid.freedots.musicxml;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -58,32 +59,33 @@ public final class Note extends Musicdata implements RhythmicElement {
   Text staffNumber;
   Text voiceName;
   Type type = Type.NONE;
-  private static Map<String, Type> typeMap = new HashMap<String, Type>() {
-    {
-      put("long", Type.LONG);
-      put("breve", Type.BREVE);
-      put("whole", Type.WHOLE);
-      put("half", Type.HALF);
-      put("quarter", Type.QUARTER);
-      put("eighth", Type.EIGHTH);
-      put("16th", Type.SIXTEENTH);
-      put("32nd", Type.THIRTYSECOND);
-      put("64th", Type.SIXTYFOURTH);
-      put("128th", Type.ONEHUNDREDTWENTYEIGHTH);
-      put("256th", Type.TWOHUNDREDFIFTYSIXTH);
-    }
-  };
+  private final static Map<String, Type>
+  typeMap = Collections.unmodifiableMap(new HashMap<String, Type>() {
+      {
+	put("long", Type.LONG);
+	put("breve", Type.BREVE);
+	put("whole", Type.WHOLE);
+	put("half", Type.HALF);
+	put("quarter", Type.QUARTER);
+	put("eighth", Type.EIGHTH);
+	put("16th", Type.SIXTEENTH);
+	put("32nd", Type.THIRTYSECOND);
+	put("64th", Type.SIXTYFOURTH);
+	put("128th", Type.ONEHUNDREDTWENTYEIGHTH);
+	put("256th", Type.TWOHUNDREDFIFTYSIXTH);
+      }
+    });
   Accidental accidental = null;
-  private static Map<String, Accidental>
-  accidentalMap = new HashMap<String, Accidental>() {
-    { put("natural", Accidental.NATURAL);
-      put("flat", Accidental.FLAT);
-      put("flat-flat", Accidental.DOUBLE_FLAT);
-      put("sharp", Accidental.SHARP);
-      put("sharp-sharp", Accidental.DOUBLE_SHARP);
-      put("double-sharp", Accidental.DOUBLE_SHARP);
-    }
-  };
+  private final static Map<String, Accidental>
+  accidentalMap = Collections.unmodifiableMap(new HashMap<String, Accidental>() {
+      { put("natural", Accidental.NATURAL);
+	put("flat", Accidental.FLAT);
+	put("flat-flat", Accidental.DOUBLE_FLAT);
+	put("sharp", Accidental.SHARP);
+	put("sharp-sharp", Accidental.DOUBLE_SHARP);
+	put("double-sharp", Accidental.DOUBLE_SHARP);
+      }
+    });
 
   Element tie = null;
 
