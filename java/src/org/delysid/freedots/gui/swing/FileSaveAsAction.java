@@ -99,7 +99,7 @@ public final class FileSaveAsAction extends AbstractAction {
             } finally {
               fileOutputStream.close();
             }
-          } catch (java.io.IOException exception) {
+          } catch (IOException exception) {
             exception.printStackTrace();
           }
         } else if (ext != null && ext.equals("brl")) {
