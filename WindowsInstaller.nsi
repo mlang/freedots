@@ -8,6 +8,12 @@
 
 	!include "MUI2.nsh"
 	!include "Library.nsh"
+
+;Include Font installation code
+	!include "FileFunc.nsh"
+	!include FontRegAdv.nsh
+	!include FontName.nsh
+
 !define VERSION "0.6p1" 
 
 !ifndef JARFILE
@@ -97,7 +103,6 @@
 
 
 
-!include "FileFunc.nsh"
 !insertmacro GetFileVersion
 !insertmacro GetParameters
 !include "WordFunc.nsh"
@@ -128,6 +133,11 @@ Section "install"
 
  	Call GetJRE
   	Pop $R0
+
+	StrCpy $FONT_DIR $FONTS
+	File UBraille.ttf
+	!insertmacro InstallTTF 'UBraille.ttf'
+	SendMessage ${HWND_BROADCAST} ${WM_FONTCHANGE} 0 0 /TIMEOUT=5000
 
 	SetOutPath "$INSTDIR"
 	SetShellVarContext all

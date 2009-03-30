@@ -25,7 +25,7 @@ documentation: doc/manual.xml
 	         --stringparam man.output.in.separate.dir 1 \
 		/usr/share/xml/docbook/stylesheet/nwalsh/manpages/docbook.xsl $<
 
-installer: java/dist/$(JARFILE)
+installer: java/dist/$(JARFILE) UBraille.ttf
 	makensis -DJARFILE=$(JARFILE) -DOUTFILE=$(WIN32FILE) WindowsInstaller.nsi
 
 distribute:
@@ -36,4 +36,7 @@ clean:
 	cd java && ant clean
 	rm -f doc/manual.txt doc/man1/freedots.1
 	rm -f FreeDots-*.exe
+
+UBraille.ttf:
+	wget http://yudit.org/download/fonts/UBraille/$@
 
