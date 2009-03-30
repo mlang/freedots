@@ -1,3 +1,4 @@
+JAVA=java
 DATESTAMP=$(shell date +%Y%m%d)
 WIN32FILE=FreeDots-$(DATESTAMP).exe
 JARFILE=FreeDots-$(DATESTAMP).jar
@@ -8,12 +9,21 @@ all: program documentation installer
 program:
 	cd java && ant
 
+doc/manual.xml: doc/example1-2.brl doc/example1-2.mid \
+		doc/example1-11.brl doc/example1-11.mid
+
+doc/example%.brl: input/nimobmn-examples/example%.xml
+	$(JAVA) -jar java/dist/$(JARFILE) $< >$@
+
+doc/example%.mid: input/nimobmn-examples/example%.xml
+	$(JAVA) -jar java/dist/$(JARFILE) -emf $@ $<
+
 documentation: doc/manual.xml
-	xsltproc doc/html.xsl $< > doc/manual.html
-	xsltproc doc/html.xsl $< | lynx -nonumbers -dump -stdin >doc/manual.txt
-	xsltproc --stringparam man.output.base.dir 'doc/' \
+	xsltproc --xinclude doc/html.xsl $< > doc/manual.html
+	xsltproc --xinclude doc/html.xsl $< | lynx -nonumbers -dump -stdin >doc/manual.txt
+	xsltproc --xinclude --stringparam man.output.base.dir 'doc/' \
 	         --stringparam man.output.in.separate.dir 1 \
-	/usr/share/xml/docbook/stylesheet/nwalsh/manpages/docbook.xsl $<
+		/usr/share/xml/docbook/stylesheet/nwalsh/manpages/docbook.xsl $<
 
 installer: java/dist/$(JARFILE)
 	makensis -DJARFILE=$(JARFILE) -DOUTFILE=$(WIN32FILE) WindowsInstaller.nsi

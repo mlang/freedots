@@ -136,6 +136,7 @@ Section "install"
 	File java/dist/${JARFILE} 
 	File /r ${READMEFILENAME}
 	File doc\manual.html
+	File doc\example*.mid
 
 	;Store installation folder
 	WriteRegStr HKLM "Software\${PRODUCT}" "" $INSTDIR
