@@ -27,8 +27,14 @@ import java.util.List;
 
 import org.delysid.freedots.Braille;
 import org.delysid.freedots.Options;
+import org.delysid.freedots.model.Clef;
+import org.delysid.freedots.model.ClefChange;
 import org.delysid.freedots.model.EndBar;
 import org.delysid.freedots.model.Event;
+import org.delysid.freedots.model.Fraction;
+import org.delysid.freedots.model.GlobalKeyChange;
+import org.delysid.freedots.model.KeyChange;
+import org.delysid.freedots.model.KeySignature;
 import org.delysid.freedots.model.MusicList;
 import org.delysid.freedots.model.Staff;
 import org.delysid.freedots.model.StartBar;
@@ -140,12 +146,47 @@ class SectionBySection implements Strategy {
   }
 
   class Section extends MusicList {
-    Section() { super(); }
+    private Part part;
+    Section(Part part) {
+      super();
+      this.part = part;
+    }
+    @Override
+    public Staff getStaff(int index) {
+      Staff staff = super.getStaff(index);
+      /* We need to populate key/clef/timeList with events from the past */
+      if (staff != null && !staff.isEmpty()) {
+	Fraction startOffset = staff.get(0).getOffset();
+	for (Event event : part.getMusicList()) {
+	  if (event.getOffset().compareTo(startOffset) < 0) {
+	    if (event instanceof GlobalKeyChange) {
+	      GlobalKeyChange globalKeyChange = (GlobalKeyChange)event;
+	      staff.keyList.put(globalKeyChange.getOffset(),
+				globalKeyChange.getKeySignature());
+	    } else if (event instanceof KeyChange) {
+	      KeyChange keyChange = (KeyChange)event;
+	      if (keyChange.getStaffNumber() == index - 1) {
+		staff.keyList.put(keyChange.getOffset(),
+				  keyChange.getKeySignature());
+	      }
+	    } else if (event instanceof ClefChange) {
+	      ClefChange clefChange = (ClefChange)event;
+	      if (clefChange.getStaffNumber() == index - 1) {
+		staff.clefList.put(clefChange.getOffset(),
+				   clefChange.getClef());
+	      }
+	    }
+	  }
+	}
+      }
+
+      return staff;
+    }
   }
 
   private List<Section> getSections(Part part) {
     List<Section> sections = new ArrayList<Section>();
-    Section currentSection = new Section();
+    Section currentSection = new Section(part);
     sections.add(currentSection);
     MusicList musicList = part.getMusicList();
     int index = 0;
@@ -192,7 +233,7 @@ class SectionBySection implements Strategy {
            (options.multiStaffMeasures == Options.MultiStaffMeasures.TWELVE &&
             measureCount == 12))) ||
           (currentSection.getLyricText().length() >= options.getPageWidth())) {
-	currentSection = new Section();
+	currentSection = new Section(part);
 	sections.add(currentSection);
         measureCount = 0;
       }

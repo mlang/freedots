@@ -23,9 +23,10 @@
 package org.delysid.freedots.model;
 
 public class Staff extends MusicList {
-  Timeline<KeySignature> keyList = new Timeline<KeySignature>(
-    new KeySignature(0));
-  Timeline<Clef> clefList = new Timeline<Clef>(new Clef(Clef.Sign.G, 2));
+  public Timeline<KeySignature>
+  keyList = new Timeline<KeySignature>(new KeySignature(0));
+  public Timeline<Clef>
+  clefList = new Timeline<Clef>(new Clef(Clef.Sign.G, 2));
   public Clef getClef() { return clefList.get(new Fraction(0, 1)); }
   public Clef getClef(Fraction offset) { return clefList.get(offset); }
   public KeySignature getKeySignature(Fraction offset) { return keyList.get(offset); }
