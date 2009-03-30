@@ -23,12 +23,15 @@
 package org.delysid.freedots.model;
 
 public class Clef {
-  public enum Sign { G, F, C; };
+  public enum Sign { G, F, C, percussion; };
 
-  Sign sign;
-  int line;
-  public Clef(Sign sign, int line) {
+  public Sign sign;
+  public int line = 0;
+  public Clef(Sign sign) {
     this.sign = sign;
+  }
+  public Clef(Sign sign, int line) {
+    this(sign);
     this.line = line;
   }
   public boolean isTreble() { return (sign == Sign.G && line == 2); }

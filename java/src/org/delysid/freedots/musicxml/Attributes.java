@@ -93,14 +93,17 @@ public final class Attributes {
   }
   class Clef extends org.delysid.freedots.model.Clef {
     Element element = null;
-    String staffName = null;
+    String staffNumber = null;
     public Clef(Element element) {
-      super(getClefSignFromElement(element), getClefLineFromElement(element));
+      super(getClefSignFromElement(element));
+      if (sign != Sign.percussion) {
+	line = getClefLineFromElement(element);
+      }
       this.element = element;
-      staffName = element.getAttribute("number");
-      if (staffName.equals("")) staffName = null;
+      staffNumber = element.getAttribute("number");
+      if (staffNumber.equals("")) staffNumber = "1";
     }
-    public String getStaffName() { return staffName; }
+    public String getStaffName() { return staffNumber; }
   }
   class Time extends TimeSignature {
     Element element = null;
