@@ -74,13 +74,6 @@ public class MusicList extends java.util.ArrayList<Event> {
           staves.get(staffNumber).add(staffChord);
           staffChord.setStaff(staves.get(staffNumber));
         }
-      } else if (event instanceof GlobalClefChange) {
-        GlobalClefChange globalClefChange = (GlobalClefChange)event;
-        for (int i = 0; i < staves.size(); i++) {
-          ClefChange clefChange = new ClefChange(globalClefChange.getOffset(),
-                                                 globalClefChange.getClef(), i);
-          staves.get(i).add(clefChange);
-        }
       } else if (event instanceof GlobalKeyChange) {
         GlobalKeyChange globalKeyChange = (GlobalKeyChange)event;
         for (int i = 0; i < staves.size(); i++) {

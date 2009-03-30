@@ -101,9 +101,12 @@ public final class Attributes {
       }
       this.element = element;
       staffNumber = element.getAttribute("number");
-      if (staffNumber.equals("")) staffNumber = "1";
+      if (staffNumber.equals("")) staffNumber = null;
     }
-    public String getStaffName() { return staffNumber; }
+    public int getStaffNumber() {
+      if (staffNumber != null) return Integer.parseInt(staffNumber) - 1;
+      return 0;
+    }
   }
   class Time extends TimeSignature {
     Element element = null;

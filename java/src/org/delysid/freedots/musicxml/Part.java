@@ -32,7 +32,6 @@ import javax.xml.xpath.XPathFactory;
 
 import org.delysid.freedots.model.ClefChange;
 import org.delysid.freedots.model.Fraction;
-import org.delysid.freedots.model.GlobalClefChange;
 import org.delysid.freedots.model.GlobalKeyChange;
 import org.delysid.freedots.model.KeyChange;
 import org.delysid.freedots.model.KeySignature;
@@ -120,10 +119,8 @@ public final class Part {
               List<Attributes.Clef> clefs = attributes.getClefs();
               if (clefs.size() > 0) {
                 for (Attributes.Clef clef:clefs) {
-                  if (clef.getStaffName() == null)
-                    eventList.add(new GlobalClefChange(measureOffset.add(offset), clef));
-                  else
-                    eventList.add(new ClefChange(measureOffset.add(offset), clef, Integer.parseInt(clef.getStaffName()) - 1));
+		  eventList.add(new ClefChange(measureOffset.add(offset),
+					       clef, clef.getStaffNumber()));
                 }
               }
               List<Attributes.Key> keys = attributes.getKeys();
