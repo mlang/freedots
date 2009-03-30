@@ -141,6 +141,7 @@ class SectionBySection implements Strategy {
           }
         }
       }
+      if (transcriber.getCurrentColumn() > 0) transcriber.newLine();
       transcriber.newLine();
     }
   }
