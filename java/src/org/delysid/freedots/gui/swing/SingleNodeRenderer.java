@@ -40,6 +40,7 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
+import org.delysid.freedots.model.KeySignature;
 import org.delysid.freedots.musicxml.Note;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -57,6 +58,7 @@ public class SingleNodeRenderer extends JPanel {
   private int lineSpacing=8;
   private int lineLength=20;
   
+  private int globalNotePos=0;
   
   
   private static final char TRANSPARENT = '-';
@@ -157,6 +159,28 @@ public class SingleNodeRenderer extends JPanel {
     
     
     readSingleIcon("G_CLEF.xml", "G_CLEF", icons);
+    readSingleIcon("F_CLEF.xml", "F_CLEF",icons);
+    
+    readSingleIcon("KEY_FLAT_1.xml", "KEY_FLAT_1",icons);
+    readSingleIcon("KEY_FLAT_2.xml", "KEY_FLAT_2",icons);
+    readSingleIcon("KEY_FLAT_3.xml", "KEY_FLAT_3",icons);
+    readSingleIcon("KEY_FLAT_4.xml", "KEY_FLAT_4",icons);
+    readSingleIcon("KEY_FLAT_5.xml", "KEY_FLAT_5",icons);
+    readSingleIcon("KEY_FLAT_6.xml", "KEY_FLAT_6",icons);
+    readSingleIcon("KEY_FLAT_7.xml", "KEY_FLAT_7",icons);
+    
+    readSingleIcon("KEY_SHARP_1.xml", "KEY_SHARP_1",icons);
+    readSingleIcon("KEY_SHARP_2.xml", "KEY_SHARP_2",icons);
+    readSingleIcon("KEY_SHARP_3.xml", "KEY_SHARP_3",icons);
+    readSingleIcon("KEY_SHARP_4.xml", "KEY_SHARP_4",icons);
+    readSingleIcon("KEY_SHARP_5.xml", "KEY_SHARP_5",icons);
+    readSingleIcon("KEY_SHARP_6.xml", "KEY_SHARP_6",icons);
+    readSingleIcon("KEY_SHARP_7.xml", "KEY_SHARP_7",icons);
+    
+    
+    
+    
+    
     readSingleIcon("WHOLE_NOTE.xml", "WHOLE_NOTE", icons);
     readSingleIcon("NOTEHEAD_BLACK.xml", "NOTEHEAD_BLACK", icons);
     
@@ -220,10 +244,12 @@ public class SingleNodeRenderer extends JPanel {
   
   public void drawClef(Graphics g)
   {
+   BufferedImage currentClef=icons.get("G_CLEF");
    
    Graphics2D g2=(Graphics2D)g;
-   g2.drawImage(icons.get("G_CLEF"),null,3,0);
+   g2.drawImage(currentClef,null,3,2);
       
+   globalNotePos=currentClef.getWidth()+4;
    
    
     
@@ -234,9 +260,39 @@ public class SingleNodeRenderer extends JPanel {
   {
     for (int i=0;i<5;i++)
     {
-      g.drawLine(1, 12+i*lineSpacing, 40+lineLength, 12+i*lineSpacing);
+      g.drawLine(1, 14+i*lineSpacing, 40+lineLength, 14+i*lineSpacing);
     }
   }
+  
+  
+  protected void drawKey(Graphics g)
+  {
+    
+    int keyType=currentNote.getActiveKeySignature().getType();
+    String iconNameBase=null;
+    
+    if (keyType==0) 
+      {
+      // at least move the followign note by some pixels right, to make it look sexier.
+      globalNotePos+=4;
+      return;
+      }
+    
+    if (keyType>0)
+    {
+      iconNameBase="KEY_SHARP_"+keyType;
+    }
+    
+    if (keyType<0)
+    {
+      iconNameBase="KEY_FLAT_"+keyType;
+    }
+    
+    Graphics2D g2=(Graphics2D)g;
+    g2.drawImage(icons.get(iconNameBase),null,25+4,0);
+    globalNotePos+=(icons.get(iconNameBase).getWidth()+8);
+  }
+  
   
   protected void drawNote(Graphics g)
   {
@@ -255,15 +311,14 @@ public class SingleNodeRenderer extends JPanel {
     boolean hasStem=false;
     
     
-    notePosX=35;
-    notePosY=12+5*lineSpacing-(currentNote.getPitch().getStep()*(lineSpacing/2))-4;
+    notePosX=globalNotePos;
+    notePosY=14+5*lineSpacing-(currentNote.getPitch().getStep()*(lineSpacing/2))-4;
     
-    
+   // System.out.println("Modifier type:"+currentNote.getActiveKeySignature().getType());
+   // System.out.println("Modifier count:"+currentNote.getActiveKeySignature().getModifierCount());
     
     SingleIconSpecification iconSpec=noteDefs.get(currentNote.getAugmentedFraction().getNumerator()+"/"+currentNote.getAugmentedFraction().getDenominator());
-    
-   // System.out.println(currentNote.getAugmentedFraction().getNumerator()+"/"+currentNote.getAugmentedFraction().getDenominator());
-        
+  
 
      // First draw note head
     
@@ -294,10 +349,12 @@ public class SingleNodeRenderer extends JPanel {
     
     if (currentNote!=null)
     {
-      
-      drawNote(g);
-      drawClef(g);
       drawLines(g);
+      drawClef(g);
+     
+      drawKey(g);
+      drawNote(g);
+      
      // g.drawString(""+(currentNote.getPitch().getStep()),50,35);
       
     }

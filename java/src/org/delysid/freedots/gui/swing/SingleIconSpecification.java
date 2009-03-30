@@ -14,7 +14,7 @@ public class SingleIconSpecification {
     this.noteHeadImage=noteHeadImage;
     this.flagsImage=flagsImage;
     this.stem=hasStem;
-   
+    
     
   }
 
