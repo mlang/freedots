@@ -66,7 +66,7 @@ VoiceChord extends AbstractChord<RhythmicElement> implements VoiceElement {
   }
   private class DescendingNoteComparator implements Comparator<RhythmicElement> {
     public int compare(RhythmicElement n1, RhythmicElement n2) {
-      return -n1.getPitch().compareTo(n2.getPitch());
+      return n2.getPitch().compareTo(n1.getPitch());
     }
   }
 }

@@ -165,13 +165,13 @@ class SectionBySection implements Strategy {
 				globalKeyChange.getKeySignature());
 	    } else if (event instanceof KeyChange) {
 	      KeyChange keyChange = (KeyChange)event;
-	      if (keyChange.getStaffNumber() == index - 1) {
+	      if (keyChange.getStaffNumber() == index) {
 		staff.keyList.put(keyChange.getOffset(),
 				  keyChange.getKeySignature());
 	      }
 	    } else if (event instanceof ClefChange) {
 	      ClefChange clefChange = (ClefChange)event;
-	      if (clefChange.getStaffNumber() == index - 1) {
+	      if (clefChange.getStaffNumber() == index) {
 		staff.clefList.put(clefChange.getOffset(),
 				   clefChange.getClef());
 	      }
