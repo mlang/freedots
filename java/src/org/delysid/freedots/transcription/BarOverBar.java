@@ -104,22 +104,24 @@ class BarOverBar implements Strategy {
     int paragraph = 1;
     int startIndex = 0;
     while (startIndex < brailleStaves.getMeasureCount()) {
+      String paragraphNumber = Braille.upperNumber(paragraph);
+      int indent = paragraphNumber.length() + 1;
+
       int endIndex = startIndex + 1;
       while (endIndex <= brailleStaves.getMeasureCount() &&
-	     brailleStaves.maxLength(startIndex, endIndex) < transcriber.getRemainingColumns()) {
+	     brailleStaves.maxLength(startIndex, endIndex)+indent < transcriber.getRemainingColumns()) {
 	endIndex++;
       }
-      endIndex--;
+      if (endIndex > startIndex + 1) endIndex--;
       /* Header? */
       for (int staffIndex = 0; staffIndex < brailleStaves.size(); staffIndex++) {
 	for (int i = startIndex; i < endIndex; i++) {
 	  int columnWidth = brailleStaves.maxLengthAt(i);
 	  if (i == startIndex) {
-	    String brailleNumber = Braille.upperNumber(paragraph);
 	    if (staffIndex == 0) {
-	      transcriber.printString(brailleNumber+" ");
+	      transcriber.printString(paragraphNumber+" ");
             } else {
-	      for (int count = 0; count < brailleNumber.length(); count++) {
+	      for (int count = 0; count < paragraphNumber.length(); count++) {
 		transcriber.printString(" ");
 	      }
 	      transcriber.printString(" ");
@@ -174,7 +176,7 @@ class BarOverBar implements Strategy {
       for (int i = from; i < to; i++) {
 	length += maxLengthAt(i);
       }
-      return length;
+      return length + (to - from);
     }
     public int maxLengthAt(int index) {
       int maxLength = 0;
