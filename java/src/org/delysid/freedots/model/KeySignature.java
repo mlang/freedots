@@ -56,4 +56,8 @@ public class KeySignature {
     else if (type < 0) return Braille.nTimes(Braille.flat, Math.abs(type));
     else return Braille.nTimes(Braille.sharp, type);
   }
+
+  public String toString() {
+    return ""+type;
+  }
 }

@@ -56,6 +56,7 @@ class BrailleMeasure {
   public void setVoiceDirection(int direction) {
     voiceDirection = direction;
   }
+  public void unlinkPrevious() { previous = null; }
 
   private List<Object> brailleVoices = new ArrayList<Object>();
 

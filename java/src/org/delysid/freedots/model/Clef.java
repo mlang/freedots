@@ -23,7 +23,7 @@
 package org.delysid.freedots.model;
 
 public class Clef {
-  public enum Sign { G, F, C, percussion; };
+  public enum Sign { G, F, C, TAB, percussion; };
 
   public Sign sign;
   public int line = 0;

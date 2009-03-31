@@ -87,6 +87,15 @@ public enum Braille {
 
   public static Braille octave(int number) { return octaves[number]; }
   public static Braille upperDigit(int digit) { return digits[digit]; }
+  public static String upperNumber(int number) {
+    String string = "";
+    while (number > 0) {
+      int digit = number % 10;
+      string = upperDigit(digit) + string;
+      number = number / 10;
+    }
+    return string;
+  }
   public static Braille lowerDigit(int digit) { return lowerDigits[digit]; }
   public static Braille interval(int interval) { return intervals[interval - 1]; }
   public static Braille finger(int finger) { return fingers[finger - 1]; }

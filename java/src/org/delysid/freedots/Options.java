@@ -36,6 +36,7 @@ public final class Options {
   UI ui = UI.Swing;
 
   boolean showFingering = true;
+  Method method = Method.SectionBySection;
 
   public Options(String[] args) {
     for (int index = 0; index < args.length; index++) {
@@ -90,6 +91,8 @@ public final class Options {
         ui = UI.SWT;
       } else if ("-nofg".equals(option)) {
         showFingering = false;
+      } else if ("-bob".equals(option)) {
+        method = Method.BarOverBar;
       } else {
         if (index == args.length-1) {
           location = args[index];
@@ -115,6 +118,7 @@ public final class Options {
   public UI getUI() { return ui; }
 
   public boolean getShowFingering() { return showFingering; }
+  public Method getMethod() { return method; }
 
   public enum MultiStaffMeasures {
     VISUAL, /* break at new system */
@@ -126,5 +130,8 @@ public final class Options {
     String className;
     UI(String name) { className = "org.delysid.freedots.gui." + name; }
     public String getClassName() { return className; }
+  }
+  public enum Method {
+    SectionBySection, BarOverBar;
   }
 }
