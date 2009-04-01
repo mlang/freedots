@@ -50,7 +50,7 @@ public enum Braille {
   second(34), third(346), fourth(3456), fifth(35), sixth(356), seventh(25),
   octave(36),
 
-  rightHandPart(46, 345), leftHandPart(456, 345),
+    rightHandPart(46, 345), soloPart(5, 345), leftHandPart(456, 345),
 
   hyphen(5),
 

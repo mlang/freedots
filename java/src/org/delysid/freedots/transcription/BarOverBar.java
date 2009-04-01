@@ -59,8 +59,9 @@ class BarOverBar implements Strategy {
 	boolean displayClefChange = false;
 	int voiceDirection = -1;
 
-	if (staffCount == 1 && staff.containsChords()) {
-	  displayClefChange = true;
+	if (staffCount == 1) {
+	  brailleStaff.setIntro(Braille.soloPart.toString());
+	  if (staff.containsChords()) displayClefChange = true;
 	} else if (staffCount == 2) {
 	  if (staffIndex == 0) {
 	    brailleStaff.setIntro(Braille.rightHandPart.toString());
@@ -141,7 +142,7 @@ class BarOverBar implements Strategy {
 	  }
 	  if (skipColumns > 2) {
 	    while (skipColumns > 0) {
-	      transcriber.printString(".");
+	      transcriber.printString(Braille.dot.toString());
 	      skipColumns--;
 	    }
 	  }
