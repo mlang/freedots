@@ -41,6 +41,7 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
 import org.delysid.freedots.model.KeySignature;
+import org.delysid.freedots.model.Clef;
 import org.delysid.freedots.musicxml.Note;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -207,6 +208,12 @@ public class SingleNodeRenderer extends JPanel {
     noteDefs.put("1/32", new SingleIconSpecification("NOTEHEAD_BLACK","COMBINING_FLAG_3",true));
     noteDefs.put("1/64", new SingleIconSpecification("NOTEHEAD_BLACK","COMBINING_FLAG_4",true));
     noteDefs.put("1/128", new SingleIconSpecification("NOTEHEAD_BLACK","COMBINING_FLAG_5",true));
+    
+    
+    noteDefs.put("G_CLEF", new SingleIconSpecification(null,null,false,3,2,0,0));
+    noteDefs.put("F_CLEF", new SingleIconSpecification(null,null,false,3,14,0,0));
+    
+    
   }
   
   public Dimension getPreferredSize()
@@ -244,10 +251,42 @@ public class SingleNodeRenderer extends JPanel {
   
   public void drawClef(Graphics g)
   {
-   BufferedImage currentClef=icons.get("G_CLEF");
+    
+    BufferedImage currentClef=null;
+    
+    
+    int clefYOffset=0;
+    int clefXOffset=0;
+    switch (currentNote.getClef().sign)
+    {
+    case G:
+      currentClef=icons.get("G_CLEF");
+      
+      if (noteDefs.get("G_CLEF")!=null)
+      {
+        clefXOffset=noteDefs.get("G_CLEF").getOffsetX();
+        clefYOffset=noteDefs.get("G_CLEF").getOffsetY();
+      }
+      
+      break;
+      
+    case F:
+      currentClef=icons.get("F_CLEF");
+      
+      if (noteDefs.get("F_CLEF")!=null)
+      {
+        clefXOffset=noteDefs.get("F_CLEF").getOffsetX();
+        clefYOffset=noteDefs.get("F_CLEF").getOffsetY();
+      }
+    
+      break;
+      
+    }
+    
+   //BufferedImage currentClef=icons.get("G_CLEF");
    
    Graphics2D g2=(Graphics2D)g;
-   g2.drawImage(currentClef,null,3,2);
+   g2.drawImage(currentClef,null,clefXOffset,clefYOffset);
       
    globalNotePos=currentClef.getWidth()+4;
    
