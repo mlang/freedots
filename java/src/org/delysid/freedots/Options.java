@@ -119,6 +119,7 @@ public final class Options {
 
   public boolean getShowFingering() { return showFingering; }
   public Method getMethod() { return method; }
+  public void setMethod(Method method) { this.method = method; }
 
   public enum MultiStaffMeasures {
     VISUAL, /* break at new system */

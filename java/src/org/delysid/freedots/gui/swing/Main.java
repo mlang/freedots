@@ -37,6 +37,7 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import javax.sound.midi.MidiUnavailableException;
 import javax.swing.Action;
+import javax.swing.ButtonGroup;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -44,10 +45,12 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.event.CaretEvent;
 
+import org.delysid.freedots.Options;
 import org.delysid.freedots.musicxml.Library;
 import org.delysid.freedots.musicxml.MIDISequence;
 import org.delysid.freedots.musicxml.Note;
@@ -256,6 +259,38 @@ public final class Main
     fileMenu.add(quitItem);
 
     menuBar.add(fileMenu);
+
+    JMenu transcriptionMenu = new JMenu("Transcription");
+    transcriptionMenu.setMnemonic(KeyEvent.VK_T);
+
+    JRadioButtonMenuItem sectionBySectionItem = new JRadioButtonMenuItem("Section by Section");
+    JRadioButtonMenuItem barOverBarItem = new JRadioButtonMenuItem("Bar over Bar");
+    ButtonGroup group = new ButtonGroup();
+    group.add(sectionBySectionItem);
+    group.add(barOverBarItem);
+    switch (transcriber.getOptions().getMethod()) {
+    case SectionBySection: sectionBySectionItem.setSelected(true);
+    case BarOverBar: barOverBarItem.setSelected(true);
+    }
+    sectionBySectionItem.addActionListener(new ActionListener() {
+	public void actionPerformed(ActionEvent e) {
+	  transcriber.getOptions().setMethod(Options.Method.SectionBySection);
+	  transcriber.setScore(score);
+	  textArea.setText(transcriber.toString());
+	}
+      });
+
+    barOverBarItem.addActionListener(new ActionListener() {
+	public void actionPerformed(ActionEvent e) {
+	  transcriber.getOptions().setMethod(Options.Method.BarOverBar);
+	  transcriber.setScore(score);
+	  textArea.setText(transcriber.toString());
+	}
+      });
+    transcriptionMenu.add(sectionBySectionItem);
+    transcriptionMenu.add(barOverBarItem);
+
+    menuBar.add(transcriptionMenu);
 
     JMenu playbackMenu = new JMenu("Playback");
     playbackMenu.setMnemonic(KeyEvent.VK_P);
