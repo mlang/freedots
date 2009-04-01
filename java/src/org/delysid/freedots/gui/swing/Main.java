@@ -275,16 +275,14 @@ public final class Main
     sectionBySectionItem.addActionListener(new ActionListener() {
 	public void actionPerformed(ActionEvent e) {
 	  transcriber.getOptions().setMethod(Options.Method.SectionBySection);
-	  transcriber.setScore(score);
-	  textArea.setText(transcriber.toString());
+	  triggerTranscription();
 	}
       });
 
     barOverBarItem.addActionListener(new ActionListener() {
 	public void actionPerformed(ActionEvent e) {
 	  transcriber.getOptions().setMethod(Options.Method.BarOverBar);
-	  transcriber.setScore(score);
-	  textArea.setText(transcriber.toString());
+	  triggerTranscription();
 	}
       });
     transcriptionMenu.add(sectionBySectionItem);
@@ -403,5 +401,11 @@ public final class Main
     menuBar.add(libraryMenu);
 
     return menuBar;
+  }
+
+  private void triggerTranscription() {
+    transcriber.setScore(score);
+    textArea.setText(transcriber.toString());
+    textArea.setCaretPosition(0);
   }
 }

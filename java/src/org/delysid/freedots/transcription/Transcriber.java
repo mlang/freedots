@@ -86,12 +86,6 @@ public final class Transcriber {
 
   public Transcriber(Options options) {
     this.options = options;
-    switch (options.getMethod()) {
-      case SectionBySection: strategy = new SectionBySection();
-                             break;
-      case BarOverBar: strategy = new BarOverBar();
-                             break;
-    }
     clear();
   }
   public Transcriber(Score score, Options options) {
@@ -106,6 +100,12 @@ public final class Transcriber {
   }
 
   private void transcribe() throws Exception {
+    switch (options.getMethod()) {
+      case SectionBySection: strategy = new SectionBySection();
+                             break;
+      case BarOverBar: strategy = new BarOverBar();
+                             break;
+    }
     strategy.transcribe(this);
   }
 
