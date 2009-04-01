@@ -269,8 +269,8 @@ public final class Main
     group.add(sectionBySectionItem);
     group.add(barOverBarItem);
     switch (transcriber.getOptions().getMethod()) {
-    case SectionBySection: sectionBySectionItem.setSelected(true);
-    case BarOverBar: barOverBarItem.setSelected(true);
+    case SectionBySection: sectionBySectionItem.setSelected(true); break;
+    case BarOverBar: barOverBarItem.setSelected(true); break;
     }
     sectionBySectionItem.addActionListener(new ActionListener() {
 	public void actionPerformed(ActionEvent e) {
