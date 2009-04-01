@@ -60,15 +60,15 @@ class BarOverBar implements Strategy {
 	int voiceDirection = -1;
 
 	if (staffCount == 1) {
-	  brailleStaff.setIntro(Braille.soloPart.toString());
+	  brailleStaff.setIntro(Braille.soloPart);
 	  if (staff.containsChords()) displayClefChange = true;
 	} else if (staffCount == 2) {
 	  if (staffIndex == 0) {
-	    brailleStaff.setIntro(Braille.rightHandPart.toString());
+	    brailleStaff.setIntro(Braille.rightHandPart);
 	    voiceDirection = -1;
 	    measure.setVoiceDirection(voiceDirection);
 	  } else if (staffIndex == 1) {
-	    brailleStaff.setIntro(Braille.leftHandPart.toString());
+	    brailleStaff.setIntro(Braille.leftHandPart);
 	    voiceDirection = 1;
 	    measure.setVoiceDirection(voiceDirection);
 	  }
@@ -118,6 +118,9 @@ class BarOverBar implements Strategy {
       for (int staffIndex = 0; staffIndex < brailleStaves.size(); staffIndex++) {
 	for (int i = startIndex; i < endIndex; i++) {
 	  int columnWidth = brailleStaves.maxLengthAt(i);
+	  BrailleMeasure measure = brailleStaves.get(staffIndex).get(i);
+	  if (i == startIndex) measure.unlinkPrevious();
+	  BrailleList braille = measure.head(1024, false);
 	  if (i == startIndex) {
 	    if (staffIndex == 0) {
 	      transcriber.printString(paragraphNumber+" ");
@@ -127,12 +130,13 @@ class BarOverBar implements Strategy {
 	      }
 	      transcriber.printString(" ");
 	    }
-	    String intro = brailleStaves.get(staffIndex).getIntro();
-	    if (intro != null) transcriber.printString(intro);
+	    Braille introSymbol = brailleStaves.get(staffIndex).getIntro();
+	    if (introSymbol != null) {
+	      BrailleString intro = new BrailleString(introSymbol);
+	      intro.setAppendDotIfNextHas123(true);
+	      braille.add(0, intro);
+	    }
 	  }
-	  BrailleMeasure measure = brailleStaves.get(staffIndex).get(i);
-	  if (i == startIndex) measure.unlinkPrevious();
-	  BrailleList braille = measure.head(1024, false);
 	  transcriber.printString(braille);
 
 	  int skipColumns = columnWidth - braille.length();
@@ -164,9 +168,9 @@ class BarOverBar implements Strategy {
     BrailleStaff() {
       super();
     }
-    private String intro = null;
-    public void setIntro(String intro) { this.intro = intro; }
-    public String getIntro() { return intro; }
+    private Braille intro = null;
+    public void setIntro(Braille intro) { this.intro = intro; }
+    public Braille getIntro() { return intro; }
   }
   class BrailleStaves extends ArrayList<BrailleStaff> {
     BrailleStaves(int initialCapacity) {

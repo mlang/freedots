@@ -27,7 +27,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public enum Braille {
-  dot(3),
+  dot(3), wholeRest(134),
   doubleFlat(126, 126), flat(126), natural(16), sharp(146), doubleSharp(146, 146),
 
   valueDistinction(126, 2),
@@ -50,7 +50,7 @@ public enum Braille {
   second(34), third(346), fourth(3456), fifth(35), sixth(356), seventh(25),
   octave(36),
 
-    rightHandPart(46, 345), soloPart(5, 345), leftHandPart(456, 345),
+  rightHandPart(46, 345), soloPart(5, 345), leftHandPart(456, 345),
 
   hyphen(5),
 

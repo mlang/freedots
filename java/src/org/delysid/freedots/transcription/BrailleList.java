@@ -30,5 +30,24 @@ class BrailleList extends java.util.ArrayList<BrailleString> {
       stringBuilder.append(brailleString.toString());
     return stringBuilder.toString();
   }
+  public boolean add(BrailleString item) {
+    boolean changed = super.add(item);
+    item.setContainer(this);
+    return changed;
+  }
+  public void add(int index, BrailleString item) {
+    super.add(index, item);
+    item.setContainer(this);
+  }
+  public boolean addAll(BrailleList list) {
+    boolean changed = super.addAll(list);
+    for (BrailleString string : list) string.setContainer(this);
+    return changed;
+  }
+  public BrailleString getNext(BrailleString item) {
+    int index = indexOf(item);
+    if (index != -1 && index < size()) return get(index+1);
+    return null;
+  }
   public int length() { return toString().length(); }
 }

@@ -895,13 +895,19 @@ buffer."
 (define-key musicxml-minor-mode-map (kbd "C-c | b") 'musicxml-to-braille-music)
 
 (defconst musicxml-lilypond-note-regexp
-  "\\([abcdefgrs]\\)\\(es\\|is\\)?\\([',]*\\)\\([1-8]+\\)\\(\\.*\\)\\(\\\\fermata\\|\\\\prall\\|\\\\trill\\)?")
+  "\\([abcdefgrs]\\)\\(es\\|is\\)?\\([',]*\\)\\([1-8]+\\)\\(\\.*\\)\\(~\\)?\\(\\\\fermata\\|\\\\prall\\|\\\\trill\\)?")
 
 (defvar musicxml-lilypond-divisions 32)
+(defvar musicxml-lilypond-staff nil)
+(defvar musicxml-lilypond-voice "1")
 
-(defun musicxml-insert-from-lilypond-fragment (string)
-  (interactive "sLilypond expression: ")
-  (let ((lilynotes (split-string string " " t)))
+(defun musicxml-insert-from-lilypond-fragment (string staff voice)
+  (interactive "sLilypond expression: \nsStaff: \nsVoice: ")
+
+  (let ((musicxml-lilypond-staff staff)
+	(musicxml-lilypond-voice voice)
+
+	(lilynotes (split-string string " " t)))
     (xml-print (mapcar #'musicxml-note-from-lilypond lilynotes))))
 
 (defconst musicxml-lilypond-octave-alist
@@ -917,7 +923,8 @@ buffer."
 	  (octave (cdr (assoc-string (match-string 3 string) musicxml-lilypond-octave-alist t)))
 	  (denominator (string-to-number (match-string 4 string)))
 	  (dots (length (match-string 5 string)))
-	  (ornament (match-string 6 string))
+	  (tied (match-string 6 string))
+	  (ornament (match-string 7 string))
 
 	  (duration (round (/ (/ 1.0 denominator) (/ 0.25 musicxml-lilypond-divisions)))))
       (if (> dots 0)
@@ -934,19 +941,25 @@ buffer."
 					     (t alter)))))
 			(octave nil ,(format "%d" octave))))
 	     (duration nil ,(format "%d" duration))
+	     ,@(when tied `((tie ((type . "start")))))
+	     (voice nil ,musicxml-lilypond-voice)
 	     (type nil ,(cdr (assoc denominator musicxml-lilypond-type-alist)))
 	     ,@(loop for dot from 1 upto dots collect (list 'dot))
-	     ,@(when ornament
+	     ,@(when musicxml-lilypond-staff
+		 `((staff nil ,musicxml-lilypond-staff)))
+	     ,@(when (or ornament tied)
 		 `((notations nil
-			      ,(cond
-				((string= ornament "\\fermata")
-				 `(fermata))
-				((string= ornament "\\trill")
-				 `(ornaments nil
-					     (trill-mark)))
-				((string= ornament "\\prall")
-				 `(ornaments nil
-					     (inverted-mordent)))))))))))
+			      ,@(when tied `((tied ((type . "start")))))
+			      ,@(when ornament
+				  (cond
+				   ((string= ornament "\\fermata")
+				    `(fermata))
+				   ((string= ornament "\\trill")
+				    `(ornaments nil
+						(trill-mark)))
+				   ((string= ornament "\\prall")
+				    `(ornaments nil
+						(inverted-mordent))))))))))))
 
 
 (provide 'musicxml)

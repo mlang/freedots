@@ -22,9 +22,15 @@
  */
 package org.delysid.freedots.transcription;
 
+import org.delysid.freedots.Braille;
+
 class BrailleString {
   Object model = null;
   String string;
+  BrailleList container = null;
+  BrailleString(Braille braille) {
+    this(braille.toString());
+  }
   BrailleString(String string) {
     this.string = string;
   }
@@ -33,7 +39,41 @@ class BrailleString {
     this.model = model;
   }
   Object getModel() { return model; }
+  void setContainer(BrailleList list) { container = list; }
+
+  boolean appendDotIfNextHas123 = false;
+  public void setAppendDotIfNextHas123(boolean value) {
+    appendDotIfNextHas123 = value;
+  }
   @Override
-  public String toString() { return string; }
+  public String toString() {
+    StringBuilder sb = new StringBuilder();
+    sb.append(string);
+    if (appendDotIfNextHas123) {
+      if (container != null) {
+	BrailleString next = container.getNext(this);
+	if (next != null) {
+	  if (next.startsWithOneOf123()) {
+	    sb.append(Braille.dot.toString());
+	  }
+	} else {
+	  throw new RuntimeException("No next!");
+	}
+      }
+    }
+    return sb.toString();
+  }
   public int length() { return toString().length(); }
+  private boolean startsWithOneOf123() {
+    String data = toString();
+    if (data.length() > 0) {
+      char firstChar = data.charAt(0);
+      if (firstChar >= 0X2800 && firstChar <= 0X28FF) {
+	if ((((int)firstChar) & 0X2807) > 0X2800) {
+	  return true;
+	}
+      }
+    }
+    return false;
+  }
 }

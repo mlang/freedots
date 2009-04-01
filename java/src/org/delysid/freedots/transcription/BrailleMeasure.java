@@ -216,7 +216,7 @@ class BrailleMeasure {
     }
 
     if (brailleVoices.size() == 0) {
-      state.append("m");
+      state.append(Braille.wholeRest.toString());
     }
 
     /* 5-12. The octave mark must be shown for the first note after an
