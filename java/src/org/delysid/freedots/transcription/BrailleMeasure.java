@@ -39,6 +39,7 @@ import org.delysid.freedots.musicxml.Note;
 class BrailleMeasure {
   private BrailleMeasure previous = null;
   private MusicList events = new MusicList();
+  public MusicList getEvents() { return events; }
   private AbstractPitch finalPitch = null;
   private TimeSignature timeSignature = null;
   private int voiceDirection = -1; /* By default, oder is to go from top to bottom */
@@ -63,7 +64,16 @@ class BrailleMeasure {
   /**
    * Find voice overlaps for part measure in-accord.
    */
+  private boolean fullSimile = false;
+
   public void process() {
+    if (previous != null) {
+      if (previous.getEvents().equalsIgnoreOffset(this.events)) {
+	fullSimile = true;
+      }
+    }
+
+    if (!fullSimile) {
     brailleVoices = new ArrayList<Object>();
 
     List<Voice> voices = events.getVoices(voiceDirection);
@@ -110,6 +120,7 @@ class BrailleMeasure {
     }
     if (fmia.getParts().size() > 0) brailleVoices.add(fmia);
     if (pmia.getParts().size() > 0) brailleVoices.add(pmia);
+    }
   }
   public AbstractPitch getFinalPitch() { return finalPitch; }
 
@@ -149,6 +160,9 @@ class BrailleMeasure {
     State state = new State(width,
 			    previous != null? previous.getFinalPitch(): null);
 
+    if (fullSimile) {
+      state.append(Braille.simileSign.toString());
+    } else {
     for (int i = 0; i < brailleVoices.size(); i++) {
       if (brailleVoices.get(i) instanceof PartMeasureInAccord) {
 	PartMeasureInAccord pmia = (PartMeasureInAccord)brailleVoices.get(i);
@@ -225,7 +239,7 @@ class BrailleMeasure {
      ***********************************************************************/
     if (brailleVoices.size() == 1 && !((FullMeasureInAccord)brailleVoices.get(0)).isInAccord())
       finalPitch = state.getLastPitch();
-
+    }
     tail = state.getTail();
     return state.getHead();
   }

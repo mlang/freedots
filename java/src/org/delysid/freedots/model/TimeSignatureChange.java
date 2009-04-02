@@ -31,4 +31,11 @@ public class TimeSignatureChange extends VerticalEvent {
   }
 
   public TimeSignature getTimeSignature() { return timeSignature; }
+
+  public boolean equalsIgnoreOffset(Event other) {
+    if (other instanceof TimeSignatureChange) {
+      return getTimeSignature().equals(((TimeSignatureChange)other).getTimeSignature());
+    }
+    return false;
+  }
 }

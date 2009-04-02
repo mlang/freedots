@@ -24,5 +24,6 @@ package org.delysid.freedots.model;
 
 public interface Event {
   public Fraction getOffset();
+  public boolean equalsIgnoreOffset(Event other);
 }
 

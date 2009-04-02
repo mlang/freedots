@@ -72,4 +72,10 @@ public class ClefChange implements StaffElement {
              Braille.unicodeBraille(Braille.dotsToBits(123));
     return "UNHANDLED CLEF";
   }
+  public boolean equalsIgnoreOffset(Event other) {
+    if (other instanceof ClefChange) {
+      return clef.equals(((ClefChange)other).getClef());
+    }
+    return false;
+  }
 }

@@ -39,6 +39,15 @@ public class KeyChange implements StaffElement {
   public int getStaffNumber() { return staffNumber; }
 
   public Fraction getOffset() { return offset; }
+  public boolean equalsIgnoreOffset(Event other) {
+    if (other instanceof KeyChange) {
+      KeyChange otherKeyChange = (KeyChange)other;
+      if (getStaffNumber() == otherKeyChange.getStaffNumber() &&
+	  keySignature.equals(otherKeyChange.getKeySignature()))
+	return true;
+    }
+    return false;
+  }
 
   public Staff getStaff() { return staff; }
   public void setStaff(Staff staff) { this.staff = staff; }

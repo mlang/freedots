@@ -32,7 +32,7 @@ import org.w3c.dom.Element;
 
 public class Sound implements Event {
   Fraction offset;
-  private Element xml;
+  Element xml;
 
   public Sound(Element xml, Fraction offset) {
     this.xml = xml;
@@ -66,4 +66,11 @@ public class Sound implements Event {
     return null;
   }
   public Fraction getOffset() { return offset; }
+  public boolean equalsIgnoreOffset(Event object) {
+    if (object instanceof Sound) {
+      Sound other = (Sound)object;
+      if (xml.equals(other.xml)) return true;
+    }
+    return false;
+  }
 }

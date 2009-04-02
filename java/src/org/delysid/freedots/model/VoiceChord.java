@@ -69,4 +69,5 @@ VoiceChord extends AbstractChord<RhythmicElement> implements VoiceElement {
       return n2.getPitch().compareTo(n1.getPitch());
     }
   }
+
 }

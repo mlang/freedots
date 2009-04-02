@@ -35,4 +35,15 @@ public class EndBar extends VerticalEvent {
   int endingStop = 0;
   public int getEndingStop() { return endingStop; }
   public void setEndingStop(int endingStop) { this.endingStop = endingStop; }
+
+  public boolean equalsIgnoreOffset(Event other) {
+    if (other instanceof EndBar) {
+      EndBar otherBar = (EndBar)other;
+      if (getRepeat() == otherBar.getRepeat() &&
+	  getEndOfMusic() == otherBar.getEndOfMusic() &&
+	  getEndingStop() == otherBar.getEndingStop())
+	return true;
+    }
+    return false;
+  }
 }

@@ -37,4 +37,18 @@ AbstractChord<E extends Event> extends ArrayList<E> implements Event {
     add(initialNote);
   }
   public Fraction getOffset() { return offset; }
+  public boolean equalsIgnoreOffset(Event other) {
+    if (other instanceof AbstractChord) {
+      AbstractChord otherChord = (AbstractChord)other;
+      if (this.size() == otherChord.size()) {
+	for (int i = 0; i < size(); i++) {
+	  E thisE = this.get(i);
+	  Event otherEvent = (Event)otherChord.get(i);
+	  if (!thisE.equalsIgnoreOffset(otherEvent)) return false;
+	}
+	return true;
+      }
+    }
+    return false;
+  }
 }

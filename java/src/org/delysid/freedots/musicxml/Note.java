@@ -33,6 +33,7 @@ import org.delysid.freedots.model.Accidental;
 import org.delysid.freedots.model.Articulation;
 import org.delysid.freedots.model.AugmentedFraction;
 import org.delysid.freedots.model.Clef;
+import org.delysid.freedots.model.Event;
 import org.delysid.freedots.model.Fermata;
 import org.delysid.freedots.model.Fingering;
 import org.delysid.freedots.model.Fraction;
@@ -242,14 +243,14 @@ public final class Note extends Musicdata implements RhythmicElement {
   }
   public Lyric getLyric() { return lyric; }
 
-  public boolean equalsIgnoreOffset(Object object) {
+  public boolean equalsIgnoreOffset(Event object) {
     if (object instanceof Note) {
       Note other = (Note)object;
 
       if (getAugmentedFraction().equals(other.getAugmentedFraction())) {
         if (getAccidental() == other.getAccidental()) {
           if (getPitch() == null) {
-            return other.getPitch() == null;
+            return (other.getPitch() == null);
           } else {
             return getPitch().equals(other.getPitch());
           }

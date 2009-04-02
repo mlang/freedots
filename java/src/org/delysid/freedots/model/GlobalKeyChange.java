@@ -34,4 +34,10 @@ public class GlobalKeyChange implements Event {
   public KeySignature getKeySignature() { return keySignature; }
 
   public Fraction getOffset() { return offset; }
+  public boolean equalsIgnoreOffset(Event other) {
+    if (other instanceof GlobalKeyChange) {
+      return keySignature.equals(((GlobalKeyChange)other).getKeySignature());
+    }
+    return false;
+  }
 }

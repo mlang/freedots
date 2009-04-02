@@ -46,4 +46,15 @@ public class Direction implements Event {
   }
     
   public Fraction getOffset() { return offset; }
+  public boolean equalsIgnoreOffset(Event object) {
+    if (object instanceof Direction) {
+      Direction other = (Direction)object;
+      Sound thisSound = this.getSound();
+      Sound otherSound = other.getSound();
+      if (thisSound == null || otherSound == null)
+	return thisSound == otherSound;
+      return thisSound.equalsIgnoreOffset(otherSound);
+    }
+    return false;
+  }
 }

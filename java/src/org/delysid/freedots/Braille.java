@@ -32,7 +32,7 @@ public enum Braille {
 
   valueDistinction(126, 2),
 
-  numberSign(3456),
+  numberSign(3456), simileSign(2356),
 
   tie(4, 14), slur(14),
   accent(46, 236), martellato(56, 236), breathMark(6, 34),
