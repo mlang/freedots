@@ -57,7 +57,11 @@ public class KeySignature {
     else return Braille.nTimes(Braille.sharp, type);
   }
 
-  public String toString() {
-    return ""+type;
+  public boolean equals(Object object) {
+    if (object instanceof KeySignature) {
+      KeySignature other = (KeySignature)object;
+      if (this.type == other.type) return true;
+    }
+    return false;
   }
 }
