@@ -38,6 +38,7 @@ import org.delysid.freedots.model.KeySignature;
 import org.delysid.freedots.model.MusicList;
 import org.delysid.freedots.model.Staff;
 import org.delysid.freedots.model.StartBar;
+import org.delysid.freedots.model.TimeSignature;
 import org.delysid.freedots.musicxml.Score;
 import org.delysid.freedots.musicxml.Part;
 
@@ -49,7 +50,25 @@ class BarOverBar implements Strategy {
 
     BrailleStaves brailleStaves = new BrailleStaves(transcriber.getScore().getParts().size());
 
+    KeySignature initialKeySignature = null;
+    TimeSignature initialTimeSignature = null;
+
     for (Part part:transcriber.getScore().getParts()) {
+      if (initialKeySignature == null) {
+	initialKeySignature = part.getKeySignature();
+      } else {
+	if (!initialKeySignature.equals(part.getKeySignature())) {
+	  System.err.println("WARNING: Parts with different initial key signatures");
+	}
+      }
+      if (initialTimeSignature == null) {
+	initialTimeSignature = part.getTimeSignature();
+      } else {
+	if (!initialTimeSignature.equals(part.getTimeSignature())) {
+	  System.err.println("WARNING: Parts with different initial time signatures");
+	}
+      }
+
       MusicList musicList = part.getMusicList();
       int staffCount = musicList.getStaffCount();
       for (int staffIndex = 0; staffIndex < staffCount; staffIndex++) {
@@ -102,6 +121,10 @@ class BarOverBar implements Strategy {
       }
     }
 
+    if (initialKeySignature != null && initialTimeSignature != null) {
+      transcriber.printLine(initialKeySignature.toBraille() +
+			    initialTimeSignature.toBraille());
+    }
     int paragraph = 1;
     int startIndex = 0;
     while (startIndex < brailleStaves.getMeasureCount()) {
