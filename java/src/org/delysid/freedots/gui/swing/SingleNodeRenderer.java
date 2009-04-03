@@ -26,7 +26,6 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -74,8 +73,9 @@ public class SingleNodeRenderer extends JPanel {
   TRANSPARENT // 7^
   };
   
-  private Map<String,BufferedImage> icons=new HashMap();
-  private Map<String,SingleIconSpecification> noteDefs=new HashMap();
+  private Map<String,BufferedImage> icons = new HashMap<String,BufferedImage>();
+  private Map<String,SingleIconSpecification>
+  noteDefs = new HashMap<String,SingleIconSpecification>();
   
   
   private void readSingleIcon(String filename,String key, Map iconMap)
@@ -341,8 +341,6 @@ public class SingleNodeRenderer extends JPanel {
     BufferedImage noteImage=null;
     BufferedImage noteHead=null;
     
-    int num=currentNote.getAugmentedFraction().getNumerator();
-    int den=currentNote.getAugmentedFraction().getDenominator();
     int notePosX;
     int notePosY;
     

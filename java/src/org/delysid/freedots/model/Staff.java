@@ -22,6 +22,7 @@
  */
 package org.delysid.freedots.model;
 
+@SuppressWarnings("serial")
 public class Staff extends MusicList {
   public Timeline<KeySignature>
   keyList = new Timeline<KeySignature>(new KeySignature(0));

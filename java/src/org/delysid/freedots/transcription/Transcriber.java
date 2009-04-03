@@ -22,12 +22,9 @@
  */
 package org.delysid.freedots.transcription;
 
-import java.util.ArrayList;
-import java.util.List;
 import org.delysid.freedots.Options;
 
 import org.delysid.freedots.musicxml.Score;
-import org.delysid.freedots.musicxml.Part;
 
 /**
  * Transcribes a {@link Score} to braille music code.

@@ -133,6 +133,7 @@ class ValueInterpreter {
     return result;
   }
 
+  @SuppressWarnings("serial")
   class Interpretation extends ArrayList<RhythmicPossibility> {
     Interpretation() {super();}
     public boolean isCorrect() {

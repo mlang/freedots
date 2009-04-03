@@ -23,15 +23,12 @@
 package org.delysid.freedots.transcription;
 
 import java.util.ArrayList;
-import java.util.List;
-
 import org.delysid.freedots.Braille;
 import org.delysid.freedots.Options;
 import org.delysid.freedots.model.Clef;
 import org.delysid.freedots.model.ClefChange;
 import org.delysid.freedots.model.EndBar;
 import org.delysid.freedots.model.Event;
-import org.delysid.freedots.model.Fraction;
 import org.delysid.freedots.model.GlobalKeyChange;
 import org.delysid.freedots.model.KeyChange;
 import org.delysid.freedots.model.KeySignature;
@@ -39,7 +36,6 @@ import org.delysid.freedots.model.MusicList;
 import org.delysid.freedots.model.Staff;
 import org.delysid.freedots.model.StartBar;
 import org.delysid.freedots.model.TimeSignature;
-import org.delysid.freedots.musicxml.Score;
 import org.delysid.freedots.musicxml.Part;
 
 class BarOverBar implements Strategy {
@@ -195,6 +191,7 @@ class BarOverBar implements Strategy {
     public void setIntro(Braille intro) { this.intro = intro; }
     public Braille getIntro() { return intro; }
   }
+  @SuppressWarnings("serial")
   class BrailleStaves extends ArrayList<BrailleStaff> {
     BrailleStaves(int initialCapacity) {
       super(initialCapacity);

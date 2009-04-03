@@ -24,6 +24,7 @@ package org.delysid.freedots.model;
 
 import java.util.Map;
 
+@SuppressWarnings("serial")
 public class Timeline<E> extends java.util.TreeMap<Fraction, E> {
   Timeline() { super(); }
   Timeline(E initial) { super(); put(new Fraction(0, 1), initial); }

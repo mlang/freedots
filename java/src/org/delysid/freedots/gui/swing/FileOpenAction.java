@@ -33,6 +33,7 @@ import javax.swing.filechooser.FileFilter;
 
 import org.delysid.freedots.musicxml.Score;
 
+@SuppressWarnings("serial")
 public final class FileOpenAction extends AbstractAction {
   private Main gui;
   public FileOpenAction(Main gui) {

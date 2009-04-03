@@ -23,7 +23,6 @@
 package org.delysid.freedots.gui.swing;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
@@ -34,7 +33,6 @@ import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.File;
 import javax.sound.midi.MidiUnavailableException;
 import javax.swing.Action;
 import javax.swing.ButtonGroup;

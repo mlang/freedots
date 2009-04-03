@@ -38,7 +38,6 @@ import org.delysid.freedots.model.KeySignature;
 import org.delysid.freedots.model.MusicList;
 import org.delysid.freedots.model.Staff;
 import org.delysid.freedots.model.StartBar;
-import org.delysid.freedots.musicxml.Score;
 import org.delysid.freedots.musicxml.Part;
 
 class SectionBySection implements Strategy {

@@ -25,6 +25,7 @@ package org.delysid.freedots.model;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("serial")
 public final class
 StaffChord extends AbstractChord<RhythmicElement> implements StaffElement {
   private int staffNumber;

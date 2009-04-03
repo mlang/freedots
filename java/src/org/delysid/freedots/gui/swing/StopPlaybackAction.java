@@ -28,6 +28,7 @@ import java.awt.event.KeyEvent;
 import javax.swing.AbstractAction;
 import javax.swing.KeyStroke;
 
+@SuppressWarnings("serial")
 public final class StopPlaybackAction extends AbstractAction {
   private Main gui;
   public StopPlaybackAction(Main gui) {

@@ -41,6 +41,7 @@ import org.delysid.freedots.Braille;
 import org.delysid.freedots.musicxml.MIDISequence;
 import org.delysid.freedots.musicxml.Score;
 
+@SuppressWarnings("serial")
 public final class FileSaveAsAction extends AbstractAction {
   private Main gui;
   public FileSaveAsAction(Main gui) {

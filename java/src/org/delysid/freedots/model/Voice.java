@@ -22,6 +22,7 @@
  */
 package org.delysid.freedots.model;
 
+@SuppressWarnings("serial")
 public class Voice extends MusicList {
   String name;
 

@@ -25,6 +25,7 @@ package org.delysid.freedots.model;
 import java.util.Collections;
 import java.util.Comparator;
 
+@SuppressWarnings("serial")
 public final class
 VoiceChord extends AbstractChord<RhythmicElement> implements VoiceElement {
   private int staffNumber;
