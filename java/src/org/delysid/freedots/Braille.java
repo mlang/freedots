@@ -72,17 +72,35 @@ public enum Braille {
   private final static Braille[] fingers = { finger1, finger2, finger3, finger4, finger5 };
 
   private int[] dots;
-  Braille(int dots) { this.dots = new int[] {dots}; }
-  Braille(int dots1, int dots2) { this.dots = new int[] {dots1, dots2}; }
+  private String cachedString;
+  private boolean needsAdditionalDot3IfOneOfDot123Follows = false;
+
+  Braille(int dots) { this(new int[] {dots}); }
+  Braille(int dots1, int dots2) { this(new int[] {dots1, dots2}); }
   Braille(int dots1, int dots2, int dots3) {
-    this.dots = new int[] {dots1, dots2, dots3};
+    this(new int[] {dots1, dots2, dots3});
+  }
+  private Braille(int[] dots) {
+    this.dots = dots;
+    cachedString = "";
+    for (int element : dots)
+      cachedString += String.valueOf(unicodeBraille(dotsToBits(element)));
   }
   @Override
   public String toString() {
-    String result = "";
-    for (int element : dots)
-      result += String.valueOf(unicodeBraille(dotsToBits(element)));
-    return result;
+    return cachedString;
+  }
+
+  public boolean needsAdditionalDot3IfOneOfDot123Follows() {
+    return needsAdditionalDot3IfOneOfDot123Follows;
+  }
+  public void needsAdditionalDot3IfOneOfDot123Follows(boolean newValue) {
+    needsAdditionalDot3IfOneOfDot123Follows = newValue;
+  }
+  static {
+    leftHandPart.needsAdditionalDot3IfOneOfDot123Follows(true);
+    soloPart.needsAdditionalDot3IfOneOfDot123Follows(true);
+    rightHandPart.needsAdditionalDot3IfOneOfDot123Follows(true);
   }
 
   public static Braille octave(int number) { return octaves[number]; }

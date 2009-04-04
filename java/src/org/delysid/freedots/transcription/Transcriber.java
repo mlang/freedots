@@ -22,6 +22,7 @@
  */
 package org.delysid.freedots.transcription;
 
+import org.delysid.freedots.Braille;
 import org.delysid.freedots.Options;
 
 import org.delysid.freedots.musicxml.Score;
@@ -108,6 +109,9 @@ public final class Transcriber {
 
   public void printString(String text) {
     printString(new BrailleString(text));
+  }
+  public void printString(Braille braille) {
+    printString(new BrailleString(braille));
   }
   public void printString(BrailleString text) {
     strings.add(text);

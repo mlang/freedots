@@ -46,7 +46,7 @@ class BrailleList extends java.util.ArrayList<BrailleString> {
   }
   public BrailleString getNext(BrailleString item) {
     int index = indexOf(item);
-    if (index != -1 && index < size()) return get(index+1);
+    if (index != -1 && index < size() - 1) return get(index+1);
     return null;
   }
   public int length() { return toString().length(); }

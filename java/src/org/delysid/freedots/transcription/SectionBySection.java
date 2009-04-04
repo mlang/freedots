@@ -65,11 +65,11 @@ class SectionBySection implements Strategy {
             displayClefChange = true;
           } else if (staffCount == 2) {
             if (staffIndex == 0) {
-              transcriber.printString(Braille.rightHandPart.toString());
+              transcriber.printString(Braille.rightHandPart);
               voiceDirection = -1;
               measure.setVoiceDirection(voiceDirection);
             } else if (staffIndex == 1) {
-              transcriber.printString(Braille.leftHandPart.toString());
+              transcriber.printString(Braille.leftHandPart);
               voiceDirection = 1;
               measure.setVoiceDirection(voiceDirection);
             }

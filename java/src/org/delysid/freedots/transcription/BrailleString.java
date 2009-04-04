@@ -26,10 +26,11 @@ import org.delysid.freedots.Braille;
 
 class BrailleString {
   Object model = null;
-  String string;
+  Braille braille = null;
+  String string = null;
   BrailleList container = null;
   BrailleString(Braille braille) {
-    this(braille.toString());
+    this.braille = braille;
   }
   BrailleString(String string) {
     this.string = string;
@@ -41,23 +42,17 @@ class BrailleString {
   Object getModel() { return model; }
   void setContainer(BrailleList list) { container = list; }
 
-  boolean appendDotIfNextHas123 = false;
-  public void setAppendDotIfNextHas123(boolean value) {
-    appendDotIfNextHas123 = value;
-  }
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append(string);
-    if (appendDotIfNextHas123) {
+    sb.append(string != null ? string : braille.toString());
+    if (braille != null && braille.needsAdditionalDot3IfOneOfDot123Follows()) {
       if (container != null) {
 	BrailleString next = container.getNext(this);
 	if (next != null) {
 	  if (next.startsWithOneOf123()) {
 	    sb.append(Braille.dot.toString());
 	  }
-	} else {
-	  throw new RuntimeException("No next!");
 	}
       }
     }

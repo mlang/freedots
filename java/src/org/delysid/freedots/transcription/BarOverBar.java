@@ -152,7 +152,6 @@ class BarOverBar implements Strategy {
 	    Braille introSymbol = brailleStaves.get(staffIndex).getIntro();
 	    if (introSymbol != null) {
 	      BrailleString intro = new BrailleString(introSymbol);
-	      intro.setAppendDotIfNextHas123(true);
 	      braille.add(0, intro);
 	    }
 	  }
