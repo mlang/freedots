@@ -1,4 +1,4 @@
-/* -*- c-basic-offset: 2; -*- */
+/* -*- c-basic-offset: 2; indent-tabs-mode: nil; -*- */
 /*
  * FreeDots -- MusicXML to braille music transcription
  *
@@ -56,6 +56,23 @@ public final class Score {
   private Document document;
 
   private static XPathFactory xPathFactory = XPathFactory.newInstance();
+  private static DocumentBuilder documentBuilder;
+  static {
+    DocumentBuilderFactory
+    documentBuilderFactory = DocumentBuilderFactory.newInstance();
+    try {
+      documentBuilder = documentBuilderFactory.newDocumentBuilder();
+      documentBuilder.setEntityResolver(new MusicXMLEntityResolver());
+    } catch (ParserConfigurationException e) { e.printStackTrace(); }
+  }
+
+  private Text workNumber = null;
+  private Text workTitle = null;
+  private Text movementNumber = null;
+  private Text movementTitle = null;
+  private Text composer = null;
+  private Text poet = null;
+  private Text rights = null;
 
   private List<Part> parts;
 
@@ -69,7 +86,7 @@ public final class Score {
   public Score(
     String filename
   ) throws ParserConfigurationException,
-	   IOException, SAXException, XPathExpressionException {
+           IOException, SAXException, XPathExpressionException {
     File file = new File(filename);
     InputStream inputStream = null;
     String extension = null;
@@ -84,57 +101,116 @@ public final class Score {
     }
     parse(inputStream, extension);
   }
-  private void parse(InputStream inputStream, String extension)
-  throws ParserConfigurationException, IOException, SAXException, XPathExpressionException {
-    DocumentBuilderFactory
-    documentBuilderFactory = DocumentBuilderFactory.newInstance();
-    DocumentBuilder
-    documentBuilder = documentBuilderFactory.newDocumentBuilder();
-    documentBuilder.setEntityResolver(new MusicXMLEntityResolver());
-
+  private void parse(
+    InputStream inputStream, String extension
+  ) throws ParserConfigurationException, IOException, SAXException,
+           XPathExpressionException
+  {
     if ("mxl".equalsIgnoreCase(extension)) {
       String zipEntryName = null;
       ZipInputStream zipInputStream = new ZipInputStream(inputStream);
       ZipEntry zipEntry = null;
       while ((zipEntry = zipInputStream.getNextEntry()) != null) {
-	if ("META-INF/container.xml".equals(zipEntry.getName())) {
-	  Document container =
-	    documentBuilder.parse(
-	      getInputSourceFromZipInputStream(zipInputStream));
-	  XPath xpath = xPathFactory.newXPath();
-	  zipEntryName = (String) xpath.evaluate("container/rootfiles/rootfile/@full-path",
-						 container,
-						 XPathConstants.STRING);
-	} else if (zipEntry.getName().equals(zipEntryName))
+        if ("META-INF/container.xml".equals(zipEntry.getName())) {
+          Document container =
+            documentBuilder.parse(
+              getInputSourceFromZipInputStream(zipInputStream));
+          XPath xpath = xPathFactory.newXPath();
+          zipEntryName = (String) xpath.evaluate("container/rootfiles/rootfile/@full-path",
+                                                 container,
+                                                 XPathConstants.STRING);
+        } else if (zipEntry.getName().equals(zipEntryName))
     document = documentBuilder.parse(
-		       getInputSourceFromZipInputStream(zipInputStream));
-	zipInputStream.closeEntry();
+                 getInputSourceFromZipInputStream(zipInputStream));
+        zipInputStream.closeEntry();
       }
     } else
       document = documentBuilder.parse(inputStream);
 
     document.getDocumentElement().normalize();
 
+    Element root = document.getDocumentElement();
+
+    /* Parse score-header */
+    Element partList = null;
+
+    movementNumber = getTextNode(root, "movement-number");
+    movementTitle = getTextNode(root, "movement-title");
+    NodeList rootNodes = root.getChildNodes();
+    for (int i = 0; i < rootNodes.getLength(); i++) {
+      Node scoreNode = rootNodes.item(i);
+      if (scoreNode.getNodeType() == Node.ELEMENT_NODE) {
+        Element scoreElement = (Element)scoreNode;
+        if (scoreNode.getNodeName().equals("work")) {
+          workNumber = getTextNode(scoreElement, "work-number");
+          workTitle = getTextNode(scoreElement, "work-title");
+        } else if (scoreNode.getNodeName().equals("identification")) {
+          NodeList identificationNodes = scoreElement.getChildNodes();
+          for (int j = 0; j < identificationNodes.getLength(); j++) {
+            Node identificationNode = identificationNodes.item(j);
+            if (identificationNode.getNodeType() == Node.ELEMENT_NODE) {
+              Element identificationElement = (Element)identificationNode;
+              if (identificationNode.getNodeName().equals("creator")) {
+                Element creator = identificationElement;
+                NodeList creatorNodes = creator.getChildNodes();
+                Text textNode = null;
+                for (int k = 0; k < creatorNodes.getLength(); k++) {
+                  Node creatorNode = creatorNodes.item(k);
+                  if (creatorNode.getNodeType() == Node.TEXT_NODE) {
+                    textNode = (Text)creatorNode;
+                  }
+                }
+                if (creator.getAttribute("type").equals("composer")) {
+                  composer = textNode;
+                } else if (creator.getAttribute("type").equals("poet")) {
+                  poet = textNode;
+                }
+              }
+            }
+          }
+        } else if (scoreNode.getNodeName().equals("part-list"))
+          partList = scoreElement;
+      }
+    }
+
+    /* Parse (partwise) part elements */
     parts = new ArrayList<Part>();
 
-    Element root = document.getDocumentElement();
     NodeList nodes = root.getElementsByTagName("part");
-    Element partList = (Element) root.getElementsByTagName("part-list").item(0);
     NodeList partListKids = partList.getChildNodes();
     for (int i=0; i<nodes.getLength(); i++) {
       Element part = (Element) nodes.item(i);
       String idValue = part.getAttribute("id");
       Element scorePart = null;
       for (int j=0; j<partListKids.getLength(); j++) {
-	Node kid = partListKids.item(j);
-	if (kid.getNodeType() == Node.ELEMENT_NODE) {
-	  Element elem = (Element) kid;
-	  if (idValue.equals(elem.getAttribute("id"))) scorePart = elem;
-	}
+        Node kid = partListKids.item(j);
+        if (kid.getNodeType() == Node.ELEMENT_NODE) {
+          Element elem = (Element) kid;
+          if (idValue.equals(elem.getAttribute("id"))) scorePart = elem;
+        }
       }
       if (scorePart != null)
         parts.add(new Part(part, scorePart, this));
     }
+  }
+
+  public String getWorkNumber() {
+    return workNumber != null ? workNumber.getWholeText() : null;
+  }
+  public String getWorkTitle() {
+    return workTitle != null ? workTitle.getWholeText() : null;
+  }
+  public String getMovementNumber() {
+    return movementNumber != null ? movementNumber.getWholeText() : null;
+  }
+  public String getMovementTitle() {
+    return movementTitle != null ? movementTitle.getWholeText() : null;
+  }
+  public String getComposer() {
+    return composer != null ? composer.getWholeText() : null;
+  }
+  public String getPoet() {
+    return poet != null ? poet.getWholeText() : null;
   }
 
   private InputSource getInputSourceFromZipInputStream(
@@ -158,14 +234,14 @@ public final class Score {
     try {
       String xPathExpression = "//attributes/divisions/text()";
       NodeList nodeList = (NodeList) xPath.evaluate(xPathExpression,
-						    document,
-						    XPathConstants.NODESET);
+                                                    document,
+                                                    XPathConstants.NODESET);
       int count = nodeList.getLength();
       BigInteger result = BigInteger.ONE;
       for (int index = 0; index < count; index++) {
-	Node node = nodeList.item(index);
-	BigInteger divisions = new BigInteger(new Integer(Math.round(Float.parseFloat(node.getNodeValue()))).toString());
-	result = result.multiply(divisions).divide(result.gcd(divisions));
+        Node node = nodeList.item(index);
+        BigInteger divisions = new BigInteger(new Integer(Math.round(Float.parseFloat(node.getNodeValue()))).toString());
+        result = result.multiply(divisions).divide(result.gcd(divisions));
       }
       return result.intValue();
     } catch (XPathExpressionException e) {

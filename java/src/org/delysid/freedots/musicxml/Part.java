@@ -1,4 +1,4 @@
-/* -*- c-basic-offset: 2; -*- */
+/* -*- c-basic-offset: 2; indent-tabs-mode: nil; -*- */
 /*
  * FreeDots -- MusicXML to braille music transcription
  *
@@ -74,53 +74,52 @@ public final class Part {
     for (int i = 0; i<partChildNodes.getLength(); i++) {
       Node kid = partChildNodes.item(i);
       if (kid.getNodeType() == Node.ELEMENT_NODE &&
-	  "measure".equals(kid.getNodeName())) {
-	Element xmlMeasure = (Element)kid;
+          "measure".equals(kid.getNodeName())) {
+        Element xmlMeasure = (Element)kid;
 
-	StartBar startBar = new StartBar(measureOffset, ++measureNumber);
-	startBar.setStaffCount(staffCount);
-	eventList.add(startBar);
+        StartBar startBar = new StartBar(measureOffset, ++measureNumber);
+        startBar.setStaffCount(staffCount);
+        eventList.add(startBar);
 
         boolean repeatBackward = false;
         int endingStop = 0;
 
-	Chord currentChord = null;
-	Fraction offset = new Fraction(0, 1);
+        Chord currentChord = null;
+        Fraction offset = new Fraction(0, 1);
         Fraction measureDuration = new Fraction(0, 1);
-	NodeList measureChildNodes = xmlMeasure.getChildNodes();
-	for (int index = 0; index < measureChildNodes.getLength(); index++) {
-	  Node measureChild = measureChildNodes.item(index);
-	  if (measureChild.getNodeType() == Node.ELEMENT_NODE) {
-	    Element musicdata = (Element)measureChild;
-
-	    if ("attributes".equals(measureChild.getNodeName())) {
-	      Attributes attributes = new Attributes(musicdata, divisions);
-	      int newDivisions = attributes.getDivisions();
-	      Attributes.Time newTimeSignature = attributes.getTime();
-	      int newStaffCount = attributes.getStaves();
-	      if (newDivisions > 0) {
-		durationMultiplier = divisions / newDivisions;
-	      }
-	      if (newStaffCount > 1 && newStaffCount != staffCount) {
-		staffCount = newStaffCount;
-		startBar.setStaffCount(staffCount);
-	      }
-	      if (newTimeSignature != null) {
+        NodeList measureChildNodes = xmlMeasure.getChildNodes();
+        for (int index = 0; index < measureChildNodes.getLength(); index++) {
+          Node measureChild = measureChildNodes.item(index);
+          if (measureChild.getNodeType() == Node.ELEMENT_NODE) {
+            Element musicdata = (Element)measureChild;
+            if ("attributes".equals(measureChild.getNodeName())) {
+              Attributes attributes = new Attributes(musicdata, divisions);
+              int newDivisions = attributes.getDivisions();
+              Attributes.Time newTimeSignature = attributes.getTime();
+              int newStaffCount = attributes.getStaves();
+              if (newDivisions > 0) {
+                durationMultiplier = divisions / newDivisions;
+              }
+              if (newStaffCount > 1 && newStaffCount != staffCount) {
+                staffCount = newStaffCount;
+                startBar.setStaffCount(staffCount);
+              }
+              if (newTimeSignature != null) {
                 if (lastTimeSignature == null) {
-  		  timeSignature = newTimeSignature;
+                  timeSignature = newTimeSignature;
                 }
                 lastTimeSignature = newTimeSignature;
-		eventList.add(new TimeSignatureChange(measureOffset.add(offset),
-						      lastTimeSignature));
+                eventList.add(new TimeSignatureChange(measureOffset.add(offset),
+                                                      lastTimeSignature));
                 if (offset.compareTo(new Fraction(0, 1)) == 0) {
                   startBar.setTimeSignature(newTimeSignature);
                 }
-	      }
+              }
               List<Attributes.Clef> clefs = attributes.getClefs();
               if (clefs.size() > 0) {
                 for (Attributes.Clef clef:clefs) {
-		  eventList.add(new ClefChange(measureOffset.add(offset),
-					       clef, clef.getStaffNumber()));
+                  eventList.add(new ClefChange(measureOffset.add(offset),
+                                               clef, clef.getStaffNumber()));
                 }
               }
               List<Attributes.Key> keys = attributes.getKeys();
@@ -132,11 +131,11 @@ public final class Part {
                     eventList.add(new KeyChange(measureOffset.add(offset), key, Integer.parseInt(key.getStaffName()) - 1));
                 }
               }
-	    } else if ("note".equals(measureChild.getNodeName())) {
-	      Note note = new Note(measureOffset.add(offset),
+            } else if ("note".equals(measureChild.getNodeName())) {
+              Note note = new Note(measureOffset.add(offset),
                                    musicdata, divisions, durationMultiplier, this);
-	      boolean advanceTime = !note.isGrace();
-	      boolean addNoteToEventList = true;
+              boolean advanceTime = !note.isGrace();
+              boolean addNoteToEventList = true;
 
               Notations notations = note.getNotations();
               if (notations != null) {
@@ -164,32 +163,32 @@ public final class Part {
                 }
               }
 
-	      if (currentChord != null) {
-		if (elementHasChild(musicdata, "chord")) {
-		  currentChord.add(note);
-		  advanceTime = false;
-		  addNoteToEventList = false;
-		} else {
+              if (currentChord != null) {
+                if (elementHasChild(musicdata, "chord")) {
+                  currentChord.add(note);
+                  advanceTime = false;
+                  addNoteToEventList = false;
+                } else {
                   offset = offset.add(currentChord.get(0).getDuration());
-		  currentChord = null;
-		}
-	      }
-	      if (currentChord == null && noteStartsChord(musicdata)) {
-		currentChord = new Chord(note);
-		advanceTime = false;
-		eventList.add(currentChord);
-		addNoteToEventList = false;
-	      }
-	      if (addNoteToEventList) {
-		eventList.add(note);
-	      }
-	      if (advanceTime) {
-		offset = offset.add(note.getDuration());
+                  currentChord = null;
+                }
+              }
+              if (currentChord == null && noteStartsChord(musicdata)) {
+                currentChord = new Chord(note);
+                advanceTime = false;
+                eventList.add(currentChord);
+                addNoteToEventList = false;
+              }
+              if (addNoteToEventList) {
+                eventList.add(note);
+              }
+              if (advanceTime) {
+                offset = offset.add(note.getDuration());
 	      }
             } else if ("direction".equals(measureChild.getNodeName())) {
               Direction direction = new Direction(musicdata, measureOffset.add(offset));
               eventList.add(direction);
-	    } else if ("backup".equals(measureChild.getNodeName())) { 
+            } else if ("backup".equals(measureChild.getNodeName())) { 
               if (currentChord != null) {
                 offset = offset.add(currentChord.get(0).getDuration());
                 currentChord = null;
@@ -205,9 +204,9 @@ public final class Part {
                                             divisions, durationMultiplier, this);
               eventList.add(invisibleRest);
               offset = offset.add(invisibleRest.getDuration());
-	    } else if ("print".equals(measureChild.getNodeName())) {
-	      Print print = new Print(musicdata);
-	      if (print.isNewSystem()) startBar.setNewSystem(true);
+            } else if ("print".equals(measureChild.getNodeName())) {
+              Print print = new Print(musicdata);
+              if (print.isNewSystem()) startBar.setNewSystem(true);
             } else if ("sound".equals(measureChild.getNodeName())) {
               Sound sound = new Sound(musicdata, measureOffset.add(offset));
               eventList.add(sound);
@@ -234,22 +233,23 @@ public final class Part {
             } else
               System.err.println("Unsupported musicdata element " + measureChild.getNodeName());
             if (offset.compareTo(measureDuration) > 0) measureDuration = offset;
-	  }
-	}
+          }
+        }
 
         if (currentChord != null) {
           offset = offset.add(currentChord.get(0).getDuration());
           if (offset.compareTo(measureDuration) > 0) measureDuration = offset;
           currentChord = null;
         }
+        TimeSignature activeTimeSignature = lastTimeSignature != null ? lastTimeSignature : timeSignature;
         if (xmlMeasure.getAttribute("implicit").equalsIgnoreCase("yes") &&
             measureDuration.compareTo(timeSignature) < 0) {
           measureOffset = measureOffset.add(measureDuration);
         } else {
-          if (measureDuration.compareTo(timeSignature) != 0) {
+          if (measureDuration.compareTo(activeTimeSignature) != 0) {
             System.err.println("WARNING: Incomplete measure "+xmlMeasure.getAttribute("number")+": "+timeSignature+" "+measureDuration);
           }
-          measureOffset = measureOffset.add(timeSignature);
+          measureOffset = measureOffset.add(activeTimeSignature);
         }
         if (startBar.getTimeSignature() == null) {
           startBar.setTimeSignature(lastTimeSignature);
@@ -291,7 +291,7 @@ public final class Part {
     XPath xpath = XPathFactory.newInstance().newXPath();
     try {
       return (String) xpath.evaluate("part-name", scorePart,
-				     XPathConstants.STRING);
+                                     XPathConstants.STRING);
     } catch (XPathExpressionException e) {
       return null;
     }
@@ -301,7 +301,7 @@ public final class Part {
     Node node = note;
     while ((node = node.getNextSibling()) != null) {
       if (node.getNodeType() == Node.ELEMENT_NODE) {
-	String nodeName = node.getNodeName();
+        String nodeName = node.getNodeName();
         if ("note".equals(nodeName)) {
           return elementHasChild((Element)node, "chord");
         } else if ("backup".equals(nodeName) || "forward".equals(nodeName))

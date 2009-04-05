@@ -1,4 +1,4 @@
-/* -*- c-basic-offset: 2; -*- */
+/* -*- c-basic-offset: 2; indent-tabs-mode: nil; -*- */
 /*
  * FreeDots -- MusicXML to braille music transcription
  *
@@ -49,12 +49,12 @@ class SectionBySection implements Strategy {
     for (Part part:transcriber.getScore().getParts()) {
       transcriber.printLine(part.getName());
       transcriber.printLine(part.getKeySignature().toBraille() +
-			    part.getTimeSignature().toBraille());
+                            part.getTimeSignature().toBraille());
       for (Section section:getSections(part)) {
         int staffCount = section.getStaffCount();
         for (int staffIndex = 0; staffIndex < staffCount; staffIndex++) {
-	  Staff staff = section.getStaff(staffIndex);
-	  BrailleMeasure measure = new BrailleMeasure();
+          Staff staff = section.getStaff(staffIndex);
+          BrailleMeasure measure = new BrailleMeasure();
           boolean displayClefChange = false;
           int voiceDirection = -1;
 
@@ -156,28 +156,28 @@ class SectionBySection implements Strategy {
       Staff staff = super.getStaff(index);
       /* We need to populate key/clef/timeList with events from the past */
       if (staff != null && !staff.isEmpty()) {
-	Fraction startOffset = staff.get(0).getOffset();
-	for (Event event : part.getMusicList()) {
-	  if (event.getOffset().compareTo(startOffset) < 0) {
-	    if (event instanceof GlobalKeyChange) {
-	      GlobalKeyChange globalKeyChange = (GlobalKeyChange)event;
-	      staff.keyList.put(globalKeyChange.getOffset(),
-				globalKeyChange.getKeySignature());
-	    } else if (event instanceof KeyChange) {
-	      KeyChange keyChange = (KeyChange)event;
-	      if (keyChange.getStaffNumber() == index) {
-		staff.keyList.put(keyChange.getOffset(),
-				  keyChange.getKeySignature());
-	      }
-	    } else if (event instanceof ClefChange) {
-	      ClefChange clefChange = (ClefChange)event;
-	      if (clefChange.getStaffNumber() == index) {
-		staff.clefList.put(clefChange.getOffset(),
-				   clefChange.getClef());
-	      }
-	    }
-	  }
-	}
+        Fraction startOffset = staff.get(0).getOffset();
+        for (Event event : part.getMusicList()) {
+          if (event.getOffset().compareTo(startOffset) < 0) {
+            if (event instanceof GlobalKeyChange) {
+              GlobalKeyChange globalKeyChange = (GlobalKeyChange)event;
+              staff.keyList.put(globalKeyChange.getOffset(),
+                                globalKeyChange.getKeySignature());
+            } else if (event instanceof KeyChange) {
+              KeyChange keyChange = (KeyChange)event;
+              if (keyChange.getStaffNumber() == index) {
+                staff.keyList.put(keyChange.getOffset(),
+                                  keyChange.getKeySignature());
+              }
+            } else if (event instanceof ClefChange) {
+              ClefChange clefChange = (ClefChange)event;
+              if (clefChange.getStaffNumber() == index) {
+                staff.clefList.put(clefChange.getOffset(),
+                                   clefChange.getClef());
+              }
+            }
+          }
+        }
       }
 
       return staff;
@@ -196,15 +196,15 @@ class SectionBySection implements Strategy {
 
     while (true) {
       while (index < musicList.size()) {
-	Event event = musicList.get(index++);
-	currentSection.add(event);
-	if (event instanceof EndBar) { measureCount++; break; }
+        Event event = musicList.get(index++);
+        currentSection.add(event);
+        if (event instanceof EndBar) { measureCount++; break; }
       }
 
       if (index == musicList.size()) return sections;
 
       if (!(musicList.get(index) instanceof StartBar))
-	throw new RuntimeException();
+        throw new RuntimeException();
 
       StartBar startBar = (StartBar)musicList.get(index);
       if ((startBar.getStaffCount() != currentSection.getStaffCount()) ||
@@ -233,8 +233,8 @@ class SectionBySection implements Strategy {
            (options.multiStaffMeasures == Options.MultiStaffMeasures.TWELVE &&
             measureCount == 12))) ||
           (currentSection.getLyricText().length() >= options.getPageWidth())) {
-	currentSection = new Section(part);
-	sections.add(currentSection);
+        currentSection = new Section(part);
+        sections.add(currentSection);
         measureCount = 0;
       }
     }

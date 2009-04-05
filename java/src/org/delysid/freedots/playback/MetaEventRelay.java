@@ -1,4 +1,4 @@
-/* -*- c-basic-offset: 2; -*- */
+/* -*- c-basic-offset: 2; indent-tabs-mode: nil; -*- */
 /*
  * FreeDots -- MusicXML to braille music transcription
  *

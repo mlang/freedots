@@ -1,4 +1,4 @@
-/* -*- c-basic-offset: 2; -*- */
+/* -*- c-basic-offset: 2; indent-tabs-mode: nil; -*- */
 /*
  * FreeDots -- MusicXML to braille music transcription
  *
@@ -63,28 +63,28 @@ public final class Note extends Musicdata implements RhythmicElement {
   private final static Map<String, Type>
   typeMap = Collections.unmodifiableMap(new HashMap<String, Type>() {
       {
-	put("long", Type.LONG);
-	put("breve", Type.BREVE);
-	put("whole", Type.WHOLE);
-	put("half", Type.HALF);
-	put("quarter", Type.QUARTER);
-	put("eighth", Type.EIGHTH);
-	put("16th", Type.SIXTEENTH);
-	put("32nd", Type.THIRTYSECOND);
-	put("64th", Type.SIXTYFOURTH);
-	put("128th", Type.ONEHUNDREDTWENTYEIGHTH);
-	put("256th", Type.TWOHUNDREDFIFTYSIXTH);
+        put("long", Type.LONG);
+        put("breve", Type.BREVE);
+        put("whole", Type.WHOLE);
+        put("half", Type.HALF);
+        put("quarter", Type.QUARTER);
+        put("eighth", Type.EIGHTH);
+        put("16th", Type.SIXTEENTH);
+        put("32nd", Type.THIRTYSECOND);
+        put("64th", Type.SIXTYFOURTH);
+        put("128th", Type.ONEHUNDREDTWENTYEIGHTH);
+        put("256th", Type.TWOHUNDREDFIFTYSIXTH);
       }
     });
   Accidental accidental = null;
   private final static Map<String, Accidental>
   accidentalMap = Collections.unmodifiableMap(new HashMap<String, Accidental>() {
       { put("natural", Accidental.NATURAL);
-	put("flat", Accidental.FLAT);
-	put("flat-flat", Accidental.DOUBLE_FLAT);
-	put("sharp", Accidental.SHARP);
-	put("sharp-sharp", Accidental.DOUBLE_SHARP);
-	put("double-sharp", Accidental.DOUBLE_SHARP);
+        put("flat", Accidental.FLAT);
+        put("flat-flat", Accidental.DOUBLE_FLAT);
+        put("sharp", Accidental.SHARP);
+        put("sharp-sharp", Accidental.DOUBLE_SHARP);
+        put("double-sharp", Accidental.DOUBLE_SHARP);
       }
     });
 

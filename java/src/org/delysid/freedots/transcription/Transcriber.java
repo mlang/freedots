@@ -1,4 +1,4 @@
-/* -*- c-basic-offset: 2; -*- */
+/* -*- c-basic-offset: 2; indent-tabs-mode: nil; -*- */
 /*
  * FreeDots -- MusicXML to braille music transcription
  *
@@ -98,6 +98,30 @@ public final class Transcriber {
   }
 
   private void transcribe() throws Exception {
+    String workNumber = score.getWorkNumber();
+    String workTitle = score.getWorkTitle();
+    String movementTitle = score.getMovementTitle();
+    String composer = score.getComposer();
+    boolean headerAvailable = false;
+
+    if (workNumber != null && workNumber.length() > 0) {
+      printCenteredLine(workNumber);
+      headerAvailable = true;
+    }
+    if (workTitle != null && workTitle.length() > 0) {
+      printCenteredLine(workTitle);
+      headerAvailable = true;
+    }
+    if (movementTitle != null && movementTitle.length() > 0) {
+      printCenteredLine(movementTitle);
+      headerAvailable = true;
+    }
+    if (composer != null && composer.length() > 0) {
+      printCenteredLine(composer);
+      headerAvailable = true;
+    }
+    if (headerAvailable) newLine();
+
     switch (options.getMethod()) {
       case SectionBySection: strategy = new SectionBySection();
                              break;
@@ -122,6 +146,16 @@ public final class Transcriber {
     characterCount += text.length();
   }
   public void printLine(String text) {
+    strings.add(new BrailleString(text));
+    newLine();
+  }
+  public void printCenteredLine(String text) {
+    int skip = (getRemainingColumns() - text.length()) / 2;
+    if (skip > 0) {
+      StringBuilder skipString = new StringBuilder();
+      for (int i = 0; i < skip; i++) skipString.append(" ");
+      strings.add(new BrailleString(skipString.toString()));
+    }
     strings.add(new BrailleString(text));
     newLine();
   }
