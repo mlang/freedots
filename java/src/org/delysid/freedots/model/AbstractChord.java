@@ -41,12 +41,12 @@ AbstractChord<E extends Event> extends ArrayList<E> implements Event {
     if (other instanceof AbstractChord) {
       AbstractChord otherChord = (AbstractChord)other;
       if (this.size() == otherChord.size()) {
-	for (int i = 0; i < size(); i++) {
-	  E thisE = this.get(i);
-	  Event otherEvent = (Event)otherChord.get(i);
-	  if (!thisE.equalsIgnoreOffset(otherEvent)) return false;
-	}
-	return true;
+        for (int i = 0; i < size(); i++) {
+          E thisE = this.get(i);
+          Event otherEvent = (Event)otherChord.get(i);
+          if (!thisE.equalsIgnoreOffset(otherEvent)) return false;
+        }
+        return true;
       }
     }
     return false;

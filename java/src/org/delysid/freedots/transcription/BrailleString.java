@@ -48,12 +48,12 @@ class BrailleString {
     sb.append(string != null ? string : braille.toString());
     if (braille != null && braille.needsAdditionalDot3IfOneOfDot123Follows()) {
       if (container != null) {
-	BrailleString next = container.getNext(this);
-	if (next != null) {
-	  if (next.startsWithOneOf123()) {
-	    sb.append(Braille.dot.toString());
-	  }
-	}
+        BrailleString next = container.getNext(this);
+        if (next != null) {
+          if (next.startsWithOneOf123()) {
+            sb.append(Braille.dot.toString());
+          }
+        }
       }
     }
     return sb.toString();

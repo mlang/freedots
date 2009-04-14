@@ -43,8 +43,8 @@ public class KeyChange implements StaffElement {
     if (other instanceof KeyChange) {
       KeyChange otherKeyChange = (KeyChange)other;
       if (getStaffNumber() == otherKeyChange.getStaffNumber() &&
-	  keySignature.equals(otherKeyChange.getKeySignature()))
-	return true;
+          keySignature.equals(otherKeyChange.getKeySignature()))
+        return true;
     }
     return false;
   }

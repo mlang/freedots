@@ -40,9 +40,9 @@ public class EndBar extends VerticalEvent {
     if (other instanceof EndBar) {
       EndBar otherBar = (EndBar)other;
       if (getRepeat() == otherBar.getRepeat() &&
-	  getEndOfMusic() == otherBar.getEndOfMusic() &&
-	  getEndingStop() == otherBar.getEndingStop())
-	return true;
+          getEndOfMusic() == otherBar.getEndOfMusic() &&
+          getEndingStop() == otherBar.getEndingStop())
+        return true;
     }
     return false;
   }

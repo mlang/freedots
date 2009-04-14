@@ -14,7 +14,7 @@
  * for more details (a copy is included in the LICENSE.txt file that
  * accompanied this code).
  *
- * You should have received a copy of the GNU General Public License 
+ * You should have received a copy of the GNU General Public License
  * along with this work; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
  *
@@ -36,7 +36,7 @@ import org.delysid.freedots.musicxml.Score;
 @SuppressWarnings("serial")
 public final class FileOpenAction extends AbstractAction {
   private Main gui;
-  public FileOpenAction(Main gui) {
+  public FileOpenAction(final Main gui) {
     super("Open");
     this.gui = gui;
     putValue(SHORT_DESCRIPTION, "Open an existing MusicXML file");
@@ -44,17 +44,17 @@ public final class FileOpenAction extends AbstractAction {
     putValue(ACCELERATOR_KEY,
              KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
   }
-  public void actionPerformed(ActionEvent event) {
+  public void actionPerformed(final ActionEvent event) {
     JFileChooser fileChooser = new JFileChooser();
     fileChooser.setAcceptAllFileFilterUsed(false);
     fileChooser.setFileFilter(new FileFilter() {
       @Override
-      public boolean accept(File f) {
-	return f.isDirectory() || f.getName().matches(".*\\.(mxl|xml)");
+      public boolean accept(final File file) {
+        return file.isDirectory() || file.getName().matches(".*\\.(mxl|xml)");
       }
       @Override
       public String getDescription() {
-	return "*.mxl, *.xml";
+        return "*.mxl, *.xml";
       }
     });
     fileChooser.showOpenDialog(gui);

@@ -14,7 +14,7 @@
  * for more details (a copy is included in the LICENSE.txt file that
  * accompanied this code).
  *
- * You should have received a copy of the GNU General Public License 
+ * You should have received a copy of the GNU General Public License
  * along with this work; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
  *
@@ -34,7 +34,7 @@ public final class Transcriber {
   private Score score;
 
   public Score getScore() { return score; }
-  public void setScore(Score score) {
+  public void setScore(final Score score) {
     this.score = score;
     clear();
     try {
@@ -59,7 +59,7 @@ public final class Transcriber {
   public int getRemainingColumns() {
     return options.getPageWidth() - characterCount;
   }
-  public Object getObjectAtIndex(int characterIndex) {
+  public Object getObjectAtIndex(final int characterIndex) {
     StringBuilder stringBuilder = new StringBuilder();
     for (BrailleString brailleString:strings) {
       if (stringBuilder.length() + brailleString.length() > characterIndex)
@@ -68,9 +68,9 @@ public final class Transcriber {
     }
     return null;
   }
-  public int getIndexOfObject(Object object) {
+  public int getIndexOfObject(final Object object) {
     StringBuilder stringBuilder = new StringBuilder();
-    for (BrailleString brailleString:strings) {
+    for (BrailleString brailleString : strings) {
       if (brailleString.getModel() == object)
         return stringBuilder.length();
       stringBuilder.append(brailleString.toString());
@@ -82,11 +82,11 @@ public final class Transcriber {
 
   private Strategy strategy = null;
 
-  public Transcriber(Options options) {
+  public Transcriber(final Options options) {
     this.options = options;
     clear();
   }
-  public Transcriber(Score score, Options options) {
+  public Transcriber(final Score score, final Options options) {
     this(options);
     setScore(score);
   }
@@ -104,52 +104,59 @@ public final class Transcriber {
     String composer = score.getComposer();
     boolean headerAvailable = false;
 
-    if (workNumber != null && workNumber.length() > 0) {
+    if (isNonEmpty(workNumber)) {
       printCenteredLine(workNumber);
       headerAvailable = true;
     }
-    if (workTitle != null && workTitle.length() > 0) {
+    if (isNonEmpty(workTitle)) {
       printCenteredLine(workTitle);
       headerAvailable = true;
     }
-    if (movementTitle != null && movementTitle.length() > 0) {
+    if (isNonEmpty(movementTitle)) {
       printCenteredLine(movementTitle);
       headerAvailable = true;
     }
-    if (composer != null && composer.length() > 0) {
+    if (isNonEmpty(composer)) {
       printCenteredLine(composer);
       headerAvailable = true;
     }
     if (headerAvailable) newLine();
 
     switch (options.getMethod()) {
-      case SectionBySection: strategy = new SectionBySection();
-                             break;
-      case BarOverBar: strategy = new BarOverBar();
-                             break;
+    default:
+    case SectionBySection:
+      strategy = new SectionBySection();
+      break;
+    case BarOverBar:
+      strategy = new BarOverBar();
+      break;
     }
     strategy.transcribe(this);
   }
 
-  public void printString(String text) {
+  private static boolean isNonEmpty(final String string) {
+    return string != null && string.length() > 0;
+  }
+
+  void printString(final String text) {
     printString(new BrailleString(text));
   }
-  public void printString(Braille braille) {
+  void printString(final Braille braille) {
     printString(new BrailleString(braille));
   }
-  public void printString(BrailleString text) {
+  void printString(final BrailleString text) {
     strings.add(text);
     characterCount += text.length();
   }
-  public void printString(BrailleList text) {
+  void printString(final BrailleList text) {
     strings.addAll(text);
     characterCount += text.length();
   }
-  public void printLine(String text) {
+  void printLine(final String text) {
     strings.add(new BrailleString(text));
     newLine();
   }
-  public void printCenteredLine(String text) {
+  void printCenteredLine(final String text) {
     int skip = (getRemainingColumns() - text.length()) / 2;
     if (skip > 0) {
       StringBuilder skipString = new StringBuilder();
@@ -159,18 +166,19 @@ public final class Transcriber {
     strings.add(new BrailleString(text));
     newLine();
   }
-  public void newLine() {
+  void newLine() {
     strings.add(new BrailleString(lineSeparator));
     characterCount = 0;
     lineCount += 1;
     if (lineCount == options.getPageHeight()) {
       indentTo(options.getPageWidth()-5);
-      strings.add(new BrailleString(Integer.toString(pageNumber++) + lineSeparator));
+      strings.add(new BrailleString(Integer.toString(pageNumber++)
+                                    + lineSeparator));
       characterCount = 0;
       lineCount = 0;
     }
   }
-  public void indentTo(int column) {
+  void indentTo(final int column) {
     int difference = column - characterCount;
     while (difference > 0) {
       strings.add(new BrailleString(" "));
@@ -178,7 +186,12 @@ public final class Transcriber {
       difference -= 1;
     }
   }
-  public String toString() {
+  /**
+   * Convert transcription result to a plain string.
+   *
+   * @return result string of last transcription
+   */
+  @Override public String toString() {
     return strings.toString();
   }
 }

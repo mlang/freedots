@@ -14,7 +14,7 @@
  * for more details (a copy is included in the LICENSE.txt file that
  * accompanied this code).
  *
- * You should have received a copy of the GNU General Public License 
+ * You should have received a copy of the GNU General Public License
  * along with this work; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
  *
@@ -25,8 +25,8 @@ package org.delysid.freedots.transcription;
 import org.delysid.freedots.model.MusicList;
 
 class PartMeasureInAccord extends FullMeasureInAccord {
-  MusicList head = new MusicList();
-  MusicList tail = new MusicList();
+  private MusicList head = new MusicList();
+  private MusicList tail = new MusicList();
   public PartMeasureInAccord() { super(); }
   public MusicList getHead() { return head; }
   public void setHead(MusicList head) { this.head = head; }

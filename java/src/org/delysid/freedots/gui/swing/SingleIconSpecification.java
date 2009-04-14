@@ -22,7 +22,7 @@
  */
 package org.delysid.freedots.gui.swing;
 
-public class SingleIconSpecification {
+public final class SingleIconSpecification {
 
   private boolean stem=false;
   private String noteHeadImage=null;

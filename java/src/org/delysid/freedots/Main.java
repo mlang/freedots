@@ -14,7 +14,7 @@
  * for more details (a copy is included in the LICENSE.txt file that
  * accompanied this code).
  *
- * You should have received a copy of the GNU General Public License 
+ * You should have received a copy of the GNU General Public License
  * along with this work; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
  *
@@ -43,8 +43,16 @@ import org.delysid.freedots.transcription.Transcriber;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
+/**
+ * This is the main program entry point.
+ */
 public final class Main {
-  public static void main(String[] args) {
+  private Main() { super(); }
+
+  /**
+   * Entry point for JAR execution
+   */
+  public static void main(final String[] args) {
     Options options = new Options(args);
     Transcriber transcriber = new Transcriber(options);
     Score score = null;
@@ -74,9 +82,14 @@ public final class Main {
         GraphicalUserInterface gui = null;
         Class guiClass = Class.forName(options.getUI().getClassName());
         if (GraphicalUserInterface.class.isAssignableFrom(guiClass)) {
-          Constructor constructor = guiClass.getConstructor(new Class []{Transcriber.class});
+          Constructor constructor = guiClass.getConstructor(new Class []{
+              Transcriber.class
+            });
           try {
-            gui = (GraphicalUserInterface)constructor.newInstance(new Object[]{transcriber});
+            gui = (GraphicalUserInterface)
+              constructor.newInstance(new Object[]{
+                  transcriber
+                });
           } catch (java.lang.reflect.InvocationTargetException e) {
             throw e.getCause();
           }
@@ -114,18 +127,18 @@ public final class Main {
               player.start();
               try {
                 while (player.isRunning()) Thread.sleep(250);
-              } catch (InterruptedException ie) {}
+              } catch (InterruptedException ie) { }
               player.close();
             } catch (MidiUnavailableException mue) {
               System.err.println("MIDI playback not available.");
-             
             } catch (InvalidMidiDataException imde) {
               imde.printStackTrace();
             }
           }
         }
       } else {
-        System.err.println("No window system available and no filename specified.");
+        System.err.println("No window system available and " +
+                           "no filename specified.");
         printUsage();
         System.exit(1);
       }

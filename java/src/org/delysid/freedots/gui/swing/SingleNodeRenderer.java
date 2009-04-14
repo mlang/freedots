@@ -50,7 +50,7 @@ import org.xml.sax.SAXException;
 /**
  * Draw a single note using staff notation.
  */
-public class SingleNodeRenderer extends JPanel {
+public final class SingleNodeRenderer extends JPanel {
   private static final long serialVersionUID = 8634349010555582625L;
 
   private Note currentNote=null;
@@ -213,9 +213,9 @@ public class SingleNodeRenderer extends JPanel {
     noteDefs.put("G_CLEF", new SingleIconSpecification(null,null,false,3,2,0,0));
     noteDefs.put("F_CLEF", new SingleIconSpecification(null,null,false,3,14,0,0));
     
-    
+
   }
-  
+
   public Dimension getPreferredSize()
   {
     return new Dimension(60,62);

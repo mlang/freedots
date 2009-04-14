@@ -14,7 +14,7 @@
  * for more details (a copy is included in the LICENSE.txt file that
  * accompanied this code).
  *
- * You should have received a copy of the GNU General Public License 
+ * You should have received a copy of the GNU General Public License
  * along with this work; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
  *
@@ -48,16 +48,17 @@ import org.delysid.freedots.musicxml.Note;
 class ValueInterpreter {
   private Set<Interpretation> interpretations = new HashSet<Interpretation>();
 
-  ValueInterpreter(MusicList music, TimeSignature timeSignature) {
+  ValueInterpreter(final MusicList music, final TimeSignature timeSignature) {
     List<Set<RhythmicPossibility>>
     candidates = new ArrayList<Set<RhythmicPossibility>>();
-    for (Event event:music) {
+    for (Event event : music) {
       if (event instanceof Note) {
         Note note = (Note)event;
         if (!note.isGrace()) {
           RhythmicPossibility large = new RhythmicPossibility(note, true);
           RhythmicPossibility small = new RhythmicPossibility(note, false);
-          Set<RhythmicPossibility> candidate = new HashSet<RhythmicPossibility>();
+          Set<RhythmicPossibility>
+          candidate = new HashSet<RhythmicPossibility>();
           candidate.add(large);
           candidate.add(small);
           candidates.add(candidate);
@@ -73,7 +74,7 @@ class ValueInterpreter {
   public Set<Interpretation> getInterpretations() { return interpretations; }
 
   public Object getSplitPoint() {
-    for (Interpretation interpretation:interpretations) {
+    for (Interpretation interpretation : interpretations) {
       if (interpretation.isCorrect()) {
         int begin = 0;
         int end = interpretation.size() - 1;
@@ -81,15 +82,17 @@ class ValueInterpreter {
         if (end > begin) {
           int beginLog = interpretation.get(begin).getLog();
           int endLog = interpretation.get(end).getLog();
-          boolean beginLarge = beginLog < 6;
-          boolean endLarge = endLog < 6;
+          boolean beginLarge = beginLog < AugmentedFraction.SIXTEENTH;
+          boolean endLarge = endLog < AugmentedFraction.SIXTEENTH;
 
           if ((beginLarge && !endLarge) || (!beginLarge && endLarge)) {
             int leftIndex = begin;
-            while (interpretation.get(leftIndex).getLog()<6 == beginLarge)
+            while (interpretation.get(leftIndex).getLog()
+                   < AugmentedFraction.SIXTEENTH == beginLarge)
               leftIndex++;
             int rightIndex = end;
-            while (interpretation.get(rightIndex).getLog()<6 == endLarge)
+            while (interpretation.get(rightIndex).getLog()
+                   < AugmentedFraction.SIXTEENTH == endLarge)
               rightIndex--;
             if (rightIndex == leftIndex - 1) {
               return interpretation.get(leftIndex).getNote();
@@ -103,7 +106,7 @@ class ValueInterpreter {
 
   private Set<Interpretation>
   findInterpretations(
-    List<Set<RhythmicPossibility>> candidates, Fraction remaining
+    final List<Set<RhythmicPossibility>> candidates, final Fraction remaining
   ) {
     Set<Interpretation> result = new HashSet<Interpretation>();
     if (candidates.size() == 1) {
@@ -118,7 +121,7 @@ class ValueInterpreter {
       Set<RhythmicPossibility> head = candidates.get(0);
       List<Set<RhythmicPossibility>>
       tail = candidates.subList(1, candidates.size());
-      for (RhythmicPossibility rhythmicPossibility:head) {
+      for (RhythmicPossibility rhythmicPossibility : head) {
         if (rhythmicPossibility.compareTo(remaining) <= 0) {
           for (Interpretation interpretation :
                findInterpretations(tail,
@@ -135,16 +138,16 @@ class ValueInterpreter {
 
   @SuppressWarnings("serial")
   class Interpretation extends ArrayList<RhythmicPossibility> {
-    Interpretation() {super();}
+    Interpretation() { super(); }
     public boolean isCorrect() {
-      for (RhythmicPossibility rhythmicPossibility:this)
+      for (RhythmicPossibility rhythmicPossibility : this)
         if (rhythmicPossibility.isAltered()) return false;
 
       return true;
     }
     public String toString() {
       StringBuilder sb = new StringBuilder();
-      for (RhythmicPossibility rp:this) {
+      for (RhythmicPossibility rp : this) {
         sb.append(rp.toString());
         sb.append(" ");
       }
@@ -154,20 +157,20 @@ class ValueInterpreter {
   class RhythmicPossibility extends AugmentedFraction {
     private Note note;
 
-    RhythmicPossibility(Note note, boolean larger) {
+    RhythmicPossibility(final Note note, final boolean larger) {
       super(note.getAugmentedFraction());
       this.note = note;
       int log = note.getAugmentedFraction().getLog();
       if (larger) {
-        if (log > 5) log = log - 4;
+        if (log > EIGHTH) log = log - 4;
       } else {
-        if (log < 6) log = log + 4;
+        if (log < SIXTEENTH) log = log + 4;
       }
       setFromLog(log);
     }
-    public boolean isAltered() {
+    boolean isAltered() {
       return compareTo(note.getAugmentedFraction()) != 0;
     }
-    public Note getNote() { return note; }
+    Note getNote() { return note; }
   }
 }

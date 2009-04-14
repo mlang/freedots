@@ -1,5 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
-<project name="FreeDots" default="dist" basedir=".">
+<project name="FreeDots" default="dist" basedir="."
+         xmlns:cs="antlib:com.puppycrawl.tools.checkstyle">
   <description>MusicXML to braille music transcription</description>
   <!-- set global properties for this build -->
   <property file="build.properties" />
@@ -17,6 +18,16 @@
     <pathelement location="${build}"/>
     <path refid="class.path" />
   </path>
+  <!--taskdef uri="antlib:com.puppycrawl.tools.checkstyle"
+           classpath="/usr/share/java/checkstyle-4.4.jar:/usr/share/java/commons-beanutils.jar:/usr/share/java/commons-logging.jar:/usr/share/java/antlr.jar"/-->
+  <taskdef uri="antlib:com.puppycrawl.tools.checkstyle"
+           classpath="lib/checkstyle-all-5.0-beta2.jar"/>
+  <target name="checkstyle">
+    <cs:checkstyle config="checkstyle.xml">
+      <fileset dir="${src}" includes="**/*.java"/>
+
+    </cs:checkstyle>
+  </target>
   <target name="compile-test" depends="compile">
     <javac srcdir="${test}" verbose="false" debug="true">
       <classpath refid="class.path.test"/>

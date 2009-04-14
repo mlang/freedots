@@ -117,4 +117,7 @@ public class AugmentedFraction extends Fraction {
 
     return braille;
   }
+
+  public static final int EIGHTH = 5;
+  public static final int SIXTEENTH = 6;
 }

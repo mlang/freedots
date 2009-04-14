@@ -33,6 +33,7 @@ import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.InputStream;
 import javax.sound.midi.MidiUnavailableException;
 import javax.swing.Action;
 import javax.swing.ButtonGroup;
@@ -70,8 +71,8 @@ public final class Main
   protected Transcriber transcriber = null;
   public Transcriber getTranscriber() { return transcriber; }
 
-  protected StatusBar statusBar=null;
-  protected SingleNodeRenderer noteRenderer=null;
+  protected StatusBar statusBar = null;
+  protected SingleNodeRenderer noteRenderer = null;
 
   public void setScore(Score score) {
     this.score = score;
@@ -107,11 +108,10 @@ public final class Main
         
         if (object instanceof Note)  noteRenderer.setNote((Note)object);
             
-            
         if (statusBar != null){
-          statusBar.setMessage("At index "+index+" there is "+object.toString());
+          statusBar.setMessage(object.toString());
         }
-        	
+
         if (autoPlay && object instanceof Note) {
           Note note = (Note)object;
           midiPlayer.stop();
@@ -161,7 +161,7 @@ public final class Main
   private Action playScoreAction = new PlayScoreAction(this);
   private Action fileSaveAsAction = new FileSaveAsAction(this);
 
-  public Main(Transcriber transcriber) {
+  public Main(final Transcriber transcriber) {
     super("FreeDots");
     this.transcriber = transcriber;
 
@@ -180,9 +180,11 @@ public final class Main
 
     /* Load a font capable of displaying unicode braille */
     try {
-      GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-      ge.registerFont(Font.createFont(Font.TRUETYPE_FONT,
-				      getClass().getResourceAsStream("DejaVuSerif.ttf")));
+      InputStream dejaVu = getClass().getResourceAsStream("DejaVuSerif.ttf");
+      GraphicsEnvironment
+      graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
+      graphicsEnvironment.registerFont(Font.createFont(Font.TRUETYPE_FONT,
+                                                       dejaVu));
     } catch (java.io.IOException ioe) {
       ioe.printStackTrace();
     } catch (FontFormatException ffe) {
@@ -209,14 +211,14 @@ public final class Main
     contentPane.add(scrollPane, BorderLayout.CENTER);
     //statusBar = new StatusBar();
     //contentPane.add(statusBar, BorderLayout.SOUTH);
-    noteRenderer=new SingleNodeRenderer();
-    contentPane.add(noteRenderer,BorderLayout.AFTER_LAST_LINE);
+    noteRenderer = new SingleNodeRenderer();
+    contentPane.add(noteRenderer, BorderLayout.AFTER_LAST_LINE);
     setContentPane(contentPane);
 
     addWindowListener(new WindowAdapter() {
       @Override
       public void windowClosing(WindowEvent e) {
-	quit();
+        quit();
       }
     });
 
@@ -271,17 +273,17 @@ public final class Main
     case BarOverBar: barOverBarItem.setSelected(true); break;
     }
     sectionBySectionItem.addActionListener(new ActionListener() {
-	public void actionPerformed(ActionEvent e) {
-	  transcriber.getOptions().setMethod(Options.Method.SectionBySection);
-	  triggerTranscription();
-	}
+        public void actionPerformed(ActionEvent e) {
+          transcriber.getOptions().setMethod(Options.Method.SectionBySection);
+          triggerTranscription();
+        }
       });
 
     barOverBarItem.addActionListener(new ActionListener() {
-	public void actionPerformed(ActionEvent e) {
-	  transcriber.getOptions().setMethod(Options.Method.BarOverBar);
-	  triggerTranscription();
-	}
+        public void actionPerformed(ActionEvent e) {
+          transcriber.getOptions().setMethod(Options.Method.BarOverBar);
+          triggerTranscription();
+        }
       });
     transcriptionMenu.add(sectionBySectionItem);
     transcriptionMenu.add(barOverBarItem);

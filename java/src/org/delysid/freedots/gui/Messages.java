@@ -14,7 +14,7 @@
  * for more details (a copy is included in the LICENSE.txt file that
  * accompanied this code).
  *
- * You should have received a copy of the GNU General Public License 
+ * You should have received a copy of the GNU General Public License
  * along with this work; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
  *
@@ -27,8 +27,9 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.PropertyResourceBundle;
 
-public class Messages {
-  private static final String BUNDLE_NAME = "org.delysid.freedots.gui.messages"; //$NON-NLS-1$
+public final class Messages {
+  private static final String
+  BUNDLE_NAME = "org.delysid.freedots.gui.messages"; //$NON-NLS-1$
 
   private static final
   ResourceBundle RESOURCE_BUNDLE = PropertyResourceBundle
@@ -36,7 +37,7 @@ public class Messages {
 
   private Messages() { }
 
-  public static String getString(String key) {
+  public static String getString(final String key) {
     try {
       return RESOURCE_BUNDLE.getString(key);
     } catch (MissingResourceException e) {

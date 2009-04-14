@@ -27,17 +27,14 @@ import java.awt.Dimension;
 
 import javax.swing.JLabel;
 
-public class StatusBar extends JLabel {
+public final class StatusBar extends JLabel {
+  public StatusBar() {
+    super();
+    super.setPreferredSize(new Dimension(100, 16));
+    setMessage("Ready");
+  }
 
-	  public StatusBar() {
-	        super();
-	        super.setPreferredSize(new Dimension(100, 16));
-	        setMessage("Ready");
-	    }
-	  
-	  public void setMessage(String message) {
-	        setText(" "+message);        
-	    }    
-	
-	
+  public void setMessage(String message) {
+    setText(" "+message);        
+  }    
 }

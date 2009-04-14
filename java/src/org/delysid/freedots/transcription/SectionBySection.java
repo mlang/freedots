@@ -14,7 +14,7 @@
  * for more details (a copy is included in the LICENSE.txt file that
  * accompanied this code).
  *
- * You should have received a copy of the GNU General Public License 
+ * You should have received a copy of the GNU General Public License
  * along with this work; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
  *
@@ -27,14 +27,12 @@ import java.util.List;
 
 import org.delysid.freedots.Braille;
 import org.delysid.freedots.Options;
-import org.delysid.freedots.model.Clef;
 import org.delysid.freedots.model.ClefChange;
 import org.delysid.freedots.model.EndBar;
 import org.delysid.freedots.model.Event;
 import org.delysid.freedots.model.Fraction;
 import org.delysid.freedots.model.GlobalKeyChange;
 import org.delysid.freedots.model.KeyChange;
-import org.delysid.freedots.model.KeySignature;
 import org.delysid.freedots.model.MusicList;
 import org.delysid.freedots.model.Staff;
 import org.delysid.freedots.model.StartBar;
@@ -43,7 +41,7 @@ import org.delysid.freedots.musicxml.Part;
 class SectionBySection implements Strategy {
   private Options options = null;
 
-  public void transcribe(Transcriber transcriber) {
+  public void transcribe(final Transcriber transcriber) {
     options = transcriber.getOptions();
 
     for (Part part:transcriber.getScore().getParts()) {
@@ -94,7 +92,7 @@ class SectionBySection implements Strategy {
                 transcriber.newLine();
                 charactersLeft = transcriber.getRemainingColumns();
               }
-                            
+
               boolean lastLine = transcriber.isLastLine();
               measure.process();
               BrailleList head = measure.head(charactersLeft, lastLine);
@@ -114,7 +112,7 @@ class SectionBySection implements Strategy {
                 if (startBar.getEndingStart() > 0) {
                   String braille = Braille.numberSign.toString();
                   braille += Braille.lowerDigit(startBar.getEndingStart());
-                  braille += Braille.unicodeBraille(Braille.dotsToBits(3));
+                  braille += Braille.dot.toString();
                   transcriber.printString(braille);
                 }
               }
@@ -147,12 +145,12 @@ class SectionBySection implements Strategy {
 
   class Section extends MusicList {
     private Part part;
-    Section(Part part) {
+    Section(final Part part) {
       super();
       this.part = part;
     }
     @Override
-    public Staff getStaff(int index) {
+    public Staff getStaff(final int index) {
       Staff staff = super.getStaff(index);
       /* We need to populate key/clef/timeList with events from the past */
       if (staff != null && !staff.isEmpty()) {

@@ -28,7 +28,7 @@ import java.util.List;
 import org.delysid.freedots.model.MusicList;
 
 class FullMeasureInAccord {
-  List<MusicList> parts = new ArrayList<MusicList>();
+  private List<MusicList> parts = new ArrayList<MusicList>();
   FullMeasureInAccord() { super(); }
   void addPart(MusicList part) { parts.add(part); }
   List<MusicList> getParts() { return parts; }

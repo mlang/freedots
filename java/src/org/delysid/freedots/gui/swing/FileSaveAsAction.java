@@ -86,7 +86,7 @@ public final class FileSaveAsAction extends AbstractAction {
         }
       });
       if (fileChooser.showSaveDialog(gui) == JFileChooser.APPROVE_OPTION) {
-	File file = fileChooser.getSelectedFile();
+        File file = fileChooser.getSelectedFile();
         String ext = getExtension(file);
         if (ext != null && ext.equals("mid")) {
           FileOutputStream fileOutputStream = null;
@@ -120,15 +120,15 @@ public final class FileSaveAsAction extends AbstractAction {
           try {
             try {
               fileWriter = new FileWriter(file);
-	      CharacterIterator iterator = new StringCharacterIterator(gui.getTranscriber().toString());
-	      for(char c = iterator.first(); c != CharacterIterator.DONE;
-		  c = iterator.next()) {
-		if (Braille.brfTable.containsKey(new Character(c))) {
-		  fileWriter = fileWriter.append(Braille.brfTable.get(new Character(c)));
-		} else {
-		  fileWriter = fileWriter.append(c);
-		}
-	      }
+              CharacterIterator iterator = new StringCharacterIterator(gui.getTranscriber().toString());
+              for(char c = iterator.first(); c != CharacterIterator.DONE;
+                  c = iterator.next()) {
+                if (Braille.brfTable.containsKey(new Character(c))) {
+                  fileWriter = fileWriter.append(Braille.brfTable.get(new Character(c)));
+                } else {
+                  fileWriter = fileWriter.append(c);
+                }
+              }
             } finally {
               fileWriter.close();
             }
@@ -136,10 +136,10 @@ public final class FileSaveAsAction extends AbstractAction {
             e.printStackTrace();
           }
         } else if (ext != null) {
-	  String message = "Unknown file extension '"+ext+"'";
-	  JOptionPane.showMessageDialog(gui, message, "Alert",
-					JOptionPane.ERROR_MESSAGE);
-	}
+          String message = "Unknown file extension '"+ext+"'";
+          JOptionPane.showMessageDialog(gui, message, "Alert",
+                                        JOptionPane.ERROR_MESSAGE);
+        }
       }
     }
   }
