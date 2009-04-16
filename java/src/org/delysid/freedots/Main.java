@@ -80,7 +80,7 @@ public final class Main {
     if (options.getWindowSystem()) {
       try {
         GraphicalUserInterface gui = null;
-        Class guiClass = Class.forName(options.getUI().getClassName());
+        Class<?> guiClass = Class.forName(options.getUI().getClassName());
         if (GraphicalUserInterface.class.isAssignableFrom(guiClass)) {
           Constructor constructor = guiClass.getConstructor(new Class []{
               Transcriber.class

@@ -40,7 +40,7 @@
       <system-distance>20</system-distance>
     </system-layout>
   </defaults>
-  <credit page="1">
+  <credit>
     <credit-words font-family="Times New Roman" font-size="9" font-weight="bold" justify="center">&quot;Goldbergsche Variationen&quot;</credit-words>
   </credit>
   <part-list>

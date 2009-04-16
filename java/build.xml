@@ -8,6 +8,7 @@
   <property name="test" location="test"/>
   <property name="build" location="build"/>
   <property name="dist" location="dist"/>
+  <property name="freedots.minimum.javaversion" value="1.6" />
 
   <path id="class.path">
     <fileset file="${lib.swt.jar}" />
@@ -27,6 +28,26 @@
       <fileset dir="${src}" includes="**/*.java"/>
 
     </cs:checkstyle>
+  </target>
+  <presetdef name="validate-musicxml">
+    <schemavalidate noNamespaceFile="xsd/musicxml.xsd">
+      <dtd publicId="-//Recordare//DTD MusicXML 1.0 Partwise//EN"
+	   location="dtd/musicxml/1.0/partwise.dtd"/>
+      <dtd publicId="-//Recordare//DTD MusicXML 1.1 Partwise//EN"
+	   location="dtd/musicxml/1.1/partwise.dtd"/>
+      <dtd publicId="-//Recordare//DTD MusicXML 2.0 Partwise//EN"
+	   location="dtd/musicxml/2.0/partwise.dtd"/>
+      <schema namespace="http://www.w3.org/XML/1998/namespace"
+	      file="xsd/xml.xsd" />
+      <schema namespace="http://www.w3.org/1999/xlink"
+	      file="xsd/xlink.xsd" />
+    </schemavalidate>
+  </presetdef>
+
+  <target name="validate.scores" >
+    <validate-musicxml failonerror="true" warn="true">
+      <fileset dir="../scores" includes="**/*.xml"/>
+    </validate-musicxml>
   </target>
   <target name="compile-test" depends="compile">
     <javac srcdir="${test}" verbose="false" debug="true">
@@ -53,38 +74,21 @@
     <tstamp/>
     <!-- Create the build directory structure used by compile -->
     <mkdir dir="${build}/org/delysid/freedots/musicxml"/>
-    <get src="http://www.musicxml.org/dtds/partwise.dtd"
-	 dest="${build}/org/delysid/freedots/musicxml/partwise.dtd" usetimestamp="true"/>
-    <get src="http://www.musicxml.org/dtds/common.mod"
-	 dest="${build}/org/delysid/freedots/musicxml/common.mod" usetimestamp="true"/>
-    <get src="http://www.musicxml.org/dtds/isolat1.ent"
-	 dest="${build}/org/delysid/freedots/musicxml/isolat1.ent" usetimestamp="true"/>
-    <get src="http://www.musicxml.org/dtds/isolat2.ent"
-	 dest="${build}/org/delysid/freedots/musicxml/isolat2.ent" usetimestamp="true"/>
-    <get src="http://www.musicxml.org/dtds/layout.mod"
-	 dest="${build}/org/delysid/freedots/musicxml/layout.mod" usetimestamp="true"/>
-    <get src="http://www.musicxml.org/dtds/identity.mod"
-	 dest="${build}/org/delysid/freedots/musicxml/identity.mod" usetimestamp="true"/>
-    <get src="http://www.musicxml.org/dtds/attributes.mod"
-	 dest="${build}/org/delysid/freedots/musicxml/attributes.mod" usetimestamp="true"/>
-    <get src="http://www.musicxml.org/dtds/link.mod"
-	 dest="${build}/org/delysid/freedots/musicxml/link.mod" usetimestamp="true"/>
-    <get src="http://www.musicxml.org/dtds/note.mod"
-	 dest="${build}/org/delysid/freedots/musicxml/note.mod" usetimestamp="true"/>
-    <get src="http://www.musicxml.org/dtds/barline.mod"
-	 dest="${build}/org/delysid/freedots/musicxml/barline.mod" usetimestamp="true"/>
-    <get src="http://www.musicxml.org/dtds/direction.mod"
-	 dest="${build}/org/delysid/freedots/musicxml/direction.mod" usetimestamp="true"/>
-    <get src="http://www.musicxml.org/dtds/score.mod"
-	 dest="${build}/org/delysid/freedots/musicxml/score.mod" usetimestamp="true"/>
+    <copy todir="${build}/org/delysid/freedots/musicxml">
+      <fileset dir="dtd/musicxml/2.0">
+	<include name="*.dtd"/>
+	<include name="*.mod"/>
+	<include name="*.ent"/>
+      </fileset>	    
+    </copy>
     <mkdir dir="${build}/org/delysid/freedots/gui/swing"/>
     <copy file="/usr/share/fonts/truetype/ttf-dejavu/DejaVuSerif.ttf"
           tofile="${build}/org/delysid/freedots/gui/swing/DejaVuSerif.ttf"/>
 
     <copy todir="${build}/org/delysid/freedots/gui/swing">
-		<fileset dir="../icons">
-			<include name="*.xml"/>
-		</fileset>	    
+      <fileset dir="../icons">
+	<include name="*.xml"/>
+      </fileset>	    
     </copy>
 
 
@@ -114,12 +118,15 @@
 
   <target name="compile" depends="init" description="compile the source">
     <!-- Compile the java code from ${src} into ${build} -->
-    <javac srcdir="${src}" destdir="${build}" debug="true">
+    <javac srcdir="${src}"
+           destdir="${build}" debug="true"
+           source="${freedots.minimum.javaversion}"
+           target="${freedots.minimum.javaversion}">
       <classpath refid="class.path"/>
     </javac>
   </target>
 
-  <target name="dist" depends="test"
+  <target name="dist" depends="test,validate.scores"
 	  description="generate the distribution">
     <mkdir dir="${dist}"/>
     <jar jarfile="${dist}/FreeDots-${DSTAMP}.jar" basedir="${build}">
