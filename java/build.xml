@@ -29,6 +29,16 @@
 
     </cs:checkstyle>
   </target>
+  <taskdef name="nsis" classname="net.sf.nsisant.Task">
+    <classpath location="lib/nsisant-1.2.jar"/>
+  </taskdef>
+  <target name="build.installer" depends="dist">
+    <nsis script="../WindowsInstaller.nsi" verbosity="2">
+      <define name="JARFILE" value="FreeDots-${DSTAMP}.jar"/>
+      <define name="OUTFILE" value="FreeDots-${DSTAMP}.exe"/>
+      <define name="VERSION" value="0.6"/>
+    </nsis>
+  </target>
   <presetdef name="validate-musicxml">
     <schemavalidate noNamespaceFile="xsd/musicxml.xsd">
       <dtd publicId="-//Recordare//DTD MusicXML 1.0 Partwise//EN"
