@@ -54,7 +54,7 @@
 	!endif
 
 	!ifndef DISTDIR
-		!define DISTDIR "java/dist"
+		!define DISTDIR "dist"
 	!endif
 
 	SetCompressor /SOLID LZMA
@@ -145,7 +145,7 @@ Section "install"
 	SetShellVarContext all
 	SetOverwrite IfNewer
 
-	File java/dist/${JARFILE} 
+	File dist/${JARFILE} 
 	File /r ${READMEFILENAME}
 	File doc\manual.html
 	File doc\example*.mid

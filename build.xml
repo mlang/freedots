@@ -35,7 +35,7 @@
   <target name="build.installer" depends="dist">
     <nsis script="WindowsInstaller.nsi" verbosity="2">
       <define name="JARFILE" value="FreeDots-${DSTAMP}.jar"/>
-      <define name="OUTFILE" value="FreeDots-${DSTAMP}.exe"/>
+      <define name="OUTFILE" value="dist/FreeDots-${DSTAMP}.exe"/>
       <define name="VERSION" value="0.6"/>
     </nsis>
   </target>
