@@ -14,10 +14,12 @@
 	!include FontRegAdv.nsh
 	!include FontName.nsh
 
-!define VERSION "0.6p1" 
+!ifndef VERSION
+  !define VERSION "0.6p1" 
+!endif
 
 !ifndef JARFILE
-        !error "JARFILE is not defined"
+  !error "JARFILE is not defined"
 !endif
 !define READMEFILENAME "README.JAWS.txt"
 
