@@ -8,6 +8,7 @@
   <property name="test" location="test"/>
   <property name="build" location="build"/>
   <property name="dist" location="dist"/>
+  <property name="freedots.version" value="0.6" />
   <property name="freedots.minimum.javaversion" value="1.6" />
 
   <path id="class.path">
@@ -19,26 +20,7 @@
     <pathelement location="${build}"/>
     <path refid="class.path" />
   </path>
-  <!--taskdef uri="antlib:com.puppycrawl.tools.checkstyle"
-           classpath="/usr/share/java/checkstyle-4.4.jar:/usr/share/java/commons-beanutils.jar:/usr/share/java/commons-logging.jar:/usr/share/java/antlr.jar"/-->
-  <taskdef uri="antlib:com.puppycrawl.tools.checkstyle"
-           classpath="lib/checkstyle-all-5.0-beta2.jar"/>
-  <target name="checkstyle">
-    <cs:checkstyle config="checkstyle.xml">
-      <fileset dir="${src}" includes="**/*.java"/>
 
-    </cs:checkstyle>
-  </target>
-  <taskdef name="nsis" classname="net.sf.nsisant.Task">
-    <classpath location="lib/nsisant-1.2.jar"/>
-  </taskdef>
-  <target name="build.installer" depends="dist">
-    <nsis script="WindowsInstaller.nsi" verbosity="2">
-      <define name="JARFILE" value="FreeDots-${DSTAMP}.jar"/>
-      <define name="OUTFILE" value="dist/FreeDots-${DSTAMP}.exe"/>
-      <define name="VERSION" value="0.6"/>
-    </nsis>
-  </target>
   <presetdef name="validate-musicxml">
     <schemavalidate noNamespaceFile="xsd/musicxml.xsd">
       <dtd publicId="-//Recordare//DTD MusicXML 1.0 Partwise//EN"
@@ -54,11 +36,6 @@
     </schemavalidate>
   </presetdef>
 
-  <target name="validate.scores" >
-    <validate-musicxml failonerror="true" warn="true">
-      <fileset dir="scores" includes="**/*.xml"/>
-    </validate-musicxml>
-  </target>
   <target name="compile-test" depends="compile">
     <javac srcdir="${test}" verbose="false" debug="true">
       <classpath refid="class.path.test"/>
@@ -134,10 +111,20 @@
            target="${freedots.minimum.javaversion}">
       <classpath refid="class.path"/>
     </javac>
+    <propertyfile file="${build}/compilation.properties">
+      <entry key="freedots.compile.version" value="${freedots.version}"/>
+      <entry key="freedots.compile.timestamp" type="date" value="now" pattern="E MMMM dd yyyy, HH:mm z"/>
+    </propertyfile>
   </target>
 
-  <target name="dist" depends="test,validate.scores"
-	  description="generate the distribution">
+  <target name="validate.scores">
+    <validate-musicxml failonerror="true" warn="true">
+      <fileset dir="scores" includes="**/*.xml"/>
+    </validate-musicxml>
+  </target>
+
+  <target name="dist" depends="test, validate.scores"
+	  description="generate the jar">
     <mkdir dir="${dist}"/>
     <jar jarfile="${dist}/FreeDots-${DSTAMP}.jar" basedir="${build}">
       <manifest>
@@ -152,8 +139,71 @@
   </target>
 
   <target name="clean" description="clean up" depends="clean-compile-test">
-    <!-- Delete the ${build} and ${dist} directory trees -->
     <delete dir="${build}"/>
     <delete dir="${dist}"/>
+    <delete file="doc/manual.txt"/>
+    <delete file="doc/manual.html"/>
+    <delete>
+      <fileset dir="doc" includes="example*.*"/>
+    </delete>
+  </target>
+
+  <target name="build.manual" depends="dist"
+	  description="build the user manual">
+    <presetdef name="freedots">
+      <java classname="org.delysid.freedots.Main"
+	    failonerror="true" logError="true">
+	<classpath>
+	  <pathelement location="dist/FreeDots-${DSTAMP}.jar"/>
+	  <pathelement path="${java.class.path}"/>
+	</classpath>
+      </java>
+    </presetdef>
+    <freedots output="doc/example1-2.brl">
+      <arg value="input/nimobmn-examples/example1-2.xml"/>
+    </freedots>
+    <freedots>
+      <arg value="-emf"/><arg value="doc/example1-2.mid"/>
+      <arg value="input/nimobmn-examples/example1-2.xml"/>
+    </freedots>
+    <freedots output="doc/example1-11.brl">
+      <arg value="input/nimobmn-examples/example1-11.xml"/>
+    </freedots>
+    <freedots>
+      <arg value="-emf"/><arg value="doc/example1-11.mid"/>
+      <arg value="input/nimobmn-examples/example1-11.xml"/>
+    </freedots>
+
+    <exec executable="xsltproc" logError="true" output="doc/manual.html">
+      <arg value="--xinclude"/>
+      <arg value="doc/html.xsl"/> <arg value="doc/manual.xml"/>
+    </exec>
+    <exec executable="lynx" logError="true" output="doc/manual.txt">
+      <arg value="--nonumbers"/><arg value="--dump"/>
+      <arg value="doc/manual.html"/>
+    </exec>
+  </target>
+
+  <target name="checkstyle"
+	  description="check the coding style">
+    <taskdef name="checkstyle"
+	     classname="com.puppycrawl.tools.checkstyle.CheckStyleTask"
+	   classpath="lib/checkstyle-all-5.0-beta2.jar"/>
+    <checkstyle config="checkstyle.xml">
+      <fileset dir="${src}" includes="**/*.java"/>
+
+    </checkstyle>
+  </target>
+
+  <target name="build.installer" depends="dist, build.manual"
+	  description="generate the MS Windows installer">
+    <taskdef name="nsis" classname="net.sf.nsisant.Task">
+      <classpath location="lib/nsisant-1.2.jar"/>
+    </taskdef>
+    <nsis script="WindowsInstaller.nsi" verbosity="2">
+      <define name="JARFILE" value="FreeDots-${DSTAMP}.jar"/>
+      <define name="OUTFILE" value="dist/FreeDots-${DSTAMP}.exe"/>
+      <define name="VERSION" value="${freedots.version}"/>
+    </nsis>
   </target>
 </project>
