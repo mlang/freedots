@@ -137,8 +137,8 @@ Section "install"
   	Pop $R0
 
 	StrCpy $FONT_DIR $FONTS
-	File UBraille.ttf
-	!insertmacro InstallTTF 'UBraille.ttf'
+	File fonts/UBraille.ttf
+	!insertmacro InstallTTF 'fonts/UBraille.ttf'
 	SendMessage ${HWND_BROADCAST} ${WM_FONTCHANGE} 0 0 /TIMEOUT=5000
 
 	SetOutPath "$INSTDIR"
