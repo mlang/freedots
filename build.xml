@@ -1,6 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<project name="FreeDots" default="dist" basedir="."
-         xmlns:cs="antlib:com.puppycrawl.tools.checkstyle">
+<project name="FreeDots" default="dist" basedir=".">
   <description>MusicXML to braille music transcription</description>
   <!-- set global properties for this build -->
   <property file="build.properties" />
@@ -22,17 +21,18 @@
   </path>
 
   <presetdef name="validate-musicxml">
-    <schemavalidate noNamespaceFile="xsd/musicxml.xsd">
+    <schemavalidate noNamespaceFile="xsd/musicxml.xsd"
+                    failonerror="true" warn="true">
       <dtd publicId="-//Recordare//DTD MusicXML 1.0 Partwise//EN"
-	   location="dtd/musicxml/1.0/partwise.dtd"/>
+           location="dtd/musicxml/1.0/partwise.dtd"/>
       <dtd publicId="-//Recordare//DTD MusicXML 1.1 Partwise//EN"
-	   location="dtd/musicxml/1.1/partwise.dtd"/>
+           location="dtd/musicxml/1.1/partwise.dtd"/>
       <dtd publicId="-//Recordare//DTD MusicXML 2.0 Partwise//EN"
-	   location="dtd/musicxml/2.0/partwise.dtd"/>
+           location="dtd/musicxml/2.0/partwise.dtd"/>
       <schema namespace="http://www.w3.org/XML/1998/namespace"
-	      file="xsd/xml.xsd" />
+              file="xsd/xml.xsd" />
       <schema namespace="http://www.w3.org/1999/xlink"
-	      file="xsd/xlink.xsd" />
+              file="xsd/xlink.xsd" />
     </schemavalidate>
   </presetdef>
 
@@ -63,9 +63,9 @@
     <mkdir dir="${build}/org/delysid/freedots/musicxml"/>
     <copy todir="${build}/org/delysid/freedots/musicxml">
       <fileset dir="dtd/musicxml/2.0">
-	<include name="*.dtd"/>
-	<include name="*.mod"/>
-	<include name="*.ent"/>
+        <include name="*.dtd"/>
+        <include name="*.mod"/>
+        <include name="*.ent"/>
       </fileset>	    
     </copy>
     <mkdir dir="${build}/org/delysid/freedots/gui/swing"/>
@@ -78,9 +78,6 @@
       </fileset>	    
     </copy>
 
-
-
-          
     <copy file="scores/bwv1013-1.xml"
           tofile="${build}/org/delysid/freedots/musicxml/bwv1013-1.xml"/>
     <copy file="scores/bwv1013-2.xml"
@@ -94,8 +91,6 @@
     <copy file="scores/bwv988-1.xml"
           tofile="${build}/org/delysid/freedots/musicxml/bwv988-1.xml"/>
 
-
-	
     <copy todir="${build}">
       <fileset dir="${src}">
         <include name="**/*.properties"/>
@@ -118,13 +113,13 @@
   </target>
 
   <target name="validate.scores">
-    <validate-musicxml failonerror="true" warn="true">
+    <validate-musicxml>
       <fileset dir="scores" includes="**/*.xml"/>
     </validate-musicxml>
   </target>
 
   <target name="dist" depends="test, validate.scores"
-	  description="generate the jar">
+          description="generate the jar">
     <mkdir dir="${dist}"/>
     <jar jarfile="${dist}/FreeDots-${DSTAMP}.jar" basedir="${build}">
       <manifest>
@@ -143,6 +138,7 @@
     <delete dir="${dist}"/>
     <delete file="doc/manual.txt"/>
     <delete file="doc/manual.html"/>
+    <delete file="doc/man1/freedots.1"/>
     <delete>
       <fileset dir="doc" includes="example*.*"/>
     </delete>
@@ -153,12 +149,13 @@
     <presetdef name="freedots">
       <java classname="org.delysid.freedots.Main"
 	    failonerror="true" logError="true">
-	<classpath>
-	  <pathelement location="dist/FreeDots-${DSTAMP}.jar"/>
-	  <pathelement path="${java.class.path}"/>
-	</classpath>
+        <classpath>
+          <pathelement location="dist/FreeDots-${DSTAMP}.jar"/>
+          <pathelement path="${java.class.path}"/>
+        </classpath>
       </java>
     </presetdef>
+    <!-- Build examples -->
     <freedots output="doc/example1-2.brl">
       <arg value="input/nimobmn-examples/example1-2.xml"/>
     </freedots>
@@ -182,13 +179,21 @@
       <arg value="--nonumbers"/><arg value="--dump"/>
       <arg value="doc/manual.html"/>
     </exec>
+    <exec executable="xsltproc" logError="true" output="doc/manual.html">
+      <arg value="--xinclude"/>
+      <arg value="--stringparam"/>
+      <arg value="man.output.base.dir"/>
+      <arg value="'doc/'"/>
+      <arg value="${style.docbook.manpage}"/>
+      <arg value="doc/manual.xml"/>
+    </exec>
   </target>
 
   <target name="checkstyle"
-	  description="check the coding style">
+          description="check the coding style">
     <taskdef name="checkstyle"
-	     classname="com.puppycrawl.tools.checkstyle.CheckStyleTask"
-	   classpath="lib/checkstyle-all-5.0-beta2.jar"/>
+             classname="com.puppycrawl.tools.checkstyle.CheckStyleTask"
+             classpath="lib/checkstyle-all-5.0-beta2.jar"/>
     <checkstyle config="checkstyle.xml">
       <fileset dir="${src}" includes="**/*.java"/>
 
@@ -196,7 +201,7 @@
   </target>
 
   <target name="build.installer" depends="dist, build.manual"
-	  description="generate the MS Windows installer">
+          description="generate the MS Windows installer">
     <taskdef name="nsis" classname="net.sf.nsisant.Task">
       <classpath location="lib/nsisant-1.2.jar"/>
     </taskdef>
