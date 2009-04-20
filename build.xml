@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<project name="FreeDots" default="dist" basedir=".">
+<project name="FreeDots" default="build.jar" basedir=".">
   <description>MusicXML to braille music transcription</description>
   <!-- set global properties for this build -->
   <property file="build.properties" />
@@ -14,7 +14,7 @@
     <fileset file="${lib.swt.jar}" />
   </path>
   <path id="class.path.test">
-    <pathelement location="/usr/share/java/junit4.jar" />
+    <pathelement location="${lib.junit.jar}" />
     <pathelement location="${test}" />
     <pathelement location="${build}"/>
     <path refid="class.path" />
@@ -35,26 +35,6 @@
               file="xsd/xlink.xsd" />
     </schemavalidate>
   </presetdef>
-
-  <target name="compile-test" depends="compile">
-    <javac srcdir="${test}" verbose="false" debug="true">
-      <classpath refid="class.path.test"/>
-    </javac>
-  </target>
-  <target name="clean-compile-test">
-    <delete> <fileset dir="${test}" includes="**/*.class" /> </delete>
-  </target>
-  
-  <target name="test" depends="compile-test">
-    <junit failureProperty="test.failure">
-      <classpath refid="class.path.test" />
-      <formatter type="brief" usefile="false" />
-      <batchtest>
-        <fileset dir="${test}" includes="**/Test*.class" />
-      </batchtest>
-    </junit>
-    <fail message="test failed" if="test.failure" />
-  </target>
 
   <target name="init">
     <!-- Create the time stamp -->
@@ -112,13 +92,36 @@
     </propertyfile>
   </target>
 
+  <!-- Testing framework -->
+  <target name="compile.test" depends="compile">
+    <javac srcdir="${test}" verbose="false" debug="true">
+      <classpath refid="class.path.test"/>
+    </javac>
+  </target>
+  <target name="clean.compile.test">
+    <delete> <fileset dir="${test}" includes="**/*.class" /> </delete>
+  </target>
+  
+  <target name="test" depends="compile.test"
+          description="run the test suite">
+    <junit failureProperty="test.failure">
+      <classpath refid="class.path.test" />
+      <formatter type="brief" usefile="false" />
+      <batchtest>
+        <fileset dir="${test}" includes="**/Test*.class" />
+      </batchtest>
+    </junit>
+    <fail message="test failed" if="test.failure" />
+  </target>
+
+  <!-- Validate XML content -->
   <target name="validate.scores">
     <validate-musicxml>
       <fileset dir="scores" includes="**/*.xml"/>
     </validate-musicxml>
   </target>
 
-  <target name="dist" depends="test, validate.scores"
+  <target name="build.jar" depends="test, validate.scores"
           description="generate the jar">
     <mkdir dir="${dist}"/>
     <jar jarfile="${dist}/FreeDots-${DSTAMP}.jar" basedir="${build}">
@@ -129,22 +132,11 @@
     </jar>
   </target>
 
-  <target name="run" depends="dist">
+  <target name="run" depends="build.jar">
     <java jar="${dist}/FreeDots-${DSTAMP}.jar" fork="true" />
   </target>
 
-  <target name="clean" description="clean up" depends="clean-compile-test">
-    <delete dir="${build}"/>
-    <delete dir="${dist}"/>
-    <delete file="doc/manual.txt"/>
-    <delete file="doc/manual.html"/>
-    <delete file="doc/man1/freedots.1"/>
-    <delete>
-      <fileset dir="doc" includes="example*.*"/>
-    </delete>
-  </target>
-
-  <target name="build.manual" depends="dist"
+  <target name="build.manual" depends="build.jar"
 	  description="build the user manual">
     <presetdef name="freedots">
       <java classname="org.delysid.freedots.Main"
@@ -200,7 +192,7 @@
     </checkstyle>
   </target>
 
-  <target name="build.installer" depends="dist, build.manual"
+  <target name="build.installer" depends="build.jar, build.manual"
           description="generate the MS Windows installer">
     <taskdef name="nsis" classname="net.sf.nsisant.Task">
       <classpath location="lib/nsisant-1.2.jar"/>
@@ -210,5 +202,17 @@
       <define name="OUTFILE" value="dist/FreeDots-${DSTAMP}.exe"/>
       <define name="VERSION" value="${freedots.version}"/>
     </nsis>
+  </target>
+
+  <target name="clean" depends="clean.compile.test"
+          description="clean up">
+    <delete dir="${build}"/>
+    <delete dir="${dist}"/>
+    <delete file="doc/manual.txt"/>
+    <delete file="doc/manual.html"/>
+    <delete file="doc/man1/freedots.1"/>
+    <delete>
+      <fileset dir="doc" includes="example*.*"/>
+    </delete>
   </target>
 </project>
