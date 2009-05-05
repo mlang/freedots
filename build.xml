@@ -7,6 +7,7 @@
   <property name="test" location="test"/>
   <property name="build" location="build"/>
   <property name="dist" location="dist"/>
+  <property name="freedots.jar.main.class" value="org.delysid.freedots.Main"/>
   <property name="freedots.version" value="0.6" />
   <property name="freedots.minimum.javaversion" value="1.6" />
 
@@ -39,43 +40,7 @@
   <target name="init">
     <!-- Create the time stamp -->
     <tstamp/>
-    <!-- Create the build directory structure used by compile -->
-    <mkdir dir="${build}/org/delysid/freedots/musicxml"/>
-    <copy todir="${build}/org/delysid/freedots/musicxml">
-      <fileset dir="dtd/musicxml/2.0">
-        <include name="*.dtd"/>
-        <include name="*.mod"/>
-        <include name="*.ent"/>
-      </fileset>	    
-    </copy>
-    <mkdir dir="${build}/org/delysid/freedots/gui/swing"/>
-    <copy file="/usr/share/fonts/truetype/ttf-dejavu/DejaVuSerif.ttf"
-          tofile="${build}/org/delysid/freedots/gui/swing/DejaVuSerif.ttf"/>
-
-    <copy todir="${build}/org/delysid/freedots/gui/swing">
-      <fileset dir="icons">
-	<include name="*.xml"/>
-      </fileset>	    
-    </copy>
-
-    <copy file="scores/bwv1013-1.xml"
-          tofile="${build}/org/delysid/freedots/musicxml/bwv1013-1.xml"/>
-    <copy file="scores/bwv1013-2.xml"
-          tofile="${build}/org/delysid/freedots/musicxml/bwv1013-2.xml"/>
-    <copy file="scores/bwv1013-3.xml"
-          tofile="${build}/org/delysid/freedots/musicxml/bwv1013-3.xml"/>
-    <copy file="scores/bwv1013-4.xml"
-          tofile="${build}/org/delysid/freedots/musicxml/bwv1013-4.xml"/>
-    <copy file="scores/bwv988-aria.xml"
-          tofile="${build}/org/delysid/freedots/musicxml/bwv988-aria.xml"/>
-    <copy file="scores/bwv988-1.xml"
-          tofile="${build}/org/delysid/freedots/musicxml/bwv988-1.xml"/>
-
-    <copy todir="${build}">
-      <fileset dir="${src}">
-        <include name="**/*.properties"/>
-      </fileset>
-    </copy>
+    <mkdir dir="${build}"/>
   </target>
 
   <target name="compile" depends="init" description="compile the source">
@@ -90,6 +55,36 @@
       <entry key="freedots.compile.version" value="${freedots.version}"/>
       <entry key="freedots.compile.timestamp" type="date" value="now" pattern="E MMMM dd yyyy, HH:mm z"/>
     </propertyfile>
+
+    <!-- Copy resources into build directory -->
+    <copy todir="${build}/org/delysid/freedots/musicxml">
+      <fileset dir="dtd/musicxml/2.0">
+        <include name="*.dtd"/>
+        <include name="*.mod"/>
+        <include name="*.ent"/>
+      </fileset>	    
+    </copy>
+
+    <copy file="${font.dejavuserif.ttf}"
+          tofile="${build}/org/delysid/freedots/gui/swing/DejaVuSerif.ttf"/>
+
+    <copy todir="${build}/org/delysid/freedots/gui/swing">
+      <fileset dir="icons">
+	<include name="*.xml"/>
+      </fileset>	    
+    </copy>
+
+    <copy todir="${build}/org/delysid/freedots/musicxml/">
+      <fileset dir="scores">
+	<include name="bwv*.xml"/>
+      </fileset>	    
+    </copy>
+
+    <copy todir="${build}">
+      <fileset dir="${src}">
+        <include name="**/*.properties"/>
+      </fileset>
+    </copy>
   </target>
 
   <!-- Testing framework -->
@@ -127,7 +122,7 @@
     <jar jarfile="${dist}/FreeDots-${DSTAMP}.jar" basedir="${build}">
       <manifest>
         <attribute name="Class-Path" value="${lib.swt.jar}"/>
-        <attribute name="Main-Class" value="org.delysid.freedots.Main"/>
+        <attribute name="Main-Class" value="${freedots.jar.main.class}"/>
       </manifest>
     </jar>
   </target>
@@ -139,7 +134,7 @@
   <target name="build.manual" depends="build.jar"
 	  description="build the user manual">
     <presetdef name="freedots">
-      <java classname="org.delysid.freedots.Main"
+      <java classname="${freedots.jar.main.class}"
 	    failonerror="true" logError="true">
         <classpath>
           <pathelement location="dist/FreeDots-${DSTAMP}.jar"/>
@@ -149,16 +144,10 @@
     </presetdef>
     <!-- Build examples -->
     <freedots output="doc/example1-2.brl">
-      <arg value="input/nimobmn-examples/example1-2.xml"/>
-    </freedots>
-    <freedots>
       <arg value="-emf"/><arg value="doc/example1-2.mid"/>
       <arg value="input/nimobmn-examples/example1-2.xml"/>
     </freedots>
     <freedots output="doc/example1-11.brl">
-      <arg value="input/nimobmn-examples/example1-11.xml"/>
-    </freedots>
-    <freedots>
       <arg value="-emf"/><arg value="doc/example1-11.mid"/>
       <arg value="input/nimobmn-examples/example1-11.xml"/>
     </freedots>

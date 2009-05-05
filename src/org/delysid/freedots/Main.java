@@ -27,6 +27,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
+import java.util.ResourceBundle;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.xml.parsers.ParserConfigurationException;
@@ -55,8 +56,8 @@ public final class Main {
   public static void main(final String[] args) {
     Options options = new Options(args);
     Transcriber transcriber = new Transcriber(options);
-    Score score = null;
     if (options.getLocation() != null) {
+      Score score = null;
       try {
         score = new Score(options.getLocation());
       } catch (XPathExpressionException e) {
@@ -102,14 +103,15 @@ public final class Main {
       }
     }
     if (!options.getWindowSystem()) {
-      if (transcriber != null) {
+      if (transcriber.getScore() != null) {
+        System.out.println(transcriber.toString());
         if (options.getExportMidiFile() != null) {
           File file = new File(options.getExportMidiFile());
           try {
             FileOutputStream fileOutputStream = new FileOutputStream(file);
             try {
               StandardMidiFileWriter smfw = new StandardMidiFileWriter();
-              smfw.write(new MIDISequence(score), 1, fileOutputStream);
+              smfw.write(new MIDISequence(transcriber.getScore()), 1, fileOutputStream);
             } catch (Exception exception) {
               exception.printStackTrace();
             } finally {
@@ -118,22 +120,20 @@ public final class Main {
           } catch (IOException exception) {
             exception.printStackTrace();
           }
-        } else {
-          System.out.println(transcriber.toString());
-          if (options.getPlayScore() && score != null) {
+        }
+        if (options.getPlayScore() && transcriber.getScore() != null) {
+          try {
+            MIDIPlayer player = new MIDIPlayer();
+            player.setSequence(new MIDISequence(transcriber.getScore()));
+            player.start();
             try {
-              MIDIPlayer player = new MIDIPlayer();
-              player.setSequence(new MIDISequence(score));
-              player.start();
-              try {
-                while (player.isRunning()) Thread.sleep(250);
-              } catch (InterruptedException ie) { }
-              player.close();
-            } catch (MidiUnavailableException mue) {
-              System.err.println("MIDI playback not available.");
-            } catch (InvalidMidiDataException imde) {
-              imde.printStackTrace();
-            }
+              while (player.isRunning()) Thread.sleep(250);
+            } catch (InterruptedException ie) { }
+            player.close();
+          } catch (MidiUnavailableException mue) {
+            System.err.println("MIDI playback not available.");
+          } catch (InvalidMidiDataException imde) {
+            imde.printStackTrace();
           }
         }
       } else {
@@ -144,7 +144,15 @@ public final class Main {
       }
     }
   }
+
+  public static final String VERSION;
+  static {
+    ResourceBundle
+    compilationProperties = ResourceBundle.getBundle("compilation");
+    VERSION = compilationProperties.getString("freedots.compile.version");
+  }
   private static void printUsage() {
+    System.out.println("FreeDots " + VERSION);
     System.out.println("Usage: java -jar freedots.jar " +
                        "[-w PAGEWIDTH] [-nw] [-p] [FILENAME|URL]");
     System.out.println("Options:");

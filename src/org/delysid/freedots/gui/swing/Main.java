@@ -162,7 +162,7 @@ public final class Main
   private Action fileSaveAsAction = new FileSaveAsAction(this);
 
   public Main(final Transcriber transcriber) {
-    super("FreeDots");
+    super("FreeDots " + org.delysid.freedots.Main.VERSION);
     this.transcriber = transcriber;
 
     try {
