@@ -14,7 +14,7 @@
  * for more details (a copy is included in the LICENSE.txt file that
  * accompanied this code).
  *
- * You should have received a copy of the GNU General Public License 
+ * You should have received a copy of the GNU General Public License
  * along with this work; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
  *
@@ -24,14 +24,19 @@ package org.delysid.freedots.model;
 
 import org.delysid.freedots.Braille;
 
+/**
+ * An abstract representation of pitch with step, alter and octave values.
+ */
 public abstract class AbstractPitch implements Comparable<AbstractPitch> {
+  /**
+   * @return the step (a value from 0 to 6)
+   */
   public abstract int getStep();
   public abstract int getAlter();
   public abstract int getOctave();
-  public int getMIDIPitch() {
-    int[] stepToChromatic = { 0, 2, 4, 5, 7, 9, 11 };
+  public final int getMIDIPitch() {
     int midiPitch = (getOctave()+1)*12
-                  + stepToChromatic[getStep()]
+                  + STEP_TO_CHROMATIC[getStep()]
                   + getAlter();
     return midiPitch;
   }
@@ -57,12 +62,21 @@ public abstract class AbstractPitch implements Comparable<AbstractPitch> {
     return Braille.octave(getOctave());
   }
   public int diatonicDifference(AbstractPitch other) {
-    return ((this.getOctave()*7) + this.getStep()) -
-           ((other.getOctave()*7) + other.getStep());
+    return ((this.getOctave()*STEPS) + this.getStep()) -
+           ((other.getOctave()*STEPS) + other.getStep());
   }
   public int compareTo(AbstractPitch other) {
     int diatonicDifference = diatonicDifference(other);
     if (diatonicDifference != 0) return diatonicDifference;
-    else return getAlter() < other.getAlter()? -1: getAlter()==other.getAlter()? 0: 1;
+    else {
+      final boolean flatter = getAlter() < other.getAlter();
+      final boolean sharper = getAlter() > other.getAlter();
+      return flatter ? -1 : sharper ? 1 : 0;
+    }      
   }
+
+  private final static int STEPS = 7;
+  private final static int[] STEP_TO_CHROMATIC = new int[] {
+    0, 2, 4, 5, 7, 9, 11
+  };
 }

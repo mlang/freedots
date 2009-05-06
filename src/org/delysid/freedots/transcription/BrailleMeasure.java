@@ -163,60 +163,10 @@ class BrailleMeasure {
     if (fullSimile) {
       state.append(Braille.simileSign.toString());
     } else {
-    for (int i = 0; i < brailleVoices.size(); i++) {
-      if (brailleVoices.get(i) instanceof PartMeasureInAccord) {
-        PartMeasureInAccord pmia = (PartMeasureInAccord)brailleVoices.get(i);
-        if (i > 0) {
-          String braille = Braille.fullMeasureInAccord.toString();
-          state.append(braille);
-
-          /* The octave mark must be shown for
-           * the first note after an in-accord.
-           ************************************/
-          state.setLastPitch(null);
-        }
-        MusicList pmiaHead = pmia.getHead();
-        if (pmiaHead.size() > 0) {
-          printNoteList(pmiaHead, state, null);
-          state.append(Braille.partMeasureInAccord.toString());
-        }
-        for (int p = 0; p < pmia.getParts().size(); p++) {
-          printNoteList(pmia.getParts().get(p), state, null);
-          if (p < pmia.getParts().size() - 1) {
-            String braille = Braille.partMeasureInAccordDivision.toString();
-            state.append(braille);
-
-            /* The octave mark must be shown for
-             * the first note after an in-accord.
-             ************************************/
-            state.setLastPitch(null);
-          }
-        }
-        MusicList pmiaTail = pmia.getTail();
-        if (pmiaTail.size() > 0) {
-          state.append(Braille.partMeasureInAccord.toString());
-          printNoteList(pmiaTail, state, null);
-        }
-      } else if (brailleVoices.get(i) instanceof FullMeasureInAccord) {
-        FullMeasureInAccord fmia = (FullMeasureInAccord)brailleVoices.get(i);
-        for (int p = 0; p < fmia.getParts().size(); p++) {
-          Object splitPoint = null;
-          ValueInterpreter valueInterpreter = new ValueInterpreter(fmia.getParts().get(p), timeSignature);
-          Set<ValueInterpreter.Interpretation>
-            interpretations = valueInterpreter.getInterpretations();
-          if (interpretations.size() > 1) {
-            splitPoint = valueInterpreter.getSplitPoint();
-            if (splitPoint == null) {
-              System.err.println("WARNING: "+interpretations.size()+" possible interpretations:");
-              for (ValueInterpreter.Interpretation
-                     interpretation:interpretations) {
-                System.err.println((interpretation.isCorrect()?" * ":"   ") +
-                                   interpretation.toString());
-              }
-            }
-          }
-          printNoteList(fmia.getParts().get(p), state, splitPoint);
-          if (p < fmia.getParts().size() - 1) {
+      for (int i = 0; i < brailleVoices.size(); i++) {
+        if (brailleVoices.get(i) instanceof PartMeasureInAccord) {
+          PartMeasureInAccord pmia = (PartMeasureInAccord)brailleVoices.get(i);
+          if (i > 0) {
             String braille = Braille.fullMeasureInAccord.toString();
             state.append(braille);
 
@@ -225,20 +175,71 @@ class BrailleMeasure {
              ************************************/
             state.setLastPitch(null);
           }
+          MusicList pmiaHead = pmia.getHead();
+          if (pmiaHead.size() > 0) {
+            printNoteList(pmiaHead, state, null);
+            state.append(Braille.partMeasureInAccord.toString());
+          }
+          for (int p = 0; p < pmia.getParts().size(); p++) {
+            printNoteList(pmia.getParts().get(p), state, null);
+            if (p < pmia.getParts().size() - 1) {
+              String braille = Braille.partMeasureInAccordDivision.toString();
+              state.append(braille);
+
+              /* The octave mark must be shown for
+               * the first note after an in-accord.
+               ************************************/
+              state.setLastPitch(null);
+            }
+          }
+          MusicList pmiaTail = pmia.getTail();
+          if (pmiaTail.size() > 0) {
+            state.append(Braille.partMeasureInAccord.toString());
+            printNoteList(pmiaTail, state, null);
+          }
+        } else if (brailleVoices.get(i) instanceof FullMeasureInAccord) {
+          FullMeasureInAccord fmia = (FullMeasureInAccord)brailleVoices.get(i);
+          for (int p = 0; p < fmia.getParts().size(); p++) {
+            Object splitPoint = null;
+            ValueInterpreter valueInterpreter = new ValueInterpreter(fmia.getParts().get(p), timeSignature);
+            Set<ValueInterpreter.Interpretation>
+              interpretations = valueInterpreter.getInterpretations();
+            if (interpretations.size() > 1) {
+              splitPoint = valueInterpreter.getSplitPoint();
+              if (splitPoint == null) {
+                System.err.println("WARNING: "+interpretations.size()+" possible interpretations:");
+                for (ValueInterpreter.Interpretation
+                       interpretation:interpretations) {
+                  System.err.println((interpretation.isCorrect()?" * ":"   ") +
+                                     interpretation.toString());
+                }
+              }
+            }
+            printNoteList(fmia.getParts().get(p), state, splitPoint);
+            if (p < fmia.getParts().size() - 1) {
+              String braille = Braille.fullMeasureInAccord.toString();
+              state.append(braille);
+
+              /* The octave mark must be shown for
+               * the first note after an in-accord.
+               ************************************/
+              state.setLastPitch(null);
+            }
+          }
         }
       }
-    }
 
-    if (brailleVoices.size() == 0) {
-      state.append(Braille.wholeRest.toString());
-    }
+      if (brailleVoices.size() == 0) {
+        state.append(Braille.wholeRest.toString());
+      }
 
-    /* 5-12. The octave mark must be shown for the first note after an
-     * in-accord and _at the beginning of the next measure_, whether or not
-     * that measure contains an in-accord.
-     ***********************************************************************/
-    if (brailleVoices.size() == 1 && !((FullMeasureInAccord)brailleVoices.get(0)).isInAccord())
-      finalPitch = state.getLastPitch();
+      /* 5-12. The octave mark must be shown for the first note after an
+       * in-accord and _at the beginning of the next measure_, whether or not
+       * that measure contains an in-accord.
+       ***********************************************************************/
+      if (brailleVoices.size() == 1
+          && !((FullMeasureInAccord)brailleVoices.get(0)).isInAccord())
+        finalPitch = state.getLastPitch();
     }
     tail = state.getTail();
     return state.getHead();

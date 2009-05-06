@@ -26,7 +26,6 @@ import java.util.ArrayList;
 import org.delysid.freedots.Braille;
 import org.delysid.freedots.Options;
 import org.delysid.freedots.model.Clef;
-import org.delysid.freedots.model.ClefChange;
 import org.delysid.freedots.model.EndBar;
 import org.delysid.freedots.model.Event;
 import org.delysid.freedots.model.GlobalKeyChange;
@@ -53,73 +52,73 @@ class BarOverBar implements Strategy {
       if (initialKeySignature == null) {
 	initialKeySignature = part.getKeySignature();
       } else {
-	if (!initialKeySignature.equals(part.getKeySignature())) {
-	  System.err.println("WARNING: Parts with different initial key signatures");
-	}
+        if (!initialKeySignature.equals(part.getKeySignature())) {
+          System.err.println("WARNING: Parts with different initial key signatures");
+        }
       }
       if (initialTimeSignature == null) {
-	initialTimeSignature = part.getTimeSignature();
+        initialTimeSignature = part.getTimeSignature();
       } else {
-	if (!initialTimeSignature.equals(part.getTimeSignature())) {
-	  System.err.println("WARNING: Parts with different initial time signatures");
-	}
+        if (!initialTimeSignature.equals(part.getTimeSignature())) {
+          System.err.println("WARNING: Parts with different initial time signatures");
+        }
       }
 
       MusicList musicList = part.getMusicList();
       int staffCount = musicList.getStaffCount();
       for (int staffIndex = 0; staffIndex < staffCount; staffIndex++) {
-	Staff staff = musicList.getStaff(staffIndex);
-	BrailleStaff brailleStaff = new BrailleStaff();
-	BrailleMeasure measure = new BrailleMeasure();
-	boolean displayClefChange = false;
-	int voiceDirection = -1;
+        Staff staff = musicList.getStaff(staffIndex);
+        BrailleStaff brailleStaff = new BrailleStaff();
+        BrailleMeasure measure = new BrailleMeasure();
+        boolean displayClefChange = false;
+        int voiceDirection = -1;
 
-	if (staffCount == 1) {
-	  brailleStaff.setIntro(Braille.soloPart);
-	  if (staff.containsChords()) displayClefChange = true;
-	} else if (staffCount == 2) {
-	  if (staffIndex == 0) {
-	    brailleStaff.setIntro(Braille.rightHandPart);
-	    voiceDirection = -1;
-	    measure.setVoiceDirection(voiceDirection);
-	  } else if (staffIndex == 1) {
-	    brailleStaff.setIntro(Braille.leftHandPart);
-	    voiceDirection = 1;
-	    measure.setVoiceDirection(voiceDirection);
-	  }
-	}
+        if (staffCount == 1) {
+          brailleStaff.setIntro(Braille.soloPart);
+          if (staff.containsChords()) displayClefChange = true;
+        } else if (staffCount == 2) {
+          if (staffIndex == 0) {
+            brailleStaff.setIntro(Braille.rightHandPart);
+            voiceDirection = -1;
+            measure.setVoiceDirection(voiceDirection);
+          } else if (staffIndex == 1) {
+            brailleStaff.setIntro(Braille.leftHandPart);
+            voiceDirection = 1;
+            measure.setVoiceDirection(voiceDirection);
+          }
+        }
 
-	StartBar startBar = null;
+        StartBar startBar = null;
 
-	for (int staffElementIndex = 0; staffElementIndex < staff.size();
-	     staffElementIndex++) {
-	  Event event = staff.get(staffElementIndex);
+        for (int staffElementIndex = 0; staffElementIndex < staff.size();
+             staffElementIndex++) {
+          Event event = staff.get(staffElementIndex);
 
-	  if (event instanceof StartBar) {
-	    startBar = (StartBar)event;
-	    measure.setTimeSignature(startBar.getTimeSignature());
-	  } else if (event instanceof EndBar) {
-	    EndBar rightBar = (EndBar)event;
-	    measure.process();
-	    if (startBar != null) {
-	    }
-	    if (rightBar.getRepeat()) {
-	    } else if (rightBar.getEndOfMusic()) {
-	    }
-	    brailleStaff.add(measure);
-	    measure = new BrailleMeasure(measure);
-	    measure.setVoiceDirection(voiceDirection);
-	  } else {
-	    measure.add(event);
-	  }
-	}
-	brailleStaves.add(brailleStaff);
+          if (event instanceof StartBar) {
+            startBar = (StartBar)event;
+            measure.setTimeSignature(startBar.getTimeSignature());
+          } else if (event instanceof EndBar) {
+            EndBar rightBar = (EndBar)event;
+            measure.process();
+            if (startBar != null) {
+            }
+            if (rightBar.getRepeat()) {
+            } else if (rightBar.getEndOfMusic()) {
+            }
+            brailleStaff.add(measure);
+            measure = new BrailleMeasure(measure);
+            measure.setVoiceDirection(voiceDirection);
+          } else {
+            measure.add(event);
+          }
+        }
+        brailleStaves.add(brailleStaff);
       }
     }
 
     if (initialKeySignature != null && initialTimeSignature != null) {
       transcriber.printLine(initialKeySignature.toBraille() +
-			    initialTimeSignature.toBraille());
+                            initialTimeSignature.toBraille());
     }
     int paragraph = 1;
     int startIndex = 0;
@@ -129,52 +128,52 @@ class BarOverBar implements Strategy {
 
       int endIndex = startIndex + 1;
       while (endIndex <= brailleStaves.getMeasureCount() &&
-	     brailleStaves.maxLength(startIndex, endIndex)+indent < transcriber.getRemainingColumns()) {
-	endIndex++;
+             brailleStaves.maxLength(startIndex, endIndex)+indent < transcriber.getRemainingColumns()) {
+        endIndex++;
       }
       if (endIndex > startIndex + 1) endIndex--;
       /* Header? */
       for (int staffIndex = 0; staffIndex < brailleStaves.size(); staffIndex++) {
-	for (int i = startIndex; i < endIndex; i++) {
-	  int columnWidth = brailleStaves.maxLengthAt(i);
-	  BrailleMeasure measure = brailleStaves.get(staffIndex).get(i);
-	  if (i == startIndex) measure.unlinkPrevious();
-	  BrailleList braille = measure.head(1024, false);
-	  if (i == startIndex) {
-	    if (staffIndex == 0) {
-	      transcriber.printString(paragraphNumber+" ");
+        for (int i = startIndex; i < endIndex; i++) {
+          int columnWidth = brailleStaves.maxLengthAt(i);
+          BrailleMeasure measure = brailleStaves.get(staffIndex).get(i);
+          if (i == startIndex) measure.unlinkPrevious();
+          BrailleList braille = measure.head(1024, false);
+          if (i == startIndex) {
+            if (staffIndex == 0) {
+              transcriber.printString(paragraphNumber+" ");
             } else {
-	      for (int count = 0; count < paragraphNumber.length(); count++) {
-		transcriber.printString(" ");
-	      }
-	      transcriber.printString(" ");
-	    }
-	    Braille introSymbol = brailleStaves.get(staffIndex).getIntro();
-	    if (introSymbol != null) {
-	      BrailleString intro = new BrailleString(introSymbol);
-	      braille.add(0, intro);
-	    }
-	  }
-	  transcriber.printString(braille);
+              for (int count = 0; count < paragraphNumber.length(); count++) {
+                transcriber.printString(" ");
+              }
+              transcriber.printString(" ");
+            }
+            Braille introSymbol = brailleStaves.get(staffIndex).getIntro();
+            if (introSymbol != null) {
+              BrailleString intro = new BrailleString(introSymbol);
+              braille.add(0, intro);
+            }
+          }
+          transcriber.printString(braille);
 
-	  int skipColumns = columnWidth - braille.length();
-	  if (skipColumns > 0) {
-	    transcriber.printString(" ");
-	    skipColumns--;
-	  }
-	  if (skipColumns > 2) {
-	    while (skipColumns > 0) {
-	      transcriber.printString(Braille.dot.toString());
-	      skipColumns--;
-	    }
-	  }
-	  while (skipColumns > 0) {
-	    transcriber.printString(" ");
-	    skipColumns--;
-	  }
-	  transcriber.printString(" ");
-	}
-	transcriber.newLine();
+          int skipColumns = columnWidth - braille.length();
+          if (skipColumns > 0) {
+            transcriber.printString(" ");
+            skipColumns--;
+          }
+          if (skipColumns > 2) {
+            while (skipColumns > 0) {
+              transcriber.printString(Braille.dot.toString());
+              skipColumns--;
+            }
+          }
+          while (skipColumns > 0) {
+            transcriber.printString(" ");
+            skipColumns--;
+          }
+          transcriber.printString(" ");
+        }
+        transcriber.newLine();
       }
 
       paragraph++;
