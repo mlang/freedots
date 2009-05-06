@@ -42,6 +42,8 @@ import javax.sound.midi.Synthesizer;
  * certain object is played.
  */
 public final class MIDIPlayer implements Closeable {
+  public static final int SLEEP_TIME = 250;
+
   private Synthesizer synthesizer;
   private Sequencer sequencer;
 

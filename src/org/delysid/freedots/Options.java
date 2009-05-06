@@ -41,7 +41,7 @@ public final class Options {
   String exportMidiFile = null;
   UI ui = UI.Swing;
 
-  boolean showFingering = true;
+  private boolean showFingering = true;
   Method method = Method.SectionBySection;
 
   public Options(final String[] args) {

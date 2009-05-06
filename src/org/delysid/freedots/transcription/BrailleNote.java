@@ -46,14 +46,14 @@ class BrailleNote extends BrailleString {
   }
 
   AbstractPitch getPitch() {
-    Note note = (Note)model;
+    Note note = (Note)getModel();
     return note.getPitch();
   }
 
   @Override
   public String toString() {
     String braille = "";
-    Note note = (Note)model;
+    Note note = (Note)getModel();
 
     if (note.isGrace()) {
       braille += Braille.grace;

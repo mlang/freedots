@@ -25,17 +25,17 @@ package org.delysid.freedots.transcription;
 import org.delysid.freedots.Braille;
 
 class BrailleString {
-  Object model = null;
-  Braille braille = null;
-  String string = null;
-  BrailleList container = null;
+  private Object model = null;
+  private Braille braille = null;
+  private String string = null;
+  private BrailleList container = null;
   BrailleString(Braille braille) {
     this.braille = braille;
   }
   BrailleString(String string) {
     this.string = string;
   }
-  BrailleString(String string, Object model) {
+  BrailleString(final String string, final Object model) {
     this(string);
     this.model = model;
   }

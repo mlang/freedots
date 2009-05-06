@@ -33,6 +33,9 @@ import javax.swing.filechooser.FileFilter;
 
 import org.delysid.freedots.musicxml.Score;
 
+/**
+ * An action for selecting and loading MusicXML documents.
+ */
 @SuppressWarnings("serial")
 public final class FileOpenAction extends AbstractAction {
   private Main gui;

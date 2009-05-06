@@ -51,7 +51,8 @@ public final class Main {
   private Main() { super(); }
 
   /**
-   * Entry point for JAR execution
+   * Entry point for JAR execution.
+   * @param args Arguments from the command-line
    */
   public static void main(final String[] args) {
     Options options = new Options(args);
@@ -78,30 +79,7 @@ public final class Main {
       }
       if (score != null) transcriber.setScore(score);
     }
-    if (options.getWindowSystem()) {
-      try {
-        GraphicalUserInterface gui = null;
-        Class<?> guiClass = Class.forName(options.getUI().getClassName());
-        if (GraphicalUserInterface.class.isAssignableFrom(guiClass)) {
-          Constructor constructor = guiClass.getConstructor(new Class []{
-              Transcriber.class
-            });
-          try {
-            gui = (GraphicalUserInterface)
-              constructor.newInstance(new Object[]{
-                  transcriber
-                });
-          } catch (java.lang.reflect.InvocationTargetException e) {
-            throw e.getCause();
-          }
-          gui.run();
-        }
-      } catch (HeadlessException e) {
-        options.setWindowSystem(false);
-      } catch (Throwable e) {
-        e.printStackTrace();
-      }
-    }
+    maybeStartGUI(options, transcriber);
     if (!options.getWindowSystem()) {
       if (transcriber.getScore() != null) {
         System.out.println(transcriber.toString());
@@ -127,7 +105,7 @@ public final class Main {
             player.setSequence(new MIDISequence(transcriber.getScore()));
             player.start();
             try {
-              while (player.isRunning()) Thread.sleep(250);
+              while (player.isRunning()) Thread.sleep(MIDIPlayer.SLEEP_TIME);
             } catch (InterruptedException ie) { }
             player.close();
           } catch (MidiUnavailableException mue) {
@@ -137,8 +115,8 @@ public final class Main {
           }
         }
       } else {
-        System.err.println("No window system available and " +
-                           "no filename specified.");
+        System.err.println("No window system available and "
+                           + "no filename specified.");
         printUsage();
         System.exit(1);
       }
@@ -151,10 +129,38 @@ public final class Main {
     compilationProperties = ResourceBundle.getBundle("compilation");
     VERSION = compilationProperties.getString("freedots.compile.version");
   }
+
+  private static void maybeStartGUI(Options options, Transcriber transcriber) {
+    if (options.getWindowSystem()) {
+      try {
+        GraphicalUserInterface gui = null;
+        Class<?> guiClass = Class.forName(options.getUI().getClassName());
+        if (GraphicalUserInterface.class.isAssignableFrom(guiClass)) {
+          Constructor constructor = guiClass.getConstructor(new Class []{
+              Transcriber.class
+            });
+          try {
+            gui = (GraphicalUserInterface)
+              constructor.newInstance(new Object[]{
+                  transcriber
+                });
+          } catch (java.lang.reflect.InvocationTargetException e) {
+            throw e.getCause();
+          }
+          gui.run();
+        }
+      } catch (HeadlessException e) {
+        options.setWindowSystem(false);
+      } catch (Throwable e) {
+        e.printStackTrace();
+      }
+    }
+  }
+
   private static void printUsage() {
     System.out.println("FreeDots " + VERSION);
-    System.out.println("Usage: java -jar freedots.jar " +
-                       "[-w PAGEWIDTH] [-nw] [-p] [FILENAME|URL]");
+    System.out.println("Usage: java -jar freedots.jar "
+                       + "[-w PAGEWIDTH] [-nw] [-p] [FILENAME|URL]");
     System.out.println("Options:");
     System.out.println("\t-nw:\t\tNo Window System");
     System.out.println("\t-p:\t\tPlay complete score");

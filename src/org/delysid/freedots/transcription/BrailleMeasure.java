@@ -14,7 +14,7 @@
  * for more details (a copy is included in the LICENSE.txt file that
  * accompanied this code).
  *
- * You should have received a copy of the GNU General Public License 
+ * You should have received a copy of the GNU General Public License
  * along with this work; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
  *
@@ -42,9 +42,9 @@ class BrailleMeasure {
   public MusicList getEvents() { return events; }
   private AbstractPitch finalPitch = null;
   private TimeSignature timeSignature = null;
-  private int voiceDirection = -1; /* By default, oder is to go from top to bottom */
+  private int voiceDirection = -1; /* By default, top to bottom */
   BrailleMeasure() {}
-  BrailleMeasure(BrailleMeasure previous) {
+  BrailleMeasure(final BrailleMeasure previous) {
     this();
     this.previous = previous;
   }
@@ -69,57 +69,57 @@ class BrailleMeasure {
   public void process() {
     if (previous != null) {
       if (previous.getEvents().equalsIgnoreOffset(this.events)) {
-	fullSimile = true;
+        fullSimile = true;
       }
     }
 
     if (!fullSimile) {
-    brailleVoices = new ArrayList<Object>();
+      brailleVoices = new ArrayList<Object>();
 
-    List<Voice> voices = events.getVoices(voiceDirection);
-    FullMeasureInAccord fmia = new FullMeasureInAccord();
-    PartMeasureInAccord pmia = new PartMeasureInAccord();
+      List<Voice> voices = events.getVoices(voiceDirection);
+      FullMeasureInAccord fmia = new FullMeasureInAccord();
+      PartMeasureInAccord pmia = new PartMeasureInAccord();
 
-    while (voices.size() > 0) {
-      Voice voice = voices.get(0);
-      boolean foundOverlap = false;
-      int headLength = 0;
+      while (voices.size() > 0) {
+        Voice voice = voices.get(0);
+        boolean foundOverlap = false;
+        int headLength = 0;
 
-      for (int j = 1; j < voices.size(); j++) {
-        int equalsAtBeginning = voice.countEqualsAtBeginning(voices.get(j));
-        if (equalsAtBeginning > 0) {
-          headLength = equalsAtBeginning;
-          MusicList head = new MusicList();
-          for (int k = 0; k < equalsAtBeginning; k++) {
-            head.add(voice.get(k));
-            voices.get(j).remove(k);
+        for (int j = 1; j < voices.size(); j++) {
+          int equalsAtBeginning = voice.countEqualsAtBeginning(voices.get(j));
+          if (equalsAtBeginning > 0) {
+            headLength = equalsAtBeginning;
+            MusicList head = new MusicList();
+            for (int k = 0; k < equalsAtBeginning; k++) {
+              head.add(voice.get(k));
+              voices.get(j).remove(k);
+            }
+            pmia.setHead(head);
+            pmia.addPart(voice);
+            pmia.addPart(voices.get(j));
+            voices.remove(voices.get(j));
+            foundOverlap = true;
+          } else if (foundOverlap && equalsAtBeginning == headLength) {
+            for (int k = 0; k < equalsAtBeginning; k++) {
+              voices.get(j).remove(k);
+            }
+            pmia.addPart(voices.get(j));
+            voices.remove(voices.get(j));
           }
-          pmia.setHead(head);
-          pmia.addPart(voice);
-          pmia.addPart(voices.get(j));
-          voices.remove(voices.get(j));
-          foundOverlap = true;
-        } else if (foundOverlap && equalsAtBeginning == headLength) {
-          for (int k = 0; k < equalsAtBeginning; k++) {
-            voices.get(j).remove(k);
+        }
+        
+        if (foundOverlap) {
+          for (int k = 0; k < headLength; k++) {
+            voice.remove(k);
           }
-          pmia.addPart(voices.get(j));
-          voices.remove(voices.get(j));
+        } else {
+          fmia.addPart(voice);
         }
-      }
 
-      if (foundOverlap) {
-        for (int k = 0; k < headLength; k++) {
-          voice.remove(k);
-        }
-      } else {
-        fmia.addPart(voice);
+        voices.remove(voice);
       }
-
-      voices.remove(voice);
-    }
-    if (fmia.getParts().size() > 0) brailleVoices.add(fmia);
-    if (pmia.getParts().size() > 0) brailleVoices.add(pmia);
+      if (fmia.getParts().size() > 0) brailleVoices.add(fmia);
+      if (pmia.getParts().size() > 0) brailleVoices.add(pmia);
     }
   }
   public AbstractPitch getFinalPitch() { return finalPitch; }
@@ -143,11 +143,11 @@ class BrailleMeasure {
     }
     void append(BrailleString braille) {
       if (braille.length() <= width && !hyphenated) {
-	head.add(braille);
-	width -= braille.length();
+        head.add(braille);
+        width -= braille.length();
       } else {
-	hyphenated = true;
-	tail.add(braille);
+        hyphenated = true;
+        tail.add(braille);
       }
     }
     AbstractPitch getLastPitch() { return lastPitch; }
@@ -158,74 +158,74 @@ class BrailleMeasure {
   }
   public BrailleList head(int width, boolean lastLine) {
     State state = new State(width,
-			    previous != null? previous.getFinalPitch(): null);
+                            previous != null? previous.getFinalPitch(): null);
 
     if (fullSimile) {
       state.append(Braille.simileSign.toString());
     } else {
     for (int i = 0; i < brailleVoices.size(); i++) {
       if (brailleVoices.get(i) instanceof PartMeasureInAccord) {
-	PartMeasureInAccord pmia = (PartMeasureInAccord)brailleVoices.get(i);
-	if (i > 0) {
-	  String braille = Braille.fullMeasureInAccord.toString();
-	  state.append(braille);
-	    
-	  /* The octave mark must be shown for
-	   * the first note after an in-accord.
-	   ************************************/
-	  state.setLastPitch(null);
-	}
-	MusicList pmiaHead = pmia.getHead();
-	if (pmiaHead.size() > 0) {
-	  printNoteList(pmiaHead, state, null);
-	  state.append(Braille.partMeasureInAccord.toString());
-	}
-	for (int p = 0; p < pmia.getParts().size(); p++) {
-	  printNoteList(pmia.getParts().get(p), state, null);
-	  if (p < pmia.getParts().size() - 1) {
-	    String braille = Braille.partMeasureInAccordDivision.toString();
-	    state.append(braille);
+        PartMeasureInAccord pmia = (PartMeasureInAccord)brailleVoices.get(i);
+        if (i > 0) {
+          String braille = Braille.fullMeasureInAccord.toString();
+          state.append(braille);
 
-	    /* The octave mark must be shown for
-	     * the first note after an in-accord.
-	     ************************************/
-	    state.setLastPitch(null);
-	  }
-	}
-	MusicList pmiaTail = pmia.getTail();
-	if (pmiaTail.size() > 0) {
-	  state.append(Braille.partMeasureInAccord.toString());
-	  printNoteList(pmiaTail, state, null);
-	}
+          /* The octave mark must be shown for
+           * the first note after an in-accord.
+           ************************************/
+          state.setLastPitch(null);
+        }
+        MusicList pmiaHead = pmia.getHead();
+        if (pmiaHead.size() > 0) {
+          printNoteList(pmiaHead, state, null);
+          state.append(Braille.partMeasureInAccord.toString());
+        }
+        for (int p = 0; p < pmia.getParts().size(); p++) {
+          printNoteList(pmia.getParts().get(p), state, null);
+          if (p < pmia.getParts().size() - 1) {
+            String braille = Braille.partMeasureInAccordDivision.toString();
+            state.append(braille);
+
+            /* The octave mark must be shown for
+             * the first note after an in-accord.
+             ************************************/
+            state.setLastPitch(null);
+          }
+        }
+        MusicList pmiaTail = pmia.getTail();
+        if (pmiaTail.size() > 0) {
+          state.append(Braille.partMeasureInAccord.toString());
+          printNoteList(pmiaTail, state, null);
+        }
       } else if (brailleVoices.get(i) instanceof FullMeasureInAccord) {
-	FullMeasureInAccord fmia = (FullMeasureInAccord)brailleVoices.get(i);
-	for (int p = 0; p < fmia.getParts().size(); p++) {
-	  Object splitPoint = null;
-	  ValueInterpreter valueInterpreter = new ValueInterpreter(fmia.getParts().get(p), timeSignature);
-	  Set<ValueInterpreter.Interpretation>
+        FullMeasureInAccord fmia = (FullMeasureInAccord)brailleVoices.get(i);
+        for (int p = 0; p < fmia.getParts().size(); p++) {
+          Object splitPoint = null;
+          ValueInterpreter valueInterpreter = new ValueInterpreter(fmia.getParts().get(p), timeSignature);
+          Set<ValueInterpreter.Interpretation>
             interpretations = valueInterpreter.getInterpretations();
-	  if (interpretations.size() > 1) {
-	    splitPoint = valueInterpreter.getSplitPoint();
-	    if (splitPoint == null) {
-	      System.err.println("WARNING: "+interpretations.size()+" possible interpretations:");
-	      for (ValueInterpreter.Interpretation
+          if (interpretations.size() > 1) {
+            splitPoint = valueInterpreter.getSplitPoint();
+            if (splitPoint == null) {
+              System.err.println("WARNING: "+interpretations.size()+" possible interpretations:");
+              for (ValueInterpreter.Interpretation
                      interpretation:interpretations) {
-		System.err.println((interpretation.isCorrect()?" * ":"   ") +
-				   interpretation.toString());
-	      }
-	    }
-	  }
-	  printNoteList(fmia.getParts().get(p), state, splitPoint);
-	  if (p < fmia.getParts().size() - 1) {
-	    String braille = Braille.fullMeasureInAccord.toString();
-	    state.append(braille);
+                System.err.println((interpretation.isCorrect()?" * ":"   ") +
+                                   interpretation.toString());
+              }
+            }
+          }
+          printNoteList(fmia.getParts().get(p), state, splitPoint);
+          if (p < fmia.getParts().size() - 1) {
+            String braille = Braille.fullMeasureInAccord.toString();
+            state.append(braille);
 
-	    /* The octave mark must be shown for
-	     * the first note after an in-accord.
-	     ************************************/
-	    state.setLastPitch(null);
-	  }
-	}
+            /* The octave mark must be shown for
+             * the first note after an in-accord.
+             ************************************/
+            state.setLastPitch(null);
+          }
+        }
       }
     }
 
@@ -246,51 +246,51 @@ class BrailleMeasure {
   void printNoteList(MusicList musicList, State state, Object splitPoint) {
     for (Event element:musicList) {
       if (element instanceof Note) {
-	Note note = (Note)element;
-	if (splitPoint != null && splitPoint == note) {
-	  BrailleString brailleString = new BrailleString(Braille.valueDistinction.toString());
-	  state.append(brailleString);
-	}
-	BrailleNote brailleNote = new BrailleNote(note, state.getLastPitch());
-	AbstractPitch pitch = (AbstractPitch)note.getPitch();
-	if (pitch != null) {
-	  state.setLastPitch(pitch);
-	}
-	state.append(brailleNote);
+        Note note = (Note)element;
+        if (splitPoint != null && splitPoint == note) {
+          BrailleString brailleString = new BrailleString(Braille.valueDistinction.toString());
+          state.append(brailleString);
+        }
+        BrailleNote brailleNote = new BrailleNote(note, state.getLastPitch());
+        AbstractPitch pitch = (AbstractPitch)note.getPitch();
+        if (pitch != null) {
+          state.setLastPitch(pitch);
+        }
+        state.append(brailleNote);
       } else if (element instanceof VoiceChord) {
-	String braille = "";
-	VoiceChord chord = (VoiceChord)element;
-	chord = chord.getSorted();
-	Note firstNote = (Note)chord.get(0);
-	Accidental accidental = firstNote.getAccidental();
-	if (accidental != null) {
-	  braille += accidental.toBraille().toString();
-	}
-	AbstractPitch firstPitch = (AbstractPitch)firstNote.getPitch();
-	Braille octaveSign = firstPitch.getOctaveSign(state.getLastPitch());
-	if (octaveSign != null) { braille += octaveSign; }
-	state.setLastPitch(firstPitch);
-	braille += firstNote.getAugmentedFraction().toBrailleString(firstPitch);
+        String braille = "";
+        VoiceChord chord = (VoiceChord)element;
+        chord = chord.getSorted();
+        Note firstNote = (Note)chord.get(0);
+        Accidental accidental = firstNote.getAccidental();
+        if (accidental != null) {
+          braille += accidental.toBraille().toString();
+        }
+        AbstractPitch firstPitch = (AbstractPitch)firstNote.getPitch();
+        Braille octaveSign = firstPitch.getOctaveSign(state.getLastPitch());
+        if (octaveSign != null) { braille += octaveSign; }
+        state.setLastPitch(firstPitch);
+        braille += firstNote.getAugmentedFraction().toBrailleString(firstPitch);
 
-	for (int chordElementIndex = 1; chordElementIndex < chord.size(); chordElementIndex++) {
-	  Note currentNote = (Note)chord.get(chordElementIndex);
-	  accidental = currentNote.getAccidental();
-	  if (accidental != null) {
-	    braille += accidental.toBraille().toString();
-	  }
-	  AbstractPitch currentPitch = (AbstractPitch)currentNote.getPitch();
-	  int diatonicDifference = Math.abs(currentPitch.diatonicDifference(firstPitch));
-	  if (diatonicDifference == 0) {
-	    braille += currentPitch.getOctaveSign(null);
-	    diatonicDifference = 7;
-	  } else if (diatonicDifference > 7) {
-	    braille += currentPitch.getOctaveSign(null);
-	    while (diatonicDifference > 7) diatonicDifference -= 7;
-	  }
-	  braille += Braille.interval(diatonicDifference);
-	}
+        for (int chordElementIndex = 1; chordElementIndex < chord.size(); chordElementIndex++) {
+          Note currentNote = (Note)chord.get(chordElementIndex);
+          accidental = currentNote.getAccidental();
+          if (accidental != null) {
+            braille += accidental.toBraille().toString();
+          }
+          AbstractPitch currentPitch = (AbstractPitch)currentNote.getPitch();
+          int diatonicDifference = Math.abs(currentPitch.diatonicDifference(firstPitch));
+          if (diatonicDifference == 0) {
+            braille += currentPitch.getOctaveSign(null);
+            diatonicDifference = 7;
+          } else if (diatonicDifference > 7) {
+            braille += currentPitch.getOctaveSign(null);
+            while (diatonicDifference > 7) diatonicDifference -= 7;
+          }
+          braille += Braille.interval(diatonicDifference);
+        }
 
-	state.append(braille);
+        state.append(braille);
       }
     }
   }
