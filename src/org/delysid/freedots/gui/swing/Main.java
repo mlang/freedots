@@ -414,8 +414,14 @@ public final class Main
   }
 
   private void triggerTranscription() {
+    int position = textArea.getCaretPosition();
+    Object object = transcriber.getObjectAtIndex(position);
     transcriber.setScore(score);
     textArea.setText(transcriber.toString());
-    textArea.setCaretPosition(0);
+    if (object != null) {
+      int objectPosition = transcriber.getIndexOfObject(object);
+      if (objectPosition != -1) position = objectPosition;
+    }
+    textArea.setCaretPosition(position);
   }
 }
