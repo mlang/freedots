@@ -125,6 +125,7 @@ public final class Options {
   public UI getUI() { return ui; }
 
   public boolean getShowFingering() { return showFingering; }
+  public void setShowFingering(boolean value) { showFingering = value; }
   public Method getMethod() { return method; }
   public void setMethod(final Method method) { this.method = method; }
 

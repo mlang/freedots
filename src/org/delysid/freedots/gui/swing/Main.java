@@ -288,6 +288,16 @@ public final class Main
     transcriptionMenu.add(sectionBySectionItem);
     transcriptionMenu.add(barOverBarItem);
 
+    JCheckBoxMenuItem showFingeringItem = new JCheckBoxMenuItem("Show fingering");
+    showFingeringItem.setSelected(transcriber.getOptions().getShowFingering());
+    showFingeringItem.addItemListener(new ItemListener() {
+      public void itemStateChanged(ItemEvent e) {
+        transcriber.getOptions().setShowFingering(e.getStateChange() == ItemEvent.SELECTED);
+        triggerTranscription();
+      }
+    });
+    transcriptionMenu.add(showFingeringItem);
+
     menuBar.add(transcriptionMenu);
 
     JMenu playbackMenu = new JMenu("Playback");
