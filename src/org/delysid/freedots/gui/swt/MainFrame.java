@@ -77,7 +77,7 @@ public class MainFrame {
   MIDIPlayer player;
   Transcriber transcriber;
 
-  public MainFrame(Transcriber transcriber) {
+  public MainFrame(final Transcriber transcriber) {
     this.transcriber = transcriber;
     try {
       player = new MIDIPlayer();

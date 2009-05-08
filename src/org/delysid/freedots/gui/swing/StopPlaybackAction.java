@@ -31,7 +31,7 @@ import javax.swing.KeyStroke;
 @SuppressWarnings("serial")
 public final class StopPlaybackAction extends AbstractAction {
   private Main gui;
-  public StopPlaybackAction(Main gui) {
+  public StopPlaybackAction(final Main gui) {
     super("Stop");
     this.gui = gui;
     putValue(SHORT_DESCRIPTION, "Stop playback");

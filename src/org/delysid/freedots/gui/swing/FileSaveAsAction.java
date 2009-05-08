@@ -44,7 +44,7 @@ import org.delysid.freedots.musicxml.Score;
 @SuppressWarnings("serial")
 public final class FileSaveAsAction extends AbstractAction {
   private Main gui;
-  public FileSaveAsAction(Main gui) {
+  public FileSaveAsAction(final Main gui) {
     super("Save as...");
     this.gui = gui;
     putValue(SHORT_DESCRIPTION, "Export to braille or standard MIDI file");

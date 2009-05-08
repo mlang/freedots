@@ -29,7 +29,7 @@ public class AugmentedFraction extends Fraction {
 
   private int normalNotes, actualNotes;
 
-  public AugmentedFraction(int numerator, int denominator, int dots) {
+  public AugmentedFraction(final int numerator, final int denominator, final int dots) {
     this(numerator, denominator, dots, 1, 1);
   }
   public AugmentedFraction(AugmentedFraction augmentedFraction) {

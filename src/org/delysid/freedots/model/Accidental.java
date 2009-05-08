@@ -32,7 +32,7 @@ public enum Accidental {
       QUARTER_FLAT(-0.5), QUARTER_SHARP(0.5);
 
   double alter;
-  Accidental(double alter) { this.alter = alter; }
+  Accidental(final double alter) { this.alter = alter; }
   public double getAlter() { return alter; }
   public Braille toBraille() {
     switch (this) {

@@ -33,11 +33,11 @@ import org.eclipse.swt.widgets.Shell;
 public class Main implements org.delysid.freedots.gui.GraphicalUserInterface {
   Transcriber transcriber;
 
-  public Main(Transcriber transcriber) {
+  public Main(final Transcriber transcriber) {
     this.transcriber = transcriber;
   }
 
-  public void run() {
+  public final void run() {
     try {
       Display display = new Display();
       MainFrame frame = new MainFrame(transcriber);

@@ -27,7 +27,7 @@ import java.awt.event.KeyEvent;
 
 public final class QuitAction extends javax.swing.AbstractAction {
   Main gui;
-  QuitAction(Main gui) {
+  QuitAction(final Main gui) {
     super("Quit");
     putValue(SHORT_DESCRIPTION, "Exit FreeDots");
     putValue(MNEMONIC_KEY, KeyEvent.VK_Q);

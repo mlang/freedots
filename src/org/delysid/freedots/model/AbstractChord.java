@@ -36,7 +36,7 @@ AbstractChord<E extends Event> extends ArrayList<E> implements Event {
     this(initialNote.getOffset());
     add(initialNote);
   }
-  public Fraction getOffset() { return offset; }
+  public final Fraction getOffset() { return offset; }
   public boolean equalsIgnoreOffset(Event other) {
     if (other instanceof AbstractChord) {
       AbstractChord otherChord = (AbstractChord)other;

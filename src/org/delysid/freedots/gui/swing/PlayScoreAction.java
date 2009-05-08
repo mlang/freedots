@@ -31,7 +31,7 @@ import javax.swing.KeyStroke;
 @SuppressWarnings("serial")
 public final class PlayScoreAction extends AbstractAction {
   private Main gui;
-  public PlayScoreAction(Main gui) {
+  public PlayScoreAction(final Main gui) {
     super("Play score");
     this.gui = gui;
     putValue(SHORT_DESCRIPTION, "Play the complete score");
