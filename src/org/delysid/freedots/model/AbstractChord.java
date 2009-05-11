@@ -32,7 +32,7 @@ AbstractChord<E extends Event> extends ArrayList<E> implements Event {
     super();
     this.offset = offset;
   }
-  public AbstractChord(E initialNote) {
+  public AbstractChord(final E initialNote) {
     this(initialNote.getOffset());
     add(initialNote);
   }

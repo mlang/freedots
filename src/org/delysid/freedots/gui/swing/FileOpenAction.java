@@ -39,6 +39,9 @@ import org.delysid.freedots.musicxml.Score;
 @SuppressWarnings("serial")
 public final class FileOpenAction extends AbstractAction {
   private Main gui;
+  /**
+   * Construct a File->Open action.
+   */
   public FileOpenAction(final Main gui) {
     super("Open");
     this.gui = gui;
@@ -47,6 +50,11 @@ public final class FileOpenAction extends AbstractAction {
     putValue(ACCELERATOR_KEY,
              KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
   }
+  /**
+   * This is called when the action is invoked (through the menu or keystroke).
+   *
+   * A dialog box is created to query the file name from the user.
+   */
   public void actionPerformed(final ActionEvent event) {
     JFileChooser fileChooser = new JFileChooser();
     fileChooser.setAcceptAllFileFilterUsed(false);
@@ -63,10 +71,13 @@ public final class FileOpenAction extends AbstractAction {
     fileChooser.showOpenDialog(gui);
     try {
       // Update status bar display
-      if (gui.statusBar!=null)
-      gui.statusBar.setText("Loading "+fileChooser.getSelectedFile().toString()+"...");
-      gui.update(gui.getGraphics());
-      
+      if (gui.statusBar!=null) {
+        gui.statusBar.setText("Loading "
+                              + fileChooser.getSelectedFile().toString()
+                              + "...");
+        gui.update(gui.getGraphics());
+      }      
+
       Score newScore = new Score(fileChooser.getSelectedFile().toString());
       gui.setScore(newScore);
     

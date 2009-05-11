@@ -14,7 +14,7 @@
  * for more details (a copy is included in the LICENSE.txt file that
  * accompanied this code).
  *
- * You should have received a copy of the GNU General Public License 
+ * You should have received a copy of the GNU General Public License
  * along with this work; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
  *
@@ -27,24 +27,26 @@ public class Clef {
 
   public Sign sign;
   public int line = 0;
-  public Clef(Sign sign) {
+  public Clef(final Sign sign) {
     this.sign = sign;
   }
-  public Clef(Sign sign, int line) {
+  public Clef(final Sign sign, final int line) {
     this(sign);
     this.line = line;
   }
-  public boolean isTreble() { return (sign == Sign.G && line == 2); }
-  public boolean isBass() { return (sign == Sign.F && line == 4); }
+  public boolean isTreble() { return sign == Sign.G && line == 2; }
+  public boolean isBass() { return sign == Sign.F && line == 4; }
 
   public int getChordDirection() {
     switch (sign) {
-      case G: switch (line) {
-                case 2: return -1;
-              }
-      case F: switch (line) {
-                case 4: return 1;
-              }
+    case G:
+      switch (line) {
+      case 2: return -1;
+      }
+    case F:
+      switch (line) {
+      case 4: return 1;
+      }
     }
     return -1;
   }

@@ -14,7 +14,7 @@
  * for more details (a copy is included in the LICENSE.txt file that
  * accompanied this code).
  *
- * You should have received a copy of the GNU General Public License 
+ * You should have received a copy of the GNU General Public License
  * along with this work; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
  *
@@ -77,14 +77,14 @@ public final class Score {
   private List<Part> parts;
 
   public Score(
-    InputStream inputStream, String extension
+    final InputStream inputStream, final String extension
   ) throws ParserConfigurationException,
            IOException, SAXException, XPathExpressionException {
 
     parse(inputStream, extension);
   }
   public Score(
-    String filename
+    final String filename
   ) throws ParserConfigurationException,
            IOException, SAXException, XPathExpressionException {
     File file = new File(filename);
@@ -225,7 +225,7 @@ public final class Score {
     return new InputSource(new StringReader(stringBuilder.toString()));
   }
 
-  public String getScoreType () {
+  public String getScoreType() {
     return document.getDocumentElement().getNodeName();
   }
 

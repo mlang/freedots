@@ -14,7 +14,7 @@
  * for more details (a copy is included in the LICENSE.txt file that
  * accompanied this code).
  *
- * You should have received a copy of the GNU General Public License 
+ * You should have received a copy of the GNU General Public License
  * along with this work; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
  *
@@ -28,12 +28,14 @@ import java.util.Set;
 import org.delysid.freedots.Braille;
 
 /**
- * Articulation refers to the direction or performance technique which affects the
- * transition or continuity on single note or between multiple notes or sounds.
+ * Articulation refers to the direction or performance technique which affects
+ * the transition or continuity on single note or between multiple notes or
+ * sounds.
  *
- * There are many different kinds of articulation, each having a different effect
- * on how the note is played.  Each articulation is represented by a different
- * symbol placed above or below the note (depending on its position on the staff).
+ * There are many different kinds of articulation, each having a different
+ * effect on how the note is played.  Each articulation is represented by a
+ * different symbol placed above or below the note (depending on its position
+ * on the staff).
  *
  * @see <a href="http://en.wikipedia.org/wiki/Articulation_(music)">Wikipedia:Articulation_(music)</a>
  */

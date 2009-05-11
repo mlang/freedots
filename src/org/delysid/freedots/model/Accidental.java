@@ -14,7 +14,7 @@
  * for more details (a copy is included in the LICENSE.txt file that
  * accompanied this code).
  *
- * You should have received a copy of the GNU General Public License 
+ * You should have received a copy of the GNU General Public License
  * along with this work; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
  *
@@ -31,7 +31,7 @@ public enum Accidental {
        DOUBLE_FLAT(-2),    DOUBLE_SHARP(2),
       QUARTER_FLAT(-0.5), QUARTER_SHARP(0.5);
 
-  double alter;
+  private double alter;
   Accidental(final double alter) { this.alter = alter; }
   public double getAlter() { return alter; }
   public Braille toBraille() {

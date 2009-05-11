@@ -14,7 +14,7 @@
  * for more details (a copy is included in the LICENSE.txt file that
  * accompanied this code).
  *
- * You should have received a copy of the GNU General Public License 
+ * You should have received a copy of the GNU General Public License
  * along with this work; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
  *
@@ -23,9 +23,9 @@
 package org.delysid.freedots.musicxml;
 
 public class Slur extends org.delysid.freedots.model.Slur<Note> {
-  Slur(Note initialNote) { super(initialNote); }
+  Slur(final Note initialNote) { super(initialNote); }
   @Override
-  public boolean add(Note note) {
+  public final boolean add(final Note note) {
     if (super.add(note)) {
       note.addSlur(this);
       return true;

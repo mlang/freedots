@@ -70,24 +70,6 @@ public enum Braille {
   lowerDigit4(256), lowerDigit5(26), lowerDigit6(235), lowerDigit7(2356),
   lowerDigit8(236), lowerDigit9(35);
 
-  private final static Braille[] octaves = new Braille[] {
-    octave1, octave2, octave3, octave4, octave5, octave6, octave7,
-    octave8, octave9
-  };
-  private static final Braille[] digits = {
-    digit0, digit1, digit2, digit3, digit4, digit5, digit6, digit7, digit8, digit9
-  };
-  private static final Braille[] lowerDigits = {
-    lowerDigit0, lowerDigit1, lowerDigit2, lowerDigit3, lowerDigit4, lowerDigit5,
-    lowerDigit6, lowerDigit7, lowerDigit8, lowerDigit9
-  };
-  private static final Braille[] intervals = {
-    second, third, fourth, fifth, sixth, seventh, octave
-  };
-  private static final Braille[] fingers = {
-    finger1, finger2, finger3, finger4, finger5
-  };
-
   private int[] dots;
   private String cachedString;
   private boolean needsAdditionalDot3IfOneOfDot123Follows = false;
@@ -108,10 +90,14 @@ public enum Braille {
     return cachedString;
   }
 
+  /**
+   * @return true if this braille music symbol needs an additional dot 3
+   * if one of dots 1, 2 or 3 is following.
+   */
   public boolean needsAdditionalDot3IfOneOfDot123Follows() {
     return needsAdditionalDot3IfOneOfDot123Follows;
   }
-  public void needsAdditionalDot3IfOneOfDot123Follows(boolean newValue) {
+  private void needsAdditionalDot3IfOneOfDot123Follows(boolean newValue) {
     needsAdditionalDot3IfOneOfDot123Follows = newValue;
   }
   static {
@@ -131,7 +117,9 @@ public enum Braille {
     }
     return string;
   }
-  public static Braille lowerDigit(final int digit) { return lowerDigits[digit]; }
+  public static Braille lowerDigit(final int digit) {
+    return lowerDigits[digit];
+  }
   public static Braille interval(final int interval) {
     return intervals[interval - 1];
   }
@@ -232,4 +220,22 @@ public enum Braille {
     }
     return bits;
   }
+
+  private final static Braille[] octaves = new Braille[] {
+    octave1, octave2, octave3, octave4, octave5, octave6, octave7,
+    octave8, octave9
+  };
+  private static final Braille[] digits = {
+    digit0, digit1, digit2, digit3, digit4, digit5, digit6, digit7, digit8, digit9
+  };
+  private static final Braille[] lowerDigits = {
+    lowerDigit0, lowerDigit1, lowerDigit2, lowerDigit3, lowerDigit4, lowerDigit5,
+    lowerDigit6, lowerDigit7, lowerDigit8, lowerDigit9
+  };
+  private static final Braille[] intervals = {
+    second, third, fourth, fifth, sixth, seventh, octave
+  };
+  private static final Braille[] fingers = {
+    finger1, finger2, finger3, finger4, finger5
+  };
 }

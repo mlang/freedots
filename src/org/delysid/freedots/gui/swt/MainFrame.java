@@ -90,7 +90,7 @@ public class MainFrame {
   /*
    * Clear all style data for the selected text.
    */
-  void clear() {
+  final void clear() {
     Point sel = text.getSelectionRange();
     if (sel.y != 0) {
       StyleRange style;
@@ -100,7 +100,7 @@ public class MainFrame {
     text.setSelectionRange(sel.x + sel.y, 0);
   }
 
-  Menu createEditMenu() {
+  final Menu createEditMenu() {
     Menu bar = shell.getMenuBar();
     Menu menu = new Menu(bar);
 

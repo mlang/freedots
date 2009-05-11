@@ -34,16 +34,16 @@ public class Sound implements Event {
   Fraction offset;
   Element xml;
 
-  public Sound(Element xml, Fraction offset) {
+  public Sound(final Element xml, final Fraction offset) {
     this.xml = xml;
     this.offset = offset;
   }
 
-  public MetaMessage getTempoMessage() {
+  public final MetaMessage getTempoMessage() {
     if (xml.hasAttribute("tempo")) {
-      float tempo = Float.parseFloat(xml.getAttribute("tempo"));
+      final float tempo = Float.parseFloat(xml.getAttribute("tempo"));
       int midiTempo = Math.round((float)60000.0 / tempo * 1000);
-      MetaMessage message = new MetaMessage();
+      final MetaMessage message = new MetaMessage();
       byte[] bytes = new byte[3];
       bytes[0] = (byte) (midiTempo / 0X10000);
       midiTempo %= 0X10000;

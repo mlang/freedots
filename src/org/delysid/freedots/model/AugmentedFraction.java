@@ -32,13 +32,18 @@ public class AugmentedFraction extends Fraction {
   public AugmentedFraction(final int numerator, final int denominator, final int dots) {
     this(numerator, denominator, dots, 1, 1);
   }
-  public AugmentedFraction(AugmentedFraction augmentedFraction) {
+  /**
+   * Copy constructor.
+   */
+  public AugmentedFraction(final AugmentedFraction augmentedFraction) {
     this(augmentedFraction.getNumerator(), augmentedFraction.getDenominator(),
          augmentedFraction.getDots(),
          augmentedFraction.normalNotes, augmentedFraction.actualNotes);
   }
-  public AugmentedFraction(int numerator, int denominator, int dots,
-                           int normalNotes, int actualNotes) {
+  public AugmentedFraction(
+    final int numerator, final int denominator, final int dots,
+    final int normalNotes, final int actualNotes
+  ) {
     super(numerator, denominator);
     simplify();
     this.dots = dots;
@@ -47,9 +52,7 @@ public class AugmentedFraction extends Fraction {
   }
   public AugmentedFraction(Fraction duration) {
     this(duration.getNumerator(), duration.getDenominator(), 0);
-    if (denominator == 2 || denominator == 4 || denominator == 8 ||
-        denominator == 16 || denominator == 32 || denominator == 64 ||
-        denominator == 128 || denominator == 256) {
+    if (denominatorIsPowerOfTwo()) {
       for (int dot = 10; dot > 0; dot--) {
         if (numerator == (int)(Math.pow(2, dot+1)-1)) {
           numerator -= 1;
@@ -71,7 +74,7 @@ public class AugmentedFraction extends Fraction {
       }
     }
   }
-  public int getDots() { return dots; }
+  public final int getDots() { return dots; }
 
   @Override
   public float toFloat() {
@@ -120,4 +123,12 @@ public class AugmentedFraction extends Fraction {
 
   public static final int EIGHTH = 5;
   public static final int SIXTEENTH = 6;
+
+  private boolean denominatorIsPowerOfTwo() {
+    if (denominator == 2 || denominator == 4 || denominator == 8 ||
+        denominator == 16 || denominator == 32 || denominator == 64 ||
+        denominator == 128 || denominator == 256)
+      return true;
+    return false;
+  }
 }

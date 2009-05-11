@@ -14,7 +14,7 @@
  * for more details (a copy is included in the LICENSE.txt file that
  * accompanied this code).
  *
- * You should have received a copy of the GNU General Public License 
+ * You should have received a copy of the GNU General Public License
  * along with this work; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
  *
@@ -40,7 +40,13 @@ import org.delysid.StandardMidiFileWriter;
 import org.delysid.freedots.Braille;
 import org.delysid.freedots.musicxml.MIDISequence;
 import org.delysid.freedots.musicxml.Score;
+import org.delysid.freedots.transcription.Transcriber;
 
+/**
+ * Action for saving the currently open MusicXML document.
+ * The dialog allows for export to MIDI and Unicode as well as NABCC braille.
+ * Saving to MusicXML is not yet implemented.
+ */
 @SuppressWarnings("serial")
 public final class FileSaveAsAction extends AbstractAction {
   private Main gui;
@@ -89,58 +95,74 @@ public final class FileSaveAsAction extends AbstractAction {
         File file = fileChooser.getSelectedFile();
         String ext = getExtension(file);
         if (ext != null && ext.equals("mid")) {
-          FileOutputStream fileOutputStream = null;
-          try {
-            fileOutputStream = new FileOutputStream(file);
-            try {
-              StandardMidiFileWriter mfw = new StandardMidiFileWriter();
-              mfw.write(new MIDISequence(score), 1, fileOutputStream);
-            } catch (Exception exception) {
-              exception.printStackTrace();
-            } finally {
-              fileOutputStream.close();
-            }
-          } catch (IOException exception) {
-            exception.printStackTrace();
-          }
+          exportToMidi(score, file);
         } else if (ext != null && ext.equals("brl")) {
-          Writer fileWriter = null;
-          try {
-            try {
-              fileWriter = new FileWriter(file);
-              fileWriter.write(gui.getTranscriber().toString());
-            } finally {
-              fileWriter.close();
-            }
-          } catch (IOException e) {
-            e.printStackTrace();
-          }
+          exportToUnicodeBraille(gui.getTranscriber(), file);
         } else if (ext != null && ext.equals("brf")) {
-          Writer fileWriter = null;
-          try {
-            try {
-              fileWriter = new FileWriter(file);
-              CharacterIterator iterator = new StringCharacterIterator(gui.getTranscriber().toString());
-              for(char c = iterator.first(); c != CharacterIterator.DONE;
-                  c = iterator.next()) {
-                if (Braille.brfTable.containsKey(new Character(c))) {
-                  fileWriter = fileWriter.append(Braille.brfTable.get(new Character(c)));
-                } else {
-                  fileWriter = fileWriter.append(c);
-                }
-              }
-            } finally {
-              fileWriter.close();
-            }
-          } catch (IOException e) {
-            e.printStackTrace();
-          }
+          exportToBRF(gui.getTranscriber(), file);
         } else if (ext != null) {
           String message = "Unknown file extension '"+ext+"'";
           JOptionPane.showMessageDialog(gui, message, "Alert",
                                         JOptionPane.ERROR_MESSAGE);
         }
       }
+    }
+  }
+
+  private static void exportToMidi(Score score, File file) {
+    FileOutputStream fileOutputStream = null;
+    try {
+      fileOutputStream = new FileOutputStream(file);
+      try {
+        StandardMidiFileWriter mfw = new StandardMidiFileWriter();
+        mfw.write(new MIDISequence(score), 1, fileOutputStream);
+      } catch (Exception exception) {
+        exception.printStackTrace();
+      } finally {
+        fileOutputStream.close();
+      }
+    } catch (IOException exception) {
+      exception.printStackTrace();
+    }
+  }
+
+  private static void
+  exportToUnicodeBraille(Transcriber transcriber, File file) {
+    Writer fileWriter = null;
+    try {
+      try {
+        fileWriter = new FileWriter(file);
+        fileWriter.write(transcriber.toString());
+      } finally {
+        fileWriter.close();
+      }
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+  private static void
+  exportToBRF(Transcriber transcriber, File file) {
+    Writer fileWriter = null;
+    try {
+      try {
+        fileWriter = new FileWriter(file);
+        CharacterIterator
+        iterator = new StringCharacterIterator(transcriber.toString());
+        for(char c = iterator.first(); c != CharacterIterator.DONE;
+            c = iterator.next()) {
+          if (Braille.brfTable.containsKey(new Character(c))) {
+            final Character mapped = Braille.brfTable.get(new Character(c));
+            fileWriter = fileWriter.append(mapped);
+          } else {
+            fileWriter = fileWriter.append(c);
+          }
+        }
+      } finally {
+        fileWriter.close();
+      }
+    } catch (IOException e) {
+      e.printStackTrace();
     }
   }
 
