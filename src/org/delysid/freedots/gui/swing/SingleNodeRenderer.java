@@ -63,14 +63,14 @@ public final class SingleNodeRenderer extends JPanel {
   
   private static final char TRANSPARENT = '-';
   private static final char[]  charTable = new char[] {
-  '#', // 0 Black^
-  '$', // 1^
-  '*', // 2^
-  '0', // 3^
-  'o', // 4^
-  '+', // 5^
-  '.', // 6^
-  TRANSPARENT // 7^
+  '#', // 0 Black
+  '$', // 1
+  '*', // 2
+  '0', // 3
+  'o', // 4
+  '+', // 5
+  '.', // 6
+  TRANSPARENT // 7
   };
   
   private Map<String,BufferedImage> icons = new HashMap<String,BufferedImage>();
@@ -333,6 +333,25 @@ public final class SingleNodeRenderer extends JPanel {
   }
   
   
+  
+  protected int getNotePosition()
+  {
+    int retval=0;
+    switch (currentNote.getClef().sign)
+    {
+    case G:
+      retval=14+5*lineSpacing-(currentNote.getPitch().getStep()*(lineSpacing/2))-4;
+      
+      break;
+      
+    case F:
+      retval=14+5*lineSpacing-(currentNote.getPitch().getStep()*(lineSpacing/2))-4-lineSpacing*2-lineSpacing/2;
+      break;
+      
+    }
+   return retval; 
+  }
+  
   protected void drawNote(Graphics g)
   {
     
@@ -349,7 +368,7 @@ public final class SingleNodeRenderer extends JPanel {
     
     
     notePosX=globalNotePos;
-    notePosY=14+5*lineSpacing-(currentNote.getPitch().getStep()*(lineSpacing/2))-4;
+    notePosY=getNotePosition();//14+5*lineSpacing-(currentNote.getPitch().getStep()*(lineSpacing/2))-4;
     
    // System.out.println("Modifier type:"+currentNote.getActiveKeySignature().getType());
    // System.out.println("Modifier count:"+currentNote.getActiveKeySignature().getModifierCount());
