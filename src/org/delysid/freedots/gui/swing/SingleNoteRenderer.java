@@ -50,7 +50,7 @@ import org.xml.sax.SAXException;
 /**
  * Draw a single note using staff notation.
  */
-public final class SingleNodeRenderer extends JPanel {
+public final class SingleNoteRenderer extends JPanel {
   private static final long serialVersionUID = 8634349010555582625L;
 
   private Note currentNote=null;
@@ -62,7 +62,7 @@ public final class SingleNodeRenderer extends JPanel {
   
   
   private static final char TRANSPARENT = '-';
-  private static final char[]  charTable = new char[] {
+  private static final char[] charTable = new char[] {
   '#', // 0 Black
   '$', // 1
   '*', // 2
@@ -76,7 +76,6 @@ public final class SingleNodeRenderer extends JPanel {
   private Map<String,BufferedImage> icons = new HashMap<String,BufferedImage>();
   private Map<String,SingleIconSpecification>
   noteDefs = new HashMap<String,SingleIconSpecification>();
-  
   
   private void readSingleIcon(String filename,String key, Map iconMap)
   {
@@ -195,9 +194,8 @@ public final class SingleNodeRenderer extends JPanel {
    
   }
   
-  public SingleNodeRenderer()
+  public SingleNoteRenderer()
   {
-  
     readNoteIcons();
         
     noteDefs.put("1/1", new SingleIconSpecification("WHOLE_NOTE",null,false));

@@ -72,7 +72,7 @@ public final class Main
   public Transcriber getTranscriber() { return transcriber; }
 
   protected StatusBar statusBar = null;
-  protected SingleNodeRenderer noteRenderer = null;
+  protected SingleNoteRenderer noteRenderer = null;
 
   public void setScore(Score score) {
     this.score = score;
@@ -211,7 +211,7 @@ public final class Main
     contentPane.add(scrollPane, BorderLayout.CENTER);
     //statusBar = new StatusBar();
     //contentPane.add(statusBar, BorderLayout.SOUTH);
-    noteRenderer = new SingleNodeRenderer();
+    noteRenderer = new SingleNoteRenderer();
     contentPane.add(noteRenderer, BorderLayout.AFTER_LAST_LINE);
     setContentPane(contentPane);
 
