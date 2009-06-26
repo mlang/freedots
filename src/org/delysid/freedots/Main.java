@@ -158,9 +158,10 @@ public final class Main {
   private static void printUsage() {
     System.out.println("FreeDots " + VERSION);
     System.out.println("Usage: java -jar freedots.jar "
-                       + "[-w PAGEWIDTH] [-nw] [-p] [FILENAME|URL]");
+                       + "[-w PAGEWIDTH] [-nw] [-p] [-bob] [FILENAME|URL]");
     System.out.println("Options:");
     System.out.println("\t-nw:\t\tNo Window System");
     System.out.println("\t-p:\t\tPlay complete score");
+    System.out.println("\t-bob:\t\tBar-over-bar method");
   }
 }
