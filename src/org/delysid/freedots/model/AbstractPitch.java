@@ -35,7 +35,7 @@ public abstract class AbstractPitch implements Comparable<AbstractPitch> {
   public abstract int getAlter();
   public abstract int getOctave();
   public final int getMIDIPitch() {
-    int midiPitch = (getOctave()+1)*12
+    int midiPitch = (getOctave()+1) * CHROMATIC_STEPS
                   + STEP_TO_CHROMATIC[getStep()]
                   + getAlter();
     return midiPitch;
@@ -76,6 +76,7 @@ public abstract class AbstractPitch implements Comparable<AbstractPitch> {
   }
 
   private final static int STEPS = 7;
+  private final static int CHROMATIC_STEPS = 12;
   private final static int[] STEP_TO_CHROMATIC = new int[] {
     0, 2, 4, 5, 7, 9, 11
   };

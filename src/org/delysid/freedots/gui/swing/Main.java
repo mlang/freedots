@@ -128,8 +128,8 @@ public final class Main
     }
   }
 
-  protected MIDIPlayer midiPlayer;
-  protected MetaEventRelay metaEventRelay = new MetaEventRelay(this);
+  private MIDIPlayer midiPlayer;
+  private MetaEventRelay metaEventRelay = new MetaEventRelay(this);
   public void objectPlaying(Object object) {
     if (caretFollowsPlayback) {
       int pos = transcriber.getIndexOfObject(object);

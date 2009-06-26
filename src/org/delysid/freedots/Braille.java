@@ -91,6 +91,24 @@ public enum Braille {
   }
 
   /**
+   * Concatenate a number of repetitions of this braille symbol according to
+   * braille music rules.
+   * @param amount number of repetitions
+   * @return the concatenated repetition as a String
+   */
+  public String repeat(final int amount) {
+    if (amount <= 0) return "";
+
+    String atom = toString();
+    if (amount == 1) return atom;
+    else if (amount == 2) return atom + atom;
+    else if (amount == 3) return atom + atom + atom;
+    else {
+      return numberSign.toString() + upperNumber(amount) + atom;
+    }
+  }
+
+  /**
    * @return true if this braille music symbol needs an additional dot 3
    * if one of dots 1, 2 or 3 is following.
    */
@@ -124,20 +142,6 @@ public enum Braille {
     return intervals[interval - 1];
   }
   public static Braille finger(int finger) { return fingers[finger - 1]; }
-
-  /**
-   * Concatenate a number of repetitions of this braille symbol according to
-   * braille music rules.
-   */
-  public String repeat(final int amount) {
-    if (amount <= 0) return "";
-
-    String atom = toString();
-    if (amount == 1) return atom;
-    else if (amount == 2) return atom + atom;
-    else if (amount == 3) return atom + atom + atom;
-    else return numberSign.toString() + upperNumber(amount) + atom;
-  }
 
   public final static Map<Character, Character>
   brfTable = Collections.unmodifiableMap(new HashMap<Character, Character>() {
