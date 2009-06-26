@@ -125,14 +125,18 @@ public enum Braille {
   }
   public static Braille finger(int finger) { return fingers[finger - 1]; }
 
-  public static String nTimes(final Braille item, final int count) {
-    if (count <= 0) return "";
-    else if (count == 1) return item.toString();
-    else if (count == 2) return item.toString()+item.toString();
-    else if (count == 3) return item.toString()+item.toString()+item.toString();
-    else if (count >= 4 && count < 10)
-      return numberSign.toString() + upperDigit(count).toString() + item;
-    else return "ERR";
+  /**
+   * Concatenate a number of repetitions of this braille symbol according to
+   * braille music rules.
+   */
+  public String repeat(final int amount) {
+    if (amount <= 0) return "";
+
+    String atom = toString();
+    if (amount == 1) return atom;
+    else if (amount == 2) return atom + atom;
+    else if (amount == 3) return atom + atom + atom;
+    else return numberSign.toString() + upperNumber(amount) + atom;
   }
 
   public final static Map<Character, Character>
