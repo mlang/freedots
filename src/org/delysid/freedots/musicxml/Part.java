@@ -285,6 +285,7 @@ public final class Part {
     }
     return new KeySignature(0);
   }
+
   public MusicList getMusicList () { return eventList; }
 
   public String getName() {

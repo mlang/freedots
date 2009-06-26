@@ -66,6 +66,7 @@ public final class Score {
     } catch (ParserConfigurationException e) { e.printStackTrace(); }
   }
 
+  /* --- Header fields --- */
   private Text workNumber = null;
   private Text workTitle = null;
   private Text movementNumber = null;
@@ -79,28 +80,30 @@ public final class Score {
   public Score(
     final InputStream inputStream, final String extension
   ) throws ParserConfigurationException,
-           IOException, SAXException, XPathExpressionException {
-
-    parse(inputStream, extension);
-  }
+           IOException, SAXException, XPathExpressionException
+  { parse(inputStream, extension); }
   public Score(
-    final String filename
+    final String filenameOrURL
   ) throws ParserConfigurationException,
-           IOException, SAXException, XPathExpressionException {
-    File file = new File(filename);
+           IOException, SAXException, XPathExpressionException
+  {
+    File file = new File(filenameOrURL);
     InputStream inputStream = null;
     String extension = null;
 
-    int dot = filename.lastIndexOf('.');
-    if (dot != -1) extension = filename.substring(dot + 1);
+    int dot = filenameOrURL.lastIndexOf('.');
+    if (dot != -1) extension = filenameOrURL.substring(dot + 1);
 
-    if (file.exists()) inputStream = new FileInputStream(file);
-    else {
-      URL url = new URL(filename);
+    if (file.exists()) { /* Local file */
+      inputStream = new FileInputStream(file);
+    } else {
+      URL url = new URL(filenameOrURL);
       inputStream = url.openConnection().getInputStream();
     }
+
     parse(inputStream, extension);
   }
+
   private void parse(
     InputStream inputStream, String extension
   ) throws ParserConfigurationException, IOException, SAXException,
@@ -108,20 +111,20 @@ public final class Score {
   {
     if ("mxl".equalsIgnoreCase(extension)) {
       String zipEntryName = null;
+
       ZipInputStream zipInputStream = new ZipInputStream(inputStream);
       ZipEntry zipEntry = null;
+
       while ((zipEntry = zipInputStream.getNextEntry()) != null) {
         if ("META-INF/container.xml".equals(zipEntry.getName())) {
-          Document container =
-            documentBuilder.parse(
-              getInputSourceFromZipInputStream(zipInputStream));
+          Document
+          container = documentBuilder.parse(getInputSourceFromZipInputStream(zipInputStream));
           XPath xpath = xPathFactory.newXPath();
           zipEntryName = (String) xpath.evaluate("container/rootfiles/rootfile/@full-path",
                                                  container,
                                                  XPathConstants.STRING);
         } else if (zipEntry.getName().equals(zipEntryName))
-    document = documentBuilder.parse(
-                 getInputSourceFromZipInputStream(zipInputStream));
+          document = documentBuilder.parse(getInputSourceFromZipInputStream(zipInputStream));
         zipInputStream.closeEntry();
       }
     } else
@@ -136,42 +139,34 @@ public final class Score {
 
     movementNumber = getTextNode(root, "movement-number");
     movementTitle = getTextNode(root, "movement-title");
-    NodeList rootNodes = root.getChildNodes();
-    for (int i = 0; i < rootNodes.getLength(); i++) {
-      Node scoreNode = rootNodes.item(i);
-      if (scoreNode.getNodeType() == Node.ELEMENT_NODE) {
-        Element scoreElement = (Element)scoreNode;
-        if (scoreNode.getNodeName().equals("work")) {
-          workNumber = getTextNode(scoreElement, "work-number");
-          workTitle = getTextNode(scoreElement, "work-title");
-        } else if (scoreNode.getNodeName().equals("identification")) {
-          NodeList identificationNodes = scoreElement.getChildNodes();
-          for (int j = 0; j < identificationNodes.getLength(); j++) {
-            Node identificationNode = identificationNodes.item(j);
-            if (identificationNode.getNodeType() == Node.ELEMENT_NODE) {
-              Element identificationElement = (Element)identificationNode;
-              if (identificationNode.getNodeName().equals("creator")) {
-                Element creator = identificationElement;
-                NodeList creatorNodes = creator.getChildNodes();
-                Text textNode = null;
-                for (int k = 0; k < creatorNodes.getLength(); k++) {
-                  Node creatorNode = creatorNodes.item(k);
-                  if (creatorNode.getNodeType() == Node.TEXT_NODE) {
-                    textNode = (Text)creatorNode;
-                  }
-                }
-                if (creator.getAttribute("type").equals("composer")) {
-                  composer = textNode;
-                } else if (creator.getAttribute("type").equals("poet")) {
-                  poet = textNode;
-                }
+
+    for (Element scoreElement:getChildElements(root)) {
+      if (scoreElement.getNodeName().equals("work")) {
+        workNumber = getTextNode(scoreElement, "work-number");
+        workTitle = getTextNode(scoreElement, "work-title");
+      } else if (scoreElement.getNodeName().equals("identification")) {
+        for (Element identificationElement:getChildElements(scoreElement)) {
+          if (identificationElement.getNodeName().equals("creator")) {
+            Element creator = identificationElement;
+            NodeList creatorNodes = creator.getChildNodes();
+            Text textNode = null;
+            for (int i = 0; i < creatorNodes.getLength(); i++) {
+              Node creatorNode = creatorNodes.item(i);
+              if (creatorNode.getNodeType() == Node.TEXT_NODE) {
+                textNode = (Text)creatorNode;
               }
             }
+            if (creator.getAttribute("type").equals("composer")) {
+              composer = textNode;
+            } else if (creator.getAttribute("type").equals("poet")) {
+              poet = textNode;
+            }
           }
-        } else if (scoreNode.getNodeName().equals("part-list"))
-          partList = scoreElement;
-      }
+        }
+      } else if (scoreElement.getNodeName().equals("part-list"))
+        partList = scoreElement;
     }
+
 
     /* Parse (partwise) part elements */
     parts = new ArrayList<Part>();
@@ -215,9 +210,10 @@ public final class Score {
 
   private InputSource getInputSourceFromZipInputStream(
     ZipInputStream zipInputStream
-  ) throws IOException {
-    BufferedReader reader =
-      new BufferedReader(new InputStreamReader(zipInputStream));
+  ) throws IOException
+  {
+    BufferedReader
+    reader = new BufferedReader(new InputStreamReader(zipInputStream));
     StringBuilder stringBuilder = new StringBuilder();
     String string = null;
     while ((string = reader.readLine()) != null)
@@ -229,6 +225,9 @@ public final class Score {
     return document.getDocumentElement().getNodeName();
   }
 
+  /**
+   * Calculate the least common multiple of all divisions elements in the score.
+   */
   public int getDivisions() {
     XPath xPath = xPathFactory.newXPath();
     try {
@@ -236,7 +235,7 @@ public final class Score {
       NodeList nodeList = (NodeList) xPath.evaluate(xPathExpression,
                                                     document,
                                                     XPathConstants.NODESET);
-      int count = nodeList.getLength();
+      final int count = nodeList.getLength();
       BigInteger result = BigInteger.ONE;
       for (int index = 0; index < count; index++) {
         Node node = nodeList.item(index);
@@ -253,6 +252,8 @@ public final class Score {
     return parts;
   }
 
+  /* --- W3C DOM convenience access utilities --- */
+
   static Text getTextNode(Element element, String childTagName) {
     NodeList nodeList = element.getElementsByTagName(childTagName);
     if (nodeList.getLength() >= 1) {
@@ -263,5 +264,16 @@ public final class Score {
       }
     }
     return null;
+  }
+  static List<Element> getChildElements(Element root) {
+    final NodeList children = root.getChildNodes();
+    final int childCount = children.getLength();
+    List<Element> elements = new ArrayList<Element>(childCount);
+    for (int i = 0; i < childCount; i++) {
+      Node node = children.item(i);
+      if (node.getNodeType() == Node.ELEMENT_NODE)
+        elements.add((Element)node);
+    }
+    return elements;
   }
 }
