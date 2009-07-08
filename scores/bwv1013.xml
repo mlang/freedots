@@ -1,0 +1,10 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE opus PUBLIC "-//Recordare//DTD MusicXML 2.0 Opus//EN"
+	"http://www.musicxml.org/dtds/opus.dtd">
+<opus version="2.0">
+  <title>Partita in A minor</title>
+  <score xlink:href="bwv1013-1.xml"/>
+  <score xlink:href="bwv1013-2.xml"/>
+  <score xlink:href="bwv1013-3.xml"/>
+  <score xlink:href="bwv1013-4.xml"/>
+</opus>

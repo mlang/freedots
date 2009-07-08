@@ -30,6 +30,8 @@
            location="dtd/musicxml/1.1/partwise.dtd"/>
       <dtd publicId="-//Recordare//DTD MusicXML 2.0 Partwise//EN"
            location="dtd/musicxml/2.0/partwise.dtd"/>
+      <dtd publicId="-//Recordare//DTD MusicXML 2.0 Opus//EN"
+           location="dtd/musicxml/2.0/opus.dtd"/>
       <schema namespace="http://www.w3.org/XML/1998/namespace"
               file="xsd/xml.xsd" />
       <schema namespace="http://www.w3.org/1999/xlink"
