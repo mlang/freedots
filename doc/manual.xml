@@ -150,7 +150,7 @@ dot(s).  Dotted rests are treated the same as dotted notes.
 	  <para><ulink url="example1-2.mid">Click here</ulink> to listen to this example</para>
 	</example>
       </sect1>
-      <sect1><title>Octave marks</title>
+      <sect1 id="octaveMarks"><title>Octave marks</title>
 	<para>
 Octave marks, rather than clefs on a staff, indicate specific pitch locations in
 braille music.  Octaves are numbered from one to seven, beginning with the lowest
@@ -227,7 +227,9 @@ These rules are illustrated in the following example from the <quote>Cologne Key
 	  <para><ulink url="example1-11.mid">Click here</ulink> to listen to this example</para>
 	</example>
       </sect1>
-      <sect1><title>Accidentals and the key signature</title>
+    </chapter>
+    <chapter><title>Accidentals, key and time signatures</title>
+      <sect1><title>Accidentals</title>
         <para>
 The following table lists the symbols used to indicate accidentals.
 	</para>
@@ -247,6 +249,108 @@ The following table lists the symbols used to indicate accidentals.
 	  </tbody>
 	</tgroup>
 	</table>
+	<para>
+The sharp, flat and natural signs are placed before the notes,
+intervals or other features to which they belong.  They must not be separated
+from notes by anything other than <link linkend="octaveMarks">octave marks</link>.
+	</para>
+	<para>
+If an accidental appears above or below a note in print, it is preceded by dot 6
+in braille.
+	</para>
+      </sect1>
+      <sect1><title>Key signatures</title>
+        <para>
+Key signatures reflect the number of flats or sharps, not the actual pitches as
+in print.  If there are four or more accidentals in a key signature, the number
+sign (dots 3, 4, 5, 6) is used.
+	</para>
+	<para>
+The next note following a key signature must have an octave mark.
+If it is not followed by a time signature, it must be followed by a space.
+	</para>
+      </sect1>
+      <sect1><title>Time signatures</title>
+      <para>
+When time signatures consist of an upper and a lower number in print, the
+braille uses upper- and lower-cell numbers with a number sign only at the
+beginning of the combination.  An upper-cell number is used for a single-digit
+time signature.  In other types of signatures as well, the print is followed
+closely.
+      </para>
+	<table><title>Time signatures</title>
+	<tgroup cols='2'>
+	  <thead><row><entry>Symbol</entry><entry>Description</entry></row></thead>
+	  <tbody>
+	    <row><entry><symbol role="symbolfont">&brl46;&brl14;</symbol></entry>
+  	         <entry>C or "common" time</entry>
+	    </row>
+	    <row><entry><symbol role="symbolfont">&brl456;&brl14;</symbol></entry>
+  	         <entry>Barred C or "cut" time</entry>
+	    </row>
+	    <row><entry><symbol role="symbolfont">&brl3456;&brl145;&brl256;</symbol></entry>
+  	         <entry>4/4</entry>
+	    </row>
+	  </tbody>
+	</tgroup>
+	</table>
+	<para>
+A time signature must be followed by a space, and the next note following it
+must have an octave mark.
+	</para>
+	<para>
+The key and time signatures are combined with or without one
+space between, according to the practice of the nation.
+<warning>This is not implemented yet, time and key signatures are combined without a space.</warning>
+	</para>
+      </sect1>
+    </chapter>
+    <chapter><title>Contrapuntal lines and chords within a staff</title>
+      <para>
+Unlike print music notation, braille music is an entirely linear format.
+Therefore certain conventions must be used to indicate contrapuntal lines
+and chords, situations where more than one note is played simultaneously
+within a single staff.
+      </para>
+      <sect1><title>In-accords</title>
+      <para>
+Independent contrapuntal lines within a single staff are indicated via
+whole-measure or part-measure "in-accords".
+      </para>
+      </sect1>
+      <sect1><title>Interval notation</title>
+      <para>
+Homophonic chordal sections are written using interval notation.
+      </para>
+	<table><title>Interval symbols</title>
+	<tgroup cols='2'>
+	  <thead><row><entry>Symbol</entry><entry>Interval</entry></row></thead>
+	  <tbody>
+	    <row><entry><symbol role="symbolfont">&brl34;</symbol></entry>
+  	         <entry>second</entry>
+	    </row>
+	    <row><entry><symbol role="symbolfont">&brl346;</symbol></entry>
+  	         <entry>third</entry>
+	    </row>
+	    <row><entry><symbol role="symbolfont">&brl3456;</symbol></entry>
+  	         <entry>fourth</entry>
+	    </row>
+	    <row><entry><symbol role="symbolfont">&brl35;</symbol></entry>
+  	         <entry>fifth</entry>
+	    </row>
+	    <row><entry><symbol role="symbolfont">&brl356;</symbol></entry>
+  	         <entry>sixth</entry>
+	    </row>
+	    <row><entry><symbol role="symbolfont">&brl25;</symbol></entry>
+  	         <entry>seventh</entry>
+	    </row>
+	    <row><entry><symbol role="symbolfont">&brl36;</symbol></entry>
+  	         <entry>octave</entry>
+	    </row>
+	  </tbody>
+	</tgroup>
+	</table>
+
       </sect1>
     </chapter>
   </part>
@@ -403,11 +507,11 @@ freely distributable scores.  This menu allows you to choose one of the prepacka
 	    <question id="q-windows"><para>Does &App; work on
 	      <productname class="trade"><indexterm zone="q-windows">
 	        <primary>Windows</primary></indexterm>Windows</productname>?</para></question>
-	    <answer><para>Yes.  You will need to install <application>Java 1.6</application>.
-            For proper accessibility support you will also need the Java-Access-Bridge installed.
-            An installer for &App; on <productname class="trade">Windows</productname>
-	      is currently not available, but could be built.
-	      Volunteers for maintaining a <productname class="trade">Windows</productname> version of &App; are very welcome!</para></answer>
+	    <answer><para>
+Yes.  You will need to install <application>Java 1.6</application>.
+For proper accessibility support you will also need the
+<productname>Java-Access-Bridge</productname> installed.
+	    </para></answer>
 	  </qandaentry>
 	  <qandaentry>
 	    <question id="q-linux-brltty"><para>Why can't I read the default output of &App;
