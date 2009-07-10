@@ -154,7 +154,7 @@
       <arg value="input/nimobmn-examples/example1-11.xml"/>
     </freedots>
 
-    <exec executable="xsltproc" logError="true" output="doc/manual.html">
+    <exec executable="xsltproc" logError="true" failonerror="true" output="doc/manual.html">
       <arg value="--xinclude"/>
       <arg value="doc/html.xsl"/> <arg value="doc/manual.xml"/>
     </exec>
@@ -162,7 +162,7 @@
       <arg value="--nonumbers"/><arg value="--dump"/>
       <arg value="doc/manual.html"/>
     </exec>
-    <exec executable="xsltproc" logError="true" output="doc/manual.html">
+    <exec executable="xsltproc" logError="true">
       <arg value="--xinclude"/>
       <arg value="--stringparam"/>
       <arg value="man.output.base.dir"/>

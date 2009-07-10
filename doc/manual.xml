@@ -59,8 +59,15 @@ familiar with it yet.  It is also the User's Manual for
   <part><title>Introduction to &bmn;</title>
     <partintro>
       <para>
-&Bmn; is an internationally accepted standard for expressing musical ideas in
-tactile readable form.
+&Bmn; is an internationally accepted standard for notating music
+for visually impaired musicians in a tactile form.
+&Bmn; was originally developed by Louis Braille.
+      </para>
+      <para>
+&Bmn; uses the same six-position Braille cell as literary braille.
+However braille music assigns an entirely separate meaning to each braille
+symbol or group of symbols, different from literary braille, and has its own
+syntax and abbreviations.
       </para>
       <para>
 Since <application>&App;</application> is mostly useless to a user who does not
@@ -73,9 +80,9 @@ standard, you can safely skip over this section.
     <chapter><title>Simple monophonic melodies</title>
       <sect1><title>Notes and rests</title>
         <para>
-The characters for the notes are formed from dots 1, 2, 4, and 5.  The absence or
-presence of dots 3 and/or 6 determines the note values.  Each note or rest has two
-value possibilities.
+The pitch of the notes are indicated by dots 1, 2, 4, and 5.  The absence or
+presence of dots 3 and/or 6 determines the note rhythmic values.  Each note or
+rest has two rhythmic value possibilities.
         </para>
 	<table><title>Note and rest symbols</title>
 	<tgroup cols='8'>
@@ -142,6 +149,8 @@ dot(s).  Dotted rests are treated the same as dotted notes.
 	  </literallayout>
 	  <para><ulink url="example1-2.mid">Click here</ulink> to listen to this example</para>
 	</example>
+      </sect1>
+      <sect1><title>Octave marks</title>
 	<para>
 Octave marks, rather than clefs on a staff, indicate specific pitch locations in
 braille music.  Octaves are numbered from one to seven, beginning with the lowest
@@ -156,7 +165,7 @@ intervening signs.  The following table shows the octave marks from
 	</para>
 	<table><title>Octave marks</title>
 	<tgroup cols='2'>
-	  <thead><row><entry>Example</entry><entry>Description</entry></row></thead>
+	  <thead><row><entry>Symbol</entry><entry>Description</entry></row></thead>
 	  <tbody>
 	    <row><entry><symbol role="symbolfont">&brl4;&brl1456;</symbol></entry>
   	         <entry>contra</entry>
@@ -217,6 +226,27 @@ These rules are illustrated in the following example from the <quote>Cologne Key
 	  </literallayout>
 	  <para><ulink url="example1-11.mid">Click here</ulink> to listen to this example</para>
 	</example>
+      </sect1>
+      <sect1><title>Accidentals and the key signature</title>
+        <para>
+The following table lists the symbols used to indicate accidentals.
+	</para>
+	<table><title>Accidentals</title>
+	<tgroup cols='2'>
+	  <thead><row><entry>Symbol</entry><entry>Description</entry></row></thead>
+	  <tbody>
+	    <row><entry><symbol role="symbolfont">&brl16;</symbol></entry>
+  	         <entry>natural</entry>
+	    </row>
+	    <row><entry><symbol role="symbolfont">&brl126;</symbol></entry>
+  	         <entry>flat</entry>
+	    </row>
+	    <row><entry><symbol role="symbolfont">&brl146;</symbol></entry>
+  	         <entry>sharp</entry>
+	    </row>
+	  </tbody>
+	</tgroup>
+	</table>
       </sect1>
     </chapter>
   </part>
