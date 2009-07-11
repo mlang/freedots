@@ -34,6 +34,7 @@ public abstract class AbstractPitch implements Comparable<AbstractPitch> {
   public abstract int getStep();
   public abstract int getAlter();
   public abstract int getOctave();
+
   public final int getMIDIPitch() {
     int midiPitch = (getOctave()+1) * CHROMATIC_STEPS
                   + STEP_TO_CHROMATIC[getStep()]
@@ -75,6 +76,35 @@ public abstract class AbstractPitch implements Comparable<AbstractPitch> {
     }      
   }
 
+  public AbstractPitch nextStep(AccidentalContext accidentalContext) {
+    int octave = getOctave();
+    int step = getStep();
+    double alter = 0;
+    if (step < STEPS-1) { step += 1; } else { octave += 1; step = 0; };
+    alter = accidentalContext.getAlter(octave, step);
+    return new TemporaryPitch(octave, step, (int)alter);
+  }
+
+  public AbstractPitch previousStep(AccidentalContext accidentalContext) {
+    int octave = getOctave();
+    int step = getStep();
+    double alter = 0;
+    if (step > 0) { step -= 1; } else { octave -= 1; step = STEPS-1; };
+    alter = accidentalContext.getAlter(octave, step);
+    return new TemporaryPitch(octave, step, (int)alter);
+  }
+
+  class TemporaryPitch extends AbstractPitch {
+    private int octave, step, alter;
+    TemporaryPitch(int octave, int step, int alter) {
+      this.octave = octave;
+      this.step = step;
+      this.alter = alter;
+    }
+    public int getOctave() { return octave; }
+    public int getStep() { return step; }
+    public int getAlter() { return alter; }
+  }
   private final static int STEPS = 7;
   private final static int CHROMATIC_STEPS = 12;
   private final static int[] STEP_TO_CHROMATIC = new int[] {
