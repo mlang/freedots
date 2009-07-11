@@ -67,13 +67,10 @@ public final class Score {
   }
 
   /* --- Header fields --- */
-  private Text workNumber = null;
-  private Text workTitle = null;
-  private Text movementNumber = null;
-  private Text movementTitle = null;
-  private Text composer = null;
-  private Text poet = null;
-  private Text rights = null;
+  private Text workNumber, workTitle;
+  private Text movementNumber, movementTitle;
+  private Text composer, poet;
+  private Text rights;
 
   private List<Part> parts;
 
@@ -172,20 +169,21 @@ public final class Score {
     parts = new ArrayList<Part>();
 
     NodeList nodes = root.getElementsByTagName("part");
-    NodeList partListKids = partList.getChildNodes();
+    List<Element> partListElements = getChildElements(partList);
     for (int i=0; i<nodes.getLength(); i++) {
       Element part = (Element) nodes.item(i);
       String idValue = part.getAttribute("id");
       Element scorePart = null;
-      for (int j=0; j<partListKids.getLength(); j++) {
-        Node kid = partListKids.item(j);
-        if (kid.getNodeType() == Node.ELEMENT_NODE) {
-          Element elem = (Element) kid;
-          if (idValue.equals(elem.getAttribute("id"))) scorePart = elem;
-        }
+      for (Element partListElement : partListElements) {
+        if (partListElement.getNodeName().equals("score-part") &&
+            idValue.equals(partListElement.getAttribute("id")))
+          scorePart = partListElement;
       }
       if (scorePart != null)
         parts.add(new Part(part, scorePart, this));
+      else
+        throw new RuntimeException("Unable to find <score-part> for part "
+                                   + idValue);
     }
   }
 
@@ -210,8 +208,7 @@ public final class Score {
 
   private InputSource getInputSourceFromZipInputStream(
     ZipInputStream zipInputStream
-  ) throws IOException
-  {
+  ) throws IOException {
     BufferedReader
     reader = new BufferedReader(new InputStreamReader(zipInputStream));
     StringBuilder stringBuilder = new StringBuilder();

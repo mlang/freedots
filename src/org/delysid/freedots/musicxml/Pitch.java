@@ -26,10 +26,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Text;
 
 public final class Pitch extends org.delysid.freedots.model.AbstractPitch {
-  Element element;
-  Text step = null;
-  Text alter = null;
-  Text octave = null;
+  private Element element;
+  private Text step, alter, octave;
 
   public Pitch(Element element) throws MusicXMLParseException {
     this.element = element;
