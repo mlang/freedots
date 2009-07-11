@@ -70,136 +70,160 @@ symbol or group of symbols, different from literary braille, and has its own
 syntax and abbreviations.
       </para>
       <para>
-Since <application>&App;</application> is mostly useless to a user who does not
-know &bmn;, the first part of this book is dedicated to teaching the very
+Since <application>&App;</application> is mostly useless to a user who can not
+read &bmn;, the first part of this book is dedicated to teaching the very
 basics of &bmn;.  If you are already familiar with the international &bmn;
 standard, you can safely skip over this section.
       </para>
     </partintro>
 
     <chapter><title>Simple monophonic melodies</title>
-      <sect1><title>Notes and rests</title>
-        <para>
+      <sect1>
+	<title>Notes and rests</title>
+	<para>
 The pitch of the notes are indicated by dots 1, 2, 4, and 5.  The absence or
 presence of dots 3 and/or 6 determines the note rhythmic values.  Each note or
 rest has two rhythmic value possibilities.
-        </para>
-	<table><title>Note and rest symbols</title>
-	<tgroup cols='8'>
-	  <thead><row><entry>Note value</entry>
-	         <entry>C</entry><entry>D</entry><entry>E</entry>
-		 <entry>F</entry><entry>G</entry><entry>A</entry>
-		 <entry>B</entry><entry>rest</entry></row>
-	  </thead>
-	  <tbody>
-	    <row><entry>wholes or 16ths</entry>
-  	         <entry><symbol role="symbolfont">&brl13456;</symbol></entry>
-		 <entry><symbol role="symbolfont">&brl1356;</symbol></entry>
-		 <entry><symbol role="symbolfont">&brl12346;</symbol></entry>
-		 <entry><symbol role="symbolfont">&brl123456;</symbol></entry>
-		 <entry><symbol role="symbolfont">&brl12356;</symbol></entry>
-		 <entry><symbol role="symbolfont">&brl2346;</symbol></entry>
-		 <entry><symbol role="symbolfont">&brl23456;</symbol></entry>
-		 <entry><symbol role="symbolfont">&brl134;</symbol></entry>
-	    </row>
-	    <row><entry>halves or 32nds</entry>
-  	         <entry><symbol role="symbolfont">&brl1345;</symbol></entry>
-		 <entry><symbol role="symbolfont">&brl135;</symbol></entry>
-		 <entry><symbol role="symbolfont">&brl1234;</symbol></entry>
-		 <entry><symbol role="symbolfont">&brl12345;</symbol></entry>
-		 <entry><symbol role="symbolfont">&brl1235;</symbol></entry>
-		 <entry><symbol role="symbolfont">&brl234;</symbol></entry>
-		 <entry><symbol role="symbolfont">&brl2345;</symbol></entry>
-		 <entry><symbol role="symbolfont">&brl136;</symbol></entry>
-	    </row>
-	    <row><entry>quarters or 64ths</entry>
-  	         <entry><symbol role="symbolfont">&brl1456;</symbol></entry>
-		 <entry><symbol role="symbolfont">&brl156;</symbol></entry>
-		 <entry><symbol role="symbolfont">&brl1246;</symbol></entry>
-		 <entry><symbol role="symbolfont">&brl12456;</symbol></entry>
-		 <entry><symbol role="symbolfont">&brl1256;</symbol></entry>
-		 <entry><symbol role="symbolfont">&brl246;</symbol></entry>
-		 <entry><symbol role="symbolfont">&brl2456;</symbol></entry>
-		 <entry><symbol role="symbolfont">&brl1236;</symbol></entry>
-	    </row>
-	    <row><entry>eighths or 128ths</entry>
-  	         <entry><symbol role="symbolfont">&brl145;</symbol></entry>
-		 <entry><symbol role="symbolfont">&brl15;</symbol></entry>
-		 <entry><symbol role="symbolfont">&brl124;</symbol></entry>
-		 <entry><symbol role="symbolfont">&brl1245;</symbol></entry>
-		 <entry><symbol role="symbolfont">&brl125;</symbol></entry>
-		 <entry><symbol role="symbolfont">&brl24;</symbol></entry>
-		 <entry><symbol role="symbolfont">&brl245;</symbol></entry>
-		 <entry><symbol role="symbolfont">&brl1346;</symbol></entry>
-	    </row>
-	  </tbody>
-	</tgroup>
+	</para>
+	<table>
+	  <title>Note and rest symbols</title>
+	  <tgroup cols='8'>
+	    <thead>
+	      <row>
+		<entry>Note value</entry>
+		<entry>C</entry>
+		<entry>D</entry>
+		<entry>E</entry>
+		<entry>F</entry>
+		<entry>G</entry>
+		<entry>A</entry>
+		<entry>B</entry>
+		<entry>rest</entry>
+	      </row>
+	    </thead>
+	    <tbody>
+	      <row>
+		<entry>wholes or 16ths</entry>
+		<entry><symbol role="symbolfont">&brl13456;</symbol></entry>
+		<entry><symbol role="symbolfont">&brl1356;</symbol></entry>
+		<entry><symbol role="symbolfont">&brl12346;</symbol></entry>
+		<entry><symbol role="symbolfont">&brl123456;</symbol></entry>
+		<entry><symbol role="symbolfont">&brl12356;</symbol></entry>
+		<entry><symbol role="symbolfont">&brl2346;</symbol></entry>
+		<entry><symbol role="symbolfont">&brl23456;</symbol></entry>
+		<entry><symbol role="symbolfont">&brl134;</symbol></entry>
+	      </row>
+	      <row>
+		<entry>halves or 32nds</entry>
+		<entry><symbol role="symbolfont">&brl1345;</symbol></entry>
+		<entry><symbol role="symbolfont">&brl135;</symbol></entry>
+		<entry><symbol role="symbolfont">&brl1234;</symbol></entry>
+		<entry><symbol role="symbolfont">&brl12345;</symbol></entry>
+		<entry><symbol role="symbolfont">&brl1235;</symbol></entry>
+		<entry><symbol role="symbolfont">&brl234;</symbol></entry>
+		<entry><symbol role="symbolfont">&brl2345;</symbol></entry>
+		<entry><symbol role="symbolfont">&brl136;</symbol></entry>
+	      </row>
+	      <row>
+		<entry>quarters or 64ths</entry>
+		<entry><symbol role="symbolfont">&brl1456;</symbol></entry>
+		<entry><symbol role="symbolfont">&brl156;</symbol></entry>
+		<entry><symbol role="symbolfont">&brl1246;</symbol></entry>
+		<entry><symbol role="symbolfont">&brl12456;</symbol></entry>
+		<entry><symbol role="symbolfont">&brl1256;</symbol></entry>
+		<entry><symbol role="symbolfont">&brl246;</symbol></entry>
+		<entry><symbol role="symbolfont">&brl2456;</symbol></entry>
+		<entry><symbol role="symbolfont">&brl1236;</symbol></entry>
+	      </row>
+	      <row>
+		<entry>eighths or 128ths</entry>
+		<entry><symbol role="symbolfont">&brl145;</symbol></entry>
+		<entry><symbol role="symbolfont">&brl15;</symbol></entry>
+		<entry><symbol role="symbolfont">&brl124;</symbol></entry>
+		<entry><symbol role="symbolfont">&brl1245;</symbol></entry>
+		<entry><symbol role="symbolfont">&brl125;</symbol></entry>
+		<entry><symbol role="symbolfont">&brl24;</symbol></entry>
+		<entry><symbol role="symbolfont">&brl245;</symbol></entry>
+		<entry><symbol role="symbolfont">&brl1346;</symbol></entry>
+	      </row>
+	    </tbody>
+	  </tgroup>
 	</table>
 	<para>
-For dotted notes, dot 3 represents each print dot following a note.  It is placed
-immediately after the braille note.  No other sign comes between the note and its
-dot(s).  Dotted rests are treated the same as dotted notes.
+For dotted notes, dot 3 represents each print dot following a note.  It is
+placed immediately after the braille note.  No other sign comes between the
+note and its dot(s).  Dotted rests are treated the same as dotted notes.
 	</para>
 	<example width="40">
 	  <title>Example 1-2 from the &nimobmn;</title>
 	  <literallayout class="Monospaced">
-	    <xi:include
-		xmlns:xi="http://www.w3.org/2001/XInclude"
-		parse="text" href="example1-2.brl" />
+	    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
+			parse="text" href="example1-2.brl" />
 	  </literallayout>
-	  <para><ulink url="example1-2.mid">Click here</ulink> to listen to this example</para>
+	  <para>
+	    <ulink url="example1-2.mid">Listen to this example</ulink>
+	  </para>
 	</example>
       </sect1>
-      <sect1 id="octaveMarks"><title>Octave marks</title>
+      <sect1 id="octaveMarks">
+	<title>Octave marks</title>
 	<para>
-Octave marks, rather than clefs on a staff, indicate specific pitch locations in
-braille music.  Octaves are numbered from one to seven, beginning with the lowest
-C on the normal, seven-octave piano.  Each octave begins on C and includes all the
-notes up to, but not including, the next C above.  The fourth octave begins on the
-"middle C" of the piano.
+Octave marks, rather than clefs on a staff, indicate specific pitch locations
+in braille music.  Octaves are numbered from one to seven, beginning with the
+lowest C on the normal, seven-octave piano.  Each octave begins on C and
+includes all the notes up to, but not including, the next C above.  The fourth
+octave begins on the "middle C" of the piano.
 	</para>
 	<para>
-The octave mark is placed immediately before the note to which it applies with no
-intervening signs.  The following table shows the octave marks from
+The octave mark is placed immediately before the note to which it applies with
+no intervening signs.  The following table shows the octave marks from
 1 to 7 placed before quarter-note C.
 	</para>
-	<table><title>Octave marks</title>
-	<tgroup cols='2'>
-	  <thead><row><entry>Symbol</entry><entry>Description</entry></row></thead>
-	  <tbody>
-	    <row><entry><symbol role="symbolfont">&brl4;&brl1456;</symbol></entry>
-  	         <entry>contra</entry>
-	    </row>
-	    <row><entry><symbol role="symbolfont">&brl45;&brl1456;</symbol></entry>
-  	         <entry>great</entry>
-	    </row>
-	    <row><entry><symbol role="symbolfont">&brl456;&brl1456;</symbol></entry>
-  	         <entry>small</entry>
-	    </row>
-	    <row><entry><symbol role="symbolfont">&brl5;&brl1456;</symbol></entry>
-  	         <entry>one-lined</entry>
-	    </row>
-	    <row><entry><symbol role="symbolfont">&brl46;&brl1456;</symbol></entry>
-  	         <entry>two-lined</entry>
-	    </row>
-	    <row><entry><symbol role="symbolfont">&brl56;&brl1456;</symbol></entry>
-  	         <entry>three-lined</entry>
-	    </row>
-	    <row><entry><symbol role="symbolfont">&brl6;&brl1456;</symbol></entry>
-  	         <entry>four-lined</entry>
-	    </row>
-	  </tbody>
-	</tgroup>
+	<table>
+	  <title>Octave marks</title>
+	  <tgroup cols='2'>
+	    <thead><row><entry>Example</entry><entry>Octave name</entry></row></thead>
+	    <tbody>
+	      <row>
+		<entry><symbol role="symbolfont">&brl4;&brl1456;</symbol></entry>
+		<entry>contra</entry>
+	      </row>
+	      <row>
+		<entry><symbol role="symbolfont">&brl45;&brl1456;</symbol></entry>
+		<entry>great</entry>
+	      </row>
+	      <row>
+		<entry><symbol role="symbolfont">&brl456;&brl1456;</symbol></entry>
+		<entry>small</entry>
+	      </row>
+	      <row>
+		<entry><symbol role="symbolfont">&brl5;&brl1456;</symbol></entry>
+		<entry>one-lined</entry>
+	      </row>
+	      <row>
+		<entry><symbol role="symbolfont">&brl46;&brl1456;</symbol></entry>
+		<entry>two-lined</entry>
+	      </row>
+	      <row>
+		<entry><symbol role="symbolfont">&brl56;&brl1456;</symbol></entry>
+		<entry>three-lined</entry>
+	      </row>
+	      <row>
+		<entry><symbol role="symbolfont">&brl6;&brl1456;</symbol></entry>
+		<entry>four-lined</entry>
+	      </row>
+	    </tbody>
+	  </tgroup>
 	</table>
 	<para>
-The first note of a piece must be preceded by its octave mark.  For the succeeding
-notes the following rules apply:
+The first note of a piece must be preceded by its octave mark.  For the
+succeeding notes the following rules apply:
 	</para>
 	<orderedlist numeration="loweralpha">
 	  <listitem>
 	    <para>
-if the next note forms an ascending or descending second or
-third, it does not receive an octave mark even if it is in a different octave.
+if the next note forms an ascending or descending second or third, it does not
+receive an octave mark even if it is in a different octave.
 	    </para>
 	  </listitem>
 	  <listitem>
@@ -215,21 +239,25 @@ if it forms a sixth or more, it must always have its own octave mark.
 	  </listitem>
 	</orderedlist>
 	<para>
-These rules are illustrated in the following example from the <quote>Cologne Key</quote> of 1888.
+These rules are illustrated in the following example from the <quote>Cologne
+Key</quote> of 1888.
 	</para>
 	<example width="40">
 	  <title>Example 1-11 from the &nimobmn;</title>
 	  <literallayout class="Monospaced">
-	    <xi:include
-		xmlns:xi="http://www.w3.org/2001/XInclude"
-		parse="text" href="example1-11.brl" />
+	    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
+			parse="text" href="example1-11.brl"/>
 	  </literallayout>
-	  <para><ulink url="example1-11.mid">Click here</ulink> to listen to this example</para>
+	  <para>
+	    <ulink url="example1-11.mid">Listen to this example</ulink>
+	  </para>
 	</example>
       </sect1>
     </chapter>
-    <chapter><title>Accidentals, key and time signatures</title>
-      <sect1><title>Accidentals</title>
+    <chapter>
+      <title>Accidentals, key and time signatures</title>
+      <sect1>
+	<title>Accidentals</title>
         <para>
 The following table lists the symbols used to indicate accidentals.
 	</para>
@@ -322,7 +350,7 @@ whole-measure or part-measure "in-accords".
       <para>
 Homophonic chordal sections are written using interval notation.
       </para>
-	<table><title>Interval symbols</title>
+      <table><title>Interval symbols</title>
 	<tgroup cols='2'>
 	  <thead><row><entry>Symbol</entry><entry>Interval</entry></row></thead>
 	  <tbody>
@@ -349,8 +377,7 @@ Homophonic chordal sections are written using interval notation.
 	    </row>
 	  </tbody>
 	</tgroup>
-	</table>
-
+      </table>
       </sect1>
     </chapter>
   </part>
