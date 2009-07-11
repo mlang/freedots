@@ -29,16 +29,19 @@ import javax.sound.midi.MidiEvent;
 import javax.sound.midi.ShortMessage;
 import javax.sound.midi.Track;
 
+import org.delysid.freedots.model.AccidentalContext;
 import org.delysid.freedots.model.Articulation;
 import org.delysid.freedots.model.EndBar;
 import org.delysid.freedots.model.Event;
 import org.delysid.freedots.model.Fraction;
+import org.delysid.freedots.model.GlobalKeyChange;
 import org.delysid.freedots.model.MusicList;
 import org.delysid.freedots.model.Ornament;
 import org.delysid.freedots.model.StartBar;
 import org.delysid.freedots.playback.MetaEventRelay;
 
 public class MIDISequence extends javax.sound.midi.Sequence {
+  private AccidentalContext accidentalContext;
   /**
    * Create an instance of MIDISequence
    *
@@ -53,11 +56,12 @@ public class MIDISequence extends javax.sound.midi.Sequence {
    * @param score           the score to convert
    * @param metaEventRelay  factory for object reference meta message creation
    */
-  public MIDISequence (Score score, MetaEventRelay metaEventRelay)
-  throws InvalidMidiDataException {
+  public MIDISequence (
+    Score score, MetaEventRelay metaEventRelay
+  ) throws InvalidMidiDataException {
     super(PPQ, calculatePPQ(score.getDivisions()));
     Track tempoTrack = createTrack();
-    for (Part part:score.getParts()) {
+    for (Part part : score.getParts()) {
       Track track = createTrack();
       MetaMessage metaMessage;
       int velocity = 64;
@@ -70,7 +74,7 @@ public class MIDISequence extends javax.sound.midi.Sequence {
       }
 
       initializeMidiPrograms(track, part);
-
+      accidentalContext = new AccidentalContext(part.getKeySignature());
       MusicList events = part.getMusicList();
 
       int round = 1;
@@ -85,7 +89,10 @@ public class MIDISequence extends javax.sound.midi.Sequence {
             event = direction.getSound();
         }          
 
-        if (event instanceof Note) {
+        if (event instanceof GlobalKeyChange) {
+          GlobalKeyChange globalKeyChange = (GlobalKeyChange)event;
+          accidentalContext.setKeySignature(globalKeyChange.getKeySignature());
+        } else if (event instanceof Note) {
           addToTrack(track, (Note)event, velocity, offset, metaEventRelay);
         } else if (event instanceof Chord) {
           int midiTick = event.getOffset().add(offset).toInteger(resolution);
@@ -159,9 +166,11 @@ public class MIDISequence extends javax.sound.midi.Sequence {
     addToTrack(track, note, velocity, offset, null);
   }
 
-  private void addToTrack(Track track,
-                          Note note, int velocity,
-                          Fraction add, MetaEventRelay metaEventRelay) {
+  private void addToTrack(
+    Track track,
+    Note note, int velocity,
+    Fraction add, MetaEventRelay metaEventRelay
+  ) {
     if (!note.isGrace()) {
       Pitch pitch = note.getPitch();
       try {
@@ -194,12 +203,14 @@ public class MIDISequence extends javax.sound.midi.Sequence {
           int midiPitch = pitch.getMIDIPitch();
           int midiChannel = note.getMidiChannel();
           if (turn) {
+            int upperPitch = pitch.nextStep(accidentalContext).getMIDIPitch();
+            int lowerPitch = pitch.previousStep(accidentalContext).getMIDIPitch();
             duration /= 4;
-            addNoteToTrack(track, midiChannel, midiPitch+1, velocity, offset, duration);
+            addNoteToTrack(track, midiChannel, upperPitch, velocity, offset, duration);
             offset += duration;
             addNoteToTrack(track, midiChannel, midiPitch, velocity, offset, duration);
             offset += duration;
-            addNoteToTrack(track, midiChannel, midiPitch-1, velocity, offset, duration);
+            addNoteToTrack(track, midiChannel, lowerPitch, velocity, offset, duration);
             offset += duration;
             addNoteToTrack(track, midiChannel, midiPitch, velocity, offset, duration);
           } else {
@@ -234,8 +245,9 @@ public class MIDISequence extends javax.sound.midi.Sequence {
     return ppq;
   }
 
-  private static void initializeMidiPrograms(Track track, Part part)
-  throws InvalidMidiDataException {
+  private static void initializeMidiPrograms (
+    Track track, Part part
+  ) throws InvalidMidiDataException {
     MidiInstrument instrument = part.getMidiInstrument(null);
     if (instrument != null) {
       ShortMessage msg = new ShortMessage();
