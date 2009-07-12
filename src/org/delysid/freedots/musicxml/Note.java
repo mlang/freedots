@@ -311,6 +311,15 @@ public final class Note extends Musicdata implements RhythmicElement {
 
     return null;
   }
+  public void setFingering(Fingering fingering) {
+    if (notations != null) {
+      Notations.Technical technical = notations.getTechnical();
+      if (technical == null) {
+        technical = notations.createTechnical();
+      }
+      technical.setFingering(fingering);
+    }
+  }
 
 
   public Fermata getFermata() {

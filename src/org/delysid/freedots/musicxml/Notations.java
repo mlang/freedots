@@ -74,6 +74,12 @@ class Notations {
   }    
 
   public Technical getTechnical() { return technical; }
+  public Technical createTechnical() {
+    Element newElement = element.getOwnerDocument().createElement("technical");
+    element.appendChild(newElement);
+    technical = new Technical(newElement);
+    return technical;
+  }
 
   public Set<Articulation> getArticulations() {
     NodeList nodeList = element.getElementsByTagName("articulations");
