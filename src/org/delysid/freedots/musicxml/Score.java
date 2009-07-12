@@ -52,6 +52,9 @@ import org.w3c.dom.Text;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+/**
+ * A MusicXML document in score-partwise format.
+ */
 public final class Score {
   private Document document;
 
@@ -77,9 +80,14 @@ public final class Score {
   public Score(
     final InputStream inputStream, final String extension
   ) throws ParserConfigurationException,
-           IOException, SAXException, XPathExpressionException
-  { parse(inputStream, extension); }
-  public Score(
+           IOException, SAXException, XPathExpressionException {
+    parse(inputStream, extension);
+  }
+
+  /**
+   * Construct a score object from a URL.
+   */
+  public Score (
     final String filenameOrURL
   ) throws ParserConfigurationException,
            IOException, SAXException, XPathExpressionException
@@ -104,8 +112,7 @@ public final class Score {
   private void parse(
     InputStream inputStream, String extension
   ) throws ParserConfigurationException, IOException, SAXException,
-           XPathExpressionException
-  {
+           XPathExpressionException {
     if ("mxl".equalsIgnoreCase(extension)) {
       String zipEntryName = null;
 
@@ -124,8 +131,9 @@ public final class Score {
           document = documentBuilder.parse(getInputSourceFromZipInputStream(zipInputStream));
         zipInputStream.closeEntry();
       }
-    } else
+    } else {
       document = documentBuilder.parse(inputStream);
+    }
 
     document.getDocumentElement().normalize();
 
@@ -170,7 +178,7 @@ public final class Score {
 
     NodeList nodes = root.getElementsByTagName("part");
     List<Element> partListElements = getChildElements(partList);
-    for (int i=0; i<nodes.getLength(); i++) {
+    for (int i = 0; i < nodes.getLength(); i++) {
       Element part = (Element) nodes.item(i);
       String idValue = part.getAttribute("id");
       Element scorePart = null;

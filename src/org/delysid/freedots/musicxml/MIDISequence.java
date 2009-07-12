@@ -22,6 +22,8 @@
  */
 package org.delysid.freedots.musicxml;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MetaMessage;
@@ -35,13 +37,15 @@ import org.delysid.freedots.model.EndBar;
 import org.delysid.freedots.model.Event;
 import org.delysid.freedots.model.Fraction;
 import org.delysid.freedots.model.GlobalKeyChange;
+import org.delysid.freedots.model.KeyChange;
+import org.delysid.freedots.model.KeySignature;
 import org.delysid.freedots.model.MusicList;
 import org.delysid.freedots.model.Ornament;
 import org.delysid.freedots.model.StartBar;
 import org.delysid.freedots.playback.MetaEventRelay;
 
 public class MIDISequence extends javax.sound.midi.Sequence {
-  private AccidentalContext accidentalContext;
+  private Map<Integer, AccidentalContext> accidentalContexts;
   /**
    * Create an instance of MIDISequence
    *
@@ -74,8 +78,14 @@ public class MIDISequence extends javax.sound.midi.Sequence {
       }
 
       initializeMidiPrograms(track, part);
-      accidentalContext = new AccidentalContext(part.getKeySignature());
       MusicList events = part.getMusicList();
+      {
+        int staffCount = events.getStaffCount();
+        accidentalContexts = new HashMap<Integer, AccidentalContext>();
+        for (int i = 0; i < staffCount; i++) {
+          accidentalContexts.put(new Integer(i), new AccidentalContext(part.getKeySignature()));
+        }
+      }
 
       int round = 1;
       int repeatStartIndex = -1;
@@ -91,7 +101,13 @@ public class MIDISequence extends javax.sound.midi.Sequence {
 
         if (event instanceof GlobalKeyChange) {
           GlobalKeyChange globalKeyChange = (GlobalKeyChange)event;
-          accidentalContext.setKeySignature(globalKeyChange.getKeySignature());
+          KeySignature keySignature = globalKeyChange.getKeySignature();
+          for (int j = 0; j < accidentalContexts.size(); j++) {
+            accidentalContexts.get(j).setKeySignature(keySignature);
+          }
+        } else if (event instanceof KeyChange) {
+          KeyChange keyChange = (KeyChange)event;
+          accidentalContexts.get(keyChange.getStaffNumber()).setKeySignature(keyChange.getKeySignature());
         } else if (event instanceof Note) {
           addToTrack(track, (Note)event, velocity, offset, metaEventRelay);
         } else if (event instanceof Chord) {
@@ -118,6 +134,9 @@ public class MIDISequence extends javax.sound.midi.Sequence {
         } else if (event instanceof StartBar) {
           if (repeatStartIndex == -1) repeatStartIndex = i;
 
+          for (int j = 0; j < accidentalContexts.size(); j++) {
+            accidentalContexts.get(j).resetToKeySignature();
+          }
           StartBar startBar = (StartBar)event;
           if (startBar.getRepeatForward()) {
             repeatStartIndex = i;
@@ -200,9 +219,12 @@ public class MIDISequence extends javax.sound.midi.Sequence {
           }
         }
         if (pitch != null) {
+          accidentalContexts.get(note.getStaffNumber()).accept(pitch, note.getAccidental());
           int midiPitch = pitch.getMIDIPitch();
           int midiChannel = note.getMidiChannel();
           if (turn) {
+            Integer staffNumber = new Integer(note.getStaffNumber());
+            AccidentalContext accidentalContext = accidentalContexts.get(staffNumber);
             int upperPitch = pitch.nextStep(accidentalContext).getMIDIPitch();
             int lowerPitch = pitch.previousStep(accidentalContext).getMIDIPitch();
             duration /= 4;

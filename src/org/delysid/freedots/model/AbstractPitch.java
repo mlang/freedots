@@ -32,7 +32,13 @@ public abstract class AbstractPitch implements Comparable<AbstractPitch> {
    * @return the step (a value from 0 to 6)
    */
   public abstract int getStep();
+  /**
+   * @return alteration (usually between -2 and 2)
+   */
   public abstract int getAlter();
+  /**
+   * @return the octave
+   */
   public abstract int getOctave();
 
   public final int getMIDIPitch() {
@@ -45,9 +51,11 @@ public abstract class AbstractPitch implements Comparable<AbstractPitch> {
   public boolean equals(Object object) {
     if (object instanceof AbstractPitch) {
       AbstractPitch other = (AbstractPitch)object;
-      if (this.getStep() == other.getStep() &&
-          this.getAlter() == other.getAlter() &&
-          this.getOctave() == other.getOctave()) return true;
+      if (this.getStep() == other.getStep()) {
+        if (this.getAlter() == other.getAlter()) {
+          if (this.getOctave() == other.getOctave()) return true;
+        }
+      }
     }
     return false;
   }
@@ -104,6 +112,12 @@ public abstract class AbstractPitch implements Comparable<AbstractPitch> {
     public int getOctave() { return octave; }
     public int getStep() { return step; }
     public int getAlter() { return alter; }
+  }
+
+  @Override
+  public String toString() {
+    final String[] stepNames = new String[] {"C", "D", "E", "F", "G", "A", "B"};
+    return stepNames[getStep()]+getOctave()+" ("+getAlter()+")";
   }
   private final static int STEPS = 7;
   private final static int CHROMATIC_STEPS = 12;

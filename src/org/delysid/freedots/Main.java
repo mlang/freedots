@@ -141,7 +141,7 @@ public final class Main {
             });
           try {
             gui = (GraphicalUserInterface)
-              constructor.newInstance(new Object[]{ transcriber });
+              constructor.newInstance(new Object[]{transcriber});
           } catch (java.lang.reflect.InvocationTargetException e) {
             throw e.getCause();
           }

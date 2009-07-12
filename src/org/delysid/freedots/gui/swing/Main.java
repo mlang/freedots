@@ -59,16 +59,19 @@ import org.delysid.freedots.playback.MetaEventRelay;
 import org.delysid.freedots.playback.MetaEventListeningUnavailableException;
 import org.delysid.freedots.transcription.Transcriber;
 
+/**
+ * Main class for Swing based graphical user interface.
+ */
 public final class Main
   extends JFrame
   implements javax.swing.event.CaretListener,
              org.delysid.freedots.gui.GraphicalUserInterface,
              org.delysid.freedots.playback.PlaybackObserver {
   
-  protected Score score = null;
+  private Score score;
   public Score getScore() { return score; }
 
-  protected Transcriber transcriber = null;
+  private Transcriber transcriber;
   public Transcriber getTranscriber() { return transcriber; }
 
   protected StatusBar statusBar = null;

@@ -26,7 +26,7 @@ package org.delysid.freedots;
  * Store and process command-line options (transcription parameters included).
  */
 public final class Options {
-  private static Options instance = null;
+  private static Options instance;
 
   private static final int DEFAULT_PAGE_WIDTH = 32;
   private static final int DEFAULT_PAGE_HEIGHT = 20;
@@ -35,7 +35,7 @@ public final class Options {
   private int pageHeight = DEFAULT_PAGE_HEIGHT;
   public MultiStaffMeasures multiStaffMeasures = MultiStaffMeasures.VISUAL;
 
-  String location = null;
+  String location;
   private boolean windowSystem = true;
   boolean playScore = false;
   String exportMidiFile = null;

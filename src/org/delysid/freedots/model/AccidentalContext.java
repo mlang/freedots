@@ -41,9 +41,29 @@ public class AccidentalContext {
   }
   public void setKeySignature(KeySignature keySignature) {
     this.keySignature = keySignature;
-    resetToSignature();
+    resetToKeySignature();
   }
-  public void resetToSignature() {
+  public void resetToKeySignature() {
     ranks.clear();
+  }
+  public void accept(AbstractPitch pitch, Accidental accidental) {
+    Integer rank = new Integer((pitch.getOctave()*12) + pitch.getStep());
+    if (accidental != null) {
+      ranks.put(rank, accidental);
+    } else {
+      int alter = pitch.getAlter();
+      if (alter != 0) {
+        if (ranks.containsKey(rank)) {
+          Accidental impliedAccidental = ranks.get(rank);
+          if ((int)impliedAccidental.getAlter() != alter) {
+            System.err.println("Pitch alter ("+alter+") != implied accidental "+impliedAccidental);
+          }
+        } else {
+          if (keySignature.getModifier(pitch.getStep()) != alter) {
+            System.err.println("Pitch "+pitch+" != key signature alteration "+keySignature.getModifier(pitch.getStep()));
+          }
+        }
+      }
+    }
   }
 }
