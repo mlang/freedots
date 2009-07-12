@@ -2240,6 +2240,7 @@
         <duration>2</duration>
         <voice>1</voice>
         <type>16th</type>
+        <accidental>sharp</accidental>
         <stem>up</stem>
         <staff>1</staff>
         <beam number="1">end</beam>
@@ -2312,7 +2313,6 @@
         <duration>4</duration>
         <voice>1</voice>
         <type>eighth</type>
-        <accidental>sharp</accidental>
         <stem>up</stem>
         <staff>1</staff>
         <beam number="1">begin</beam>
