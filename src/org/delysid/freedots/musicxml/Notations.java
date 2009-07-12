@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -148,12 +149,15 @@ class Notations {
     public String getType() { return element.getAttribute("type"); }
   }
   class Technical {
-    Element element;
-    Technical(Element element) { this.element = element; }
+    private Element element;
+    private Text fingering;
+    Technical(Element element) {
+      this.element = element;
+      fingering = Score.getTextNode(element, "fingering");
+    }
     public Fingering getFingering() {
-      Text text = Score.getTextNode(element, "fingering");
-      if (text != null) {
-        String[] items = text.getWholeText().split("[ \t\n]+");
+      if (fingering != null) {
+        String[] items = fingering.getWholeText().split("[ \t\n]+");
         List<Integer> fingers = new ArrayList<Integer>(2);
         for (int i = 0; i < items.length; i++) {
           fingers.add(new Integer(Integer.parseInt(items[i])));
@@ -165,6 +169,27 @@ class Notations {
         }
       }
       return null;
+    }
+    public void setFingering(Fingering fingering) {
+      String newValue = "";
+      if (fingering.getFingers().size() > 0) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int finger = 0; finger < fingering.getFingers().size(); finger++) {
+          stringBuilder.append(fingering.getFingers().get(finger).toString());
+          if (finger < fingering.getFingers().size() - 1)
+            stringBuilder.append(" ");
+        }
+        newValue = stringBuilder.toString();
+      }
+      if (this.fingering != null) {
+        this.fingering.replaceWholeText(newValue);
+      } else {
+        Document ownerDocument = element.getOwnerDocument();
+        Element newElement = ownerDocument.createElement("fingering");
+        this.fingering = ownerDocument.createTextNode(newValue);
+        newElement.appendChild(this.fingering);
+        element.appendChild(newElement);
+      }
     }
   }
 }
