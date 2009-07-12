@@ -14,7 +14,7 @@
  * for more details (a copy is included in the LICENSE.txt file that
  * accompanied this code).
  *
- * You should have received a copy of the GNU General Public License 
+ * You should have received a copy of the GNU General Public License
  * along with this work; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
  *
@@ -54,8 +54,13 @@ public final class Part {
   private TimeSignature timeSignature = new TimeSignature(4, 4);
   private MusicList eventList = new MusicList();
 
-  public Part(Element part, Element scorePart, Score score)
-    throws MusicXMLParseException {
+  /**
+   * Construct a new part (and all its relevant child objects)
+   */
+  public Part (
+    Element part, Element scorePart,
+    Score score
+  ) throws MusicXMLParseException {
     this.scorePart = scorePart;
     this.score = score;
 
@@ -70,12 +75,9 @@ public final class Part {
 
     List<Slur> slurs = new ArrayList<Slur>();
 
-    NodeList partChildNodes = part.getChildNodes();
-    for (int i = 0; i<partChildNodes.getLength(); i++) {
-      Node kid = partChildNodes.item(i);
-      if (kid.getNodeType() == Node.ELEMENT_NODE &&
-          "measure".equals(kid.getNodeName())) {
-        Element xmlMeasure = (Element)kid;
+    for (Element xmlElement : Score.getChildElements(part)) {
+      if ("measure".equals(xmlElement.getNodeName())) {
+        Element xmlMeasure = xmlElement;
 
         StartBar startBar = new StartBar(measureOffset, ++measureNumber);
         startBar.setStaffCount(staffCount);
