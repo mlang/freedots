@@ -135,7 +135,7 @@ public class MainFrame {
     return menu;
   }
 
-  Menu createFileMenu() {
+  final Menu createFileMenu() {
     Menu bar = shell.getMenuBar();
     Menu menu = new Menu(bar);
 
@@ -202,7 +202,7 @@ public class MainFrame {
     return menu;
   }
 
-  void createMenuBar() {
+  final void createMenuBar() {
     Menu bar = new Menu(shell, SWT.BAR);
     shell.setMenuBar(bar);
 

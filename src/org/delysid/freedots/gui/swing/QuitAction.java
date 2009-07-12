@@ -14,7 +14,7 @@
  * for more details (a copy is included in the LICENSE.txt file that
  * accompanied this code).
  *
- * You should have received a copy of the GNU General Public License 
+ * You should have received a copy of the GNU General Public License
  * along with this work; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
  *
@@ -26,7 +26,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
 public final class QuitAction extends javax.swing.AbstractAction {
-  Main gui;
+  private Main gui;
   QuitAction(final Main gui) {
     super("Quit");
     putValue(SHORT_DESCRIPTION, "Exit FreeDots");
