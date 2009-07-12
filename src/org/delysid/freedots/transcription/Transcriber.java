@@ -80,7 +80,7 @@ public final class Transcriber {
 
   private static String lineSeparator = System.getProperty("line.separator");
 
-  private Strategy strategy = null;
+  private Strategy strategy;
 
   public Transcriber(final Options options) {
     this.options = options;
@@ -171,9 +171,10 @@ public final class Transcriber {
     characterCount = 0;
     lineCount += 1;
     if (lineCount == options.getPageHeight()) {
-      indentTo(options.getPageWidth()-5);
-      strings.add(new BrailleString(Integer.toString(pageNumber++)
-                                    + lineSeparator));
+      String pageIndicator = Braille.numberSign.toString()
+                           + Braille.upperNumber(pageNumber++);
+      indentTo(options.getPageWidth() - pageIndicator.length());
+      strings.add(new BrailleString(pageIndicator + lineSeparator));
       characterCount = 0;
       lineCount = 0;
     }
