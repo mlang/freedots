@@ -45,7 +45,6 @@ import org.delysid.freedots.transcription.Transcriber;
 /**
  * Action for saving the currently open MusicXML document.
  * The dialog allows for export to MIDI and Unicode as well as NABCC braille.
- * Saving to MusicXML is not yet implemented.
  */
 @SuppressWarnings("serial")
 public final class FileSaveAsAction extends AbstractAction {
@@ -91,6 +90,16 @@ public final class FileSaveAsAction extends AbstractAction {
           return "Standard MIDI file (*.mid)";
         }
       });
+      fileChooser.setFileFilter(new FileFilter() {
+        @Override
+        public boolean accept(File f) {
+          return f.isDirectory() || f.getName().matches(".*\\.xml");
+        }
+        @Override
+        public String getDescription() {
+          return "MusicXML file (*.xml)";
+        }
+      });
       if (fileChooser.showSaveDialog(gui) == JFileChooser.APPROVE_OPTION) {
         File file = fileChooser.getSelectedFile();
         String ext = getExtension(file);
@@ -100,6 +109,8 @@ public final class FileSaveAsAction extends AbstractAction {
           exportToUnicodeBraille(gui.getTranscriber(), file);
         } else if (ext != null && ext.equals("brf")) {
           exportToBRF(gui.getTranscriber(), file);
+        } else if (ext != null && ext.equals("xml")) {
+          exportToMusicXML(score, file);
         } else if (ext != null) {
           String message = "Unknown file extension '"+ext+"'";
           JOptionPane.showMessageDialog(gui, message, "Alert",
@@ -109,6 +120,15 @@ public final class FileSaveAsAction extends AbstractAction {
     }
   }
 
+  private static void exportToMusicXML(Score score, File file) {
+    FileOutputStream fileOutputStream = null;
+    try {
+      fileOutputStream = new FileOutputStream(file);
+      score.save(fileOutputStream);
+    } catch (IOException exception) {
+      exception.printStackTrace();
+    }
+  }
   private static void exportToMidi(Score score, File file) {
     FileOutputStream fileOutputStream = null;
     try {

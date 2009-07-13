@@ -28,6 +28,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.StringReader;
 import java.math.BigInteger;
 import java.net.URL;
@@ -39,12 +40,18 @@ import java.util.zip.ZipInputStream;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.DocumentType;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -192,6 +199,27 @@ public final class Score {
       else
         throw new RuntimeException("Unable to find <score-part> for part "
                                    + idValue);
+    }
+  }
+
+  public void save(OutputStream outputStream) {
+    if (document != null) {
+      DocumentType docType = document.getDoctype();
+      DOMSource domSource = new DOMSource(document);
+      StreamResult resultStream = new StreamResult(outputStream);
+      TransformerFactory transformerFactory = TransformerFactory.newInstance();
+      try {
+        Transformer transformer = transformerFactory.newTransformer();
+        transformer.setOutputProperty(OutputKeys.DOCTYPE_PUBLIC, docType.getPublicId());
+        transformer.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, docType.getSystemId());
+        try {
+          transformer.transform(domSource, resultStream);
+        } catch (javax.xml.transform.TransformerException e) {
+          e.printStackTrace();
+        }
+      } catch (javax.xml.transform.TransformerConfigurationException e) {
+        e.printStackTrace();
+      }
     }
   }
 
