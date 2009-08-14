@@ -92,7 +92,7 @@ class BrailleMeasure {
             MusicList head = new MusicList();
             for (int k = 0; k < equalsAtBeginning; k++) {
               head.add(voice.get(k));
-              voices.get(j).remove(k);
+              voices.get(j).remove(0);
             }
             pmia.setHead(head);
             pmia.addPart(voice);
@@ -110,7 +110,7 @@ class BrailleMeasure {
         
         if (foundOverlap) {
           for (int k = 0; k < headLength; k++) {
-            voice.remove(k);
+            voice.remove(0);
           }
         } else {
           fmia.addPart(voice);
