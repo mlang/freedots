@@ -25,6 +25,15 @@ package org.delysid.freedots.model;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Since about 1700, accidentals have been understood to continue for the
+ * remainder of the measure in which they occur, so that a subsequent note
+ * on the same staff position is still affected by that accidental, unless
+ * marked as an accidental on its own.  Notes on other staff positions,
+ * including those an octave away, are unaffected.  Once a barline is passed,
+ * the effect of the accidental ends, except when a note affected by an
+ * accidental is tied to the same note across a barline.
+ */
 public class AccidentalContext {
   private KeySignature keySignature;
   private Map<Integer, Accidental> ranks = new HashMap<Integer, Accidental>();

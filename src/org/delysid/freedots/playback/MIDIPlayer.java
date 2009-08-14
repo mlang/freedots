@@ -47,7 +47,7 @@ public final class MIDIPlayer implements Closeable {
   private Synthesizer synthesizer;
   private Sequencer sequencer;
 
-  public MIDIPlayer(MetaEventRelay metaEventRelay)
+  public MIDIPlayer(final MetaEventRelay metaEventRelay)
   throws MidiUnavailableException, InvalidMidiDataException,
          MetaEventListeningUnavailableException {
     this();
