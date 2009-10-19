@@ -27,9 +27,11 @@ import java.util.List;
 import java.util.Set;
 
 import org.delysid.freedots.Braille;
+import org.delysid.freedots.Options;
 import org.delysid.freedots.model.AbstractPitch;
 import org.delysid.freedots.model.Accidental;
 import org.delysid.freedots.model.Event;
+import org.delysid.freedots.model.Fingering;
 import org.delysid.freedots.model.MusicList;
 import org.delysid.freedots.model.TimeSignature;
 import org.delysid.freedots.model.Voice;
@@ -272,6 +274,12 @@ class BrailleMeasure {
         if (octaveSign != null) { braille += octaveSign; }
         state.setLastPitch(firstPitch);
         braille += firstNote.getAugmentedFraction().toBrailleString(firstPitch);
+        if (Options.getInstance().getShowFingering()) {
+          Fingering fingering = firstNote.getFingering();
+          if (fingering != null) {
+            braille += fingering.toBrailleString();
+          }
+        }
 
         if (firstNote.isTieStart()) {
           braille += Braille.tie;
@@ -293,6 +301,13 @@ class BrailleMeasure {
             while (diatonicDifference > 7) diatonicDifference -= 7;
           }
           braille += Braille.interval(diatonicDifference);
+
+          if (Options.getInstance().getShowFingering()) {
+            Fingering fingering = currentNote.getFingering();
+            if (fingering != null) {
+              braille += fingering.toBrailleString();
+            }
+          }
 
           if (currentNote.isTieStart()) {
             braille += Braille.tie;
