@@ -277,8 +277,6 @@ class BrailleMeasure {
           braille += Braille.tie;
         }
 
-        AbstractPitch lastPitch = firstPitch;
-
         for (int chordElementIndex = 1; chordElementIndex < chord.size(); chordElementIndex++) {
           Note currentNote = (Note)chord.get(chordElementIndex);
           accidental = currentNote.getAccidental();
@@ -286,7 +284,7 @@ class BrailleMeasure {
             braille += accidental.toBraille().toString();
           }
           AbstractPitch currentPitch = (AbstractPitch)currentNote.getPitch();
-          int diatonicDifference = Math.abs(currentPitch.diatonicDifference(lastPitch));
+          int diatonicDifference = Math.abs(currentPitch.diatonicDifference(firstPitch));
           if (diatonicDifference == 0) {
             braille += currentPitch.getOctaveSign(null);
             diatonicDifference = 7;
@@ -299,8 +297,6 @@ class BrailleMeasure {
           if (currentNote.isTieStart()) {
             braille += Braille.tie;
           }
-
-          lastPitch = currentPitch;
         }
 
         state.append(braille);
