@@ -271,57 +271,54 @@ public final class Part {
     if (!score.encodingSupports("accidental")) {
       int staves = 1;
       KeySignature defaultKeySignature = new KeySignature(0);
-      List<AccidentalContext> accidentalContexts = new ArrayList<AccidentalContext>();
+      List<AccidentalContext> contexts = new ArrayList<AccidentalContext>();
       for (int i = 0; i < staves; i++) {
-        accidentalContexts.add(new AccidentalContext(defaultKeySignature));
+        contexts.add(new AccidentalContext(defaultKeySignature));
       }
       for (Event event: eventList) {
         if (event instanceof StartBar) {
           StartBar startBar = (StartBar)event;
           if (startBar.getStaffCount() != staves) {
-            if (startBar.getStaffCount() > staves) {
-              for (int i = 0; i < (startBar.getStaffCount() - staves); i++) {
-                accidentalContexts.add(new AccidentalContext(defaultKeySignature));
-              }
-            } else if (startBar.getStaffCount() < staves) {
-              for (int i = 0; i < (staves - startBar.getStaffCount()); i++) {
-                accidentalContexts.remove(accidentalContexts.size()-1);
-              }
-            }
+            if (startBar.getStaffCount() > staves)
+              for (int i = 0; i < (startBar.getStaffCount() - staves); i++)
+                contexts.add(new AccidentalContext(defaultKeySignature));
+            else if (startBar.getStaffCount() < staves)
+              for (int i = 0; i < (staves - startBar.getStaffCount()); i++)
+                contexts.remove(contexts.size() - 1);
             staves = startBar.getStaffCount();
           }
-          for (AccidentalContext accidentalContext: accidentalContexts) {
+          for (AccidentalContext accidentalContext: contexts)
             accidentalContext.resetToKeySignature();
-          }
         } else if (event instanceof GlobalKeyChange) {
           GlobalKeyChange globalKeyChange = (GlobalKeyChange)event;
           defaultKeySignature = globalKeyChange.getKeySignature();
-          for (AccidentalContext accidentalContext: accidentalContexts) {
+          for (AccidentalContext accidentalContext: contexts)
             accidentalContext.setKeySignature(defaultKeySignature);
-          }
         } else if (event instanceof KeyChange) {
           KeyChange keyChange = (KeyChange)event;
-          accidentalContexts.get(keyChange.getStaffNumber()).setKeySignature(keyChange.getKeySignature());
+          contexts.get(keyChange.getStaffNumber())
+          .setKeySignature(keyChange.getKeySignature());
         } else if (event instanceof Note) {
-          calculateAccidental((Note)event, accidentalContexts);
+          calculateAccidental((Note)event, contexts);
         } else if (event instanceof Chord) {
           for (Note note: (Chord)event)
-            calculateAccidental(note, accidentalContexts);
+            calculateAccidental(note, contexts);
         }
       }
     }
   }
 
   private void calculateAccidental (
-    Note note, List<AccidentalContext> accidentalContexts
+    Note note, List<AccidentalContext> contexts
   ) {
     Pitch pitch = note.getPitch();
     if (pitch != null) {
       int staffNumber = note.getStaffNumber();
-      AccidentalContext accidentalContext = accidentalContexts.get(staffNumber);
+      AccidentalContext accidentalContext = contexts.get(staffNumber);
       Accidental accidental = null;
 
-      if (pitch.getAlter() != accidentalContext.getAlter(pitch.getOctave(), pitch.getStep())) {
+      if (pitch.getAlter() != accidentalContext.getAlter(pitch.getOctave(),
+                                                         pitch.getStep())) {
         if (pitch.getAlter() == 0) { accidental = Accidental.NATURAL; }
         else if (pitch.getAlter() == 1) { accidental = Accidental.SHARP; }
         else if (pitch.getAlter() == -1) { accidental = Accidental.FLAT; }
