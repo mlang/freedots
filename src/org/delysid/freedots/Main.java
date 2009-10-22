@@ -83,6 +83,7 @@ public final class Main {
     if (!options.getWindowSystem()) {
       if (transcriber.getScore() != null) {
         System.out.println(transcriber.toString());
+
         if (options.getExportMidiFile() != null) {
           File file = new File(options.getExportMidiFile());
           try {
