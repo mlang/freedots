@@ -82,6 +82,8 @@ public final class Score {
   private Text composer, poet;
   private Text rights;
 
+  private Element encoding;
+
   private List<Part> parts;
 
   public Score(
@@ -173,6 +175,8 @@ public final class Score {
             } else if (creator.getAttribute("type").equals("poet")) {
               poet = textNode;
             }
+          } else if (identificationElement.getNodeName().equals("encoding")) { 
+            encoding = identificationElement;
           }
         }
       } else if (scoreElement.getNodeName().equals("part-list"))
@@ -283,6 +287,24 @@ public final class Score {
 
   public List<Part> getParts() {
     return parts;
+  }
+
+  /* Indicates if the encoding supports a particular MusicXML element.
+   * This is recommended for elements like beam, stem, and accidental,
+   * where the absence of an element is ambiguous
+   * if you do not know if the encoding supports that element.
+   */
+  public boolean encodingSupports(String elementName) {
+    if (encoding != null) {
+      for (Element encodingElement: getChildElements(encoding)) {
+        if (encodingElement.getNodeName().equals("supports")) {
+          if (encodingElement.getAttribute("element").equals(elementName)) {
+            return encodingElement.getAttribute("type").equals("yes");
+          }
+        }
+      }
+    }
+    return true;
   }
 
   /* --- W3C DOM convenience access utilities --- */
