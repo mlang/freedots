@@ -30,7 +30,10 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
+import org.delysid.freedots.model.Accidental;
+import org.delysid.freedots.model.AccidentalContext;
 import org.delysid.freedots.model.ClefChange;
+import org.delysid.freedots.model.Event;
 import org.delysid.freedots.model.Fraction;
 import org.delysid.freedots.model.GlobalKeyChange;
 import org.delysid.freedots.model.KeyChange;
@@ -126,7 +129,7 @@ public final class Part {
               }
               List<Attributes.Key> keys = attributes.getKeys();
               if (keys.size() > 0) {
-                for (Attributes.Key key:keys) {
+                for (Attributes.Key key: keys) {
                   if (key.getStaffName() == null)
                     eventList.add(new GlobalKeyChange(measureOffset.add(offset), key));
                   else
@@ -264,6 +267,69 @@ public final class Part {
       }
     }
     if (endbar != null) endbar.setEndOfMusic(true);
+
+    if (!score.encodingSupports("accidental")) {
+      int staves = 1;
+      KeySignature defaultKeySignature = new KeySignature(0);
+      List<AccidentalContext> accidentalContexts = new ArrayList<AccidentalContext>();
+      for (int i = 0; i < staves; i++) {
+        accidentalContexts.add(new AccidentalContext(defaultKeySignature));
+      }
+      for (Event event: eventList) {
+        if (event instanceof StartBar) {
+          StartBar startBar = (StartBar)event;
+          if (startBar.getStaffCount() != staves) {
+            if (startBar.getStaffCount() > staves) {
+              for (int i = 0; i < (startBar.getStaffCount() - staves); i++) {
+                accidentalContexts.add(new AccidentalContext(defaultKeySignature));
+              }
+            } else if (startBar.getStaffCount() < staves) {
+              for (int i = 0; i < (staves - startBar.getStaffCount()); i++) {
+                accidentalContexts.remove(accidentalContexts.size()-1);
+              }
+            }
+            staves = startBar.getStaffCount();
+          }
+          for (AccidentalContext accidentalContext: accidentalContexts) {
+            accidentalContext.resetToKeySignature();
+          }
+        } else if (event instanceof GlobalKeyChange) {
+          GlobalKeyChange globalKeyChange = (GlobalKeyChange)event;
+          defaultKeySignature = globalKeyChange.getKeySignature();
+          for (AccidentalContext accidentalContext: accidentalContexts) {
+            accidentalContext.setKeySignature(defaultKeySignature);
+          }
+        } else if (event instanceof KeyChange) {
+          KeyChange keyChange = (KeyChange)event;
+          accidentalContexts.get(keyChange.getStaffNumber()).setKeySignature(keyChange.getKeySignature());
+        } else if (event instanceof Note) {
+          calculateAccidental((Note)event, accidentalContexts);
+        } else if (event instanceof Chord) {
+          for (Note note: (Chord)event)
+            calculateAccidental(note, accidentalContexts);
+        }
+      }
+    }
+  }
+
+  private void calculateAccidental (
+    Note note, List<AccidentalContext> accidentalContexts
+  ) {
+    Pitch pitch = note.getPitch();
+    if (pitch != null) {
+      int staffNumber = note.getStaffNumber();
+      AccidentalContext accidentalContext = accidentalContexts.get(staffNumber);
+      Accidental accidental = null;
+
+      if (pitch.getAlter() != accidentalContext.getAlter(pitch.getOctave(), pitch.getStep())) {
+        if (pitch.getAlter() == 0) { accidental = Accidental.NATURAL; }
+        else if (pitch.getAlter() == 1) { accidental = Accidental.SHARP; }
+        else if (pitch.getAlter() == -1) { accidental = Accidental.FLAT; }
+        if (accidental != null)
+          note.setAccidental(accidental);
+      }
+      accidentalContext.accept(pitch, accidental);
+    }
   }
 
   public MidiInstrument getMidiInstrument(String id) {

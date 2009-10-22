@@ -122,14 +122,16 @@ public final class Note extends Musicdata implements RhythmicElement {
       else
         throw new MusicXMLParseException("Illegal <type> content '"+typeName+"'");
     }
-    textNode = Score.getTextNode(element, "accidental");
-    if (textNode != null) {
-      String accidentalName = textNode.getWholeText();
-      String santizedName = accidentalName.trim().toLowerCase();
-      if (accidentalMap.containsKey(santizedName))
-        accidental = accidentalMap.get(santizedName);
-      else
-        throw new MusicXMLParseException("Illegal <accidental>"+accidentalName+"</accidental>");
+    if (part.getScore().encodingSupports("accidental")) {
+      textNode = Score.getTextNode(element, "accidental");
+      if (textNode != null) {
+        String accidentalName = textNode.getWholeText();
+        String santizedName = accidentalName.trim().toLowerCase();
+        if (accidentalMap.containsKey(santizedName))
+          accidental = accidentalMap.get(santizedName);
+        else
+          throw new MusicXMLParseException("Illegal <accidental>"+accidentalName+"</accidental>");
+      }
     }
 
     nodeList = element.getElementsByTagName("tie");
@@ -195,7 +197,12 @@ public final class Note extends Musicdata implements RhythmicElement {
     }
   }
 
-  public Accidental getAccidental() { return accidental; }
+  public Accidental getAccidental() {
+    return accidental;
+  }
+  public void setAccidental(Accidental accidental) {
+    this.accidental = accidental;
+  }
 
   public boolean isTieStart() {
     if (tie != null && tie.getAttribute("type").equals("start")) return true;
