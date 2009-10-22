@@ -13,6 +13,8 @@
       <encoding-date>2009-03-18</encoding-date>
       <encoder>Mario Lang</encoder>
       <software>GNU Emacs</software>
+      <supports element="beam" type="no"/>
+      <supports element="stem" type="no"/>
     </encoding>
   </identification>
   <part-list>
