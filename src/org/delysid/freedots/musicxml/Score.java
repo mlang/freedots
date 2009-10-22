@@ -296,10 +296,13 @@ public final class Score {
    */
   public boolean encodingSupports(String elementName) {
     if (encoding != null) {
-      for (Element encodingElement: getChildElements(encoding)) {
-        if (encodingElement.getNodeName().equals("supports")) {
-          if (encodingElement.getAttribute("element").equals(elementName)) {
-            return encodingElement.getAttribute("type").equals("yes");
+      for (Node node = encoding.getFirstChild(); node != null;
+           node = node.getNextSibling()) {
+        if (node.getNodeType() == Node.ELEMENT_NODE &&
+            node.getNodeName().equals("supports")) {
+          Element supports = (Element)node;
+          if (supports.getAttribute("element").equals(elementName)) {
+            return supports.getAttribute("type").equals("yes");
           }
         }
       }
