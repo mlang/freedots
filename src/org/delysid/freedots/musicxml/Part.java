@@ -377,7 +377,11 @@ public final class Part {
     return false;
   }
   private static boolean elementHasChild(Element element, String tagName) {
-    NodeList nodeList = element.getElementsByTagName("chord");
-    return nodeList.getLength() >= 1;
+    for (Node node = element.getFirstChild(); node != null;
+         node = node.getNextSibling())
+      if (node.getNodeType() == Node.ELEMENT_NODE
+       && node.getNodeName().equals(tagName)) return true;
+
+    return false;
   }
 }
