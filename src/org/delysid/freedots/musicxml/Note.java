@@ -49,6 +49,8 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 
 public final class Note extends Musicdata implements RhythmicElement {
+  static final String ACCIDENTAL_ELEMENT = "accidental";
+
   Part part;
   public Part getPart() { return part; }
 
@@ -57,8 +59,7 @@ public final class Note extends Musicdata implements RhythmicElement {
 
   Element grace = null;
   Pitch pitch = null;
-  Text staffNumber;
-  Text voiceName;
+  Text staffNumber, voiceName;
   Type type = Type.NONE;
   private final static Map<String, Type>
   typeMap = Collections.unmodifiableMap(new HashMap<String, Type>() {
@@ -89,6 +90,7 @@ public final class Note extends Musicdata implements RhythmicElement {
     });
 
   Element tie = null;
+  Element timeModification = null;
 
   Lyric lyric = null;
 
@@ -102,57 +104,63 @@ public final class Note extends Musicdata implements RhythmicElement {
     super(element, divisions, durationMultiplier);
     this.part = part;
     this.offset = offset;
-    NodeList nodeList = element.getElementsByTagName("grace");
-    if (nodeList.getLength() >= 1) {
-      grace = (Element)nodeList.item(nodeList.getLength()-1);
-    }
-    nodeList = element.getElementsByTagName("pitch");
-    if (nodeList.getLength() >= 1) {
-      pitch = new Pitch((Element)nodeList.item(nodeList.getLength()-1));
-    }
-    staffNumber = Score.getTextNode(element, "staff");
-    voiceName = Score.getTextNode(element, "voice");
-
-    Text textNode = Score.getTextNode(element, "type");
-    if (textNode != null) {
-      String typeName = textNode.getWholeText();
-      String santizedTypeName = typeName.trim().toLowerCase();
-      if (typeMap.containsKey(santizedTypeName))
-        type = typeMap.get(santizedTypeName);
-      else
-        throw new MusicXMLParseException("Illegal <type> content '"+typeName+"'");
-    }
-    if (part.getScore().encodingSupports("accidental")) {
-      textNode = Score.getTextNode(element, "accidental");
-      if (textNode != null) {
-        String accidentalName = textNode.getWholeText();
-        String santizedName = accidentalName.trim().toLowerCase();
-        if (accidentalMap.containsKey(santizedName))
-          accidental = accidentalMap.get(santizedName);
-        else
-          throw new MusicXMLParseException("Illegal <accidental>"+accidentalName+"</accidental>");
+    for (Node node = element.getFirstChild(); node != null;
+         node = node.getNextSibling()) {
+      if (node.getNodeType() == Node.ELEMENT_NODE) {
+        Element child = (Element)node;
+        if (child.getNodeName().equals("grace")) {
+          grace = child;
+        } else if (child.getNodeName().equals("pitch")) {
+          pitch = new Pitch(child);
+        } else if (child.getNodeName().equals("tie")) {
+          tie = child;
+        } else if (child.getNodeName().equals("voice")) {
+          voiceName = firstTextNode(child);
+        } else if (child.getNodeName().equals("type")) {
+          Text textNode = firstTextNode(child);
+          if (textNode != null) {
+            String typeName = textNode.getWholeText();
+            String santizedTypeName = typeName.trim().toLowerCase();
+            if (typeMap.containsKey(santizedTypeName))
+              type = typeMap.get(santizedTypeName);
+            else
+              throw new MusicXMLParseException("Illegal <type> content '"+typeName+"'");
+          }
+        } else if (child.getNodeName().equals(ACCIDENTAL_ELEMENT)) {
+          if (part.getScore().encodingSupports(ACCIDENTAL_ELEMENT)) {
+            Text textNode = firstTextNode(child);
+            if (textNode != null) {
+              String accidentalName = textNode.getWholeText();
+              String santizedName = accidentalName.trim().toLowerCase();
+              if (accidentalMap.containsKey(santizedName))
+                accidental = accidentalMap.get(santizedName);
+              else
+                throw new MusicXMLParseException("Illegal <accidental>"+accidentalName+"</accidental>");
+            }
+          }
+        } else if (child.getNodeName().equals("time-modification")) {
+          timeModification = child;
+        } else if (child.getNodeName().equals("staff")) {
+          staffNumber = firstTextNode(child);
+        } else if (child.getNodeName().equals("notations")) {
+          notations = new Notations(child);
+        } else if (child.getNodeName().equals("lyric")) {
+          lyric = new Lyric(child);
+        }
       }
-    }
-
-    nodeList = element.getElementsByTagName("tie");
-    if (nodeList.getLength() >= 1) {
-      tie = (Element)nodeList.item(nodeList.getLength()-1);
-    }
-
-    nodeList = element.getElementsByTagName("lyric");
-    if (nodeList.getLength() >= 1) {
-      lyric = new Lyric((Element)nodeList.item(nodeList.getLength()-1));
-    }
-
-    nodeList = element.getElementsByTagName("notations");
-    if (nodeList.getLength() >= 1) {
-      notations = new Notations((Element)nodeList.item(nodeList.getLength() - 1));
     }
   }
 
+  static Text firstTextNode(Node node) {
+    for (Node child = node.getFirstChild(); node != null;
+         node = node.getNextSibling()) {
+      if (child.getNodeType() == Node.TEXT_NODE) return (Text)child;
+    }
+    return null;
+  }
+
   public boolean isGrace() {
-    if (grace != null) return true;
-    return false;
+    return (grace != null);
   }
   public boolean isRest() {
     if ("forward".equals(element.getTagName()) ||
@@ -183,9 +191,7 @@ public final class Note extends Musicdata implements RhythmicElement {
     if (type != Type.NONE) {
       int normalNotes = 1;
       int actualNotes = 1;
-      NodeList nodes = element.getElementsByTagName("time-modification");
-      if (nodes.getLength() > 0) {
-        Element timeModification = (Element)nodes.item(nodes.getLength() - 1);
+      if (timeModification != null) {
         normalNotes = Integer.parseInt(Score.getTextNode(timeModification, "normal-notes").getWholeText());
         actualNotes = Integer.parseInt(Score.getTextNode(timeModification, "actual-notes").getWholeText());
       }
@@ -202,6 +208,47 @@ public final class Note extends Musicdata implements RhythmicElement {
   }
   public void setAccidental(Accidental accidental) {
     this.accidental = accidental;
+
+    if (part.getScore().encodingSupports(ACCIDENTAL_ELEMENT)) {
+      String accidentalName = null;
+      if (accidental != null) {
+        if (accidental.getAlter() == 0) accidentalName = "natural";
+        else if (accidental.getAlter() == -1) accidentalName = "flat";
+        else if (accidental.getAlter() == 1) accidentalName = "sharp";
+      }
+
+      Node node;
+      for (node = element.getFirstChild(); node != null;
+           node = node.getNextSibling()) {
+        if (node.getNodeType() == Node.ELEMENT_NODE) {
+          if (node.getNodeName().equals(ACCIDENTAL_ELEMENT)) {
+            if (accidental != null) {
+              if (accidentalName != null) node.setTextContent(accidentalName);
+            } else {
+              element.removeChild(node);
+            }
+            return;
+          }
+        }
+      }
+
+      for (node = element.getFirstChild(); node != null;
+           node = node.getNextSibling()) {
+        if (node.getNodeType() == Node.ELEMENT_NODE) {
+          if (node.getNodeName().equals("time-modification")
+           || node.getNodeName().equals("stem")
+           || node.getNodeName().equals("notehead")
+           || node.getNodeName().equals("staff")
+           || node.getNodeName().equals("beam")
+           || node.getNodeName().equals("notations")
+           || node.getNodeName().equals("lyric")) break;
+        }
+      }
+      Element
+      newElement = element.getOwnerDocument().createElement(ACCIDENTAL_ELEMENT);
+      newElement.setTextContent(accidentalName);
+      element.insertBefore(newElement, node);
+    }
   }
 
   public boolean isTieStart() {
