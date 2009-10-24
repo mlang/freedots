@@ -12,7 +12,6 @@
   <property name="freedots.minimum.javaversion" value="1.6" />
 
   <path id="class.path">
-    <fileset file="${lib.swt.jar}" />
   </path>
   <path id="class.path.test">
     <pathelement location="${lib.junit.jar}" />
@@ -123,7 +122,6 @@
     <mkdir dir="${dist}"/>
     <jar jarfile="${dist}/FreeDots-${DSTAMP}.jar" basedir="${build}">
       <manifest>
-        <attribute name="Class-Path" value="${lib.swt.jar}"/>
         <attribute name="Main-Class" value="${freedots.jar.main.class}"/>
       </manifest>
     </jar>

@@ -94,8 +94,6 @@ public final class Options {
         if (index < args.length-1) {
           exportMidiFile = args[++index];
         }
-      } else if ("-swt".equals(option)) {
-        ui = UI.SWT;
       } else if ("-nofg".equals(option)) {
         showFingering = false;
       } else if ("-bob".equals(option)) {
@@ -134,7 +132,7 @@ public final class Options {
     TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, ELEVEN, TWELVE;
   }
   public enum UI {
-    Swing("swing.Main"), SWT("swt.Main");
+    Swing("swing.Main");
 
     String className;
     UI(final String name) { className = "org.delysid.freedots.gui." + name; }
