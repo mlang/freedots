@@ -51,4 +51,137 @@ so set up in the hierarchy and make the decision based
 on scoring all measures.  But this will not work with
 music that changes a lot, which is probably the default, so...
 
+* Examples
+** BWV988 Aria m1 left hand:
+
+⠸⠜⠸⠗⠄⠇⠣⠜⠧⠨⠅⠸⠞⠐⠂⠧⠐⠱ or
+⠸⠜⠸⠗⠄⠇⠣⠜⠧⠸⠞⠣⠜⠧⠧⠐⠱ or
+
+** BWV 1004 Chaconne m1:
+
+⠧⠨⠅⠐⠪⠄⠊⠐⠂⠨⠟⠬ or
+⠧⠨⠅⠐⠪⠄⠊⠐⠂⠨⠟⠐⠂⠨⠕
+
+
+* TODO Doubling
+
+Doubling is a very fundamental technique in braille music notation.
+Basically, if *something* other than a note repeats itself more than three
+times, it can be written twice in the first occurance, ommited for the rest
+upto the last occurance, where it is reinstatate a single time to indicate
+the end of the passage.
+
+While this sounds simple and is easy to read, designing a data structure
+to detect it seems not so easy since this rule is very generic.  A few
+examples might help:
+
+** TODO Doubling slurs
+
+The simplest case is a slur spanning a across four notes and more.
+Without doubling, a C scale slurred is
+
+  ⠙⠉⠑⠉⠋⠉⠛⠉⠓⠉⠊⠉⠚⠉⠙
+
+with doubling it becomes:
+
+  ⠙⠉⠉⠑⠋⠛⠓⠊⠚⠉⠙
+
+(note that doubling is not limited to measure boundaries, it applies
+to the whole paragraph at least, if not page or piece)
+
+** TODO Doubling intervals
+
+However, doubling can also occur with intervals.  The left hand of the
+first four measures of LV Beethovens Moonshine sonata reads:
+
+⠼⠙⠩⠼⠃⠆ ⠸⠜⠽⠤ ⠾⠤ ⠎⠤⠟⠤ ⠗⠤⠗⠤
+
+which could be written as
+
+⠼⠙⠩⠼⠃⠆ ⠸⠜⠽⠤⠤ ⠾ ⠎⠟ ⠗⠗⠤
+
+As a rule, if more then three chords are played in a sequence and
+one (or more) of its intervals reoccurs within the whole sequence,
+it should be doulbed in the first chord and reprinted in the
+last chord.
+
+** TODO Doubling Tuplets
+
+Similarily but this time as a prefix, tripplet (and alike)
+signs (⠆) can be doubled if a series of tripllets follow.
+
+Example:
+
+⠆⠸⠓⠐⠙⠋⠆⠸⠓⠐⠙⠋⠆⠸⠓⠐⠙⠋⠆⠸⠓⠐⠙⠋
+
+vs
+
+⠆⠆⠸⠓⠐⠙⠋⠸⠓⠐⠙⠋⠸⠓⠐⠙⠋⠆⠸⠓⠐⠙⠋
+
+(note: tradeoffs should eventually be considered as well.
+The example is contrived since the passage actually continues
+on for a few measures like that, so doubling is definitely desireable,
+however, if we look at the example as it is, the second version is just
+one cell shorter while the first version is easier to read.
+Seen from that perspective, doubling should probably be scored on the basis
+of how many cells it saves.  A user configurable value with a default
+of 3 seems sensible at first thought.)
+
+
 * TODO Note groupings
+
+* TODO repetitions
+
+The simile sign (⠶) is useful for indicating repetitions that
+are usually not marked up specially in visual notation.
+
+** DONE Repetition of whole measures
+
+This is implemented but needs extra work to prevent it overshooting:
+
+*** TODO Do not use repeat sign if no space is saved
+
+Currently, if a measure only consists of a signel cell note and that
+measure is repeated, the simile sign is used.  This unneedlessly makes
+it harder to read the melody.  The simile sign should probably
+have a configurable treshold, maybe defaulting to at least needing
+to save 2 (or 1?) cells.
+
+** TODO Repetition of voices
+
+Sometimes (see bwv999) a certain voice repeats itself from
+measure to measure.  The simile sign can be used here as well.
+
+This used to work in the FreeDots python prototype, but
+given the complexity (and crazyness) of the current transcription
+classes it doesn't work anymore in the Java version.
+This should be relatively trivial to do though.
+
+** TODO Repetition of beats
+
+If a beat inside a voice is repeated the simile sign can be used as well.
+This occurs frequently, notably in the moonshine sonata in combination
+with tripplets.
+
+The example given above becomes
+
+⠆⠆⠸⠓⠐⠙⠋⠸⠓⠐⠙⠋⠶ ⠶
+
+Note that first, simile is used to indicate beat repetition, and then,
+simile is used to indicate the repetition of the previous measure, resulting
+in 8 identical tripplets being played over the time of two measures
+in 2/2 time.
+
+Also note why simile isn't used like this:
+WRONG ⠼⠃⠆ ⠆⠆⠸⠓⠐⠙⠋⠶⠶⠶
+
+While it would be tempting to indicate the tripplets being identical,
+the piece is in 2/2 time, so a *beat* is one half, not one quarter.
+
+This said, the repetition detection algorithm needs to divide
+a measure up into its beats, if that works see if there
+are identical beats.  As above, this technique needs to
+be limited according to its savings,
+so in 4/4 time ⠹⠹⠹⠹ shouldn't become ⠹⠶⠶⠶ which just obscurs things but
+doesn't save any cells.
+
