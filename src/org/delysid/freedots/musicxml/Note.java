@@ -50,6 +50,11 @@ import org.w3c.dom.Text;
 
 public final class Note extends Musicdata implements RhythmicElement {
   static final String ACCIDENTAL_ELEMENT = "accidental";
+  static final String CHORD_ELEMENT = "chord";
+  static final String LYRIC_ELEMENT = "lyric";
+  static final String NOTATIONS_ELEMENT = "notations";
+  static final String STAFF_ELEMENT = "staff";
+  static final String TIME_MODIFICATION_ELEMENT = "time-modification";
 
   Part part;
   public Part getPart() { return part; }
@@ -142,13 +147,13 @@ public final class Note extends Musicdata implements RhythmicElement {
                 throw new MusicXMLParseException("Illegal <accidental>"+accidentalName+"</accidental>");
             }
           }
-        } else if (child.getNodeName().equals("time-modification")) {
+        } else if (child.getNodeName().equals(TIME_MODIFICATION_ELEMENT)) {
           timeModification = child;
-        } else if (child.getNodeName().equals("staff")) {
+        } else if (child.getNodeName().equals(STAFF_ELEMENT)) {
           staffNumber = firstTextNode(child);
-        } else if (child.getNodeName().equals("notations")) {
+        } else if (child.getNodeName().equals(NOTATIONS_ELEMENT)) {
           notations = new Notations(child);
-        } else if (child.getNodeName().equals("lyric")) {
+        } else if (child.getNodeName().equals(LYRIC_ELEMENT)) {
           lyric = new Lyric(child);
         }
       }
@@ -239,13 +244,13 @@ public final class Note extends Musicdata implements RhythmicElement {
       for (node = element.getFirstChild(); node != null;
            node = node.getNextSibling()) {
         if (node.getNodeType() == Node.ELEMENT_NODE) {
-          if (node.getNodeName().equals("time-modification")
+          if (node.getNodeName().equals(TIME_MODIFICATION_ELEMENT)
            || node.getNodeName().equals("stem")
            || node.getNodeName().equals("notehead")
-           || node.getNodeName().equals("staff")
+           || node.getNodeName().equals(STAFF_ELEMENT)
            || node.getNodeName().equals("beam")
-           || node.getNodeName().equals("notations")
-           || node.getNodeName().equals("lyric")) break;
+           || node.getNodeName().equals(NOTATIONS_ELEMENT)
+           || node.getNodeName().equals(LYRIC_ELEMENT)) break;
         }
       }
       Element

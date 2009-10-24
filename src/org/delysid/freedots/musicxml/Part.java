@@ -169,7 +169,7 @@ public final class Part {
               }
 
               if (currentChord != null) {
-                if (elementHasChild(musicdata, "chord")) {
+                if (elementHasChild(musicdata, Note.CHORD_ELEMENT)) {
                   currentChord.add(note);
                   advanceTime = false;
                   addNoteToEventList = false;
@@ -268,7 +268,7 @@ public final class Part {
     }
     if (endbar != null) endbar.setEndOfMusic(true);
 
-    if (!score.encodingSupports("accidental")) {
+    if (!score.encodingSupports(Note.ACCIDENTAL_ELEMENT)) {
       int staves = 1;
       KeySignature defaultKeySignature = new KeySignature(0);
       List<AccidentalContext> contexts = new ArrayList<AccidentalContext>();
@@ -369,7 +369,7 @@ public final class Part {
       if (node.getNodeType() == Node.ELEMENT_NODE) {
         String nodeName = node.getNodeName();
         if ("note".equals(nodeName)) {
-          return elementHasChild((Element)node, "chord");
+          return elementHasChild((Element)node, Note.CHORD_ELEMENT);
         } else if ("backup".equals(nodeName) || "forward".equals(nodeName))
           return false;
       }
