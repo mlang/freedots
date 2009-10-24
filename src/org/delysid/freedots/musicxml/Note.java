@@ -59,6 +59,8 @@ public final class Note extends Musicdata implements RhythmicElement {
 
   Element grace = null;
   Pitch pitch = null;
+  Text duration = null;
+
   Text staffNumber, voiceName;
   Type type = Type.NONE;
   private final static Map<String, Type>
@@ -112,6 +114,8 @@ public final class Note extends Musicdata implements RhythmicElement {
           grace = child;
         } else if (child.getNodeName().equals("pitch")) {
           pitch = new Pitch(child);
+        } else if (child.getNodeName().equals("duration")) {
+          duration = firstTextNode(child);
         } else if (child.getNodeName().equals("tie")) {
           tie = child;
         } else if (child.getNodeName().equals("voice")) {
@@ -338,11 +342,10 @@ public final class Note extends Musicdata implements RhythmicElement {
   }
   @Override
   public Fraction getDuration() throws MusicXMLParseException {
-    NodeList nodeList = element.getElementsByTagName("duration");
-    if (nodeList.getLength() == 1) {
-      Node textNode = nodeList.item(0).getChildNodes().item(0);
-      int duration = Math.round(Float.parseFloat(textNode.getNodeValue()));
-      Fraction fraction = new Fraction(duration * durationMultiplier, 4 * divisions);
+    if (duration != null) {
+      int value = Math.round(Float.parseFloat(duration.getNodeValue()));
+      Fraction fraction = new Fraction(value * durationMultiplier,
+                                       4 * divisions);
       return fraction;
     }
     return getAugmentedFraction().basicFraction(); 
