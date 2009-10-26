@@ -78,6 +78,7 @@
     <copy todir="${build}/org/delysid/freedots/musicxml/">
       <fileset dir="scores">
 	<include name="bwv*.xml"/>
+        <include name="lvb-*.xml"/>
       </fileset>	    
     </copy>
 
