@@ -1,6 +1,7 @@
 FREEDOTS -*- mode: org; fill-column: 78 -*-
 
-* TODO in-accord and partial measures
+* Transcription
+** TODO in-accord and partial measures
 
 If notes in a measure run in parallel it is the choice of the
 transcriber what to do, options are:
@@ -51,19 +52,19 @@ so set up in the hierarchy and make the decision based
 on scoring all measures.  But this will not work with
 music that changes a lot, which is probably the default, so...
 
-* Examples
-** BWV988 Aria m1 left hand:
+*** Examples
+BWV988 Aria m1 left hand:
 
 ⠸⠜⠸⠗⠄⠇⠣⠜⠧⠨⠅⠸⠞⠐⠂⠧⠐⠱ or
 ⠸⠜⠸⠗⠄⠇⠣⠜⠧⠸⠞⠣⠜⠧⠧⠐⠱ or
 
-** BWV 1004 Chaconne m1:
+BWV 1004 Chaconne m1:
 
 ⠧⠨⠅⠐⠪⠄⠊⠐⠂⠨⠟⠬ or
 ⠧⠨⠅⠐⠪⠄⠊⠐⠂⠨⠟⠐⠂⠨⠕
 
 
-* TODO Doubling
+** TODO Doubling
 
 Doubling is a very fundamental technique in braille music notation.
 Basically, if *something* other than a note repeats itself more than three
@@ -75,7 +76,7 @@ While this sounds simple and is easy to read, designing a data structure
 to detect it seems not so easy since this rule is very generic.  A few
 examples might help:
 
-** TODO Doubling slurs
+*** TODO Doubling slurs
 
 The simplest case is a slur spanning a across four notes and more.
 Without doubling, a C scale slurred is
@@ -89,7 +90,7 @@ with doubling it becomes:
 (note that doubling is not limited to measure boundaries, it applies
 to the whole paragraph at least, if not page or piece)
 
-** TODO Doubling intervals
+*** TODO Doubling intervals
 
 However, doubling can also occur with intervals.  The left hand of the
 first four measures of LV Beethovens Moonshine sonata reads:
@@ -105,7 +106,7 @@ one (or more) of its intervals reoccurs within the whole sequence,
 it should be doulbed in the first chord and reprinted in the
 last chord.
 
-** TODO Doubling Tuplets
+*** TODO Doubling Tuplets
 
 Similarily but this time as a prefix, tripplet (and alike)
 signs (⠆) can be doubled if a series of tripllets follow.
@@ -128,14 +129,14 @@ of how many cells it saves.  A user configurable value with a default
 of 3 seems sensible at first thought.)
 
 
-* TODO Note groupings
+** TODO Note groupings
 
-* TODO repetitions
+** TODO repetitions
 
 The simile sign (⠶) is useful for indicating repetitions that
 are usually not marked up specially in visual notation.
 
-** DONE Repetition of whole measures
+*** DONE Repetition of whole measures
 
 This is implemented but needs extra work to prevent it overshooting:
 
@@ -147,7 +148,7 @@ it harder to read the melody.  The simile sign should probably
 have a configurable treshold, maybe defaulting to at least needing
 to save 2 (or 1?) cells.
 
-** TODO Repetition of voices
+*** TODO Repetition of voices
 
 Sometimes (see bwv999) a certain voice repeats itself from
 measure to measure.  The simile sign can be used here as well.
@@ -157,7 +158,7 @@ given the complexity (and crazyness) of the current transcription
 classes it doesn't work anymore in the Java version.
 This should be relatively trivial to do though.
 
-** TODO Repetition of beats
+*** TODO Repetition of beats
 
 If a beat inside a voice is repeated the simile sign can be used as well.
 This occurs frequently, notably in the moonshine sonata in combination
@@ -184,4 +185,32 @@ are identical beats.  As above, this technique needs to
 be limited according to its savings,
 so in 4/4 time ⠹⠹⠹⠹ shouldn't become ⠹⠶⠶⠶ which just obscurs things but
 doesn't save any cells.
+
+
+* User interface
+
+** TODO Editing fingering
+
+org.delysid.freedots.musicxml almost supports setting
+fingering already.  All that is missing is UI code for
+entering fingering information for a particular note.
+The UI already knows what note is unter the cursor, so it
+should be relatively trivial to implement this.
+
+*** TODO keyboard fingering
+
+This is the simplest case.  Most of the time only a single
+finger needs to be specified, sometimes fingers need to change
+on one note ("stummer Fingerwechsel" in german).
+
+*** TODO Fingering string instruments
+
+For string instruments, the UI would need to ask for left and right hand
+fingering.  Left hand fingering has the unfretted string as a special
+exception.  There is probably some work to do
+in the org.delysid.freedots.musicxml package to support this properly.
+Currently the implementation just stupidly assumes
+fingering is just a list of finger numbers, i.e. it only
+supports keyboard fingering.
+
 
