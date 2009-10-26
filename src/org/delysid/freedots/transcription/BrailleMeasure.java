@@ -33,6 +33,7 @@ import org.delysid.freedots.model.Accidental;
 import org.delysid.freedots.model.Event;
 import org.delysid.freedots.model.Fingering;
 import org.delysid.freedots.model.MusicList;
+import org.delysid.freedots.model.Slur;
 import org.delysid.freedots.model.TimeSignature;
 import org.delysid.freedots.model.Voice;
 import org.delysid.freedots.model.VoiceChord;
@@ -283,6 +284,17 @@ class BrailleMeasure {
 
         if (firstNote.isTieStart()) {
           braille += Braille.tie;
+        } else {
+          boolean printSlur = false;
+          for (Slur<Note> slur:firstNote.getSlurs()) {
+            if (!slur.lastNote(firstNote)) {
+              printSlur = true;
+              break;
+            }
+          }
+          if (printSlur) {
+            braille += Braille.slur;
+          }
         }
 
         for (int chordElementIndex = 1; chordElementIndex < chord.size(); chordElementIndex++) {
