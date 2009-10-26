@@ -122,4 +122,9 @@ public class TestAugmentedFraction extends junit.framework.TestCase {
     af = new AugmentedFraction(1, 8, 1);
     assertEquals("1/8. log == 5", af.getLog(), 5);
   }
+  public void testEquality() {
+    AugmentedFraction af1 = new AugmentedFraction(1, 8, 0, 3, 2);
+    AugmentedFraction af2 = new AugmentedFraction(1, 8, 0, 3, 2);
+    assertTrue("1/8 (3 in 2) == 1/8 (3 in 2)", af1.equals(af2));
+  }
 }
