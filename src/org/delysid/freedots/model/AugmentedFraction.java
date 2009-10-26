@@ -29,7 +29,9 @@ public class AugmentedFraction extends Fraction {
 
   private int normalNotes, actualNotes;
 
-  public AugmentedFraction(final int numerator, final int denominator, final int dots) {
+  public AugmentedFraction (
+    final int numerator, final int denominator, final int dots
+  ) {
     this(numerator, denominator, dots, 1, 1);
   }
   /**
@@ -40,7 +42,7 @@ public class AugmentedFraction extends Fraction {
          augmentedFraction.getDots(),
          augmentedFraction.normalNotes, augmentedFraction.actualNotes);
   }
-  public AugmentedFraction(
+  public AugmentedFraction (
     final int numerator, final int denominator, final int dots,
     final int normalNotes, final int actualNotes
   ) {
@@ -75,6 +77,9 @@ public class AugmentedFraction extends Fraction {
     }
   }
   public final int getDots() { return dots; }
+
+  public final int getNormalNotes() { return normalNotes; }
+  public final int getActualNotes() { return actualNotes; }
 
   @Override
   public float toFloat() {
