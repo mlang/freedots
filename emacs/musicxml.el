@@ -961,6 +961,27 @@ buffer."
 				    `(ornaments nil
 						(inverted-mordent))))))))))))
 
+(defun musicxml-reduce-divisions ()
+  "Reduce <divisions> to a minimum.
+WARNING: This function does not handle attack/release and possibly
+other duration values, only <duration> and <divisions> are currently handled."
+  (let ((duration-re "< *\\(divisions\\|duration\\) *>\\([0-9]+\\)< */")
+	(duration-subexp 2))
+    (save-excursion
+      (let ((gcd (progn
+		   (goto-char (point-min))
+		   (apply #'gcd
+			  (loop while (re-search-forward duration-re nil t)
+				collect (string-to-number
+					 (match-string duration-subexp)))))))
+	(when (> gcd 1)
+	  (goto-char (point-min))
+	  (while (re-search-forward duration-re nil t)
+	    (replace-match (format "%d" (/ (string-to-number (match-string
+							      duration-subexp))
+					   gcd))
+			   nil nil nil duration-subexp)))))))
+
 
 (provide 'musicxml)
 ;;; musicxml.el ends here
