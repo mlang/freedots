@@ -76,7 +76,7 @@ public final class Part {
     int staffCount = 1;
     EndBar endbar = null;
 
-    List<Slur> slurs = new ArrayList<Slur>();
+    List<List<Slur>> slurs = new ArrayList<List<Slur>>();
 
     for (Element xmlElement : Score.getChildElements(part)) {
       if ("measure".equals(xmlElement.getNodeName())) {
@@ -146,25 +146,31 @@ public final class Part {
               if (notations != null) {
                 for (Notations.Slur nslur:notations.getSlurs()) {
                   int number = nslur.getNumber() - 1;
+                  int slurStaffNumber = note.getStaffNumber();
+
                   if (nslur.getType().equals("start")) {
                     Slur slur = new Slur(note);
-                    if (slurs.size() == number) {
-                      slurs.add(slur);
-                    } else if (slurs.size() > number) {
-                      slurs.set(number, slur);
+                    while (slurStaffNumber >= slurs.size()) {
+                      slurs.add(new ArrayList<Slur>());
                     }
+                    while (number >= slurs.get(slurStaffNumber).size()) {
+                      slurs.get(slurStaffNumber).add(slur);
+                    }
+                    slurs.get(slurStaffNumber).set(number, slur);
                   } else if (nslur.getType().equals("stop")) {
-                    Slur slur = slurs.get(number);
+                    Slur slur = slurs.get(slurStaffNumber).get(number);
                     if (slur != null) {
                       slur.add(note);
-                      slurs.set(number, null);
+                      slurs.get(slurStaffNumber).set(number, null);
                     }
                   }
                 }
               }
-              for (Slur slur:slurs) {
-                if (slur != null) {
-                  if (!slur.contains(note)) slur.add(note); 
+              if (note.getStaffNumber() < slurs.size()) {
+                for (Slur slur:slurs.get(note.getStaffNumber())) {
+                  if (slur != null) {
+                    if (!slur.contains(note)) slur.add(note); 
+                  }
                 }
               }
 
@@ -321,6 +327,7 @@ public final class Part {
                                                          pitch.getStep())) {
         if (pitch.getAlter() == 0) { accidental = Accidental.NATURAL; }
         else if (pitch.getAlter() == 1) { accidental = Accidental.SHARP; }
+        else if (pitch.getAlter() == 2) { accidental = Accidental.DOUBLE_SHARP; }
         else if (pitch.getAlter() == -1) { accidental = Accidental.FLAT; }
         if (accidental != null)
           note.setAccidental(accidental);
