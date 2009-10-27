@@ -219,10 +219,13 @@ public class MIDISequence extends javax.sound.midi.Sequence {
           }
         }
         if (pitch != null) {
-          accidentalContexts.get(note.getStaffNumber()).accept(pitch, note.getAccidental());
+          if (accidentalContexts != null) {
+            accidentalContexts.get(note.getStaffNumber())
+              .accept(pitch, note.getAccidental());
+          }
           int midiPitch = pitch.getMIDIPitch();
           int midiChannel = note.getMidiChannel();
-          if (turn) {
+          if (turn && accidentalContexts != null) {
             Integer staffNumber = new Integer(note.getStaffNumber());
             AccidentalContext accidentalContext = accidentalContexts.get(staffNumber);
             int upperPitch = pitch.nextStep(accidentalContext).getMIDIPitch();
