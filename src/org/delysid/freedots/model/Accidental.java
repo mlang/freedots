@@ -44,4 +44,11 @@ public enum Accidental {
     }
     return null;
   }
+
+  public static Accidental fromAlter(double alter) {
+    for (Accidental accidental: Accidental.values())
+      if (accidental.getAlter() == alter) return accidental;
+
+    return null;
+  }
 }

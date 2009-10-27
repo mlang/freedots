@@ -325,10 +325,7 @@ public final class Part {
 
       if (pitch.getAlter() != accidentalContext.getAlter(pitch.getOctave(),
                                                          pitch.getStep())) {
-        if (pitch.getAlter() == 0) { accidental = Accidental.NATURAL; }
-        else if (pitch.getAlter() == 1) { accidental = Accidental.SHARP; }
-        else if (pitch.getAlter() == 2) { accidental = Accidental.DOUBLE_SHARP; }
-        else if (pitch.getAlter() == -1) { accidental = Accidental.FLAT; }
+        accidental = Accidental.fromAlter(pitch.getAlter());
         if (accidental != null)
           note.setAccidental(accidental);
       }
