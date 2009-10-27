@@ -297,6 +297,9 @@ class BrailleMeasure {
           }
         }
 
+        state.append(new BrailleString(braille, firstNote));
+        braille = "";
+
         for (int chordElementIndex = 1; chordElementIndex < chord.size(); chordElementIndex++) {
           Note currentNote = (Note)chord.get(chordElementIndex);
           accidental = currentNote.getAccidental();
@@ -324,9 +327,10 @@ class BrailleMeasure {
           if (currentNote.isTieStart()) {
             braille += Braille.tie;
           }
-        }
 
-        state.append(braille);
+          state.append(new BrailleString(braille, currentNote));
+          braille = "";
+        }
       }
     }
   }
