@@ -25,7 +25,6 @@ package org.delysid.freedots.model;
 import org.delysid.freedots.Braille;
 
 public enum Accidental {
-                       none(0),
                        NATURAL(0),
               FLAT(-1),           SHARP(1),
        DOUBLE_FLAT(-2),    DOUBLE_SHARP(2),
