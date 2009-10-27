@@ -417,6 +417,30 @@ public final class Main
 
     libraryMenu.add(baroqueMenu);
 
+    JMenu classicalMenu = new JMenu("Classical");
+    classicalMenu.setMnemonic(KeyEvent.VK_C);
+
+    JMenu lvBeethovenMenu = new JMenu("Ludwig Van Beethoven");
+    lvBeethovenMenu.setMnemonic(KeyEvent.VK_B);
+
+    JMenu moonshineMenu = new JMenu("Sonata XIV Op.27 No.2");
+
+    lvBeethovenMenu.add(moonshineMenu);
+
+    JMenuItem moonshine_1Item = new JMenuItem("1. First movement", KeyEvent.VK_1);
+    moonshine_1Item.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        Library library = new Library();
+        setScore(library.loadScore("lvb-moonlight-1.xml"));
+      }
+    });
+
+    moonshineMenu.add(moonshine_1Item);
+
+    classicalMenu.add(lvBeethovenMenu);
+
+    libraryMenu.add(classicalMenu);
+
     return libraryMenu;
   }
 
