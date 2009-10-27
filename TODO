@@ -1,6 +1,25 @@
 FREEDOTS -*- mode: org; fill-column: 78 -*-
 
 * Transcription
+** TODO Tuplets
+
+MusicXML has two ways of specifying tuples.
+One is via the time-modification element, whcih affects the
+duration of the note during playback.
+The other is the <suplet> element inside of <notations> which
+is solely ment for graphical representation.
+This means programs might export MusicXML without the <tuplet>
+element (when there is no special graphical markup) but
+it always needs to use time-modification so that the timing in the end is
+correct.  Therefore, FreeDots should probably consider
+time-modification and not the <tuplet> element, since un-marked-up
+tuplets would lead to unclear braille.
+
+So what we need is some way to group time-modified notes together
+such that the transcriber can ask if a certain note/chord
+is the first element of a tuplet group.  If so, it would
+emit the appropriate braille symbol for the particular tuplet.
+
 ** TODO in-accord and partial measures
 
 If notes in a measure run in parallel it is the choice of the
@@ -62,7 +81,6 @@ BWV 1004 Chaconne m1:
 
 ⠧⠨⠅⠐⠪⠄⠊⠐⠂⠨⠟⠬ or
 ⠧⠨⠅⠐⠪⠄⠊⠐⠂⠨⠟⠐⠂⠨⠕
-
 
 ** TODO Doubling
 
@@ -127,7 +145,6 @@ one cell shorter while the first version is easier to read.
 Seen from that perspective, doubling should probably be scored on the basis
 of how many cells it saves.  A user configurable value with a default
 of 3 seems sensible at first thought.)
-
 
 ** TODO Note groupings
 
