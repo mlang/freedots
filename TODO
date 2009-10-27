@@ -187,6 +187,15 @@ so in 4/4 time ⠹⠹⠹⠹ shouldn't become ⠹⠶⠶⠶ which just obscurs thi
 doesn't save any cells.
 
 
+* Playback
+
+** TODO Play all supported articulations and ornaments
+
+As an example, the turn ornament is executed already.
+Many more things need doing, like proper dynamics, articulation
+(staccato etc) and mordent etc.
+
+
 * User interface
 
 ** TODO Editing fingering
@@ -214,3 +223,15 @@ fingering is just a list of finger numbers, i.e. it only
 supports keyboard fingering.
 
 
+
+* MS Windows Installer
+** TODO Check error during installation
+
+Some users have reported some kind of error (no details) during
+installation.
+
+** TODO Provide an option to install Java Access Bridge
+
+Currently, on the JRE is installed if none exists.  Ideally, the user
+should be prompted if they want to install java access bridge
+as well, since most screen readers on Windows require that.
