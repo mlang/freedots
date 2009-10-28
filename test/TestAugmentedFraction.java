@@ -1,6 +1,6 @@
 /* -*- c-basic-offset: 2; -*- */
-import org.delysid.freedots.model.AugmentedFraction;
-import org.delysid.freedots.model.Fraction;
+import freedots.model.AugmentedFraction;
+import freedots.model.Fraction;
 
 public class TestAugmentedFraction extends junit.framework.TestCase {
   public void testDotInference() {

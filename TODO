@@ -217,9 +217,8 @@ Many more things need doing, like proper dynamics, articulation
 
 ** TODO Editing fingering
 
-org.delysid.freedots.musicxml almost supports setting
-fingering already.  All that is missing is UI code for
-entering fingering information for a particular note.
+freedots.musicxml almost supports setting fingering already.  All that is
+missing is UI code for entering fingering information for a particular note.
 The UI already knows what note is unter the cursor, so it
 should be relatively trivial to implement this.
 
@@ -234,7 +233,7 @@ on one note ("stummer Fingerwechsel" in german).
 For string instruments, the UI would need to ask for left and right hand
 fingering.  Left hand fingering has the unfretted string as a special
 exception.  There is probably some work to do
-in the org.delysid.freedots.musicxml package to support this properly.
+in the freedots.musicxml package to support this properly.
 Currently the implementation just stupidly assumes
 fingering is just a list of finger numbers, i.e. it only
 supports keyboard fingering.

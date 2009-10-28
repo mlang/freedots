@@ -7,7 +7,7 @@
   <property name="test" location="test"/>
   <property name="build" location="build"/>
   <property name="dist" location="dist"/>
-  <property name="freedots.jar.main.class" value="org.delysid.freedots.Main"/>
+  <property name="freedots.jar.main.class" value="freedots.Main"/>
   <property name="freedots.version" value="0.6" />
   <property name="freedots.minimum.javaversion" value="1.6" />
 
@@ -58,7 +58,7 @@
     </propertyfile>
 
     <!-- Copy resources into build directory -->
-    <copy todir="${build}/org/delysid/freedots/musicxml">
+    <copy todir="${build}/freedots/musicxml">
       <fileset dir="dtd/musicxml/2.0">
         <include name="*.dtd"/>
         <include name="*.mod"/>
@@ -67,15 +67,15 @@
     </copy>
 
     <copy file="${font.dejavuserif.ttf}"
-          tofile="${build}/org/delysid/freedots/gui/swing/DejaVuSerif.ttf"/>
+          tofile="${build}/freedots/gui/swing/DejaVuSerif.ttf"/>
 
-    <copy todir="${build}/org/delysid/freedots/gui/swing">
+    <copy todir="${build}/freedots/gui/swing">
       <fileset dir="icons">
 	<include name="*.xml"/>
       </fileset>	    
     </copy>
 
-    <copy todir="${build}/org/delysid/freedots/musicxml/">
+    <copy todir="${build}/freedots/musicxml/">
       <fileset dir="scores">
 	<include name="bwv*.xml"/>
         <include name="lvb-*.xml"/>
