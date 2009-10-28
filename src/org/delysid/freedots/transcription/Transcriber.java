@@ -59,6 +59,13 @@ public final class Transcriber {
   public int getRemainingColumns() {
     return options.getPageWidth() - characterCount;
   }
+
+  /* Find Object responsible for character at specified index
+   *
+   * This is used by the UI code.
+   *
+   * @returns the object responsible for the character at index, or null
+   */
   public Object getObjectAtIndex(final int characterIndex) {
     StringBuilder stringBuilder = new StringBuilder();
     for (BrailleString brailleString:strings) {
@@ -68,6 +75,11 @@ public final class Transcriber {
     }
     return null;
   }
+  /*
+   * Find the starting index of the character sequence for Object
+   *
+   * This is the reverse of getObjectAtIndex()
+   */
   public int getIndexOfObject(final Object object) {
     StringBuilder stringBuilder = new StringBuilder();
     for (BrailleString brailleString : strings) {
