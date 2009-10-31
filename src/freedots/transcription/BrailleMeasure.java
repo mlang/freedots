@@ -131,13 +131,13 @@ class BrailleMeasure {
   public BrailleList tail() { return tail; }
 
   class State {
-    int width;
-    AbstractPitch lastPitch;
-    BrailleList head = new BrailleList();
-    BrailleList tail = new BrailleList();
-    boolean hyphenated = false;
-    State(int width, AbstractPitch lastPitch) {
-      super();
+    private int width;
+    private AbstractPitch lastPitch;
+    private BrailleList head = new BrailleList();
+    private BrailleList tail = new BrailleList();
+    private boolean hyphenated = false;
+
+    State(final int width, final AbstractPitch lastPitch) {
       this.width = width;
       this.lastPitch = lastPitch;
     }
