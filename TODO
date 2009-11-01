@@ -217,12 +217,9 @@ Many more things need doing, like proper dynamics, articulation
 
 ** TODO Editing fingering
 
-freedots.musicxml almost supports setting fingering already.  All that is
-missing is UI code for entering fingering information for a particular note.
-The UI already knows what note is unter the cursor, so it
-should be relatively trivial to implement this.
+freedots.musicxml almost supports setting fingering already.
 
-*** TODO keyboard fingering
+*** STARTED keyboard fingering
 
 This is the simplest case.  Most of the time only a single
 finger needs to be specified, sometimes fingers need to change
