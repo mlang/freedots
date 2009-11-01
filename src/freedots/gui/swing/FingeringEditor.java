@@ -94,7 +94,6 @@ public class FingeringEditor extends JDialog implements ActionListener {
 
     pack();
     setLocationRelativeTo(parent);
-    setVisible(true);
   }
 
   public void actionPerformed(ActionEvent e) {
