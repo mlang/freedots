@@ -9,7 +9,7 @@
 			<encoder>Claudio Sacco</encoder>
 			<software>Sibelius 6.1</software>
 			<software>Dolet 5.1 for Sibelius</software>
-			<encoding-date>2009-10-26</encoding-date>
+			<encoding-date>2009-11-01</encoding-date>
 			<supports element='accidental' type='no'/>
 			<supports element='transpose' type='no'/>
 			<supports attribute='new-page' element='print' type='yes' value='yes'/>
@@ -114,6 +114,12 @@
 				<staff>1</staff>
 				<sound tempo='60'/>
 			</direction>
+			<direction>
+				<direction-type>
+					<words default-y='26' relative-x='-6'>sempre pp e senza sordino</words>
+				</direction-type>
+				<staff>1</staff>
+			</direction>
 			<note>
 				<pitch>
 					<step>G</step>
@@ -131,6 +137,7 @@
 				<beam number='1'>begin</beam>
 				<notations>
 					<tuplet number='1' type='start'/>
+					<slur type='start' number='1'/>
 				</notations>
 			</note>
 			<note>
@@ -339,9 +346,6 @@
 				<voice>5</voice>
 				<type>whole</type>
 				<staff>2</staff>
-				<notations>
-					<slur type='start' number='1'/>
-				</notations>
 			</note>
 			<note>
 				<chord/>
@@ -1106,9 +1110,6 @@
 				<voice>5</voice>
 				<type>half</type>
 				<staff>2</staff>
-				<notations>
-					<slur type='stop' number='1'/>
-				</notations>
 			</note>
 			<note>
 				<chord/>
@@ -1152,6 +1153,7 @@
 				<beam number='1'>begin</beam>
 				<notations>
 					<tuplet number='1' type='start'/>
+					<slur type='stop' number='1'/>
 				</notations>
 			</note>
 			<note>
@@ -1206,6 +1208,7 @@
 				<beam number='1'>begin</beam>
 				<notations>
 					<tuplet number='1' type='start'/>
+					<slur type='start' number='1'/>
 				</notations>
 			</note>
 			<note>
@@ -1240,6 +1243,7 @@
 				<beam number='1'>end</beam>
 				<notations>
 					<tuplet number='1' type='stop'/>
+					<slur type='stop' number='1'/>
 				</notations>
 			</note>
 			<note>
@@ -1269,6 +1273,7 @@
 				<beam number='1'>begin</beam>
 				<notations>
 					<tuplet number='1' type='start'/>
+					<slur type='start' number='1'/>
 				</notations>
 			</note>
 			<note>
@@ -1305,6 +1310,13 @@
 					<tuplet number='1' type='stop'/>
 				</notations>
 			</note>
+			<direction>
+				<direction-type>
+					<words default-y='-121' relative-x='-30' font-style='normal'>pp </words>
+					<words font-style='italic'>espress.</words>
+				</direction-type>
+				<staff>1</staff>
+			</direction>
 			<note>
 				<pitch>
 					<step>G</step>
@@ -1317,6 +1329,9 @@
 				<dot/>
 				<staff>1</staff>
 				<beam number='1'>begin</beam>
+				<notations>
+					<slur type='start' number='2'/>
+				</notations>
 			</note>
 			<backup>
 				<duration>576</duration>
@@ -1403,9 +1418,6 @@
 				<voice>5</voice>
 				<type>whole</type>
 				<staff>2</staff>
-				<notations>
-					<slur type='start' number='1'/>
-				</notations>
 			</note>
 			<note>
 				<chord/>
@@ -1445,6 +1457,10 @@
 				<type>half</type>
 				<dot/>
 				<staff>1</staff>
+				<notations>
+					<slur type='stop' number='1'/>
+					<slur type='start' number='3'/>
+				</notations>
 			</note>
 			<backup>
 				<duration>2304</duration>
@@ -2336,6 +2352,11 @@
 				<voice>1</voice>
 				<type>quarter</type>
 				<staff>1</staff>
+				<notations>
+					<slur type='start' number='1'/>
+					<slur type='stop' number='2'/>
+					<slur type='stop' number='3'/>
+				</notations>
 			</note>
 			<backup>
 				<duration>768</duration>
@@ -2580,9 +2601,6 @@
 				<voice>5</voice>
 				<type>whole</type>
 				<staff>2</staff>
-				<notations>
-					<slur type='stop' number='1'/>
-				</notations>
 			</note>
 			<note>
 				<chord/>
@@ -2624,6 +2642,8 @@
 				<beam number='1'>begin</beam>
 				<notations>
 					<tuplet number='1' type='start'/>
+					<slur type='stop' number='1'/>
+					<slur type='start' number='2'/>
 				</notations>
 			</note>
 			<note>
@@ -2782,6 +2802,9 @@
 				<dot/>
 				<staff>1</staff>
 				<beam number='1'>begin</beam>
+				<notations>
+					<slur type='start' number='1'/>
+				</notations>
 			</note>
 			<backup>
 				<duration>576</duration>
@@ -2864,9 +2887,6 @@
 				<voice>5</voice>
 				<type>whole</type>
 				<staff>2</staff>
-				<notations>
-					<slur type='start' number='1'/>
-				</notations>
 			</note>
 			<note>
 				<chord/>
@@ -3172,6 +3192,10 @@
 				<type>half</type>
 				<dot/>
 				<staff>1</staff>
+				<notations>
+					<slur type='stop' number='2'/>
+					<slur type='start' number='3'/>
+				</notations>
 			</note>
 			<backup>
 				<duration>2304</duration>
@@ -3410,9 +3434,6 @@
 				<voice>5</voice>
 				<type>quarter</type>
 				<staff>2</staff>
-				<notations>
-					<slur type='stop' number='1'/>
-				</notations>
 			</note>
 			<note>
 				<chord/>
@@ -4031,9 +4052,6 @@
 				<voice>5</voice>
 				<type>half</type>
 				<staff>2</staff>
-				<notations>
-					<slur type='start' number='1'/>
-				</notations>
 			</note>
 			<note>
 				<chord/>
@@ -4060,6 +4078,10 @@
 				<voice>1</voice>
 				<type>quarter</type>
 				<staff>1</staff>
+				<notations>
+					<slur type='stop' number='1'/>
+					<slur type='stop' number='3'/>
+				</notations>
 			</note>
 			<backup>
 				<duration>768</duration>
@@ -4142,6 +4164,7 @@
 				<beam number='1'>begin</beam>
 				<notations>
 					<tuplet number='1' type='start'/>
+					<slur type='start' number='1'/>
 				</notations>
 			</note>
 			<note>
@@ -4241,6 +4264,12 @@
 					<tuplet number='1' type='stop'/>
 				</notations>
 			</note>
+			<direction>
+				<direction-type>
+					<wedge type='crescendo' number='1' default-y='-108' relative-x='12'/>
+				</direction-type>
+				<staff>1</staff>
+			</direction>
 			<note>
 				<pitch>
 					<step>B</step>
@@ -4250,7 +4279,17 @@
 				<voice>1</voice>
 				<type>quarter</type>
 				<staff>1</staff>
+				<notations>
+					<slur type='start' number='2'/>
+				</notations>
 			</note>
+			<direction>
+				<direction-type>
+					<wedge type='stop' number='1' relative-x='-8'/>
+				</direction-type>
+				<offset>-3</offset>
+				<staff>1</staff>
+			</direction>
 			<backup>
 				<duration>768</duration>
 			</backup>
@@ -4342,6 +4381,12 @@
 		</measure>
 <!--=========================================================-->
 		<measure number='16'>
+			<direction>
+				<direction-type>
+					<wedge type='crescendo' number='1' default-y='-108' relative-x='12'/>
+				</direction-type>
+				<staff>1</staff>
+			</direction>
 			<note>
 				<pitch>
 					<step>C</step>
@@ -4352,7 +4397,19 @@
 				<type>half</type>
 				<dot/>
 				<staff>1</staff>
+				<notations>
+					<articulations>
+						<accent/>
+						<tenuto/>
+					</articulations>
+				</notations>
 			</note>
+			<direction>
+				<direction-type>
+					<wedge type='stop' number='1' relative-x='-8'/>
+				</direction-type>
+				<staff>1</staff>
+			</direction>
 			<backup>
 				<duration>2304</duration>
 			</backup>
@@ -4682,6 +4739,9 @@
 				<type>half</type>
 				<dot/>
 				<staff>1</staff>
+				<notations>
+					<slur type='stop' number='2'/>
+				</notations>
 			</note>
 			<backup>
 				<duration>2304</duration>
@@ -5276,7 +5336,7 @@
 		</measure>
 <!--=========================================================-->
 		<measure number='19'>
-			<print new-system='yes'/>
+			<print new-page='yes'/>
 			<note>
 				<pitch>
 					<step>B</step>
@@ -5286,6 +5346,9 @@
 				<voice>1</voice>
 				<type>half</type>
 				<staff>1</staff>
+				<notations>
+					<slur type='stop' number='1'/>
+				</notations>
 			</note>
 			<backup>
 				<duration>1536</duration>
@@ -5405,6 +5468,9 @@
 				<voice>1</voice>
 				<type>half</type>
 				<staff>1</staff>
+				<notations>
+					<slur type='start' number='1'/>
+				</notations>
 			</note>
 			<backup>
 				<duration>1536</duration>
@@ -5525,9 +5591,6 @@
 				<voice>5</voice>
 				<type>half</type>
 				<staff>2</staff>
-				<notations>
-					<slur type='stop' number='1'/>
-				</notations>
 			</note>
 			<note>
 				<chord/>
@@ -5550,9 +5613,6 @@
 				<voice>5</voice>
 				<type>half</type>
 				<staff>2</staff>
-				<notations>
-					<slur type='start' number='1'/>
-				</notations>
 			</note>
 			<note>
 				<chord/>
@@ -5697,6 +5757,9 @@
 				<voice>1</voice>
 				<type>half</type>
 				<staff>1</staff>
+				<notations>
+					<slur type='stop' number='1'/>
+				</notations>
 			</note>
 			<backup>
 				<duration>1536</duration>
@@ -5868,6 +5931,9 @@
 				<voice>1</voice>
 				<type>half</type>
 				<staff>1</staff>
+				<notations>
+					<slur type='start' number='1'/>
+				</notations>
 			</note>
 			<backup>
 				<duration>1536</duration>
@@ -6428,7 +6494,7 @@
 		</measure>
 <!--=========================================================-->
 		<measure number='23'>
-			<print new-page='yes'/>
+			<print new-system='yes'/>
 			<note>
 				<pitch>
 					<step>F</step>
@@ -6586,6 +6652,7 @@
 				<beam number='1'>begin</beam>
 				<notations>
 					<tuplet number='1' type='start'/>
+					<slur type='stop' number='1'/>
 				</notations>
 			</note>
 			<note>
@@ -6634,6 +6701,9 @@
 				<dot/>
 				<staff>1</staff>
 				<beam number='1'>begin</beam>
+				<notations>
+					<slur type='start' number='1'/>
+				</notations>
 			</note>
 			<backup>
 				<duration>576</duration>
@@ -6720,9 +6790,6 @@
 				<voice>5</voice>
 				<type>whole</type>
 				<staff>2</staff>
-				<notations>
-					<slur type='stop' number='1'/>
-				</notations>
 			</note>
 			<note>
 				<chord/>
@@ -7318,9 +7385,6 @@
 				<voice>5</voice>
 				<type>half</type>
 				<staff>2</staff>
-				<notations>
-					<slur type='start' number='1'/>
-				</notations>
 			</note>
 			<note>
 				<chord/>
@@ -7642,9 +7706,6 @@
 				<type>half</type>
 				<dot/>
 				<staff>2</staff>
-				<notations>
-					<slur type='stop' number='1'/>
-				</notations>
 			</note>
 			<note>
 				<chord/>
@@ -7682,9 +7743,6 @@
 				<voice>5</voice>
 				<type>quarter</type>
 				<staff>2</staff>
-				<notations>
-					<slur type='start' number='1'/>
-				</notations>
 			</note>
 			<note>
 				<chord/>
@@ -7910,6 +7968,9 @@
 				<voice>1</voice>
 				<type>quarter</type>
 				<staff>1</staff>
+				<notations>
+					<slur type='stop' number='1'/>
+				</notations>
 			</note>
 			<backup>
 				<duration>768</duration>
@@ -8098,6 +8159,9 @@
 				</time-modification>
 				<staff>1</staff>
 				<beam number='1'>continue</beam>
+				<notations>
+					<slur type='start' number='1'/>
+				</notations>
 			</note>
 			<backup>
 				<duration>128</duration>
@@ -8263,6 +8327,7 @@
 				<beam number='1'>end</beam>
 				<notations>
 					<tuplet number='1' type='stop'/>
+					<slur type='stop' number='1'/>
 				</notations>
 			</note>
 			<note>
@@ -8346,9 +8411,6 @@
 				<voice>5</voice>
 				<type>whole</type>
 				<staff>2</staff>
-				<notations>
-					<slur type='stop' number='1'/>
-				</notations>
 			</note>
 			<note>
 				<chord/>
@@ -8404,6 +8466,9 @@
 				</time-modification>
 				<staff>1</staff>
 				<beam number='1'>begin</beam>
+				<notations>
+					<slur type='start' number='1'/>
+				</notations>
 			</note>
 			<note>
 				<pitch>
@@ -8538,6 +8603,9 @@
 				</time-modification>
 				<staff>1</staff>
 				<beam number='1'>continue</beam>
+				<notations>
+					<slur type='stop' number='1'/>
+				</notations>
 			</note>
 			<note>
 				<pitch>
@@ -8697,6 +8765,9 @@
 				</time-modification>
 				<staff>1</staff>
 				<beam number='1'>continue</beam>
+				<notations>
+					<slur type='start' number='1'/>
+				</notations>
 			</note>
 			<backup>
 				<duration>128</duration>
@@ -8860,6 +8931,7 @@
 				<beam number='1'>end</beam>
 				<notations>
 					<tuplet number='1' type='stop'/>
+					<slur type='stop' number='1'/>
 				</notations>
 			</note>
 			<note>
@@ -8997,6 +9069,9 @@
 				</time-modification>
 				<staff>1</staff>
 				<beam number='1'>begin</beam>
+				<notations>
+					<slur type='start' number='1'/>
+				</notations>
 			</note>
 			<note>
 				<pitch>
@@ -9129,6 +9204,9 @@
 				</time-modification>
 				<staff>1</staff>
 				<beam number='1'>continue</beam>
+				<notations>
+					<slur type='stop' number='1'/>
+				</notations>
 			</note>
 			<note>
 				<pitch>
@@ -9262,6 +9340,7 @@
 				<beam number='1'>begin</beam>
 				<notations>
 					<tuplet number='1' type='start'/>
+					<slur type='start' number='1'/>
 				</notations>
 			</note>
 			<note>
@@ -9456,6 +9535,7 @@
 				<beam number='1'>end</beam>
 				<notations>
 					<tuplet number='1' type='stop'/>
+					<slur type='stop' number='1'/>
 				</notations>
 			</note>
 			<backup>
@@ -9503,6 +9583,7 @@
 				<beam number='1'>begin</beam>
 				<notations>
 					<tuplet number='1' type='start'/>
+					<slur type='start' number='1'/>
 				</notations>
 			</note>
 			<note>
@@ -9697,6 +9778,7 @@
 				<beam number='1'>end</beam>
 				<notations>
 					<tuplet number='1' type='stop'/>
+					<slur type='stop' number='1'/>
 				</notations>
 			</note>
 			<backup>
@@ -9745,6 +9827,7 @@
 				<beam number='1'>begin</beam>
 				<notations>
 					<tuplet number='1' type='start'/>
+					<slur type='start' number='1'/>
 				</notations>
 			</note>
 			<note>
@@ -9936,6 +10019,7 @@
 				<beam number='1'>end</beam>
 				<notations>
 					<tuplet number='1' type='stop'/>
+					<slur type='stop' number='1'/>
 				</notations>
 			</note>
 			<backup>
@@ -9985,6 +10069,7 @@
 				<beam number='1'>begin</beam>
 				<notations>
 					<tuplet number='1' type='start'/>
+					<slur type='start' number='1'/>
 				</notations>
 			</note>
 			<note>
@@ -10179,6 +10264,7 @@
 				<beam number='1'>end</beam>
 				<notations>
 					<tuplet number='1' type='stop'/>
+					<slur type='stop' number='1'/>
 				</notations>
 			</note>
 			<backup>
@@ -10235,6 +10321,7 @@
 				<beam number='1'>begin</beam>
 				<notations>
 					<tuplet number='1' type='start'/>
+					<slur type='start' number='1'/>
 				</notations>
 			</note>
 			<note>
@@ -10755,6 +10842,7 @@
 				<beam number='1'>end</beam>
 				<notations>
 					<tuplet number='1' type='stop'/>
+					<slur type='stop' number='1'/>
 				</notations>
 			</note>
 			<backup>
@@ -10811,6 +10899,7 @@
 				<beam number='1'>begin</beam>
 				<notations>
 					<tuplet number='1' type='start'/>
+					<slur type='start' number='1'/>
 				</notations>
 			</note>
 			<backup>
@@ -10916,6 +11005,7 @@
 				<beam number='1'>end</beam>
 				<notations>
 					<tuplet number='1' type='stop'/>
+					<slur type='stop' number='1'/>
 				</notations>
 			</note>
 			<note>
@@ -10935,6 +11025,7 @@
 				<beam number='1'>begin</beam>
 				<notations>
 					<tuplet number='1' type='start'/>
+					<slur type='start' number='1'/>
 				</notations>
 			</note>
 			<backup>
@@ -11105,6 +11196,7 @@
 				<beam number='1'>begin</beam>
 				<notations>
 					<tuplet number='1' type='start'/>
+					<slur type='start' number='2'/>
 				</notations>
 			</note>
 			<backup>
@@ -11139,6 +11231,9 @@
 				</time-modification>
 				<staff>1</staff>
 				<beam number='1'>continue</beam>
+				<notations>
+					<slur type='stop' number='1'/>
+				</notations>
 			</note>
 			<note>
 				<pitch>
@@ -11210,6 +11305,7 @@
 				<beam number='1'>end</beam>
 				<notations>
 					<tuplet number='1' type='stop'/>
+					<slur type='stop' number='2'/>
 				</notations>
 			</note>
 			<note>
@@ -11228,6 +11324,7 @@
 				<beam number='1'>begin</beam>
 				<notations>
 					<tuplet number='1' type='start'/>
+					<slur type='start' number='1'/>
 				</notations>
 			</note>
 			<backup>
@@ -11396,6 +11493,7 @@
 				<beam number='1'>begin</beam>
 				<notations>
 					<tuplet number='1' type='start'/>
+					<slur type='start' number='2'/>
 				</notations>
 			</note>
 			<backup>
@@ -11430,6 +11528,9 @@
 				</time-modification>
 				<staff>1</staff>
 				<beam number='1'>continue</beam>
+				<notations>
+					<slur type='stop' number='1'/>
+				</notations>
 			</note>
 			<note>
 				<pitch>
@@ -11635,9 +11736,6 @@
 				<voice>5</voice>
 				<type>half</type>
 				<staff>2</staff>
-				<notations>
-					<slur type='start' number='1'/>
-				</notations>
 			</note>
 			<note>
 				<chord/>
@@ -11941,7 +12039,7 @@
 		</measure>
 <!--=========================================================-->
 		<measure number='42'>
-			<print new-system='yes'/>
+			<print new-page='yes'/>
 			<note print-object='no'>
 				<rest/>
 				<duration>1536</duration>
@@ -11968,6 +12066,7 @@
 				<beam number='1'>begin</beam>
 				<notations>
 					<tuplet number='1' type='start'/>
+					<slur type='stop' number='2'/>
 				</notations>
 			</note>
 			<note>
@@ -12085,6 +12184,7 @@
 				<beam number='1'>begin</beam>
 				<notations>
 					<tuplet number='1' type='start'/>
+					<slur type='start' number='1'/>
 				</notations>
 			</note>
 			<note>
@@ -12523,9 +12623,6 @@
 				<voice>5</voice>
 				<type>whole</type>
 				<staff>2</staff>
-				<notations>
-					<slur type='stop' number='1'/>
-				</notations>
 			</note>
 			<note>
 				<chord/>
@@ -12806,9 +12903,6 @@
 				<voice>5</voice>
 				<type>half</type>
 				<staff>2</staff>
-				<notations>
-					<slur type='start' number='1'/>
-				</notations>
 			</note>
 			<note>
 				<chord/>
@@ -13145,7 +13239,7 @@
 		</measure>
 <!--=========================================================-->
 		<measure number='46'>
-			<print new-page='yes'/>
+			<print new-system='yes'/>
 			<note>
 				<pitch>
 					<step>E</step>
@@ -13155,6 +13249,9 @@
 				<voice>1</voice>
 				<type>quarter</type>
 				<staff>1</staff>
+				<notations>
+					<slur type='stop' number='1'/>
+				</notations>
 			</note>
 			<backup>
 				<duration>768</duration>
@@ -13237,6 +13334,7 @@
 				<beam number='1'>begin</beam>
 				<notations>
 					<tuplet number='1' type='start'/>
+					<slur type='start' number='1'/>
 				</notations>
 			</note>
 			<note>
@@ -13429,9 +13527,6 @@
 				<voice>5</voice>
 				<type>whole</type>
 				<staff>2</staff>
-				<notations>
-					<slur type='stop' number='1'/>
-				</notations>
 			</note>
 			<note>
 				<chord/>
@@ -13712,9 +13807,6 @@
 				<voice>5</voice>
 				<type>whole</type>
 				<staff>2</staff>
-				<notations>
-					<slur type='start' number='1'/>
-				</notations>
 			</note>
 			<note>
 				<chord/>
@@ -14676,6 +14768,9 @@
 				<type>half</type>
 				<dot/>
 				<staff>1</staff>
+				<notations>
+					<slur type='stop' number='1'/>
+				</notations>
 			</note>
 			<backup>
 				<duration>2304</duration>
@@ -14803,6 +14898,7 @@
 				<beam number='1'>begin</beam>
 				<notations>
 					<tuplet number='1' type='start'/>
+					<slur type='start' number='1'/>
 				</notations>
 			</note>
 			<note>
@@ -15755,6 +15851,9 @@
 				<voice>1</voice>
 				<type>quarter</type>
 				<staff>1</staff>
+				<notations>
+					<slur type='stop' number='1'/>
+				</notations>
 			</note>
 			<backup>
 				<duration>768</duration>
@@ -16048,6 +16147,9 @@
 				<voice>1</voice>
 				<type>half</type>
 				<staff>1</staff>
+				<notations>
+					<slur type='start' number='1'/>
+				</notations>
 			</note>
 			<backup>
 				<duration>1536</duration>
@@ -16171,9 +16273,6 @@
 				<voice>5</voice>
 				<type>half</type>
 				<staff>2</staff>
-				<notations>
-					<slur type='stop' number='1'/>
-				</notations>
 			</note>
 			<note>
 				<chord/>
@@ -16197,9 +16296,6 @@
 				<voice>5</voice>
 				<type>half</type>
 				<staff>2</staff>
-				<notations>
-					<slur type='start' number='1'/>
-				</notations>
 			</note>
 			<note>
 				<chord/>
@@ -16395,6 +16491,9 @@
 				<voice>1</voice>
 				<type>quarter</type>
 				<staff>1</staff>
+				<notations>
+					<slur type='stop' number='1'/>
+				</notations>
 			</note>
 			<backup>
 				<duration>768</duration>
@@ -16512,6 +16611,9 @@
 				<voice>1</voice>
 				<type>quarter</type>
 				<staff>1</staff>
+				<notations>
+					<slur type='start' number='1'/>
+				</notations>
 			</note>
 			<backup>
 				<duration>768</duration>
@@ -16851,9 +16953,6 @@
 				<voice>5</voice>
 				<type>quarter</type>
 				<staff>2</staff>
-				<notations>
-					<slur type='stop' number='1'/>
-				</notations>
 			</note>
 			<note>
 				<chord/>
@@ -17139,9 +17238,6 @@
 				<voice>5</voice>
 				<type>half</type>
 				<staff>2</staff>
-				<notations>
-					<slur type='start' number='1'/>
-				</notations>
 			</note>
 			<note>
 				<chord/>
@@ -17507,13 +17603,17 @@
 				<voice>1</voice>
 				<type>quarter</type>
 				<staff>1</staff>
+				<notations>
+					<slur type='stop' number='1'/>
+				</notations>
 			</note>
 			<backup>
 				<duration>768</duration>
 			</backup>
 			<note>
 				<pitch>
-					<step>E</step>
+					<step>G</step>
+					<alter>1</alter>
 					<octave>3</octave>
 				</pitch>
 				<duration>256</duration>
@@ -17591,6 +17691,7 @@
 				<beam number='1'>begin</beam>
 				<notations>
 					<tuplet number='1' type='start'/>
+					<slur type='start' number='1'/>
 				</notations>
 			</note>
 			<note>
@@ -18682,9 +18783,6 @@
 				<staff>2</staff>
 				<beam number='1'>end</beam>
 				<beam number='2'>backward hook</beam>
-				<notations>
-					<slur type='stop' number='1'/>
-				</notations>
 			</note>
 		</measure>
 <!--=========================================================-->
@@ -18713,8 +18811,7 @@
 			</backup>
 			<note>
 				<pitch>
-					<step>G</step>
-					<alter>1</alter>
+					<step>E</step>
 					<octave>3</octave>
 				</pitch>
 				<duration>768</duration>
@@ -18739,6 +18836,9 @@
 				</time-modification>
 				<staff>1</staff>
 				<beam number='1'>continue</beam>
+				<notations>
+					<slur type='start' number='2'/>
+				</notations>
 			</note>
 			<note>
 				<pitch>
@@ -18757,6 +18857,7 @@
 				<beam number='1'>end</beam>
 				<notations>
 					<tuplet number='1' type='stop'/>
+					<slur type='stop' number='1'/>
 				</notations>
 			</note>
 			<note>
@@ -19381,6 +19482,10 @@
 				</time-modification>
 				<staff>1</staff>
 				<beam number='1'>continue</beam>
+				<notations>
+					<slur type='start' number='1'/>
+					<slur type='stop' number='2'/>
+				</notations>
 			</note>
 			<note>
 				<pitch>
@@ -19465,6 +19570,7 @@
 				<beam number='1'>end</beam>
 				<notations>
 					<tuplet number='1' type='stop'/>
+					<slur type='stop' number='1'/>
 				</notations>
 			</note>
 			<note>
@@ -19508,6 +19614,9 @@
 				</time-modification>
 				<staff>1</staff>
 				<beam number='1'>begin</beam>
+				<notations>
+					<slur type='start' number='1'/>
+				</notations>
 			</note>
 			<note>
 				<pitch>
@@ -19579,6 +19688,7 @@
 				<beam number='1'>end</beam>
 				<notations>
 					<tuplet number='1' type='stop'/>
+					<slur type='stop' number='1'/>
 				</notations>
 			</note>
 			<backup>
@@ -19662,6 +19772,9 @@
 				</time-modification>
 				<staff>1</staff>
 				<beam number='1'>begin</beam>
+				<notations>
+					<slur type='start' number='2'/>
+				</notations>
 			</note>
 			<note>
 				<pitch>
@@ -19838,6 +19951,7 @@
 				<beam number='1'>end</beam>
 				<notations>
 					<tuplet number='1' type='stop'/>
+					<slur type='stop' number='2'/>
 				</notations>
 			</note>
 			<backup>
