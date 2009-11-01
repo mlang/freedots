@@ -107,6 +107,7 @@ public final class Main
       object = transcriber.getObjectAtIndex(index);
     }
     if (object != lastObject) {
+      editFingeringAction.setEnabled(object != null && object instanceof Note);
       if (object != null) {
         
         if (object instanceof Note)  noteRenderer.setNote((Note)object);
@@ -163,6 +164,7 @@ public final class Main
 
   private Action playScoreAction = new PlayScoreAction(this);
   private Action fileSaveAsAction = new FileSaveAsAction(this);
+  private Action editFingeringAction = new EditFingeringAction(this);
 
   public Main(final Transcriber transcriber) {
     super("FreeDots " + freedots.Main.VERSION);
@@ -204,6 +206,7 @@ public final class Main
     textArea.setFont(font);
     setTranscriber(transcriber);
 
+    textArea.setEditable(false);
     textArea.addCaretListener(this);
     JScrollPane scrollPane = new JScrollPane(textArea);
 
@@ -262,6 +265,12 @@ public final class Main
     fileMenu.add(quitItem);
 
     menuBar.add(fileMenu);
+
+    JMenu editMenu = new JMenu("Edit");
+    editMenu.setMnemonic(KeyEvent.VK_E);
+    editMenu.add(editFingeringAction);
+
+    menuBar.add(editMenu);
 
     JMenu transcriptionMenu = new JMenu("Transcription");
     transcriptionMenu.setMnemonic(KeyEvent.VK_T);
@@ -444,9 +453,13 @@ public final class Main
     return libraryMenu;
   }
 
-  private void triggerTranscription() {
+  Object getCurrentScoreObject() {
     int position = textArea.getCaretPosition();
-    Object object = transcriber.getObjectAtIndex(position);
+    return transcriber.getObjectAtIndex(position);
+  }
+  void triggerTranscription() {
+    int position = textArea.getCaretPosition();
+    Object object = getCurrentScoreObject();
     transcriber.setScore(score);
     textArea.setText(transcriber.toString());
     if (object != null) {
