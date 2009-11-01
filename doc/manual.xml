@@ -421,6 +421,52 @@ to scan and recognize your music.
 A list of applications that allow to save or export to MusicXML
 format can be found <ulink url="http://www.musicxml.org/xml/software.html#NowWrites">here</ulink>.
       </para>
+      <sect1><title>Using Sibelius to create MusicXML documents</title>
+      <sect2><title>Fingering</title>
+	<para>
+There are three types of text in Sibelius
+	<itemizedlist>
+	  <listitem>
+	    <para>
+Staff text: text that applies to a single staff, typically directions for a
+single instrument
+	    </para>
+	  </listitem>
+	  <listitem>
+	  <para>
+System text: text that applies to all staves in the score (though it may
+only be displayed above one or two of them), and which will appear in all
+parts (if there are any) -- typically tempo or rehearsal directions
+	  </para>
+	  </listitem>
+	  <listitem>
+	    <para>
+Blank page text: text that can only be created on a blank page, typically
+performance directions or other front matter.
+	    </para>
+	  </listitem>
+	</itemizedlist>
+	</para>
+	<para>
+If you plan to export your score to MusicXML with <productname> Dolet for Sibelius</productname>
+so that you can import it in another music notation program or have Freedots
+transcribe your score, Then you not only have to make sure to use the right
+text type, but also the right font and style.
+	</para>
+	<para>
+You achieve this by using the word menus, that most Sibelius text edit dialogs
+provide.
+	</para>
+	<para>
+An example for fingering:
+Open "menu/create/text/other staff text/fingering". Unless you are very
+familiar with the text style and font to use, don't just type your fingering
+in the edit field, but select a fingering provided in the word menu. You open
+this word menu by right clicking with the mouse or by just pressing the
+application key.
+	</para>
+      </sect2>
+      </sect1>
     </chapter>
     <chapter><title>MusicXML on the Internet</title>
       <para>
