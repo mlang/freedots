@@ -66,7 +66,7 @@ public class FingeringEditor extends JDialog implements ActionListener {
       public boolean verify(JComponent input) {
         final JTextComponent source = (JTextComponent) input;
         String text = source.getText();
-        if (text.length() == 0 || text.matches("[1-9-]+"))
+        if (text.length() == 0 || text.matches("[1-5-]+"))
           return true;
         else
           return false;
@@ -90,6 +90,7 @@ public class FingeringEditor extends JDialog implements ActionListener {
     getContentPane().add(cancelButton);
 
     getRootPane().setDefaultButton(applyButton);
+    setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
     pack();
     setLocationRelativeTo(parent);
@@ -101,7 +102,6 @@ public class FingeringEditor extends JDialog implements ActionListener {
       String fingerText = text.getText();
       Fingering fingering = new Fingering();
       if (fingerText != null && !fingerText.isEmpty()) {
-        System.err.println("Fingertext: '"+fingerText+"'");
         for (String finger: fingerText.split("-", -1)) {
           if (!finger.isEmpty())
             fingering.getFingers().add(Integer.valueOf(finger));

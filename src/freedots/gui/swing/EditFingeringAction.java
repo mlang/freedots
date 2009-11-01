@@ -46,7 +46,6 @@ public final class EditFingeringAction extends AbstractAction {
     Object scoreObject = gui.getCurrentScoreObject();
     if (scoreObject != null && scoreObject instanceof Note && fingeringEditor == null) {
       fingeringEditor = new FingeringEditor(gui, (Note)scoreObject);
-      fingeringEditor.show();
       fingeringEditor.dispose();
       fingeringEditor = null;
     }
