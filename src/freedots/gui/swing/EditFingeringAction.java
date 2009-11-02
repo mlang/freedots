@@ -126,7 +126,6 @@ public final class EditFingeringAction extends AbstractAction {
       contentPane.add(buttonPane, BorderLayout.PAGE_END);
 
       getRootPane().setDefaultButton(okButton);
-      setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
       pack();
       setLocationRelativeTo(parent);
