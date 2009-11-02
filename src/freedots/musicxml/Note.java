@@ -357,7 +357,7 @@ public final class Note extends Musicdata implements RhythmicElement {
   }
 
   public Notations getNotations() { return notations; }
-  public Notations createNotations() {
+  private Notations createNotations() {
     Node node;
     for (node = element.getFirstChild(); node != null;
          node = node.getNextSibling()) {
