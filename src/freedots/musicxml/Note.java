@@ -357,6 +357,20 @@ public final class Note extends Musicdata implements RhythmicElement {
   }
 
   public Notations getNotations() { return notations; }
+  public Notations createNotations() {
+    Node node;
+    for (node = element.getFirstChild(); node != null;
+         node = node.getNextSibling()) {
+      if (node.getNodeType() == Node.ELEMENT_NODE) {
+        if (node.getNodeName().equals(LYRIC_ELEMENT)) break;
+      }
+    }
+
+    Element newElement = element.getOwnerDocument().createElement(NOTATIONS_ELEMENT);
+    element.insertBefore(newElement, node);
+    notations = new Notations(newElement);
+    return notations;
+  }
 
   private List<Slur> slurs = new ArrayList<Slur>(2);
 
@@ -374,13 +388,12 @@ public final class Note extends Musicdata implements RhythmicElement {
     return null;
   }
   public void setFingering(Fingering fingering) {
-    if (notations != null) {
-      Notations.Technical technical = notations.getTechnical();
-      if (technical == null) {
-        technical = notations.createTechnical();
-      }
-      technical.setFingering(fingering);
+    if (notations == null) createNotations();
+    Notations.Technical technical = notations.getTechnical();
+    if (technical == null) {
+      technical = notations.createTechnical();
     }
+    technical.setFingering(fingering);
   }
 
 
