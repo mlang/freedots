@@ -39,6 +39,7 @@ import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
@@ -144,13 +145,22 @@ public final class EditFingeringAction extends AbstractAction {
     }
 
     public void actionPerformed(ActionEvent e) {
-      if(applyButton == e.getSource()) {
+      if (applyButton == e.getSource()) {
         String fingerText = text.getText();
         Fingering fingering = new Fingering();
         if (fingerText != null && !fingerText.isEmpty()) {
           for (String finger: fingerText.split("-", -1)) {
-            if (!finger.isEmpty())
-              fingering.getFingers().add(Integer.valueOf(finger));
+            if (!finger.isEmpty()) {
+              Integer number = Integer.valueOf(finger);
+              if (number.intValue() > 5) {
+                JOptionPane.showMessageDialog
+                  (this, "Number "+number+" is not avalid fingering indicator",
+                   "Illegal fingering", JOptionPane.ERROR_MESSAGE);
+                text.requestFocus();
+                return;
+              }
+              fingering.getFingers().add(number);
+            }
           }
         }
         note.setFingering(fingering);
