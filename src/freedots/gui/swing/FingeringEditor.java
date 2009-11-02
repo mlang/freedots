@@ -23,9 +23,14 @@
 package freedots.gui.swing;
 
 import java.awt.BorderLayout;
+import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
@@ -84,10 +89,17 @@ public class FingeringEditor extends JDialog implements ActionListener {
     cancelButton = new JButton("Cancel");
     cancelButton.addActionListener(this);
 
-    getContentPane().add(fingerPanel);
+    JPanel buttonPane = new JPanel();
+    buttonPane.setLayout(new BoxLayout(buttonPane, BoxLayout.LINE_AXIS));
+    buttonPane.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
+    buttonPane.add(Box.createHorizontalGlue());
+    buttonPane.add(cancelButton);
+    buttonPane.add(Box.createRigidArea(new Dimension(10, 0)));
+    buttonPane.add(applyButton);
 
-    getContentPane().add(applyButton);
-    getContentPane().add(cancelButton);
+    Container contentPane = getContentPane();
+    contentPane.add(fingerPanel, BorderLayout.CENTER);
+    contentPane.add(buttonPane, BorderLayout.PAGE_END);
 
     getRootPane().setDefaultButton(applyButton);
     setDefaultCloseOperation(DISPOSE_ON_CLOSE);
