@@ -22,18 +22,36 @@
  */
 package freedots.gui.swing;
 
+import java.awt.BorderLayout;
+import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
 import javax.swing.AbstractAction;
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.InputVerifier;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.KeyStroke;
+import javax.swing.text.JTextComponent;
 
+import freedots.model.Fingering;
 import freedots.musicxml.Note;
 
 @SuppressWarnings("serial")
 public final class EditFingeringAction extends AbstractAction {
   private Main gui;
   private FingeringEditor fingeringEditor = null;
+  private boolean dialogShowing = false;
 
   public EditFingeringAction(final Main gui) {
     super("Fingering...");
@@ -44,11 +62,103 @@ public final class EditFingeringAction extends AbstractAction {
   }
   public void actionPerformed(ActionEvent event) {
     Object scoreObject = gui.getCurrentScoreObject();
-    if (scoreObject != null && scoreObject instanceof Note && fingeringEditor == null) {
-      fingeringEditor = new FingeringEditor(gui, (Note)scoreObject);
-      fingeringEditor.show();
-      fingeringEditor.dispose();
-      fingeringEditor = null;
+    if (scoreObject != null && scoreObject instanceof Note) {
+      if (fingeringEditor == null) fingeringEditor = new FingeringEditor(gui);
+      if (!dialogShowing) {
+        fingeringEditor.setNote((Note)scoreObject);
+        dialogShowing = true;
+        fingeringEditor.show();
+        dialogShowing = false;
+      }
+    }
+  }
+
+  class FingeringEditor extends JDialog implements ActionListener {
+    private Note note;
+    private Main main;
+
+    private JTextField text;
+    private JButton applyButton, cancelButton;
+
+    public FingeringEditor(Main parent) {
+      super(parent, "Fingering", true);
+      this.main = parent;
+
+      JPanel fingerPanel = new JPanel(new BorderLayout());
+      JLabel label = new JLabel("Fingering: ");
+      label.setDisplayedMnemonic(KeyEvent.VK_F);
+      text = new JTextField();
+      InputVerifier verifier = new InputVerifier() {
+          public boolean verify(JComponent input) {
+            final JTextComponent source = (JTextComponent) input;
+            String text = source.getText();
+            if (text.length() == 0 || text.matches("[1-5-]+"))
+              return true;
+            else
+              return false;
+          }
+        };
+      text.setInputVerifier(verifier);
+      label.setLabelFor(text);
+      fingerPanel.add(label, BorderLayout.WEST);
+      fingerPanel.add(text, BorderLayout.CENTER);
+
+      applyButton = new JButton("Apply");
+      applyButton.addActionListener(this);
+
+      cancelButton = new JButton("Cancel");
+      cancelButton.addActionListener(this);
+
+      JPanel buttonPane = new JPanel();
+      buttonPane.setLayout(new BoxLayout(buttonPane, BoxLayout.LINE_AXIS));
+      buttonPane.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
+      buttonPane.add(Box.createHorizontalGlue());
+      buttonPane.add(cancelButton);
+      buttonPane.add(Box.createRigidArea(new Dimension(10, 0)));
+      buttonPane.add(applyButton);
+
+      Container contentPane = getContentPane();
+      contentPane.add(fingerPanel, BorderLayout.CENTER);
+      contentPane.add(buttonPane, BorderLayout.PAGE_END);
+
+      getRootPane().setDefaultButton(applyButton);
+      setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+
+      pack();
+      setLocationRelativeTo(parent);
+    }
+
+    public void setNote(Note note) {
+      this.note = note;
+
+      Fingering fingering = note.getFingering();
+      String fingerText = "";
+      if (fingering != null && fingering.getFingers().size() > 0) {
+        for (int i = 0; i < fingering.getFingers().size(); i++) {
+          fingerText += fingering.getFingers().get(i).toString();
+          if (i < fingering.getFingers().size()-1) fingerText += "-";
+        }
+      }
+      text.setText(fingerText);
+      text.requestFocus();
+    }
+
+    public void actionPerformed(ActionEvent e) {
+      if(applyButton == e.getSource()) {
+        String fingerText = text.getText();
+        Fingering fingering = new Fingering();
+        if (fingerText != null && !fingerText.isEmpty()) {
+          for (String finger: fingerText.split("-", -1)) {
+            if (!finger.isEmpty())
+              fingering.getFingers().add(Integer.valueOf(finger));
+          }
+        }
+        note.setFingering(fingering);
+        setVisible(false);
+        main.triggerTranscription();
+      } else if(cancelButton == e.getSource()) {
+        setVisible(false);
+      }
     }
   }
 }
