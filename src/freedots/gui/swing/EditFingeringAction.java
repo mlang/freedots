@@ -43,6 +43,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
+import javax.swing.UIManager;
 import javax.swing.text.JTextComponent;
 
 import freedots.model.Fingering;
@@ -79,7 +80,7 @@ public final class EditFingeringAction extends AbstractAction {
     private Main main;
 
     private JTextField text;
-    private JButton applyButton, cancelButton;
+    private JButton okButton, cancelButton;
 
     public FingeringEditor(Main parent) {
       super(parent, "Fingering", true);
@@ -104,10 +105,12 @@ public final class EditFingeringAction extends AbstractAction {
       fingerPanel.add(label, BorderLayout.WEST);
       fingerPanel.add(text, BorderLayout.CENTER);
 
-      applyButton = new JButton("Apply");
-      applyButton.addActionListener(this);
+      okButton = new JButton
+        (UIManager.getString("OptionPane.okButtonText",getLocale()));
+      okButton.addActionListener(this);
 
-      cancelButton = new JButton("Cancel");
+      cancelButton = new JButton
+        (UIManager.getString("OptionPane.cancelButtonText",getLocale()));
       cancelButton.addActionListener(this);
 
       JPanel buttonPane = new JPanel();
@@ -116,13 +119,13 @@ public final class EditFingeringAction extends AbstractAction {
       buttonPane.add(Box.createHorizontalGlue());
       buttonPane.add(cancelButton);
       buttonPane.add(Box.createRigidArea(new Dimension(10, 0)));
-      buttonPane.add(applyButton);
+      buttonPane.add(okButton);
 
       Container contentPane = getContentPane();
       contentPane.add(fingerPanel, BorderLayout.CENTER);
       contentPane.add(buttonPane, BorderLayout.PAGE_END);
 
-      getRootPane().setDefaultButton(applyButton);
+      getRootPane().setDefaultButton(okButton);
       setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
       pack();
@@ -145,7 +148,7 @@ public final class EditFingeringAction extends AbstractAction {
     }
 
     public void actionPerformed(ActionEvent e) {
-      if (applyButton == e.getSource()) {
+      if (okButton == e.getSource()) {
         String fingerText = text.getText();
         Fingering fingering = new Fingering();
         if (fingerText != null && !fingerText.isEmpty()) {
