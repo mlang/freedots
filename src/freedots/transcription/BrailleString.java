@@ -64,9 +64,9 @@ class BrailleString {
     if (data.length() > 0) {
       char firstChar = data.charAt(0);
       if (firstChar >= 0X2800 && firstChar <= 0X28FF) {
-	if ((((int)firstChar) & 0X2807) > 0X2800) {
-	  return true;
-	}
+        if ((((int)firstChar) & 0X2807) > 0X2800) {
+          return true;
+        }
       }
     }
     return false;

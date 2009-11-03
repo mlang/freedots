@@ -14,7 +14,7 @@
  * for more details (a copy is included in the LICENSE.txt file that
  * accompanied this code).
  *
- * You should have received a copy of the GNU General Public License 
+ * You should have received a copy of the GNU General Public License
  * along with this work; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
  *
@@ -39,7 +39,7 @@ class BrailleNote extends BrailleString {
   private AbstractPitch lastPitch;
   private Options options;
 
-  BrailleNote(Note note, AbstractPitch lastPitch) {
+  BrailleNote(final Note note, final AbstractPitch lastPitch) {
     super(null, note);
     this.lastPitch = lastPitch;
     this.options = Options.getInstance();
@@ -66,13 +66,13 @@ class BrailleNote extends BrailleString {
     }
     Set<Articulation> articulations = note.getArticulations();
     if (articulations != null) {
-      for (Articulation articulation : articulations)
+      for (Articulation articulation: articulations)
         braille += articulation.toBraille();
     }
 
     Accidental accidental = note.getAccidental();
     if (accidental != null) {
-      braille += accidental.toBraille().toString();
+      braille += accidental.toBraille();
     }
     AbstractPitch pitch = (AbstractPitch)note.getPitch();
     if (pitch != null) {

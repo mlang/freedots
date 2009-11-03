@@ -60,11 +60,11 @@ public final class Transcriber {
     return options.getPageWidth() - characterCount;
   }
 
-  /* Find Object responsible for character at specified index
+  /** Find Object responsible for character at specified index
    *
-   * This is used by the UI code.
+   * @param characterIndex indicates the position relative to toString()
    *
-   * @returns the object responsible for the character at index, or null
+   * @return the object responsible for the character at index, or null
    */
   public Object getObjectAtIndex(final int characterIndex) {
     StringBuilder stringBuilder = new StringBuilder();
@@ -75,7 +75,7 @@ public final class Transcriber {
     }
     return null;
   }
-  /*
+  /**
    * Find the starting index of the character sequence for Object
    *
    * This is the reverse of getObjectAtIndex()

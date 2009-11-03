@@ -33,13 +33,13 @@ import javax.sound.midi.MetaMessage;
 /**
  * Class <code>MetaEventRelay</code> allows to encode object references
  * inside <link>javax.sound.midi.MetaMessage</link> instances.
- * This is used by <link>org.freedots.musicxml.MIDISequence</link> to
+ * This is used by <link>freedots.musicxml.MIDISequence</link> to
  * annotate MIDI sequences with references to the objects responsible
  * for individual MIDI messages.
  *
  * @author Mario Lang
  */
-public class MetaEventRelay implements javax.sound.midi.MetaEventListener {
+public final class MetaEventRelay implements javax.sound.midi.MetaEventListener {
   private int lastId = 0;
   private Map<String, Object> objects = new HashMap<String, Object>();
 
@@ -89,7 +89,7 @@ public class MetaEventRelay implements javax.sound.midi.MetaEventListener {
   }
 
   /**
-   * Implements the MetaEventListener interface
+   * Implements the MetaEventListener interface.
    *
    * @param meta   the MetaMessage to handle
    */

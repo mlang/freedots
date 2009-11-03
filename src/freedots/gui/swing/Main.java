@@ -107,7 +107,9 @@ public final class Main
       object = transcriber.getObjectAtIndex(index);
     }
     if (object != lastObject) {
-      editFingeringAction.setEnabled(object != null && object instanceof Note);
+      final boolean isPitchedNote = object != null && object instanceof Note
+                                 && !((Note)object).isRest();
+      editFingeringAction.setEnabled(isPitchedNote);
       if (object != null) {
         
         if (object instanceof Note)  noteRenderer.setNote((Note)object);

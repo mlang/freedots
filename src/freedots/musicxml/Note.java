@@ -115,17 +115,17 @@ public final class Note extends Musicdata implements RhythmicElement {
          node = node.getNextSibling()) {
       if (node.getNodeType() == Node.ELEMENT_NODE) {
         Element child = (Element)node;
-        if (child.getNodeName().equals("grace")) {
+        if (child.getTagName().equals("grace")) {
           grace = child;
-        } else if (child.getNodeName().equals("pitch")) {
+        } else if (child.getTagName().equals("pitch")) {
           pitch = new Pitch(child);
-        } else if (child.getNodeName().equals("duration")) {
+        } else if (child.getTagName().equals("duration")) {
           duration = firstTextNode(child);
-        } else if (child.getNodeName().equals("tie")) {
+        } else if (child.getTagName().equals("tie")) {
           tie = child;
-        } else if (child.getNodeName().equals("voice")) {
+        } else if (child.getTagName().equals("voice")) {
           voiceName = firstTextNode(child);
-        } else if (child.getNodeName().equals("type")) {
+        } else if (child.getTagName().equals("type")) {
           Text textNode = firstTextNode(child);
           if (textNode != null) {
             String typeName = textNode.getWholeText();
@@ -135,7 +135,7 @@ public final class Note extends Musicdata implements RhythmicElement {
             else
               throw new MusicXMLParseException("Illegal <type> content '"+typeName+"'");
           }
-        } else if (child.getNodeName().equals(ACCIDENTAL_ELEMENT)) {
+        } else if (child.getTagName().equals(ACCIDENTAL_ELEMENT)) {
           if (part.getScore().encodingSupports(ACCIDENTAL_ELEMENT)) {
             Text textNode = firstTextNode(child);
             if (textNode != null) {
@@ -147,13 +147,13 @@ public final class Note extends Musicdata implements RhythmicElement {
                 throw new MusicXMLParseException("Illegal <accidental>"+accidentalName+"</accidental>");
             }
           }
-        } else if (child.getNodeName().equals(TIME_MODIFICATION_ELEMENT)) {
+        } else if (child.getTagName().equals(TIME_MODIFICATION_ELEMENT)) {
           timeModification = child;
-        } else if (child.getNodeName().equals(STAFF_ELEMENT)) {
+        } else if (child.getTagName().equals(STAFF_ELEMENT)) {
           staffNumber = firstTextNode(child);
-        } else if (child.getNodeName().equals(NOTATIONS_ELEMENT)) {
+        } else if (child.getTagName().equals(NOTATIONS_ELEMENT)) {
           notations = new Notations(child);
-        } else if (child.getNodeName().equals(LYRIC_ELEMENT)) {
+        } else if (child.getTagName().equals(LYRIC_ELEMENT)) {
           lyric = new Lyric(child);
         }
       }

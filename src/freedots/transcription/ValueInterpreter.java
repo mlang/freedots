@@ -123,7 +123,7 @@ class ValueInterpreter {
       tail = candidates.subList(1, candidates.size());
       for (RhythmicPossibility rhythmicPossibility : head) {
         if (rhythmicPossibility.compareTo(remaining) <= 0) {
-          for (Interpretation interpretation :
+          for (Interpretation interpretation:
                findInterpretations(tail,
                                    remaining.subtract(rhythmicPossibility))) {
             interpretation.add(0, rhythmicPossibility);

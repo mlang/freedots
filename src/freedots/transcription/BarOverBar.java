@@ -14,7 +14,7 @@
  * for more details (a copy is included in the LICENSE.txt file that
  * accompanied this code).
  *
- * You should have received a copy of the GNU General Public License 
+ * You should have received a copy of the GNU General Public License
  * along with this work; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
  *
@@ -25,11 +25,8 @@ package freedots.transcription;
 import java.util.ArrayList;
 import freedots.Braille;
 import freedots.Options;
-import freedots.model.Clef;
 import freedots.model.EndBar;
 import freedots.model.Event;
-import freedots.model.GlobalKeyChange;
-import freedots.model.KeyChange;
 import freedots.model.KeySignature;
 import freedots.model.MusicList;
 import freedots.model.Staff;

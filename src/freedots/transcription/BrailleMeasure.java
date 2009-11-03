@@ -252,8 +252,7 @@ class BrailleMeasure {
       if (element instanceof Note) {
         Note note = (Note)element;
         if (splitPoint != null && splitPoint == note) {
-          BrailleString brailleString = new BrailleString(Braille.valueDistinction.toString());
-          state.append(brailleString);
+          state.append(Braille.valueDistinction.toString());
         }
         BrailleNote brailleNote = new BrailleNote(note, state.getLastPitch());
         AbstractPitch pitch = (AbstractPitch)note.getPitch();
@@ -300,14 +299,16 @@ class BrailleMeasure {
         state.append(new BrailleString(braille, firstNote));
         braille = "";
 
-        for (int chordElementIndex = 1; chordElementIndex < chord.size(); chordElementIndex++) {
+        for (int chordElementIndex = 1; chordElementIndex < chord.size();
+             chordElementIndex++) {
           Note currentNote = (Note)chord.get(chordElementIndex);
           accidental = currentNote.getAccidental();
           if (accidental != null) {
             braille += accidental.toBraille().toString();
           }
           AbstractPitch currentPitch = (AbstractPitch)currentNote.getPitch();
-          int diatonicDifference = Math.abs(currentPitch.diatonicDifference(firstPitch));
+          int diatonicDifference = Math.abs
+            (currentPitch.diatonicDifference(firstPitch));
           if (diatonicDifference == 0) {
             braille += currentPitch.getOctaveSign(null);
             diatonicDifference = 7;
