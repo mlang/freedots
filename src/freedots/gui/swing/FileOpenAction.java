@@ -41,6 +41,8 @@ public final class FileOpenAction extends AbstractAction {
   private Main gui;
   /**
    * Construct a File->Open action.
+   *
+   * @param gui is the main application
    */
   public FileOpenAction(final Main gui) {
     super("Open");
@@ -54,6 +56,8 @@ public final class FileOpenAction extends AbstractAction {
    * This is called when the action is invoked (through the menu or keystroke).
    *
    * A dialog box is created to query the file name from the user.
+   *
+   * @param event is the ActionEvent which triggered this action
    */
   public void actionPerformed(final ActionEvent event) {
     JFileChooser fileChooser = new JFileChooser();

@@ -134,7 +134,7 @@ public final class Options {
   public enum UI {
     Swing("swing.Main");
 
-    String className;
+    private String className;
     UI(final String name) { className = "freedots.gui." + name; }
     public String getClassName() { return className; }
   }

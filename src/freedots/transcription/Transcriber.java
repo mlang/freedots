@@ -75,10 +75,13 @@ public final class Transcriber {
     }
     return null;
   }
-  /**
-   * Find the starting index of the character sequence for Object
+  /** Find the starting index of the character sequence for Object.
    *
    * This is the reverse of getObjectAtIndex()
+   *
+   * @param object is a score object to search in the transcribed text
+   *
+   * @return the index of the first character that was generated due to object
    */
   public int getIndexOfObject(final Object object) {
     StringBuilder stringBuilder = new StringBuilder();

@@ -81,7 +81,7 @@ public final class EditFingeringAction extends AbstractAction {
     private JTextField text;
     private JButton okButton, cancelButton;
 
-    public FingeringEditor(Main parent) {
+    public FingeringEditor(final Main parent) {
       super(parent, "Fingering", true);
       this.main = parent;
 
@@ -93,10 +93,7 @@ public final class EditFingeringAction extends AbstractAction {
           public boolean verify(JComponent input) {
             final JTextComponent source = (JTextComponent) input;
             String text = source.getText();
-            if (text.length() == 0 || text.matches("[1-5-]+"))
-              return true;
-            else
-              return false;
+            return text.length() == 0 || text.matches("[1-5-]+");
           }
         };
       text.setInputVerifier(verifier);
@@ -105,11 +102,11 @@ public final class EditFingeringAction extends AbstractAction {
       fingerPanel.add(text, BorderLayout.CENTER);
 
       okButton = new JButton
-        (UIManager.getString("OptionPane.okButtonText",getLocale()));
+        (UIManager.getString("OptionPane.okButtonText", getLocale()));
       okButton.addActionListener(this);
 
       cancelButton = new JButton
-        (UIManager.getString("OptionPane.cancelButtonText",getLocale()));
+        (UIManager.getString("OptionPane.cancelButtonText", getLocale()));
       cancelButton.addActionListener(this);
 
       JPanel buttonPane = new JPanel();

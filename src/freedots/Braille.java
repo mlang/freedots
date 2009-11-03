@@ -124,8 +124,12 @@ public enum Braille {
     rightHandPart.needsAdditionalDot3IfOneOfDot123Follows(true);
   }
 
-  public static Braille octave(final int number) { return octaves[number]; }
-  public static Braille upperDigit(final int digit) { return digits[digit]; }
+  /** Get an octave sign for a particular octave.
+   * @param number indicates the octave
+   * @return braille music octave sign
+   */
+  public static Braille octave(final int number) { return OCTAVES[number]; }
+  public static Braille upperDigit(final int digit) { return DIGITS[digit]; }
   public static String upperNumber(int number) {
     String string = "";
     while (number > 0) {
@@ -136,14 +140,14 @@ public enum Braille {
     return string;
   }
   public static Braille lowerDigit(final int digit) {
-    return lowerDigits[digit];
+    return LOWER_DIGITS[digit];
   }
   public static Braille interval(final int interval) {
-    return intervals[interval - 1];
+    return INTERVALS[interval - 1];
   }
   public static Braille finger(int finger) { return fingers[finger - 1]; }
 
-  public final static Map<Character, Character>
+  public static final Map<Character, Character>
   brfTable = Collections.unmodifiableMap(new HashMap<Character, Character>() {
       {
         put(createCharacter(0),     new Character(' '));
@@ -209,11 +213,11 @@ public enum Braille {
         put(createCharacter(12456), new Character(']'));
         put(createCharacter(13456), new Character('Y'));
         put(createCharacter(23456), new Character(')'));
-        put(createCharacter(123456),new Character('='));
+        put(createCharacter(123456), new Character('='));
       }
     });
 
-  public static Character createCharacter(int dots) {
+  private static Character createCharacter(int dots) {
     return new Character(unicodeBraille(dotsToBits(dots)));
   }
   public static char unicodeBraille(int bits) {
@@ -229,18 +233,23 @@ public enum Braille {
     return bits;
   }
 
-  private final static Braille[] octaves = new Braille[] {
+  private static final Braille[] OCTAVES = new Braille[] {
     octave1, octave2, octave3, octave4, octave5, octave6, octave7,
     octave8, octave9
   };
-  private static final Braille[] digits = {
-    digit0, digit1, digit2, digit3, digit4, digit5, digit6, digit7, digit8, digit9
+  private static final Braille[] DIGITS = {
+    digit0,
+    digit1, digit2, digit3,
+    digit4, digit5, digit6,
+    digit7, digit8, digit9
   };
-  private static final Braille[] lowerDigits = {
-    lowerDigit0, lowerDigit1, lowerDigit2, lowerDigit3, lowerDigit4, lowerDigit5,
-    lowerDigit6, lowerDigit7, lowerDigit8, lowerDigit9
+  private static final Braille[] LOWER_DIGITS = {
+    lowerDigit0,
+    lowerDigit1, lowerDigit2, lowerDigit3,
+    lowerDigit4, lowerDigit5, lowerDigit6,
+    lowerDigit7, lowerDigit8, lowerDigit9
   };
-  private static final Braille[] intervals = {
+  private static final Braille[] INTERVALS = {
     second, third, fourth, fifth, sixth, seventh, octave
   };
   private static final Braille[] fingers = {

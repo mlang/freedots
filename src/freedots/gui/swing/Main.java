@@ -94,11 +94,11 @@ public final class Main
     }
   }
 
-  protected JTextArea textArea;
-  Object lastObject = null;
+  private JTextArea textArea;
+  private Object lastObject = null;
 
-  boolean autoPlay = false;
-  boolean caretFollowsPlayback = true;
+  private boolean autoPlay = false;
+  private boolean caretFollowsPlayback = true;
 
   public void caretUpdate(CaretEvent caretEvent) {
     int index = caretEvent.getDot();

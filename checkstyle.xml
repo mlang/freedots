@@ -123,14 +123,14 @@
 
     <!-- Checks for common coding problems               -->
     <!-- See http://checkstyle.sf.net/config_coding.html -->
-    <module name="AvoidInlineConditionals"/>
+    <!--module name="AvoidInlineConditionals"/-->
     <module name="DoubleCheckedLocking"/>    <!-- MY FAVOURITE -->
     <module name="EmptyStatement"/>
     <module name="EqualsHashCode"/>
     <!--module name="HiddenField"/-->
     <module name="IllegalInstantiation"/>
     <module name="InnerAssignment"/>
-    <module name="MagicNumber"/>
+    <!--module name="MagicNumber"/-->
     <module name="MissingSwitchDefault"/>
     <module name="RedundantThrows"/>
     <module name="SimplifyBooleanExpression"/>
@@ -161,7 +161,7 @@
       <property name="caseIndent" value="0"/>
     </module>
 
-    <module name="ExplicitInitialization"/>
+    <!--module name="ExplicitInitialization"/-->
     <module name="UnnecessaryParentheses"/>
     <module name="StringLiteralEquality"/>
     <module name="CyclomaticComplexity"/>
