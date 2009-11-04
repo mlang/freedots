@@ -237,6 +237,12 @@ of 3 seems sensible at first thought.)
 
 * Playback
 
+** TODO Play grace notes
+
+For simplicity, grace notes are currently just not played at all.
+This should be fixed, grace notes should be played like any
+other note.
+
 ** TODO Play all supported articulations and ornaments
 
 As an example, the turn ornament is executed already.
