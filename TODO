@@ -15,7 +15,7 @@ As it stands, we currently just know if a certain note is time-modified
 of notes from that, which we need for transcription.  Similarily
 to slurs, handle time-modification groups, but do not use the tuplet
 element, since that is optional in a sense.
-
+See [[*Tuplets][tuplets in braille transcription]].
 
 * Transcription
 Braille transcription is the core functionality of FreeDots, and
@@ -45,28 +45,36 @@ emit the appropriate braille symbol for the particular tuplet.
 
 The simile sign (⠶) is useful for indicating repetitions that
 are usually not marked up specially in visual notation.
+This, in combination with [[*Doubling]] can be thought of as a compression
+method.
+*** TODO Do not use repeat sign if no space is saved
 
-*** STARTED Repetition of whole measures
+Currently, if a measure only consists of a single cell note and that
+measure is repeated, the simile sign is used.  This unnecessarily makes
+it harder to read the melody.  The simile sign should probably
+have a configurable treshold, maybe defaulting to at least needing
+to save 2 (or 1?) cells.  All the repetition detection variants below
+need to take this into account to make resulting scores more readable.
 
-This is implemented but needs extra work.
-
-**** TODO repetition detection needs to ignore certain objects
+*** TODO repetition detection needs to ignore certain objects
 
 If measure1 contains a direction (or similar) and measure 2 does not
 but both contain the same notes, repetition signs should be used.
 Similarily, if both measures start with a different dynamics indicator,
 only that needs to be printed and the repetition sign can be used
-to indicate same notes.
+to indicate that the notes are the same.
 
-This needs to be taken into account when comparing for equality.
+This rule also applies to repetition detection in partial or full
+parallel voices described below.
 
-**** TODO Do not use repeat sign if no space is saved
+*** STARTED Repetition of whole measures
 
-Currently, if a measure only consists of a signel cell note and that
-measure is repeated, the simile sign is used.  This unneedlessly makes
-it harder to read the melody.  The simile sign should probably
-have a configurable treshold, maybe defaulting to at least needing
-to save 2 (or 1?) cells.
+This is implemented but needs extra work.  Basically, the current
+implementation is just a variant of equals() which ignores the
+note offset.  Another method is defined on the primary
+MusicList container to compare two containers for note equality.
+This is just a one-shot prototype which needs to be rethought to
+be more flexible.
 
 *** TODO Repetition of voices
 
@@ -93,80 +101,19 @@ simile is used to indicate the repetition of the previous measure, resulting
 in 8 identical tripplets being played over the time of two measures
 in 2/2 time.
 
-Also note why simile isn't used like this:
-WRONG ⠼⠃⠆ ⠆⠆⠸⠓⠐⠙⠋⠶⠶⠶
+Note that simile could also be used like this:
+⠼⠃⠆ ⠆⠆⠸⠓⠐⠙⠋⠶⠶⠶
 
-While it would be tempting to indicate the tripplets being identical,
-the piece is in 2/2 time, so a *beat* is one half, not one quarter.
+However, it might be desireable to have this behaviour configurable,
+i.e., if repetition detection should be limited to beats only,
+or if it should also be done with smaller subgroups if the resulting
+braille is shorter, should be a boolean option for the user.
 
 This said, the repetition detection algorithm needs to divide
-a measure up into its beats, if that works see if there
-are identical beats.  As above, this technique needs to
-be limited according to its savings,
-so in 4/4 time ⠹⠹⠹⠹ shouldn't become ⠹⠶⠶⠶ which just obscurs things but
-doesn't save any cells.
-
-** TODO in-accord and partial measures
-
-If notes in a measure run in parallel it is the choice of the
-transcriber what to do, options are:
- * use intervals: This is concise but might make it less obvious how
-   several voices run individually.  In a 3 voice measure (treble clef) you'd
-   always need to read the top note and both intervals to know what the
-   bottom note is.
- * use in-accord separators (full-measure and part-measure): This can make
-   several voices pretty clear, but usually results in more cells being used.
-
-Considerations: It really depends on the music if intervals
-or in-accord separators should be used.  It might be a good idea
-to have a interval-cancel feature which would allow the user
-to select a chord and request it not being written with interval notation.
-
-Additionally, the use of part-measure in-accord can further
-complicate things.  There is almost always the choice of using
-only full-measure in-accord, however, what is more readable
-is really hard to tell programmatically (at least I think so for now).
-Also, there seem to be cases where part-measure in-accord is
-necessary to convey what happens (full-measure in accord wouldn't work, see below).
-
-This said, MusicXML has also several ways to convey identical
-structure.  Either <chord/> is used to combine notes (this
-is really just syntactic sugar for manipulating the tick) or <backup> is used
-to write the notes in several sweeps from left to right.  However, visually,
-there is no difference, so ideally, FreeDots would not care how the original
-MusicXML is specified.  Chords should be detected as such also if <chord/>
-is not used but notes appears to be parallel.  It should
-be a setting at transcription time that tells the system if
-intervals are allowed and if full-measure in-accord only, or in-accord in
-general is supposed to be used.
-
-We need to find an intermediate representation that allows for
-easy querying of structure such that parallel notes and partial
-voices can be handled.  In 4/4 time, imagine a measure
-that starts with a quarter c, but continues with a dotted half
-b and d.  This is part-measure in accord, and would be written
-as qc>hb,hd (> terminates a partial measure and , separates partial-measure
-in-accord).
-
-To top if off, it would be desireable to design the transcription
-phase such that all possible transcriptions of a measure (given
-the restrictions specified by the user) are generated and the
-best (shortest) version is used.  However, this could lead
-to strange transcriptions if the method can vary from measure to measure,
-so set up in the hierarchy and make the decision based
-on scoring all measures.  But this will not work with
-music that changes a lot, which is probably the default, so...
-
-*** Examples
-BWV988 Aria m1 left hand:
-
-⠸⠜⠸⠗⠄⠇⠣⠜⠧⠨⠅⠸⠞⠐⠂⠧⠐⠱ or
-⠸⠜⠸⠗⠄⠇⠣⠜⠧⠸⠞⠣⠜⠧⠧⠐⠱ or
-
-BWV 1004 Chaconne m1:
-
-⠧⠨⠅⠐⠪⠄⠊⠐⠂⠨⠟⠬ or
-⠧⠨⠅⠐⠪⠄⠊⠐⠂⠨⠟⠐⠂⠨⠕
+a sequence of notes (measure or partial voice) up into its beats, if that
+works see if there are identical connected groups.  As above, this technique
+needs to be limited according to its savings, so in 4/4 time ⠹⠹⠹⠹ shouldn't become
+⠹⠶⠶⠶ which just obscurs things but doesn't save any cells.
 
 ** TODO Doubling
 
@@ -230,10 +177,75 @@ however, if we look at the example as it is, the second version is just
 one cell shorter while the first version is easier to read.
 Seen from that perspective, doubling should probably be scored on the basis
 of how many cells it saves.  A user configurable value with a default
-of 3 seems sensible at first thought.)
+of 2 seems sensible at first thought.)
 
 ** TODO Note groupings
 
+Note grouping is basically beaming for braille music.
+For the detailed rules, see the braille music manual.
+
+** TODO in-accord and partial measures
+
+If notes in a measure run in parallel it is the choice of the
+transcriber what to do, options are:
+ * use intervals: This is concise but might make it less obvious how
+   several voices run individually.  In a 3 voice measure (treble clef) you'd
+   always need to read the top note and both intervals to know what the
+   bottom note is.
+ * use in-accord separators (full-measure and part-measure): This can make
+   several voices pretty clear, but usually results in more cells being used.
+
+Considerations: It really depends on the music if intervals
+or in-accord separators should be used.  It might be a good idea
+to have a interval-cancel feature which would allow the user
+to select a chord and request it not being written with interval notation.
+
+Additionally, the use of part-measure in-accord can further
+complicate things.  There is almost always the choice of using
+only full-measure in-accord, however, what is more readable
+is really hard to tell programmatically (at least I think so for now).
+Also, there seem to be cases where part-measure in-accord is
+necessary to convey what happens (full-measure in accord wouldn't work, see
+below).
+
+This said, MusicXML has also several ways to convey identical
+structure.  Either <chord/> is used to combine notes (this
+is really just syntactic sugar for manipulating the tick) or <backup> is used
+to write the notes in several sweeps from left to right.  However, visually,
+there is no difference, so ideally, FreeDots would not care how the original
+MusicXML is specified.  Chords should be detected as such also if <chord/>
+is not used but notes appears to be parallel.  It should
+be a setting at transcription time that tells the system if
+intervals are allowed and if full-measure in-accord only, or in-accord in
+general is supposed to be used.
+
+We need to find an intermediate representation that allows for
+easy querying of structure such that parallel notes and partial
+voices can be handled.  In 4/4 time, imagine a measure
+that starts with a quarter c, but continues with a dotted half
+b and d.  This is part-measure in accord, and would be written
+as qc>hb,hd (> terminates a partial measure and , separates partial-measure
+in-accord).
+
+To top if off, it would be desireable to design the transcription
+phase such that all possible transcriptions of a measure (given
+the restrictions specified by the user) are generated and the
+best (shortest) version is used.  However, this could lead
+to strange transcriptions if the method varies from measure to measure,
+so step up in the hierarchy and make the decision based
+on scoring all measures.  But this will not work with
+music that changes a lot, which is probably the default, so...
+
+*** Examples
+BWV988 Aria m1 left hand:
+
+⠸⠜⠸⠗⠄⠇⠣⠜⠧⠨⠅⠸⠞⠐⠂⠧⠐⠱ or
+⠸⠜⠸⠗⠄⠇⠣⠜⠧⠸⠞⠣⠜⠧⠧⠐⠱ or
+
+BWV 1004 Chaconne m1:
+
+⠧⠨⠅⠐⠪⠄⠊⠐⠂⠨⠟⠬ or
+⠧⠨⠅⠐⠪⠄⠊⠐⠂⠨⠟⠐⠂⠨⠕
 
 * Playback
 
