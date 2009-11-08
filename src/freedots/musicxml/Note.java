@@ -24,6 +24,7 @@ package freedots.musicxml;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,6 +44,7 @@ import freedots.model.Staff;
 import freedots.model.RhythmicElement;
 import freedots.model.Syllabic;
 
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -429,5 +431,182 @@ public final class Note extends Musicdata implements RhythmicElement {
       return staff.getKeySignature(offset);
     }
     return null;
+  }
+
+  class Notations {
+    private static final String TECHNICAL_ELEMENT = "technical";
+    private static final String FERMATA_ELEMENT = "fermata";
+
+    private Element element;
+
+    private Technical technical = null;
+    private Element fermata = null;
+
+    Notations(Element element) {
+      this.element = element;
+
+      for (Node node = element.getFirstChild(); node != null;
+           node = node.getNextSibling()) {
+        if (node.getNodeType() == Node.ELEMENT_NODE) {
+          Element child = (Element)node;
+          if (child.getTagName().equals(FERMATA_ELEMENT)) {
+            fermata = child;
+          } else if (child.getTagName().equals(TECHNICAL_ELEMENT)) {
+            technical = new Technical(child);
+          }
+        }
+      }
+    }
+
+    Fermata getFermata() {
+      if (fermata != null) {
+        Fermata.Type fermataType = Fermata.Type.UPRIGHT;
+        Fermata.Shape fermataShape = Fermata.Shape.NORMAL;
+        if (fermata.hasAttribute("type")
+         && fermata.getAttribute("type").equals("inverted"))
+          fermataType = Fermata.Type.INVERTED;
+        return new Fermata(fermataType, fermataShape);
+      }
+
+      return null;
+    }
+
+    public List<Slur> getSlurs() {
+      NodeList nodeList = element.getElementsByTagName("slur");
+      List<Slur> slurs = new ArrayList<Slur>();
+      for (int i = 0; i < nodeList.getLength(); i++) {
+        slurs.add(new Slur((Element)nodeList.item(i)));
+      }
+      return slurs;
+    }    
+
+    public Technical getTechnical() { return technical; }
+    public Technical createTechnical() {
+      Element newElement = element.getOwnerDocument()
+        .createElement(TECHNICAL_ELEMENT);
+      element.appendChild(newElement);
+      technical = new Technical(newElement);
+      return technical;
+    }
+
+    public Set<Articulation> getArticulations() {
+      NodeList nodeList = element.getElementsByTagName("articulations");
+      if (nodeList.getLength() >= 1) {
+        nodeList = ((Element)nodeList.item(nodeList.getLength()-1)).getChildNodes();
+        Set<Articulation> articulations = EnumSet.noneOf(Articulation.class);
+        for (int i = 0; i < nodeList.getLength(); i++) {
+          Node node = nodeList.item(i);
+          if (node.getNodeType() == Node.ELEMENT_NODE) {
+            if (node.getNodeName().equals("accent")) {
+              articulations.add(Articulation.accent);
+            } else if (node.getNodeName().equals("strong-accent")) {
+              articulations.add(Articulation.strongAccent);
+            } else if (node.getNodeName().equals("breath-mark")) {
+              articulations.add(Articulation.breathMark);
+            } else if (node.getNodeName().equals("staccato")) {
+              articulations.add(Articulation.staccato);
+            } else if (node.getNodeName().equals("staccatissimo")) {
+              articulations.add(Articulation.staccatissimo);
+            } else if (node.getNodeName().equals("tenuto")) {
+              articulations.add(Articulation.tenuto);
+            } else {
+              System.err.println("WARNING: Unhandled articulation "
+                                 +node.getNodeName());
+            }
+          }
+        }
+
+        if (articulations.containsAll(Articulation.mezzoStaccatoSet)) {
+          articulations.removeAll(Articulation.mezzoStaccatoSet);
+          articulations.add(Articulation.mezzoStaccato);
+        }
+
+        return articulations;
+      }
+
+      return null;
+    }
+
+    public Set<Ornament> getOrnaments() {
+      NodeList nodeList = element.getElementsByTagName("ornaments");
+      if (nodeList.getLength() >= 1) {
+        nodeList = ((Element)nodeList.item(nodeList.getLength()-1)).getChildNodes();
+        Set<Ornament> ornaments = EnumSet.noneOf(Ornament.class);
+        for (int i = 0; i < nodeList.getLength(); i++) {
+          Node node = nodeList.item(i);
+          if (node.getNodeType() == Node.ELEMENT_NODE) {
+            if (node.getNodeName().equals("mordent")) {
+              ornaments.add(Ornament.mordent);
+            } else if (node.getNodeName().equals("trill-mark")) {
+              ornaments.add(Ornament.trill);
+            } else if (node.getNodeName().equals("turn")) {
+              ornaments.add(Ornament.turn);
+            } else {
+              System.err.println("WARNING: Unhandled ornament "+node.getNodeName());
+            }
+          }
+        }
+
+        return ornaments;
+      }
+
+      return null;
+    }
+
+    class Slur {
+      Element element;
+      Slur(Element element) { this.element = element; }
+      public int getNumber() {
+        if (element.hasAttribute("number"))
+          return Integer.parseInt(element.getAttribute("number"));
+        return 1;
+      }
+      public String getType() { return element.getAttribute("type"); }
+    }
+
+    class Technical {
+      private Element element;
+      private Text fingering;
+      Technical(Element element) {
+        this.element = element;
+        fingering = Score.getTextNode(element, "fingering");
+      }
+      public Fingering getFingering() {
+        if (fingering != null) {
+          String[] items = fingering.getWholeText().split("[ \t\n]+");
+          List<Integer> fingers = new ArrayList<Integer>(2);
+          for (int i = 0; i < items.length; i++) {
+            fingers.add(new Integer(Integer.parseInt(items[i])));
+          }          
+          if (fingers.size() > 0) {
+            Fingering fingering = new Fingering();
+            fingering.setFingers(fingers);
+            return fingering;
+          }
+        }
+        return null;
+      }
+      public void setFingering(Fingering fingering) {
+        String newValue = "";
+        if (fingering.getFingers().size() > 0) {
+          StringBuilder stringBuilder = new StringBuilder();
+          for (int finger = 0; finger < fingering.getFingers().size(); finger++) {
+            stringBuilder.append(fingering.getFingers().get(finger).toString());
+            if (finger < fingering.getFingers().size() - 1)
+              stringBuilder.append(" ");
+          }
+          newValue = stringBuilder.toString();
+        }
+        if (this.fingering != null) {
+          this.fingering.replaceWholeText(newValue);
+        } else {
+          Document ownerDocument = element.getOwnerDocument();
+          Element newElement = ownerDocument.createElement("fingering");
+          this.fingering = ownerDocument.createTextNode(newValue);
+          newElement.appendChild(this.fingering);
+          element.appendChild(newElement);
+        }
+      }
+    }
   }
 }

@@ -142,9 +142,9 @@ public final class Part {
               boolean advanceTime = !note.isGrace();
               boolean addNoteToEventList = true;
 
-              Notations notations = note.getNotations();
+              Note.Notations notations = note.getNotations();
               if (notations != null) {
-                for (Notations.Slur nslur:notations.getSlurs()) {
+                for (Note.Notations.Slur nslur:notations.getSlurs()) {
                   int number = nslur.getNumber() - 1;
                   int slurStaffNumber = note.getStaffNumber();
 
