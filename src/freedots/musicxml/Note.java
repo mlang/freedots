@@ -53,10 +53,10 @@ import org.w3c.dom.Text;
 public final class Note extends Musicdata implements RhythmicElement {
   static final String ACCIDENTAL_ELEMENT = "accidental";
   static final String CHORD_ELEMENT = "chord";
-  static final String LYRIC_ELEMENT = "lyric";
-  static final String NOTATIONS_ELEMENT = "notations";
-  static final String STAFF_ELEMENT = "staff";
-  static final String TIME_MODIFICATION_ELEMENT = "time-modification";
+  private static final String LYRIC_ELEMENT = "lyric";
+  private static final String NOTATIONS_ELEMENT = "notations";
+  private static final String STAFF_ELEMENT = "staff";
+  private static final String TIME_MODIFICATION_ELEMENT = "time-modification";
 
   private static final Map<String, Articulation>
   ARTICULATION_MAP = Collections.unmodifiableMap
