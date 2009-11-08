@@ -58,6 +58,19 @@ public final class Note extends Musicdata implements RhythmicElement {
   static final String STAFF_ELEMENT = "staff";
   static final String TIME_MODIFICATION_ELEMENT = "time-modification";
 
+  private static final Map<String, Articulation>
+  ARTICULATION_MAP = Collections.unmodifiableMap
+    (new HashMap<String, Articulation>() {
+      {
+        put("accent", Articulation.accent);
+        put("strong-accent", Articulation.strongAccent);
+        put("breath-mark", Articulation.breathMark);
+        put("staccato", Articulation.staccato);
+        put("staccatissimo", Articulation.staccatissimo);
+        put("tenuto", Articulation.tenuto);
+      }
+    });
+
   Part part;
   public Part getPart() { return part; }
 
@@ -436,11 +449,14 @@ public final class Note extends Musicdata implements RhythmicElement {
   class Notations {
     private static final String TECHNICAL_ELEMENT = "technical";
     private static final String FERMATA_ELEMENT = "fermata";
+    private static final String ARTICULATIONS_ELEMENT = "articulations";
 
     private Element element;
 
     private Technical technical = null;
     private Element fermata = null;
+    private Set<Articulation>
+    articulations = EnumSet.noneOf(Articulation.class);
 
     Notations(Element element) {
       this.element = element;
@@ -453,8 +469,27 @@ public final class Note extends Musicdata implements RhythmicElement {
             fermata = child;
           } else if (child.getTagName().equals(TECHNICAL_ELEMENT)) {
             technical = new Technical(child);
+          } else if (child.getTagName().equals(ARTICULATIONS_ELEMENT)) {
+            for (Node articulationNode = child.getFirstChild();
+                 articulationNode != null;
+                 articulationNode = articulationNode.getNextSibling()) {
+              if (articulationNode.getNodeType() == Node.ELEMENT_NODE) {
+                String nodeName = articulationNode.getNodeName();
+                if (ARTICULATION_MAP.containsKey(nodeName)) {
+                  articulations.add(ARTICULATION_MAP.get(nodeName));
+                } else {
+                  System.err.println("WARNING: Unhandled articulation "
+                                     + nodeName);
+                }
+              }
+            }
           }
         }
+      }
+
+      if (articulations.containsAll(Articulation.mezzoStaccatoSet)) {
+        articulations.removeAll(Articulation.mezzoStaccatoSet);
+        articulations.add(Articulation.mezzoStaccato);
       }
     }
 
@@ -489,43 +524,7 @@ public final class Note extends Musicdata implements RhythmicElement {
       return technical;
     }
 
-    public Set<Articulation> getArticulations() {
-      NodeList nodeList = element.getElementsByTagName("articulations");
-      if (nodeList.getLength() >= 1) {
-        nodeList = ((Element)nodeList.item(nodeList.getLength()-1)).getChildNodes();
-        Set<Articulation> articulations = EnumSet.noneOf(Articulation.class);
-        for (int i = 0; i < nodeList.getLength(); i++) {
-          Node node = nodeList.item(i);
-          if (node.getNodeType() == Node.ELEMENT_NODE) {
-            if (node.getNodeName().equals("accent")) {
-              articulations.add(Articulation.accent);
-            } else if (node.getNodeName().equals("strong-accent")) {
-              articulations.add(Articulation.strongAccent);
-            } else if (node.getNodeName().equals("breath-mark")) {
-              articulations.add(Articulation.breathMark);
-            } else if (node.getNodeName().equals("staccato")) {
-              articulations.add(Articulation.staccato);
-            } else if (node.getNodeName().equals("staccatissimo")) {
-              articulations.add(Articulation.staccatissimo);
-            } else if (node.getNodeName().equals("tenuto")) {
-              articulations.add(Articulation.tenuto);
-            } else {
-              System.err.println("WARNING: Unhandled articulation "
-                                 +node.getNodeName());
-            }
-          }
-        }
-
-        if (articulations.containsAll(Articulation.mezzoStaccatoSet)) {
-          articulations.removeAll(Articulation.mezzoStaccatoSet);
-          articulations.add(Articulation.mezzoStaccato);
-        }
-
-        return articulations;
-      }
-
-      return null;
-    }
+    public Set<Articulation> getArticulations() { return articulations; }
 
     public Set<Ornament> getOrnaments() {
       NodeList nodeList = element.getElementsByTagName("ornaments");
