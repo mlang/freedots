@@ -2,6 +2,14 @@ FREEDOTS -*- mode: org; fill-column: 78 -*-
 
 * MusicXML
 
+** TODO Cleanup class hierarchy
+*** TODO Remove Musicdata class
+    SCHEDULED: <2009-11-10 Tue>
+
+The musicdata class is a pretty useless parent class, only
+providing one method and a constructor.  Remove it to make way
+for better abstraction.
+
 ** TODO Properly handle spanners
 *** TODO Fix slur parsing
 
@@ -261,7 +269,6 @@ As an example, the turn ornament is executed already.
 Many more things need doing, like proper dynamics, articulation
 (staccato etc) and mordent etc.
 
-
 * User interface
 
 ** TODO Editing fingering
@@ -283,7 +290,6 @@ in the freedots.musicxml package to support this properly.
 Currently the implementation just stupidly assumes
 fingering is just a list of finger numbers, i.e. it only
 supports keyboard fingering.
-
 
 
 * MS Windows Installer
