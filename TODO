@@ -2,14 +2,6 @@ FREEDOTS -*- mode: org; fill-column: 78 -*-
 
 * MusicXML
 
-** TODO Cleanup class hierarchy
-*** TODO Remove Musicdata class
-    SCHEDULED: <2009-11-10 Tue>
-
-The musicdata class is a pretty useless parent class, only
-providing one method and a constructor.  Remove it to make way
-for better abstraction.
-
 ** TODO Properly handle spanners
 *** TODO Fix slur parsing
 

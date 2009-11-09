@@ -23,9 +23,27 @@
 package freedots.musicxml;
 
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
-public class Backup extends Musicdata {
+import freedots.model.Fraction;
+
+public final class Backup {
+  private int divisions, durationMultiplier;
+  private Element element;
   public Backup(Element element, int divisions, int durationMultiplier) {
-    super(element, divisions, durationMultiplier);
+    this.element = element;
+    this.divisions = divisions;
+    this.durationMultiplier = durationMultiplier;
+  }
+  public Fraction getDuration() throws MusicXMLParseException {
+    NodeList nodeList = element.getElementsByTagName("duration");
+    if (nodeList.getLength() == 1) {
+      Node textNode = nodeList.item(0).getChildNodes().item(0);
+      int duration = Math.round(Float.parseFloat(textNode.getNodeValue()));
+      Fraction fraction = new Fraction(duration * durationMultiplier, 4 * divisions);
+      return fraction;
+    }
+    throw new MusicXMLParseException("Missing <duration> element");
   }
 }

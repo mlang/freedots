@@ -50,7 +50,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 
-public final class Note extends Musicdata implements RhythmicElement {
+public final class Note implements RhythmicElement {
   static final String ACCIDENTAL_ELEMENT = "accidental";
   static final String CHORD_ELEMENT = "chord";
   private static final String LYRIC_ELEMENT = "lyric";
@@ -71,7 +71,10 @@ public final class Note extends Musicdata implements RhythmicElement {
       }
     });
 
-  Part part;
+  private int divisions, durationMultiplier;
+  private Element element;
+
+  private Part part;
   public Part getPart() { return part; }
 
   Fraction offset;
@@ -123,7 +126,9 @@ public final class Note extends Musicdata implements RhythmicElement {
     int divisions, int durationMultiplier,
     Part part
   ) throws MusicXMLParseException {
-    super(element, divisions, durationMultiplier);
+    this.element = element;
+    this.divisions = divisions;
+    this.durationMultiplier = durationMultiplier;
     this.part = part;
     this.offset = offset;
     for (Node node = element.getFirstChild(); node != null;
@@ -360,7 +365,6 @@ public final class Note extends Musicdata implements RhythmicElement {
     if (instrument != null) return instrument.getMidiProgram();
     return 0;
   }
-  @Override
   public Fraction getDuration() throws MusicXMLParseException {
     if (duration != null) {
       int value = Math.round(Float.parseFloat(duration.getNodeValue()));
