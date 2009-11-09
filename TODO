@@ -271,7 +271,7 @@ Many more things need doing, like proper dynamics, articulation
 
 * User interface
 
-** TODO Editing fingering
+** TODO Editing of fingering
 
 freedots.musicxml almost supports setting fingering already.
 
@@ -279,7 +279,7 @@ freedots.musicxml almost supports setting fingering already.
 
 This is the simplest case.  Most of the time only a single
 finger needs to be specified, sometimes fingers need to change
-on one note ("stummer Fingerwechsel" in german).
+on one note (silent finger change).
 
 *** TODO Fingering string instruments
 
@@ -291,6 +291,13 @@ Currently the implementation just stupidly assumes
 fingering is just a list of finger numbers, i.e. it only
 supports keyboard fingering.
 
+** TODO Editing of articulations
+
+A note can have a set of articulation marks attached to it.
+Editing of those is a non-structural change, i.e. it
+does work with the current musicxml handling.
+
+Write a dialog which allows the user to change the articulation marks attached to a certain note.
 
 * MS Windows Installer
 ** TODO Check error during installation
