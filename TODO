@@ -45,6 +45,11 @@ for later ideas.))
 
 See [[*Tuplets][tuplets in braille transcription]].
 
+* Testsuite
+
+There are currently just a few small tests for AugmentedFraction
+and its superclass.  Write much more tests.
+
 * Transcription
 Braille transcription is the core functionality of FreeDots, and
 also the most complicated to implement.  In a sense, what is there already is
