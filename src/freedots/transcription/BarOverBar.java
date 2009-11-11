@@ -47,7 +47,7 @@ class BarOverBar implements Strategy {
 
     for (Part part:transcriber.getScore().getParts()) {
       if (initialKeySignature == null) {
-	initialKeySignature = part.getKeySignature();
+        initialKeySignature = part.getKeySignature();
       } else {
         if (!initialKeySignature.equals(part.getKeySignature())) {
           System.err.println("WARNING: Parts with different initial key signatures");
@@ -178,7 +178,7 @@ class BarOverBar implements Strategy {
     }
   }
 
-  class BrailleStaff extends ArrayList<BrailleMeasure> {
+  private class BrailleStaff extends ArrayList<BrailleMeasure> {
     BrailleStaff() {
       super();
     }
@@ -187,23 +187,23 @@ class BarOverBar implements Strategy {
     public Braille getIntro() { return intro; }
   }
   @SuppressWarnings("serial")
-  class BrailleStaves extends ArrayList<BrailleStaff> {
-    BrailleStaves(int initialCapacity) {
+  private class BrailleStaves extends ArrayList<BrailleStaff> {
+    BrailleStaves(final int initialCapacity) {
       super(initialCapacity);
     }
     public int maxLength(int from, int to) {
       int length = 0;
       for (int i = from; i < to; i++) {
-	length += maxLengthAt(i);
+        length += maxLengthAt(i);
       }
       return length + (to - from);
     }
     public int maxLengthAt(int index) {
       int maxLength = 0;
       for (BrailleStaff brailleStaff : this) {
-	BrailleMeasure measure = brailleStaff.get(index);
+        BrailleMeasure measure = brailleStaff.get(index);
         BrailleList braille = measure.head(1024, false);
-	maxLength = Math.max(maxLength, braille.length());
+        maxLength = Math.max(maxLength, braille.length());
       }
       return maxLength;
     }

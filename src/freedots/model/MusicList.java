@@ -143,8 +143,8 @@ public class MusicList extends java.util.ArrayList<Event> {
   public boolean equalsIgnoreOffset(MusicList other) {
     if (this.size() == other.size()) {
       for (int i = 0; i < size(); i++) {
-	if (!(this.get(i).getClass() == other.get(i).getClass())) return false;
-	if (!this.get(i).equalsIgnoreOffset(other.get(i))) return false;
+        if (!(this.get(i).getClass() == other.get(i).getClass())) return false;
+        if (!this.get(i).equalsIgnoreOffset(other.get(i))) return false;
       }
       return true;
     }

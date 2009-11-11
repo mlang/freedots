@@ -54,10 +54,10 @@ public class StartBar extends VerticalEvent {
     if (other instanceof StartBar) {
       StartBar otherBar = (StartBar)other;
       if (getStaffCount() == otherBar.getStaffCount() &&
-	  getNewSystem() == otherBar.getNewSystem() &&
-	  getEndingStart() == otherBar.getEndingStart()
-	  )
-	return true;
+          getNewSystem() == otherBar.getNewSystem() &&
+          getEndingStart() == otherBar.getEndingStart()
+          )
+        return true;
     }
     return false;
   }

@@ -59,6 +59,8 @@ public final class Part {
 
   /**
    * Construct a new part (and all its relevant child objects)
+   *
+   * @throws MusicXMLParseException if an unrecoverable error happens
    */
   public Part (
     Element part, Element scorePart,
@@ -195,7 +197,7 @@ public final class Part {
               }
               if (advanceTime) {
                 offset = offset.add(note.getDuration());
-	      }
+              }
             } else if ("direction".equals(measureChild.getNodeName())) {
               Direction direction = new Direction(musicdata, measureOffset.add(offset));
               eventList.add(direction);

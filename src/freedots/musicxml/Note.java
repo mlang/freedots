@@ -114,12 +114,12 @@ public final class Note implements RhythmicElement {
       }
     });
 
-  Element tie = null;
-  Element timeModification = null;
+  private Element tie = null;
+  private Element timeModification = null;
 
-  Lyric lyric = null;
+  private Lyric lyric = null;
 
-  Notations notations = null;
+  private Notations notations = null;
 
   Note(
     Fraction offset, Element element,

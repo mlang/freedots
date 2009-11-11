@@ -48,19 +48,19 @@ import org.xml.sax.SAXException;
 /**
  * Draw a single note using staff notation.
  */
-public final class SingleNoteRenderer extends JPanel {
+final class SingleNoteRenderer extends JPanel {
   private static final long serialVersionUID = 8634349010555582625L;
 
-  private Note currentNote=null;
+  private Note currentNote = null;
   
-  private int lineSpacing=8;
-  private int lineLength=20;
+  private int lineSpacing = 8;
+  private int lineLength = 20;
   
-  private int globalNotePos=0;
+  private int globalNotePos = 0;
   
   
   private static final char TRANSPARENT = '-';
-  private static final char[] charTable = new char[] {
+  private static final char[] CHARTABLE = new char[] {
   '#', // 0 Black
   '$', // 1
   '*', // 2
@@ -230,8 +230,8 @@ public final class SingleNoteRenderer extends JPanel {
       if (c == TRANSPARENT) {
           return 255;
       } else {
-          for (int i = charTable.length - 1; i >= 0; i--) {
-              if (charTable[i] == c) {
+          for (int i = CHARTABLE.length - 1; i >= 0; i--) {
+              if (CHARTABLE[i] == c) {
                   int level = 3 + (i * 36); // Range 3 .. 255 (not too bad)
 
                   return level;

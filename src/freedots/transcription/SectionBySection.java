@@ -41,6 +41,10 @@ import freedots.musicxml.Part;
 class SectionBySection implements Strategy {
   private Options options = null;
 
+  /** Main entry point to invoke implemented transcription Strategy.
+   *
+   * @param transcriber is the Transcriber object to use
+   */
   public void transcribe(final Transcriber transcriber) {
     options = transcriber.getOptions();
 

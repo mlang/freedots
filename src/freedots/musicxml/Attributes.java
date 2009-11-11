@@ -97,7 +97,7 @@ public final class Attributes {
     public Clef(Element element) {
       super(getClefSignFromElement(element));
       if (sign != Sign.percussion) {
-	line = getClefLineFromElement(element);
+        line = getClefLineFromElement(element);
       }
       this.element = element;
       staffNumber = element.getAttribute("number");

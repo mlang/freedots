@@ -210,7 +210,9 @@ class BrailleMeasure {
             if (interpretations.size() > 1) {
               splitPoint = valueInterpreter.getSplitPoint();
               if (splitPoint == null) {
-                System.err.println("WARNING: "+interpretations.size()+" possible interpretations:");
+                System.err.println("WARNING: "
+                                   + interpretations.size()
+                                   + " possible interpretations:");
                 for (ValueInterpreter.Interpretation
                        interpretation:interpretations) {
                   System.err.println((interpretation.isCorrect()?" * ":"   ") +

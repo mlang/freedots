@@ -28,7 +28,7 @@ import freedots.model.Fraction;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-public class Direction implements Event {
+public final class Direction implements Event {
   Fraction offset;
   private Element xml;
 
@@ -52,7 +52,7 @@ public class Direction implements Event {
       Sound thisSound = this.getSound();
       Sound otherSound = other.getSound();
       if (thisSound == null || otherSound == null)
-	return thisSound == otherSound;
+        return thisSound == otherSound;
       return thisSound.equalsIgnoreOffset(otherSound);
     }
     return false;

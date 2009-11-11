@@ -60,7 +60,7 @@ public final class Transcriber {
     return options.getPageWidth() - characterCount;
   }
 
-  /** Find Object responsible for character at specified index
+  /** Find Object responsible for character at specified index.
    *
    * @param characterIndex indicates the position relative to toString()
    *
