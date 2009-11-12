@@ -164,8 +164,7 @@
     <exec executable="xsltproc" logError="true">
       <arg value="--xinclude"/>
       <arg value="--stringparam"/>
-      <arg value="man.output.base.dir"/>
-      <arg value="'doc/'"/>
+      <arg value="man.output.base.dir"/> <arg value="'doc/'"/>
       <arg value="${style.docbook.manpage}"/>
       <arg value="doc/manual.xml"/>
     </exec>
@@ -178,7 +177,6 @@
              classpath="lib/checkstyle-all-5.0.jar"/>
     <checkstyle config="checkstyle.xml">
       <fileset dir="${src}" includes="**/*.java"/>
-
     </checkstyle>
   </target>
 

@@ -25,6 +25,8 @@ package freedots.model;
 import java.util.HashMap;
 import java.util.Map;
 
+import freedots.logging.Logger;
+
 /**
  * Since about 1700, accidentals have been understood to continue for the
  * remainder of the measure in which they occur, so that a subsequent note
@@ -35,6 +37,8 @@ import java.util.Map;
  * accidental is tied to the same note across a barline.
  */
 public class AccidentalContext {
+  private static final Logger log = Logger.getLogger(AccidentalContext.class);
+
   private KeySignature keySignature;
   private Map<Integer, Accidental> ranks = new HashMap<Integer, Accidental>();
 
@@ -65,11 +69,13 @@ public class AccidentalContext {
         if (ranks.containsKey(rank)) {
           Accidental impliedAccidental = ranks.get(rank);
           if ((int)impliedAccidental.getAlter() != alter) {
-            System.err.println("Pitch alter ("+alter+") != implied accidental "+impliedAccidental);
+            log.info("Pitch alter ("+alter+") != implied accidental "
+                     + impliedAccidental);
           }
         } else {
           if (keySignature.getModifier(pitch.getStep()) != alter) {
-            System.err.println("Pitch "+pitch+" != key signature alteration "+keySignature.getModifier(pitch.getStep()));
+            log.info("Pitch " +pitch + " != key signature alteration "
+                     + keySignature.getModifier(pitch.getStep()));
           }
         }
       }

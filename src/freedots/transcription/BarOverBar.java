@@ -24,6 +24,7 @@ package freedots.transcription;
 
 import java.util.ArrayList;
 import freedots.Braille;
+import freedots.logging.Logger;
 import freedots.Options;
 import freedots.model.EndBar;
 import freedots.model.Event;
@@ -35,6 +36,8 @@ import freedots.model.TimeSignature;
 import freedots.musicxml.Part;
 
 class BarOverBar implements Strategy {
+  private static final Logger log = Logger.getLogger(BarOverBar.class);
+
   private Options options = null;
 
   public void transcribe(Transcriber transcriber) {
@@ -50,7 +53,7 @@ class BarOverBar implements Strategy {
         initialKeySignature = part.getKeySignature();
       } else {
         if (!initialKeySignature.equals(part.getKeySignature())) {
-          System.err.println("WARNING: Parts with different initial key signatures");
+          log.warning("Parts with different initial key signatures are not implemented");
         }
       }
       if (initialTimeSignature == null) {

@@ -47,6 +47,8 @@ import org.xml.sax.SAXParseException;
  * This is the main program entry point.
  */
 public final class Main {
+  private static GraphicalUserInterface gui = null;
+
   private Main() { super(); }
 
   /**
@@ -133,7 +135,6 @@ public final class Main {
   private static void maybeStartGUI(Options options, Transcriber transcriber) {
     if (options.getWindowSystem()) {
       try {
-        GraphicalUserInterface gui = null;
         Class<?> guiClass = Class.forName(options.getUI().getClassName());
         if (GraphicalUserInterface.class.isAssignableFrom(guiClass)) {
           Constructor constructor = guiClass.getConstructor(new Class []{
@@ -154,6 +155,8 @@ public final class Main {
       }
     }
   }
+
+  public static GraphicalUserInterface getGui() { return gui; }
 
   private static void printUsage() {
     System.out.println("FreeDots " + VERSION);

@@ -30,6 +30,7 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
+import freedots.logging.Logger;
 import freedots.model.Accidental;
 import freedots.model.AccidentalContext;
 import freedots.model.ClefChange;
@@ -49,6 +50,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 public final class Part {
+  private static final Logger log = Logger.getLogger(Part.class);
+
   private Element scorePart;
 
   private Score score;
@@ -244,7 +247,8 @@ public final class Part {
                 }
               }
             } else
-              System.err.println("Unsupported musicdata element " + measureChild.getNodeName());
+              log.info("Unsupported musicdata element "
+                       + measureChild.getNodeName());
             if (offset.compareTo(measureDuration) > 0) measureDuration = offset;
           }
         }
@@ -260,7 +264,9 @@ public final class Part {
           measureOffset = measureOffset.add(measureDuration);
         } else {
           if (measureDuration.compareTo(activeTimeSignature) != 0) {
-            System.err.println("WARNING: Incomplete measure "+xmlMeasure.getAttribute("number")+": "+timeSignature+" "+measureDuration);
+            log.warning("Incomplete measure "
+                        + xmlMeasure.getAttribute("number") + ": "
+                        + timeSignature + " " + measureDuration);
           }
           measureOffset = measureOffset.add(activeTimeSignature);
         }

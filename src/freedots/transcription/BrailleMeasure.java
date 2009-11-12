@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Set;
 
 import freedots.Braille;
+import freedots.logging.Logger;
 import freedots.Options;
 import freedots.model.AbstractPitch;
 import freedots.model.Accidental;
@@ -40,6 +41,8 @@ import freedots.model.VoiceChord;
 import freedots.musicxml.Note;
 
 class BrailleMeasure {
+  private static final Logger log = Logger.getLogger(BrailleMeasure.class);
+
   private BrailleMeasure previous = null;
   private MusicList events = new MusicList();
   public MusicList getEvents() { return events; }
@@ -210,14 +213,17 @@ class BrailleMeasure {
             if (interpretations.size() > 1) {
               splitPoint = valueInterpreter.getSplitPoint();
               if (splitPoint == null) {
-                System.err.println("WARNING: "
-                                   + interpretations.size()
-                                   + " possible interpretations:");
+                StringBuilder sb = new StringBuilder();
+
+                sb.append("Unimplemented: "
+                          + interpretations.size()
+                          + " possible interpretations:\n");
                 for (ValueInterpreter.Interpretation
                        interpretation:interpretations) {
-                  System.err.println((interpretation.isCorrect()?" * ":"   ") +
-                                     interpretation.toString());
+                  sb.append((interpretation.isCorrect()?" * ":"   ")
+                            + interpretation.toString() + "\n");
                 }
+                log.warning(sb.toString());
               }
             }
             printNoteList(fmia.getParts().get(p), state, splitPoint);

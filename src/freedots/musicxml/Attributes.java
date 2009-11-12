@@ -74,15 +74,6 @@ public final class Attributes {
     }
     return null;
   }
-  public Key getKey() {
-    NodeList nodeList = element.getElementsByTagName("key");
-    if (nodeList.getLength() == 1) {
-      return new Key((Element)nodeList.item(0));
-    } else if (nodeList.getLength() > 1) {
-      System.err.println("Unhandled multiple key signatures in <attributes>");
-    }
-    return null;
-  }
   public List<Key> getKeys() {
     NodeList nodeList = element.getElementsByTagName("key");
     List<Key> keys = new ArrayList<Key>();
@@ -100,8 +91,8 @@ public final class Attributes {
         line = getClefLineFromElement(element);
       }
       this.element = element;
-      staffNumber = element.getAttribute("number");
-      if (staffNumber.equals("")) staffNumber = null;
+      if (element.hasAttribute("number"))
+        staffNumber = element.getAttribute("number");
     }
     public int getStaffNumber() {
       if (staffNumber != null) return Integer.parseInt(staffNumber) - 1;
@@ -126,7 +117,9 @@ public final class Attributes {
     }
     public String getStaffName() { return staffName; }
   }
-  static int getBeatsFromElement(Element element) throws MusicXMLParseException {
+
+  private static int
+  getBeatsFromElement(Element element) throws MusicXMLParseException {
     NodeList nodeList = element.getElementsByTagName("beats");
     int nodeCount = nodeList.getLength();
     if (nodeCount >= 1) {
@@ -136,7 +129,8 @@ public final class Attributes {
     }
     throw new MusicXMLParseException("missing <beats> element");
   }
-  static int getBeatTypeFromElement(Element element) throws MusicXMLParseException {
+  private static int
+  getBeatTypeFromElement(Element element) throws MusicXMLParseException {
     NodeList nodeList = element.getElementsByTagName("beat-type");
     int nodeCount = nodeList.getLength();
     if (nodeCount >= 1) {
@@ -146,7 +140,8 @@ public final class Attributes {
     }
     throw new MusicXMLParseException("missing <beat-type> element");
   }
-  static int getFifthsFromElement(Element element) throws MusicXMLParseException {
+  private static int
+  getFifthsFromElement(Element element) throws MusicXMLParseException {
     NodeList nodeList = element.getElementsByTagName("fifths");
     int nodeCount = nodeList.getLength();
     if (nodeCount >= 1) {
@@ -156,7 +151,7 @@ public final class Attributes {
     }
     throw new MusicXMLParseException("missing <fifths> element");
   }
-  static Clef.Sign getClefSignFromElement(Element element) throws MusicXMLParseException {
+  private static Clef.Sign getClefSignFromElement(Element element) throws MusicXMLParseException {
     NodeList nodeList = element.getElementsByTagName("sign");
     int nodeCount = nodeList.getLength();
     if (nodeCount >= 1) {

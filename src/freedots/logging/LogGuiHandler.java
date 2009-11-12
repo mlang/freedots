@@ -20,19 +20,41 @@
  *
  * This file is maintained by Mario Lang <mlang@delysid.org>.
  */
-package freedots.gui;
+package freedots.logging;
 
-/**
- * Common methods which need to be implemented by all different GUI classes.
- */
-public interface GraphicalUserInterface {
-  /**
-   * Called after construction to start the main loop.
-   */
-  void run();
+import java.util.concurrent.BlockingQueue;
+import java.util.logging.LogRecord;
+
+class LogGuiHandler extends java.util.logging.Handler {
+  private final BlockingQueue<LogRecord> logQueue = Logger.getQueue();
+
+  LogGuiHandler() { }
 
   /**
-   * Called whenever some log record (or several) have arrived.
+   * Called when the handler must be closed.
    */
-  void notifyLog();
+  @Override
+  public void close() {}
+
+  /**
+   * Flush any buffered output.
+   */
+  @Override
+  public void flush() {}
+
+  /**
+   * Publish one log record.
+   *
+   * @param record the record to be logged
+   */
+  @Override
+  public void publish(LogRecord record) {
+    if (isLoggable(record)) {
+      if (!logQueue.offer(record)) {
+        System.err.println("Logger queue is full");
+      }
+      
+      if (freedots.Main.getGui() != null) freedots.Main.getGui().notifyLog();
+    }
+  }
 }

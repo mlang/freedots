@@ -34,6 +34,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.InputStream;
+import java.util.concurrent.BlockingQueue;
+import java.util.logging.LogRecord;
 import javax.sound.midi.MidiUnavailableException;
 import javax.swing.Action;
 import javax.swing.ButtonGroup;
@@ -50,6 +52,7 @@ import javax.swing.JTextArea;
 import javax.swing.event.CaretEvent;
 
 import freedots.Options;
+import freedots.logging.Logger;
 import freedots.musicxml.Library;
 import freedots.musicxml.MIDISequence;
 import freedots.musicxml.Note;
@@ -66,8 +69,8 @@ public final class Main
   extends JFrame
   implements javax.swing.event.CaretListener,
              freedots.gui.GraphicalUserInterface,
-             freedots.playback.PlaybackObserver {
-  
+             freedots.playback.PlaybackObserver
+{
   private Score score;
   public Score getScore() { return score; }
 
@@ -94,7 +97,7 @@ public final class Main
     }
   }
 
-  private JTextArea textArea;
+  private JTextArea textArea, logArea;
   private Object lastObject = null;
 
   private boolean autoPlay = false;
@@ -212,13 +215,18 @@ public final class Main
     textArea.addCaretListener(this);
     JScrollPane scrollPane = new JScrollPane(textArea);
 
+    logArea = new JTextArea(5, 60);
+    logArea.setEditable(false);
+
     // Lay out the content pane.
     JPanel contentPane = new JPanel();
     contentPane.setLayout(new BorderLayout());
     //contentPane.setPreferredSize(new Dimension(400, 100));
     contentPane.add(scrollPane, BorderLayout.CENTER);
-    //statusBar = new StatusBar();
-    //contentPane.add(statusBar, BorderLayout.SOUTH);
+
+    scrollPane = new JScrollPane(logArea);
+    contentPane.add(scrollPane, BorderLayout.SOUTH);
+
     noteRenderer = new SingleNoteRenderer();
     contentPane.add(noteRenderer, BorderLayout.AFTER_LAST_LINE);
     setContentPane(contentPane);
@@ -469,5 +477,25 @@ public final class Main
       if (objectPosition != -1) position = objectPosition;
     }
     textArea.setCaretPosition(position);
+  }
+
+  public void notifyLog() {
+    javax.swing.SwingUtilities.invokeLater
+      (new Runnable() {
+          public void run () {
+            final BlockingQueue<LogRecord> queue = Logger.getQueue();
+            while (queue.size() != 0) {
+              LogRecord record = queue.poll();
+              if (record != null) {
+                StringBuilder sb = new StringBuilder(256);
+                sb.append(record.getLevel().toString())
+                  .append(" - ")
+                  .append(record.getMessage())
+                  .append("\n");
+                logArea.append(sb.toString());
+              }
+            }
+          }
+        });
   }
 }

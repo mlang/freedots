@@ -327,6 +327,12 @@ does work with the current musicxml handling.
 
 Write a dialog which allows the user to change the articulation marks attached to a certain note.
 
+** TODO Create log view widget
+
+The class freedots.logging.Logger currently implements a simple miltiplex
+of log messages to the console and to a queue.
+The GUI needs some usability work.
+
 * MS Windows Installer
 ** TODO Check error during installation
 

@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import freedots.logging.Logger;
 import freedots.model.Accidental;
 import freedots.model.Articulation;
 import freedots.model.AugmentedFraction;
@@ -51,6 +52,8 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 
 public final class Note implements RhythmicElement {
+  private static final Logger log = Logger.getLogger(Note.class);
+
   static final String ACCIDENTAL_ELEMENT = "accidental";
   static final String CHORD_ELEMENT = "chord";
   private static final String LYRIC_ELEMENT = "lyric";
@@ -545,7 +548,7 @@ public final class Note implements RhythmicElement {
             } else if (node.getNodeName().equals("turn")) {
               ornaments.add(Ornament.turn);
             } else {
-              System.err.println("WARNING: Unhandled ornament "+node.getNodeName());
+              log.warning("Unhandled ornament " + node.getNodeName());
             }
           }
         }
