@@ -119,7 +119,7 @@
     </validate-musicxml>
   </target>
 
-  <target name="build.jar" depends="test, validate.scores"
+  <target name="build.jar" depends="validate.scores, test"
           description="generate the jar">
     <mkdir dir="${dist}"/>
     <jar jarfile="${dist}/FreeDots-${DSTAMP}.jar" basedir="${build}">
