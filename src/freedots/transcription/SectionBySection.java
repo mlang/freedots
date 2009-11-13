@@ -132,7 +132,7 @@ class SectionBySection implements Strategy {
               else if (rightBar.getEndOfMusic())
                 transcriber.printString(Braille.doubleBar.toString());
 
-              transcriber.printString(" ");
+              if (!rightBar.getEndOfMusic()) transcriber.printString(" ");
 
               measure = new BrailleMeasure(measure);
               measure.setVoiceDirection(voiceDirection);

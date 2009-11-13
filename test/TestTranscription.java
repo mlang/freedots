@@ -24,8 +24,8 @@ public class TestTranscription extends junit.framework.TestCase {
       + nl
       + score.getParts().get(0).getName() + nl
       + keyAndTimeSignature + nl
-      + "  ⠨⠜⠨⠳⠃⠳⠁⠉⠐⠖⠇⠊⠄⠾ ⠊⠐⠢⠷⠛⠇⠐⠢⠯⠕⠣⠅ " + nl
-      + "  ⠸⠜⠸⠗⠄⠇⠣⠜⠧⠨⠅⠸⠞⠐⠂⠧⠐⠱ ⠸⠟⠄⠣⠜⠧⠨⠅⠸⠎⠐⠂⠧⠐⠱⠣⠅ " + nl + nl;
+      + "  ⠨⠜⠨⠳⠃⠳⠁⠉⠐⠖⠇⠊⠄⠾ ⠊⠐⠢⠷⠛⠇⠐⠢⠯⠕⠣⠅" + nl
+      + "  ⠸⠜⠸⠗⠄⠇⠣⠜⠧⠨⠅⠸⠞⠐⠂⠧⠐⠱ ⠸⠟⠄⠣⠜⠧⠨⠅⠸⠎⠐⠂⠧⠐⠱⠣⠅" + nl + nl;
     assertEquals("pmia-1.xml", transcriber.toString(), expectedResult);
   }
 }
