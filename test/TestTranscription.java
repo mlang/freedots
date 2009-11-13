@@ -1,5 +1,6 @@
 /* -*- c-basic-offset: 2; indent-tabs-mode: nil; -*- */
 
+import freedots.Braille;
 import freedots.Options;
 import freedots.musicxml.Score;
 import freedots.transcription.Transcriber;
@@ -24,8 +25,11 @@ public class TestTranscription extends junit.framework.TestCase {
       + nl
       + score.getParts().get(0).getName() + nl
       + keyAndTimeSignature + nl
-      + "  ⠨⠜⠨⠳⠃⠳⠁⠉⠐⠖⠇⠊⠄⠾ ⠊⠐⠢⠷⠛⠇⠐⠢⠯⠕⠣⠅" + nl
-      + "  ⠸⠜⠸⠗⠄⠇⠣⠜⠧⠨⠅⠸⠞⠐⠂⠧⠐⠱ ⠸⠟⠄⠣⠜⠧⠨⠅⠸⠎⠐⠂⠧⠐⠱⠣⠅" + nl + nl;
+      + "  " + Braille.rightHandPart
+      + "⠨⠳⠃⠳⠁⠉⠐⠖⠇⠊⠄⠾ ⠊⠐⠢⠷⠛⠇⠐⠢⠯⠕" + Braille.doubleBar + nl
+      + "  " + Braille.leftHandPart
+      + "⠸⠗⠄⠇⠣⠜⠧⠨⠅⠸⠞⠐⠂⠧⠐⠱ ⠸⠟⠄⠣⠜⠧⠨⠅⠸⠎⠐⠂⠧⠐⠱" + Braille.doubleBar + nl
+      + nl;
     assertEquals("pmia-1.xml", transcriber.toString(), expectedResult);
   }
 }
