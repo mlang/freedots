@@ -115,6 +115,7 @@
   <target name="validate.scores">
     <validate-musicxml>
       <fileset dir="scores" includes="**/*.xml"/>
+      <fileset dir="${test}" includes="*.xml"/>
     </validate-musicxml>
   </target>
 

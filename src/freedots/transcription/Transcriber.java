@@ -93,7 +93,7 @@ public final class Transcriber {
     return -1;
   }
 
-  private static String lineSeparator = System.getProperty("line.separator");
+  public static final String lineSeparator = System.getProperty("line.separator");
 
   private Strategy strategy;
 
