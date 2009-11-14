@@ -33,8 +33,9 @@ public class TestTranscription extends junit.framework.TestCase {
            java.io.IOException,
            org.xml.sax.SAXException,
            javax.xml.xpath.XPathExpressionException {
+    final String mxmlFile = "valueambiguity-1.xml";
     Options options = new Options(new String[] { "-w", "40" });
-    Score score = new Score("test/valueambiguity-1.xml");
+    Score score = new Score("test/" + mxmlFile);
     Transcriber transcriber = new Transcriber(score, options);
 
     final String nl = Transcriber.lineSeparator;
@@ -47,6 +48,6 @@ public class TestTranscription extends junit.framework.TestCase {
       + "⠐⠎⠉⠗⠉⠿⠗⠉⠟⠉⠯⠐⠢⠋⠃" + Braille.valueDistinction + "⠕"
       + Braille.doubleBar + nl
       + nl;
-    assertEquals("pmia-1.xml", transcriber.toString(), expectedResult);
+    assertEquals(mxmlFile, transcriber.toString(), expectedResult);
   }
 }
