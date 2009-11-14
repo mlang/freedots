@@ -20,17 +20,34 @@
  *
  * This file is maintained by Mario Lang <mlang@delysid.org>.
  */
-package freedots.transcription;
+package freedots.music;
 
-import freedots.music.MusicList;
+public class Clef {
+  public enum Sign { G, F, C, TAB, percussion; };
 
-class PartMeasureInAccord extends FullMeasureInAccord {
-  private MusicList head = new MusicList();
-  private MusicList tail = new MusicList();
-  public PartMeasureInAccord() { super(); }
-  public MusicList getHead() { return head; }
-  public void setHead(MusicList head) { this.head = head; }
-  public MusicList getTail() { return tail; }
-  public void setTail(MusicList tail) { this.tail = tail; }
+  public Sign sign;
+  public int line = 0;
+  public Clef(final Sign sign) {
+    this.sign = sign;
+  }
+  public Clef(final Sign sign, final int line) {
+    this(sign);
+    this.line = line;
+  }
+  public boolean isTreble() { return sign == Sign.G && line == 2; }
+  public boolean isBass() { return sign == Sign.F && line == 4; }
+
+  public int getChordDirection() {
+    switch (sign) {
+    case G:
+      switch (line) {
+      case 2: return -1;
+      }
+    case F:
+      switch (line) {
+      case 4: return 1;
+      }
+    }
+    return -1;
+  }
 }
-

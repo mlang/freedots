@@ -1,6 +1,6 @@
 /* -*- c-basic-offset: 2; -*- */
-import freedots.model.AugmentedFraction;
-import freedots.model.Fraction;
+import freedots.music.AugmentedFraction;
+import freedots.music.Fraction;
 
 public class TestAugmentedFraction extends junit.framework.TestCase {
   public void testDotInference() {

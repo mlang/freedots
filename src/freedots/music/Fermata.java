@@ -20,31 +20,34 @@
  *
  * This file is maintained by Mario Lang <mlang@delysid.org>.
  */
-package freedots.musicxml;
+package freedots.music;
 
-import org.w3c.dom.Element;
-import org.w3c.dom.Text;
+import freedots.Braille;
 
-public final class Pitch extends freedots.music.AbstractPitch {
-  private Element element;
-  private Text step, alter, octave;
+/**
+ * A fermata indicates that the note should be sustained for longer than its
+ * note value would indicate.  Exactly how much longer it is held is up to the
+ * discretion of the performer, but twice as long is not unusual.  It is
+ * usually printed above, but occasionally below (upside down), the note
+ * that is to be held longer.  Occasionally holds are also printed above
+ * rests or barlines, indicating a pause of indefinite duration.
+ */
+public class Fermata {
+  private Type type = Type.UPRIGHT;
+  private Shape shape = Shape.NORMAL;
 
-  public Pitch(Element element) throws MusicXMLParseException {
-    this.element = element;
-    step = Score.getTextNode(element, "step");
-    alter = Score.getTextNode(element, "alter");
-    octave = Score.getTextNode(element, "octave");
-    if (step == null || octave == null) {
-      throw new MusicXMLParseException("Missing step or octave element");
+  public Fermata(Type type, Shape shape) {
+    this.type = type;
+    this.shape = shape;
+  }
+  public Braille toBraille() {
+    switch (shape) {
+      case ANGLED: return Braille.fermataTent;
+      case SQUARE: return Braille.fermataSquare;
     }
+    return Braille.fermata;
   }
-  public int getStep() {
-    return "CDEFGAB".indexOf(step.getWholeText().trim().toUpperCase());
-  }
-  public int getAlter() {
-    return alter != null? Integer.parseInt(alter.getWholeText()): 0;
-  }
-  public int getOctave() {
-    return Integer.parseInt(octave.getWholeText());
-  }
+
+  public enum Shape { NORMAL, ANGLED, SQUARE; };
+  public enum Type { UPRIGHT, INVERTED; }
 }

@@ -20,17 +20,35 @@
  *
  * This file is maintained by Mario Lang <mlang@delysid.org>.
  */
-package freedots.transcription;
+package freedots.music;
 
-import freedots.music.MusicList;
+import java.util.ArrayList;
 
-class PartMeasureInAccord extends FullMeasureInAccord {
-  private MusicList head = new MusicList();
-  private MusicList tail = new MusicList();
-  public PartMeasureInAccord() { super(); }
-  public MusicList getHead() { return head; }
-  public void setHead(MusicList head) { this.head = head; }
-  public MusicList getTail() { return tail; }
-  public void setTail(MusicList tail) { this.tail = tail; }
+public abstract class
+AbstractChord<E extends Event> extends ArrayList<E> implements Event {
+  Fraction offset;
+
+  AbstractChord(final Fraction offset) {
+    super();
+    this.offset = offset;
+  }
+  public AbstractChord(final E initialNote) {
+    this(initialNote.getOffset());
+    add(initialNote);
+  }
+  public final Fraction getOffset() { return offset; }
+  public boolean equalsIgnoreOffset(Event other) {
+    if (other instanceof AbstractChord) {
+      AbstractChord otherChord = (AbstractChord)other;
+      if (this.size() == otherChord.size()) {
+        for (int i = 0; i < size(); i++) {
+          E thisE = this.get(i);
+          Event otherEvent = (Event)otherChord.get(i);
+          if (!thisE.equalsIgnoreOffset(otherEvent)) return false;
+        }
+        return true;
+      }
+    }
+    return false;
+  }
 }
-

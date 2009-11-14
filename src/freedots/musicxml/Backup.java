@@ -26,7 +26,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import freedots.model.Fraction;
+import freedots.music.Fraction;
 
 public final class Backup {
   private int divisions, durationMultiplier;

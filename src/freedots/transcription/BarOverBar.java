@@ -26,13 +26,13 @@ import java.util.ArrayList;
 import freedots.Braille;
 import freedots.logging.Logger;
 import freedots.Options;
-import freedots.model.EndBar;
-import freedots.model.Event;
-import freedots.model.KeySignature;
-import freedots.model.MusicList;
-import freedots.model.Staff;
-import freedots.model.StartBar;
-import freedots.model.TimeSignature;
+import freedots.music.EndBar;
+import freedots.music.Event;
+import freedots.music.KeySignature;
+import freedots.music.MusicList;
+import freedots.music.Staff;
+import freedots.music.StartBar;
+import freedots.music.TimeSignature;
 import freedots.musicxml.Part;
 
 class BarOverBar implements Strategy {

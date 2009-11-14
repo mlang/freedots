@@ -20,41 +20,36 @@
  *
  * This file is maintained by Mario Lang <mlang@delysid.org>.
  */
-package freedots.musicxml;
+package freedots.music;
 
-import freedots.music.Event;
-import freedots.music.Fraction;
+public class KeyChange implements StaffElement {
+  private Fraction offset;
+  private KeySignature keySignature;
+  private int staffNumber;
+  private Staff staff;
 
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-
-public final class Direction implements Event {
-  Fraction offset;
-  private Element xml;
-
-  public Direction(Element xml, Fraction offset) {
-    this.xml = xml;
+  public KeyChange(Fraction offset, KeySignature keySignature, int staffNumber) {
     this.offset = offset;
+    this.keySignature = keySignature;
+    this.staffNumber = staffNumber;
   }
 
-  public Sound getSound() {
-    NodeList nodeList = xml.getElementsByTagName("sound");
-    if (nodeList.getLength() > 0) {
-      return new Sound((Element)nodeList.item(nodeList.getLength() - 1), offset);
-    }
-    return null;
-  }
-    
+  public KeySignature getKeySignature() { return keySignature; }
+
+  public int getStaffNumber() { return staffNumber; }
+
   public Fraction getOffset() { return offset; }
-  public boolean equalsIgnoreOffset(Event object) {
-    if (object instanceof Direction) {
-      Direction other = (Direction)object;
-      Sound thisSound = this.getSound();
-      Sound otherSound = other.getSound();
-      if (thisSound == null || otherSound == null)
-        return thisSound == otherSound;
-      return thisSound.equalsIgnoreOffset(otherSound);
+  public boolean equalsIgnoreOffset(Event other) {
+    if (other instanceof KeyChange) {
+      KeyChange otherKeyChange = (KeyChange)other;
+      if (getStaffNumber() == otherKeyChange.getStaffNumber() &&
+          keySignature.equals(otherKeyChange.getKeySignature()))
+        return true;
     }
     return false;
   }
+
+  public Staff getStaff() { return staff; }
+  public void setStaff(Staff staff) { this.staff = staff; }
+  public boolean isRest() { return false; }
 }

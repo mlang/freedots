@@ -22,7 +22,7 @@
  */
 package freedots.musicxml;
 
-public class Slur extends freedots.model.Slur<Note> {
+public class Slur extends freedots.music.Slur<Note> {
   Slur(final Note initialNote) { super(initialNote); }
   @Override
   public final boolean add(final Note note) {

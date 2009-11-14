@@ -31,17 +31,17 @@ import javax.sound.midi.MidiEvent;
 import javax.sound.midi.ShortMessage;
 import javax.sound.midi.Track;
 
-import freedots.model.AccidentalContext;
-import freedots.model.Articulation;
-import freedots.model.EndBar;
-import freedots.model.Event;
-import freedots.model.Fraction;
-import freedots.model.GlobalKeyChange;
-import freedots.model.KeyChange;
-import freedots.model.KeySignature;
-import freedots.model.MusicList;
-import freedots.model.Ornament;
-import freedots.model.StartBar;
+import freedots.music.AccidentalContext;
+import freedots.music.Articulation;
+import freedots.music.EndBar;
+import freedots.music.Event;
+import freedots.music.Fraction;
+import freedots.music.GlobalKeyChange;
+import freedots.music.KeyChange;
+import freedots.music.KeySignature;
+import freedots.music.MusicList;
+import freedots.music.Ornament;
+import freedots.music.StartBar;
 import freedots.playback.MetaEventRelay;
 
 public class MIDISequence extends javax.sound.midi.Sequence {

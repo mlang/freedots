@@ -20,31 +20,30 @@
  *
  * This file is maintained by Mario Lang <mlang@delysid.org>.
  */
-package freedots.musicxml;
+package freedots.music;
 
-import org.w3c.dom.Element;
-import org.w3c.dom.Text;
+public class EndBar extends VerticalEvent {
+  public EndBar(Fraction offset) { super(offset); }
+  boolean repeat = false;
+  public boolean getRepeat() { return repeat; }
+  public void setRepeat(boolean repeat) { this.repeat = repeat; }
 
-public final class Pitch extends freedots.music.AbstractPitch {
-  private Element element;
-  private Text step, alter, octave;
+  boolean endOfMusic = false;
+  public boolean getEndOfMusic() { return endOfMusic; }
+  public void setEndOfMusic(boolean endOfMusic) { this.endOfMusic = endOfMusic; }
 
-  public Pitch(Element element) throws MusicXMLParseException {
-    this.element = element;
-    step = Score.getTextNode(element, "step");
-    alter = Score.getTextNode(element, "alter");
-    octave = Score.getTextNode(element, "octave");
-    if (step == null || octave == null) {
-      throw new MusicXMLParseException("Missing step or octave element");
+  int endingStop = 0;
+  public int getEndingStop() { return endingStop; }
+  public void setEndingStop(int endingStop) { this.endingStop = endingStop; }
+
+  public boolean equalsIgnoreOffset(Event other) {
+    if (other instanceof EndBar) {
+      EndBar otherBar = (EndBar)other;
+      if (getRepeat() == otherBar.getRepeat() &&
+          getEndOfMusic() == otherBar.getEndOfMusic() &&
+          getEndingStop() == otherBar.getEndingStop())
+        return true;
     }
-  }
-  public int getStep() {
-    return "CDEFGAB".indexOf(step.getWholeText().trim().toUpperCase());
-  }
-  public int getAlter() {
-    return alter != null? Integer.parseInt(alter.getWholeText()): 0;
-  }
-  public int getOctave() {
-    return Integer.parseInt(octave.getWholeText());
+    return false;
   }
 }

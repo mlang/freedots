@@ -27,15 +27,15 @@ import java.util.List;
 
 import freedots.Braille;
 import freedots.Options;
-import freedots.model.ClefChange;
-import freedots.model.EndBar;
-import freedots.model.Event;
-import freedots.model.Fraction;
-import freedots.model.GlobalKeyChange;
-import freedots.model.KeyChange;
-import freedots.model.MusicList;
-import freedots.model.Staff;
-import freedots.model.StartBar;
+import freedots.music.ClefChange;
+import freedots.music.EndBar;
+import freedots.music.Event;
+import freedots.music.Fraction;
+import freedots.music.GlobalKeyChange;
+import freedots.music.KeyChange;
+import freedots.music.MusicList;
+import freedots.music.Staff;
+import freedots.music.StartBar;
 import freedots.musicxml.Part;
 
 class SectionBySection implements Strategy {

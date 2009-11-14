@@ -20,31 +20,17 @@
  *
  * This file is maintained by Mario Lang <mlang@delysid.org>.
  */
-package freedots.musicxml;
+package freedots.music;
 
-import org.w3c.dom.Element;
-import org.w3c.dom.Text;
+import java.util.Map;
 
-public final class Pitch extends freedots.music.AbstractPitch {
-  private Element element;
-  private Text step, alter, octave;
-
-  public Pitch(Element element) throws MusicXMLParseException {
-    this.element = element;
-    step = Score.getTextNode(element, "step");
-    alter = Score.getTextNode(element, "alter");
-    octave = Score.getTextNode(element, "octave");
-    if (step == null || octave == null) {
-      throw new MusicXMLParseException("Missing step or octave element");
-    }
-  }
-  public int getStep() {
-    return "CDEFGAB".indexOf(step.getWholeText().trim().toUpperCase());
-  }
-  public int getAlter() {
-    return alter != null? Integer.parseInt(alter.getWholeText()): 0;
-  }
-  public int getOctave() {
-    return Integer.parseInt(octave.getWholeText());
+@SuppressWarnings("serial")
+public class Timeline<E> extends java.util.TreeMap<Fraction, E> {
+  Timeline() { super(); }
+  Timeline(E initial) { super(); put(new Fraction(0, 1), initial); }
+  public E get(Fraction offset) {
+    Map.Entry<Fraction, E> entry = floorEntry(offset);
+    if (entry != null) return entry.getValue();
+    return null;
   }
 }

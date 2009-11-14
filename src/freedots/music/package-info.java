@@ -20,17 +20,8 @@
  *
  * This file is maintained by Mario Lang <mlang@delysid.org>.
  */
-package freedots.transcription;
-
-import freedots.music.MusicList;
-
-class PartMeasureInAccord extends FullMeasureInAccord {
-  private MusicList head = new MusicList();
-  private MusicList tail = new MusicList();
-  public PartMeasureInAccord() { super(); }
-  public MusicList getHead() { return head; }
-  public void setHead(MusicList head) { this.head = head; }
-  public MusicList getTail() { return tail; }
-  public void setTail(MusicList tail) { this.tail = tail; }
-}
+/**
+ * A file format agnostic library for expressing notational aspects of music.
+ */
+package freedots.music;
 

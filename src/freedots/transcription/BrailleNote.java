@@ -26,13 +26,13 @@ import java.util.Set;
 
 import freedots.Braille;
 import freedots.Options;
-import freedots.model.AbstractPitch;
-import freedots.model.Accidental;
-import freedots.model.Articulation;
-import freedots.model.Fermata;
-import freedots.model.Fingering;
-import freedots.model.Ornament;
-import freedots.model.Slur;
+import freedots.music.AbstractPitch;
+import freedots.music.Accidental;
+import freedots.music.Articulation;
+import freedots.music.Fermata;
+import freedots.music.Fingering;
+import freedots.music.Ornament;
+import freedots.music.Slur;
 import freedots.musicxml.Note;
 
 class BrailleNote extends BrailleString {

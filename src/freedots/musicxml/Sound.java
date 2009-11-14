@@ -25,8 +25,8 @@ package freedots.musicxml;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MetaMessage;
 
-import freedots.model.Event;
-import freedots.model.Fraction;
+import freedots.music.Event;
+import freedots.music.Fraction;
 
 import org.w3c.dom.Element;
 

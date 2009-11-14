@@ -31,19 +31,19 @@ import java.util.Map;
 import java.util.Set;
 
 import freedots.logging.Logger;
-import freedots.model.Accidental;
-import freedots.model.Articulation;
-import freedots.model.AugmentedFraction;
-import freedots.model.Clef;
-import freedots.model.Event;
-import freedots.model.Fermata;
-import freedots.model.Fingering;
-import freedots.model.Fraction;
-import freedots.model.KeySignature;
-import freedots.model.Ornament;
-import freedots.model.Staff;
-import freedots.model.RhythmicElement;
-import freedots.model.Syllabic;
+import freedots.music.Accidental;
+import freedots.music.Articulation;
+import freedots.music.AugmentedFraction;
+import freedots.music.Clef;
+import freedots.music.Event;
+import freedots.music.Fermata;
+import freedots.music.Fingering;
+import freedots.music.Fraction;
+import freedots.music.KeySignature;
+import freedots.music.Ornament;
+import freedots.music.Staff;
+import freedots.music.RhythmicElement;
+import freedots.music.Syllabic;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -308,7 +308,7 @@ public final class Note implements RhythmicElement {
     int getDenominator() { return denominator; }      
   }
 
-  class Lyric implements freedots.model.Lyric {
+  class Lyric implements freedots.music.Lyric {
     Element element;
 
     Lyric(Element element) {

@@ -29,15 +29,15 @@ import java.util.Set;
 import freedots.Braille;
 import freedots.logging.Logger;
 import freedots.Options;
-import freedots.model.AbstractPitch;
-import freedots.model.Accidental;
-import freedots.model.Event;
-import freedots.model.Fingering;
-import freedots.model.MusicList;
-import freedots.model.Slur;
-import freedots.model.TimeSignature;
-import freedots.model.Voice;
-import freedots.model.VoiceChord;
+import freedots.music.AbstractPitch;
+import freedots.music.Accidental;
+import freedots.music.Event;
+import freedots.music.Fingering;
+import freedots.music.MusicList;
+import freedots.music.Slur;
+import freedots.music.TimeSignature;
+import freedots.music.Voice;
+import freedots.music.VoiceChord;
 import freedots.musicxml.Note;
 
 class BrailleMeasure {

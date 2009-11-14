@@ -20,17 +20,34 @@
  *
  * This file is maintained by Mario Lang <mlang@delysid.org>.
  */
-package freedots.transcription;
+package freedots.music;
 
-import freedots.music.MusicList;
+import freedots.Braille;
 
-class PartMeasureInAccord extends FullMeasureInAccord {
-  private MusicList head = new MusicList();
-  private MusicList tail = new MusicList();
-  public PartMeasureInAccord() { super(); }
-  public MusicList getHead() { return head; }
-  public void setHead(MusicList head) { this.head = head; }
-  public MusicList getTail() { return tail; }
-  public void setTail(MusicList tail) { this.tail = tail; }
+public enum Accidental {
+                       NATURAL(0),
+              FLAT(-1),           SHARP(1),
+       DOUBLE_FLAT(-2),    DOUBLE_SHARP(2),
+      QUARTER_FLAT(-0.5), QUARTER_SHARP(0.5);
+
+  private double alter;
+  Accidental(final double alter) { this.alter = alter; }
+  public double getAlter() { return alter; }
+  public Braille toBraille() {
+    switch (this) {
+      case NATURAL: return Braille.natural;
+      case DOUBLE_FLAT: return Braille.doubleFlat;
+      case FLAT:    return Braille.flat;
+      case SHARP:   return Braille.sharp;
+      case DOUBLE_SHARP: return Braille.doubleSharp;
+    }
+    return null;
+  }
+
+  public static Accidental fromAlter(double alter) {
+    for (Accidental accidental: Accidental.values())
+      if (accidental.getAlter() == alter) return accidental;
+
+    return null;
+  }
 }
-

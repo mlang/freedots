@@ -45,7 +45,7 @@ import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 import javax.swing.text.JTextComponent;
 
-import freedots.model.Fingering;
+import freedots.music.Fingering;
 import freedots.musicxml.Note;
 
 @SuppressWarnings("serial")

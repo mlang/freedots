@@ -27,11 +27,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import freedots.model.AugmentedFraction;
-import freedots.model.Event;
-import freedots.model.Fraction;
-import freedots.model.MusicList;
-import freedots.model.TimeSignature;
+import freedots.music.AugmentedFraction;
+import freedots.music.Event;
+import freedots.music.Fraction;
+import freedots.music.MusicList;
+import freedots.music.TimeSignature;
 import freedots.musicxml.Note;
 
 /**

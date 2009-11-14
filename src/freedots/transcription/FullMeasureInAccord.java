@@ -25,7 +25,7 @@ package freedots.transcription;
 import java.util.ArrayList;
 import java.util.List;
 
-import freedots.model.MusicList;
+import freedots.music.MusicList;
 
 class FullMeasureInAccord {
   private List<MusicList> parts = new ArrayList<MusicList>();

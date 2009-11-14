@@ -25,8 +25,8 @@ package freedots.musicxml;
 import java.util.ArrayList;
 import java.util.List;
 
-import freedots.model.KeySignature;
-import freedots.model.TimeSignature;
+import freedots.music.KeySignature;
+import freedots.music.TimeSignature;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -82,7 +82,7 @@ public final class Attributes {
     }
     return keys;
   }
-  class Clef extends freedots.model.Clef {
+  class Clef extends freedots.music.Clef {
     Element element = null;
     String staffNumber = null;
     public Clef(Element element) {

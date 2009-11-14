@@ -25,9 +25,9 @@ package freedots.musicxml;
 import java.util.ArrayList;
 import java.util.List;
 
-import freedots.model.AbstractChord;
-import freedots.model.StaffChord;
-import freedots.model.StaffElement;
+import freedots.music.AbstractChord;
+import freedots.music.StaffChord;
+import freedots.music.StaffElement;
 
 public final class Chord extends AbstractChord<Note> {
   Chord(Note initialNote) {
