@@ -17,11 +17,7 @@ public class TestTranscription extends junit.framework.TestCase {
 
     final String nl = Transcriber.lineSeparator;
     final String keyAndTimeSignature = "⠩⠼⠉⠲";
-    final String expectedResult = "                "
-      + score.getWorkNumber() + nl
-      + "         " + score.getWorkTitle() + nl
-      + "                  " + score.getMovementTitle() + nl
-      + "         " + score.getComposer() + nl
+    final String expectedResult = "         " + score.getComposer() + nl
       + nl
       + score.getParts().get(0).getName() + nl
       + keyAndTimeSignature + nl

@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE score-partwise PUBLIC "-//Recordare//DTD MusicXML 1.1 Partwise//EN" "http://www.musicxml.org/dtds/partwise.dtd">
 <score-partwise version="1.1">
-  <work>
-    <work-number>BWV 988</work-number>
-    <work-title>Aria con 30 Variazioni</work-title>
-  </work>
-  <movement-number>1</movement-number>
-  <movement-title>Aria</movement-title>
   <identification>
     <creator type="composer">Johann Sebastian Bach</creator>
     <rights>Creative Commons Attribution-ShareAlike 3.0</rights>
@@ -52,8 +46,7 @@
         <pitch><step>A</step><octave>5</octave></pitch>
         <duration>6</duration>
         <voice>1</voice>
-        <type>eighth</type>
-        <dot/>
+        <type>eighth</type><dot/>
         <staff>1</staff>
         <notations>
           <slur number="1" type="stop"/>
@@ -109,8 +102,7 @@
         <pitch><step>G</step><octave>3</octave></pitch>
         <duration>24</duration>
         <voice>4</voice>
-        <type>half</type>
-        <dot/>
+        <type>half</type><dot/>
         <staff>2</staff>
         <notations><technical><fingering>3</fingering></technical></notations>
       </note>
@@ -192,8 +184,7 @@
         <pitch><step>F</step><alter>1</alter><octave>3</octave></pitch>
         <duration>24</duration>
         <voice>4</voice>
-        <type>half</type>
-        <dot/>
+        <type>half</type><dot/>
         <staff>2</staff>
       </note>
     </measure>
