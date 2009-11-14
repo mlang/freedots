@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE score-partwise PUBLIC "-//Recordare//DTD MusicXML 1.1 Partwise//EN" "http://www.musicxml.org/dtds/partwise.dtd">
-<score-partwise version="1.1">
+<!DOCTYPE score-partwise PUBLIC "-//Recordare//DTD MusicXML 2.0 Partwise//EN" "http://www.musicxml.org/dtds/partwise.dtd">
+<score-partwise version="2.0">
   <identification>
     <creator type="composer">Johann Sebastian Bach</creator>
     <rights>Creative Commons Attribution-ShareAlike 3.0</rights>
@@ -27,16 +27,14 @@
         <pitch><step>G</step><octave>5</octave></pitch>
         <duration>8</duration>
         <voice>1</voice>
-        <type>quarter</type>
-        <staff>1</staff>
+        <type>quarter</type> <staff>1</staff>
         <notations><technical><fingering>2</fingering></technical></notations>
       </note>
       <note>
         <pitch><step>G</step><octave>5</octave></pitch>
         <duration>8</duration>
         <voice>1</voice>
-        <type>quarter</type>
-        <staff>1</staff>
+        <type>quarter</type> <staff>1</staff>
         <notations>
 	  <slur number="1" type="start"/>
 	  <technical><fingering>1</fingering></technical>
@@ -46,8 +44,7 @@
         <pitch><step>A</step><octave>5</octave></pitch>
         <duration>6</duration>
         <voice>1</voice>
-        <type>eighth</type><dot/>
-        <staff>1</staff>
+        <type>eighth</type><dot/> <staff>1</staff>
         <notations>
           <slur number="1" type="stop"/>
           <ornaments><mordent/></ornaments>
@@ -57,53 +54,46 @@
         <pitch><step>B</step><octave>5</octave></pitch>
         <duration>2</duration>
         <voice>1</voice>
-        <type>16th</type>
-        <staff>1</staff>
+        <type>16th</type> <staff>1</staff>
       </note>
       <backup><duration>24</duration></backup>
       <note>
         <rest/>
         <duration>8</duration>
         <voice>2</voice>
-        <type>quarter</type>
-        <staff>2</staff>
+        <type>quarter</type> <staff>2</staff>
       </note>
       <note>
         <rest/>
         <duration>8</duration>
         <voice>2</voice>
-        <type>quarter</type>
-        <staff>2</staff>
+        <type>quarter</type> <staff>2</staff>
       </note>
       <note>
         <pitch><step>D</step><octave>4</octave></pitch>
         <duration>8</duration>
         <voice>2</voice>
-        <type>quarter</type>
-        <staff>2</staff>
+        <type>quarter</type> <staff>2</staff>
       </note>
       <backup><duration>24</duration></backup>
       <note>
         <rest/>
         <duration>8</duration>
         <voice>3</voice>
-        <type>quarter</type>
-        <staff>2</staff>
+        <type>quarter</type> <staff>2</staff>
       </note>
       <note>
         <pitch><step>B</step><octave>3</octave></pitch>
         <duration>16</duration>
         <voice>3</voice>
-        <type>half</type>
-        <staff>2</staff>
+        <type>half</type> <staff>2</staff>
       </note>
       <backup><duration>24</duration></backup>
       <note>
         <pitch><step>G</step><octave>3</octave></pitch>
         <duration>24</duration>
         <voice>4</voice>
-        <type>half</type><dot/>
-        <staff>2</staff>
+        <type>half</type><dot/> <staff>2</staff>
         <notations><technical><fingering>3</fingering></technical></notations>
       </note>
     </measure>
@@ -112,80 +102,69 @@
         <pitch><step>A</step><octave>5</octave></pitch>
         <duration>4</duration>
         <voice>1</voice>
-        <type>eighth</type>
-        <staff>1</staff>
+        <type>eighth</type> <staff>1</staff>
       </note>
       <note><grace slash="no" steal-time-previous="2"/>
         <pitch><step>G</step><octave>5</octave></pitch>
         <voice>1</voice>
-        <type>16th</type>
-        <staff>1</staff>
+        <type>16th</type> <staff>1</staff>
       </note>
       <note>
         <pitch><step>F</step><alter>1</alter><octave>5</octave></pitch>
         <duration>4</duration>
         <voice>1</voice>
-        <type>eighth</type>
-        <staff>1</staff>
+        <type>eighth</type> <staff>1</staff>
         <notations><technical><fingering>3</fingering></technical></notations>
       </note>
       <note><grace slash="no" steal-time-previous="2"/>
         <pitch><step>E</step><octave>5</octave></pitch>
         <voice>1</voice>
-        <type>16th</type>
-        <staff>1</staff>
+        <type>16th</type> <staff>1</staff>
       </note>
       <note>
         <pitch><step>D</step><octave>5</octave></pitch>
         <duration>16</duration>
         <voice>1</voice>
-        <type>half</type>
-        <staff>1</staff>
+        <type>half</type> <staff>1</staff>
       </note>
       <backup><duration>24</duration></backup>
       <note>
         <rest/>
         <duration>8</duration>
         <voice>2</voice>
-        <type>quarter</type>
-        <staff>2</staff>
+        <type>quarter</type> <staff>2</staff>
       </note>
       <note>
         <rest/>
         <duration>8</duration>
         <voice>2</voice>
-        <type>quarter</type>
-        <staff>2</staff>
+        <type>quarter</type> <staff>2</staff>
       </note>
       <note>
         <pitch><step>D</step><octave>4</octave></pitch>
         <duration>8</duration>
         <voice>2</voice>
-        <type>quarter</type>
-        <staff>2</staff>
+        <type>quarter</type> <staff>2</staff>
       </note>
       <backup><duration>24</duration></backup>
       <note>
         <rest/>
         <duration>8</duration>
         <voice>3</voice>
-        <type>quarter</type>
-        <staff>2</staff>
+        <type>quarter</type> <staff>2</staff>
       </note>
       <note>
         <pitch><step>A</step><octave>3</octave></pitch>
         <duration>16</duration>
         <voice>3</voice>
-        <type>half</type>
-        <staff>2</staff>
+        <type>half</type> <staff>2</staff>
       </note>
       <backup><duration>24</duration></backup>
       <note>
         <pitch><step>F</step><alter>1</alter><octave>3</octave></pitch>
         <duration>24</duration>
         <voice>4</voice>
-        <type>half</type><dot/>
-        <staff>2</staff>
+        <type>half</type><dot/> <staff>2</staff>
       </note>
     </measure>
   </part>
