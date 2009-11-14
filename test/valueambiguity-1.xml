@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE score-partwise PUBLIC "-//Recordare//DTD MusicXML 2.0 Partwise//EN" "http://www.musicxml.org/dtds/partwise.dtd">
+<score-partwise version="2.0">
+  <identification>
+    <creator type="composer">Johann Sebastian Bach</creator>
+    <rights>Creative Commons Attribution-ShareAlike 3.0</rights>
+    <encoding>
+      <supports element="beam" type="no"/>
+      <supports element="stem" type="no"/>
+    </encoding>
+    <source>Mutopia Project</source>
+  </identification>
+  <part-list>
+    <score-part id="P1"><part-name>Clavier</part-name></score-part>
+  </part-list>
+  <part id="P1">
+    <measure number="4">
+      <attributes>
+        <divisions>8</divisions>
+        <key><fifths>1</fifths><mode>major</mode></key>
+        <time><beats>3</beats><beat-type>4</beat-type></time>
+        <clef number="1"><sign>G</sign><line>2</line></clef>
+      </attributes>
+      <note>
+        <pitch><step>A</step><octave>4</octave></pitch>
+        <duration>1</duration>
+        <voice>1</voice>
+        <type>32nd</type> <staff>1</staff>
+        <notations><slur number="1" type="start"/></notations>
+      </note>
+      <note>
+        <pitch><step>G</step><octave>4</octave></pitch>
+        <duration>1</duration>
+        <voice>1</voice>
+        <type>32nd</type> <staff>1</staff>
+      </note>
+      <note>
+        <pitch><step>F</step><alter>1</alter><octave>4</octave></pitch>
+        <duration>2</duration>
+        <voice>1</voice>
+        <type>16th</type> <staff>1</staff>
+        <notations><slur number="1" type="stop"/></notations>
+      </note>
+      <note>
+        <pitch><step>G</step><octave>4</octave></pitch>
+        <duration>1</duration>
+        <voice>1</voice>
+        <type>32nd</type> <staff>1</staff>
+        <notations><slur number="1" type="start"/></notations>
+      </note>
+      <note>
+        <pitch><step>F</step><alter>1</alter><octave>4</octave></pitch>
+        <duration>1</duration>
+        <voice>1</voice>
+        <type>32nd</type> <staff>1</staff>
+      </note>
+      <note>
+        <pitch><step>E</step><octave>4</octave></pitch>
+        <duration>2</duration>
+        <voice>1</voice>
+        <type>16th</type> <staff>1</staff>
+        <notations><slur number="1" type="stop"/></notations>
+      </note>
+      <note><grace slash="no" steal-time-previous="2"/>
+        <pitch><step>E</step><octave>4</octave></pitch>
+        <voice>1</voice>
+        <type>eighth</type> <staff>1</staff>
+        <notations><technical><fingering>2</fingering></technical></notations>
+      </note>
+      <note>
+        <pitch><step>D</step><octave>4</octave></pitch>
+        <duration>16</duration>
+        <voice>1</voice>
+        <type>half</type> <staff>1</staff>
+      </note>
+    </measure>
+  </part>
+</score-partwise>
