@@ -59,16 +59,10 @@ class BrailleNote extends BrailleString {
       braille += Braille.grace;
     }
 
-    Set<Ornament> ornaments = note.getOrnaments();
-    if (ornaments != null) {
-      for (Ornament ornament:note.getOrnaments())
-        braille += ornament.toBraille();
-    }
-    Set<Articulation> articulations = note.getArticulations();
-    if (articulations != null) {
-      for (Articulation articulation: articulations)
-        braille += articulation.toBraille();
-    }
+    for (Ornament ornament:note.getOrnaments())
+      braille += ornament.toBraille();
+    for (Articulation articulation: note.getArticulations())
+      braille += articulation.toBraille();
 
     Accidental accidental = note.getAccidental();
     if (accidental != null) {

@@ -142,8 +142,9 @@ public final class Part {
                 }
               }
             } else if ("note".equals(measureChild.getNodeName())) {
-              Note note = new Note(measureOffset.add(offset),
-                                   musicdata, divisions, durationMultiplier, this);
+              Note note = new Note(musicdata, divisions, durationMultiplier,
+                                   this);
+              note.setDate(measureOffset.add(offset));
               boolean advanceTime = !note.isGrace();
               boolean addNoteToEventList = true;
 
@@ -216,8 +217,10 @@ public final class Part {
                 offset = offset.add(currentChord.get(0).getDuration());
                 currentChord = null;
               }
-              Note invisibleRest = new Note(measureOffset.add(offset), musicdata,
-                                            divisions, durationMultiplier, this);
+              Note invisibleRest = new Note(musicdata,
+                                            divisions, durationMultiplier,
+                                            this);
+              invisibleRest.setDate(measureOffset.add(offset));
               eventList.add(invisibleRest);
               offset = offset.add(invisibleRest.getDuration());
             } else if ("print".equals(measureChild.getNodeName())) {

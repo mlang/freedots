@@ -207,10 +207,8 @@ public class MIDISequence extends javax.sound.midi.Sequence {
         }
         boolean turn = false;
         Set<Ornament> ornaments = note.getOrnaments();
-        if (ornaments != null) {
-          if (ornaments.contains(Ornament.turn)) {
-            turn = true;
-          }
+        if (ornaments.contains(Ornament.turn)) {
+          turn = true;
         }
         if (metaEventRelay != null) {
           MetaMessage metaMessage = metaEventRelay.createMetaMessage(note);

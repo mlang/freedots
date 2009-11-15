@@ -435,14 +435,14 @@ public final class Note implements RhythmicElement {
       return notations.getArticulations();
     }
 
-    return null;
+    return EnumSet.noneOf(Articulation.class);
   }
   public Set<Ornament> getOrnaments() {
     if (notations != null) {
       return notations.getOrnaments();
     }
 
-    return null;
+    return EnumSet.noneOf(Ornament.class);
   }
   public Clef getClef() {
     if (staff != null) {
@@ -538,10 +538,11 @@ public final class Note implements RhythmicElement {
     public Set<Articulation> getArticulations() { return articulations; }
 
     public Set<Ornament> getOrnaments() {
+      Set<Ornament> ornaments = EnumSet.noneOf(Ornament.class);
+
       NodeList nodeList = element.getElementsByTagName("ornaments");
       if (nodeList.getLength() >= 1) {
         nodeList = ((Element)nodeList.item(nodeList.getLength()-1)).getChildNodes();
-        Set<Ornament> ornaments = EnumSet.noneOf(Ornament.class);
         for (int i = 0; i < nodeList.getLength(); i++) {
           Node node = nodeList.item(i);
           if (node.getNodeType() == Node.ELEMENT_NODE) {
@@ -556,11 +557,9 @@ public final class Note implements RhythmicElement {
             }
           }
         }
-
-        return ornaments;
       }
 
-      return null;
+      return ornaments;
     }
 
     class Slur {
