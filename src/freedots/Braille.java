@@ -24,7 +24,10 @@ package freedots;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+
+import freedots.music.Fingering;
 
 /**
  * A enum of all the braille signs (and a few utility methods).
@@ -255,4 +258,15 @@ public enum Braille {
   private static final Braille[] fingers = {
     finger1, finger2, finger3, finger4, finger5
   };
+
+  public static String toString(Fingering fingering) {
+    StringBuilder stringBuilder = new StringBuilder();
+    Iterator<Integer> iter = fingering.getFingers().iterator();
+    while (iter.hasNext()) {
+      stringBuilder.append(finger(iter.next()));
+      if (iter.hasNext()) stringBuilder.append(slur);
+    }
+
+    return stringBuilder.toString();
+  }
 }

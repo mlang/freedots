@@ -130,15 +130,7 @@ public final class EditFingeringAction extends AbstractAction {
     public void setNote(Note note) {
       this.note = note;
 
-      Fingering fingering = note.getFingering();
-      String fingerText = "";
-      if (fingering != null && fingering.getFingers().size() > 0) {
-        for (int i = 0; i < fingering.getFingers().size(); i++) {
-          fingerText += fingering.getFingers().get(i).toString();
-          if (i < fingering.getFingers().size()-1) fingerText += "-";
-        }
-      }
-      text.setText(fingerText);
+      text.setText(note.getFingering().toString("-"));
       text.requestFocus();
     }
 

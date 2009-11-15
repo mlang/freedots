@@ -32,7 +32,6 @@ import freedots.Options;
 import freedots.music.AbstractPitch;
 import freedots.music.Accidental;
 import freedots.music.Event;
-import freedots.music.Fingering;
 import freedots.music.MusicList;
 import freedots.music.Slur;
 import freedots.music.TimeSignature;
@@ -283,10 +282,7 @@ class BrailleMeasure {
         state.setLastPitch(firstPitch);
         braille += firstNote.getAugmentedFraction().toBrailleString(firstPitch);
         if (Options.getInstance().getShowFingering()) {
-          Fingering fingering = firstNote.getFingering();
-          if (fingering != null) {
-            braille += fingering.toBrailleString();
-          }
+          braille += Braille.toString(firstNote.getFingering());
         }
 
         if (firstNote.isTieStart()) {
@@ -327,10 +323,7 @@ class BrailleMeasure {
           braille += Braille.interval(diatonicDifference);
 
           if (Options.getInstance().getShowFingering()) {
-            Fingering fingering = currentNote.getFingering();
-            if (fingering != null) {
-              braille += fingering.toBrailleString();
-            }
+            braille += Braille.toString(currentNote.getFingering());
           }
 
           if (currentNote.isTieStart()) {

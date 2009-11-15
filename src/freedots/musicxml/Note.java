@@ -411,7 +411,7 @@ public final class Note implements RhythmicElement {
       }
     }
 
-    return null;
+    return new Fingering();
   }
   public void setFingering(Fingering fingering) {
     if (notations == null) createNotations();
@@ -581,31 +581,22 @@ public final class Note implements RhythmicElement {
         fingering = Score.getTextNode(element, "fingering");
       }
       public Fingering getFingering() {
+        Fingering result = new Fingering();
+
         if (fingering != null) {
           String[] items = fingering.getWholeText().split("[ \t\n]+");
-          List<Integer> fingers = new ArrayList<Integer>(2);
-          for (int i = 0; i < items.length; i++) {
-            fingers.add(new Integer(Integer.parseInt(items[i])));
+          List<Integer> fingers = new ArrayList<Integer>(items.length);
+          for (String finger: items) {
+            fingers.add(Integer.valueOf(finger));
           }          
           if (fingers.size() > 0) {
-            Fingering fingering = new Fingering();
-            fingering.setFingers(fingers);
-            return fingering;
+            result.setFingers(fingers);
           }
         }
-        return null;
+        return result;
       }
       public void setFingering(Fingering fingering) {
-        String newValue = "";
-        if (fingering.getFingers().size() > 0) {
-          StringBuilder stringBuilder = new StringBuilder();
-          for (int finger = 0; finger < fingering.getFingers().size(); finger++) {
-            stringBuilder.append(fingering.getFingers().get(finger).toString());
-            if (finger < fingering.getFingers().size() - 1)
-              stringBuilder.append(" ");
-          }
-          newValue = stringBuilder.toString();
-        }
+        String newValue = fingering.toString(" ");
         if (this.fingering != null) {
           this.fingering.replaceWholeText(newValue);
         } else {

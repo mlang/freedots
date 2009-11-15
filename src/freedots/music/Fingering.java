@@ -23,26 +23,24 @@
 package freedots.music;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
-
-import freedots.Braille;
 
 /**
  * @see <a href="http://en.wikipedia.org/wiki/Fingering">Wikipedia:Fingering</a>
  */
 public class Fingering {
-  private List<Integer> fingers = new ArrayList<Integer>(1);
+  private List<Integer> fingers = new ArrayList<Integer>(2);
 
   public List<Integer> getFingers() { return fingers; }
   public void setFingers(List<Integer> fingers) { this.fingers = fingers; }
 
-  public String toBrailleString() {
+  public String toString(String delimiter) {
     StringBuilder stringBuilder = new StringBuilder();
-    for (int i = 0; i < fingers.size(); i++) {
-      stringBuilder.append(Braille.finger(fingers.get(i)));
-      if (i < fingers.size() - 1) {
-        stringBuilder.append(Braille.slur.toString());
-      }
+    Iterator<Integer> iter = fingers.iterator();
+    while (iter.hasNext()) {
+      stringBuilder.append(iter.next().toString());
+      if (iter.hasNext()) stringBuilder.append(delimiter);
     }
 
     return stringBuilder.toString();

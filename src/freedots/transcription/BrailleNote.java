@@ -22,7 +22,6 @@
  */
 package freedots.transcription;
 
-import java.util.Set;
 
 import freedots.Braille;
 import freedots.Options;
@@ -30,7 +29,6 @@ import freedots.music.AbstractPitch;
 import freedots.music.Accidental;
 import freedots.music.Articulation;
 import freedots.music.Fermata;
-import freedots.music.Fingering;
 import freedots.music.Ornament;
 import freedots.music.Slur;
 import freedots.musicxml.Note;
@@ -76,10 +74,7 @@ class BrailleNote extends BrailleString {
     braille += note.getAugmentedFraction().toBrailleString(pitch);
 
     if (options.getShowFingering()) {
-      Fingering fingering = note.getFingering();
-      if (fingering != null) {
-        braille += fingering.toBrailleString();
-      }
+      braille += Braille.toString(note.getFingering());
     }
 
     Fermata fermata = note.getFermata();
