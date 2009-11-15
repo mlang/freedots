@@ -22,8 +22,6 @@
  */
 package freedots.music;
 
-import freedots.Braille;
-
 public enum Accidental {
                        NATURAL(0),
               FLAT(-1),           SHARP(1),
@@ -33,17 +31,6 @@ public enum Accidental {
   private double alter;
   Accidental(final double alter) { this.alter = alter; }
   public double getAlter() { return alter; }
-  public Braille toBraille() {
-    switch (this) {
-      case NATURAL: return Braille.natural;
-      case DOUBLE_FLAT: return Braille.doubleFlat;
-      case FLAT:    return Braille.flat;
-      case SHARP:   return Braille.sharp;
-      case DOUBLE_SHARP: return Braille.doubleSharp;
-    }
-    return null;
-  }
-
   public static Accidental fromAlter(double alter) {
     for (Accidental accidental: Accidental.values())
       if (accidental.getAlter() == alter) return accidental;

@@ -28,6 +28,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import freedots.music.AbstractPitch;
+import freedots.music.Accidental;
 import freedots.music.AugmentedFraction;
 import freedots.music.Fingering;
 import freedots.music.TimeSignature;
@@ -288,6 +289,16 @@ public enum Braille {
     finger1, finger2, finger3, finger4, finger5
   };
 
+  public static Braille valueOf(Accidental accidental) {
+    switch (accidental) {
+      case NATURAL: return natural;
+      case DOUBLE_FLAT: return doubleFlat;
+      case FLAT:    return flat;
+      case SHARP:   return sharp;
+      case DOUBLE_SHARP: return doubleSharp;
+    }
+    return null;
+  }
   public static String toString(AugmentedFraction value, AbstractPitch pitch) {
     String braille = "";
     final int log = value.getLog();

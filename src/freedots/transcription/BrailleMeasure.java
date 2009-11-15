@@ -275,7 +275,7 @@ class BrailleMeasure {
         Note firstNote = (Note)chord.get(0);
         Accidental accidental = firstNote.getAccidental();
         if (accidental != null) {
-          braille += accidental.toBraille().toString();
+          braille += Braille.valueOf(accidental);
         }
         AbstractPitch firstPitch = (AbstractPitch)firstNote.getPitch();
         Braille octaveSign = firstPitch.getOctaveSign(state.getLastPitch());
@@ -310,7 +310,7 @@ class BrailleMeasure {
           Note currentNote = (Note)chord.get(chordElementIndex);
           accidental = currentNote.getAccidental();
           if (accidental != null) {
-            braille += accidental.toBraille().toString();
+            braille += Braille.valueOf(accidental);
           }
           AbstractPitch currentPitch = (AbstractPitch)currentNote.getPitch();
           int diatonicDifference = Math.abs

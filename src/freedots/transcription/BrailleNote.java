@@ -64,7 +64,7 @@ class BrailleNote extends BrailleString {
 
     Accidental accidental = note.getAccidental();
     if (accidental != null) {
-      braille += accidental.toBraille();
+      braille += Braille.valueOf(accidental);
     }
     AbstractPitch pitch = (AbstractPitch)note.getPitch();
     if (pitch != null) {
