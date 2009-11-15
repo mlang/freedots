@@ -89,8 +89,8 @@ public final class Note implements RhythmicElement {
 
   Text staffNumber, voiceName;
   Type type = Type.NONE;
-  private final static Map<String, Type>
-  typeMap = Collections.unmodifiableMap(new HashMap<String, Type>() {
+  private final static Map<String, Type> typeMap =
+    Collections.unmodifiableMap(new HashMap<String, Type>() {
       {
         put("long", Type.LONG);
         put("breve", Type.BREVE);
@@ -124,16 +124,20 @@ public final class Note implements RhythmicElement {
 
   private Notations notations = null;
 
-  Note(
-    Fraction offset, Element element,
-    int divisions, int durationMultiplier,
-    Part part
-  ) throws MusicXMLParseException {
+  Note(Element element, int divisions, int durationMultiplier, Part part)
+    throws MusicXMLParseException
+  {
     this.element = element;
     this.divisions = divisions;
     this.durationMultiplier = durationMultiplier;
     this.part = part;
-    this.offset = offset;
+
+    parseDOM();
+  }
+
+  void setDate(Fraction date) { offset = date; }
+
+  private void parseDOM() {
     for (Node node = element.getFirstChild(); node != null;
          node = node.getNextSibling()) {
       if (node.getNodeType() == Node.ELEMENT_NODE) {
