@@ -1,5 +1,26 @@
 FREEDOTS -*- mode: org; fill-column: 78 -*-
 
+* General
+** TODO Refactor code
+
+Alot of the code currently in use has been written ad-hoc, without a lot
+of planning ahead.  Many of the items below will first need a bit
+of refactoring of the current codebase.  Some ideas:
+
+*** TODO musicxml.Measure?
+
+I have been going back and forth between a relatively flat event-list
+representation (what we currently have in MusicList) and a representation
+where measures are container objects, like they are in musicxml.
+I am still not sure whats better, but it looks like the measure abstraction
+is useful for a number of reasons.
+
+Create a musicxml.Measure class which has start/stopBar accessors.
+Also, maybe create staff objects at construction time inside of the measure.
+
+This will need major refactoring of all the client code, namely playback
+and transcription.
+
 * MusicXML
 
 ** TODO Redo voice handling to support "forks and joins" at arbitrary positions
@@ -47,8 +68,7 @@ See [[*Tuplets][tuplets in braille transcription]].
 
 * Testsuite
 
-There are currently just a few small tests for AugmentedFraction
-and its superclass.  Write much more tests.
+Write more tests.
 
 * Transcription
 Braille transcription is the core functionality of FreeDots, and
@@ -344,3 +364,13 @@ installation.
 Currently, on the JRE is installed if none exists.  Ideally, the user
 should be prompted if they want to install java access bridge
 as well, since most screen readers on Windows require that.
+
+* Port to Java Mobile Devices API (for accessible cellphones)
+
+It would be neat if a blind user could use FreeDots interactively on their
+cellphone.  Nokia phone screen readers like Talks can drive a braille
+display connected via bluetooth.  We'd need to write a UI based
+on the java standards for mobile devices and create a special
+.jar for that platform.  The MIDI playback code also needs some special
+porting.
+
