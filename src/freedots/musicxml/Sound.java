@@ -30,7 +30,7 @@ import freedots.music.Fraction;
 
 import org.w3c.dom.Element;
 
-public class Sound implements Event {
+public final class Sound implements Event {
   Fraction offset;
   Element xml;
 

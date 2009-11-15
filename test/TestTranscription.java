@@ -6,6 +6,8 @@ import freedots.musicxml.Score;
 import freedots.transcription.Transcriber;
 
 public class TestTranscription extends junit.framework.TestCase {
+  private static final String NL = Transcriber.LINE_SEPARATOR;
+
   public void testPartMeasureInAccord()
     throws javax.xml.parsers.ParserConfigurationException,
            java.io.IOException,
@@ -15,17 +17,16 @@ public class TestTranscription extends junit.framework.TestCase {
     Score score = new Score("test/pmia-1.xml");
     Transcriber transcriber = new Transcriber(score, options);
 
-    final String nl = Transcriber.lineSeparator;
     final String keyAndTimeSignature = "⠩⠼⠉⠲";
-    final String expectedResult = "         " + score.getComposer() + nl
-      + nl
-      + score.getParts().get(0).getName() + nl
-      + keyAndTimeSignature + nl
+    final String expectedResult = "         " + score.getComposer() + NL
+      + NL
+      + score.getParts().get(0).getName() + NL
+      + keyAndTimeSignature + NL
       + "  " + Braille.rightHandPart
-      + "⠨⠳⠃⠳⠁⠉⠐⠖⠇⠊⠄⠾ ⠊⠐⠢⠷⠛⠇⠐⠢⠯⠕" + Braille.doubleBar + nl
+      + "⠨⠳⠃⠳⠁⠉⠐⠖⠇⠊⠄⠾ ⠊⠐⠢⠷⠛⠇⠐⠢⠯⠕" + Braille.doubleBar + NL
       + "  " + Braille.leftHandPart
-      + "⠸⠗⠄⠇⠣⠜⠧⠨⠅⠸⠞⠐⠂⠧⠐⠱ ⠸⠟⠄⠣⠜⠧⠨⠅⠸⠎⠐⠂⠧⠐⠱" + Braille.doubleBar + nl
-      + nl;
+      + "⠸⠗⠄⠇⠣⠜⠧⠨⠅⠸⠞⠐⠂⠧⠐⠱ ⠸⠟⠄⠣⠜⠧⠨⠅⠸⠎⠐⠂⠧⠐⠱" + Braille.doubleBar + NL
+      + NL;
     assertEquals("pmia-1.xml", transcriber.toString(), expectedResult);
   }
   public void testValueAmbiguity()
@@ -38,16 +39,15 @@ public class TestTranscription extends junit.framework.TestCase {
     Score score = new Score("test/" + mxmlFile);
     Transcriber transcriber = new Transcriber(score, options);
 
-    final String nl = Transcriber.lineSeparator;
     final String keyAndTimeSignature = "⠩⠼⠉⠲";
-    final String expectedResult = "         " + score.getComposer() + nl
-      + nl
-      + score.getParts().get(0).getName() + nl
-      + keyAndTimeSignature + nl
+    final String expectedResult = "         " + score.getComposer() + NL
+      + NL
+      + score.getParts().get(0).getName() + NL
+      + keyAndTimeSignature + NL
       + "  "
       + "⠐⠎⠉⠗⠉⠿⠗⠉⠟⠉⠯⠐⠢⠋⠃" + Braille.valueDistinction + "⠕"
-      + Braille.doubleBar + nl
-      + nl;
+      + Braille.doubleBar + NL
+      + NL;
     assertEquals(mxmlFile, transcriber.toString(), expectedResult);
   }
 }

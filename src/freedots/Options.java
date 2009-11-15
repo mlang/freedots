@@ -35,11 +35,11 @@ public final class Options {
   private int pageHeight = DEFAULT_PAGE_HEIGHT;
   public MultiStaffMeasures multiStaffMeasures = MultiStaffMeasures.VISUAL;
 
-  String location;
+  private String location;
   private boolean windowSystem = true;
-  boolean playScore = false;
-  String exportMidiFile = null;
-  UI ui = UI.Swing;
+  private boolean playScore = false;
+  private String exportMidiFile = null;
+  private UI ui = UI.Swing;
 
   private boolean showFingering = true;
   Method method = Method.SectionBySection;

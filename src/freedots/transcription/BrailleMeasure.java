@@ -206,7 +206,8 @@ class BrailleMeasure {
           FullMeasureInAccord fmia = (FullMeasureInAccord)brailleVoices.get(i);
           for (int p = 0; p < fmia.getParts().size(); p++) {
             Object splitPoint = null;
-            ValueInterpreter valueInterpreter = new ValueInterpreter(fmia.getParts().get(p), timeSignature);
+            ValueInterpreter valueInterpreter =
+              new ValueInterpreter(fmia.getParts().get(p), timeSignature);
             Set<ValueInterpreter.Interpretation>
               interpretations = valueInterpreter.getInterpretations();
             if (interpretations.size() > 1) {
@@ -280,7 +281,8 @@ class BrailleMeasure {
         Braille octaveSign = firstPitch.getOctaveSign(state.getLastPitch());
         if (octaveSign != null) { braille += octaveSign; }
         state.setLastPitch(firstPitch);
-        braille += firstNote.getAugmentedFraction().toBrailleString(firstPitch);
+        braille += Braille.toString(firstNote.getAugmentedFraction(),
+                                    firstPitch);
         if (Options.getInstance().getShowFingering()) {
           braille += Braille.toString(firstNote.getFingering());
         }

@@ -50,8 +50,8 @@ class SectionBySection implements Strategy {
 
     for (Part part:transcriber.getScore().getParts()) {
       transcriber.printLine(part.getName());
-      transcriber.printLine(part.getKeySignature().toBraille() +
-                            part.getTimeSignature().toBraille());
+      transcriber.printLine(part.getKeySignature().toBraille()
+                            + Braille.toString(part.getTimeSignature()));
       for (Section section:getSections(part)) {
         int staffCount = section.getStaffCount();
         for (int staffIndex = 0; staffIndex < staffCount; staffIndex++) {
@@ -115,7 +115,7 @@ class SectionBySection implements Strategy {
                 }
                 if (startBar.getEndingStart() > 0) {
                   String braille = Braille.numberSign.toString();
-                  braille += Braille.lowerDigit(startBar.getEndingStart());
+                  braille += Braille.lowerNumber(startBar.getEndingStart());
                   braille += Braille.dot.toString();
                   transcriber.printString(braille);
                 }

@@ -37,11 +37,7 @@ public final class Transcriber {
   public void setScore(final Score score) {
     this.score = score;
     clear();
-    try {
-      transcribe();
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+    transcribe();
   }
 
   private Options options;
@@ -93,7 +89,8 @@ public final class Transcriber {
     return -1;
   }
 
-  public static final String lineSeparator = System.getProperty("line.separator");
+  public static final String LINE_SEPARATOR =
+    System.getProperty("line.separator");
 
   private Strategy strategy;
 
@@ -112,7 +109,7 @@ public final class Transcriber {
     pageNumber = 1;
   }
 
-  private void transcribe() throws Exception {
+  private void transcribe() {
     String workNumber = score.getWorkNumber();
     String workTitle = score.getWorkTitle();
     String movementTitle = score.getMovementTitle();
@@ -182,14 +179,14 @@ public final class Transcriber {
     newLine();
   }
   void newLine() {
-    strings.add(new BrailleString(lineSeparator));
+    strings.add(new BrailleString(LINE_SEPARATOR));
     characterCount = 0;
     lineCount += 1;
     if (lineCount == options.getPageHeight()) {
       String pageIndicator = Braille.numberSign.toString()
                            + Braille.upperNumber(pageNumber++);
       indentTo(options.getPageWidth() - pageIndicator.length());
-      strings.add(new BrailleString(pageIndicator + lineSeparator));
+      strings.add(new BrailleString(pageIndicator + LINE_SEPARATOR));
       characterCount = 0;
       lineCount = 0;
     }

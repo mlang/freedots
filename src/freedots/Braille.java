@@ -27,7 +27,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import freedots.music.AbstractPitch;
+import freedots.music.AugmentedFraction;
 import freedots.music.Fingering;
+import freedots.music.TimeSignature;
 
 /**
  * A enum of all the braille signs (and a few utility methods).
@@ -132,7 +135,12 @@ public enum Braille {
    * @return braille music octave sign
    */
   public static Braille octave(final int number) { return OCTAVES[number]; }
-  public static Braille upperDigit(final int digit) { return DIGITS[digit]; }
+  private static Braille upperDigit(final int digit) { return DIGITS[digit]; }
+
+  /** Format a number using the upper dots 1, 2, 4 and 5.
+   * @param number is the number to translate to braille
+   * @return the unicode braille representation of the number
+   */
   public static String upperNumber(int number) {
     String string = "";
     while (number > 0) {
@@ -142,16 +150,37 @@ public enum Braille {
     }
     return string;
   }
-  public static Braille lowerDigit(final int digit) {
+  private static Braille lowerDigit(final int digit) {
     return LOWER_DIGITS[digit];
   }
+  /** Format a number using the lower dots 2, 3, 5, 6.
+   * @param number is the number to translate to braille
+   * @return the unicode braille representation of the number
+   */
+  public static String lowerNumber(int number) {
+    String string = "";
+    while (number > 0) {
+      int digit = number % 10;
+      string = lowerDigit(digit) + string;
+      number = number / 10;
+    }
+    return string;
+  }
+  /** Retrieve an interval sign.
+   * @param interval is a integer 1 and 7
+   * @return a interval sign
+   */
   public static Braille interval(final int interval) {
     return INTERVALS[interval - 1];
   }
-  public static Braille finger(int finger) { return fingers[finger - 1]; }
+  /** Retrieve a finger indicator.
+   * @param finger is the finger number from 1 to 5
+   * @return the Braille representation
+   */
+  public static Braille finger(int finger) { return FINGERS[finger - 1]; }
 
-  public static final Map<Character, Character>
-  brfTable = Collections.unmodifiableMap(new HashMap<Character, Character>() {
+  public static final Map<Character, Character> BRF_TABLE =
+    Collections.unmodifiableMap(new HashMap<Character, Character>() {
       {
         put(createCharacter(0),     new Character(' '));
         put(createCharacter(1),     new Character('A'));
@@ -255,9 +284,37 @@ public enum Braille {
   private static final Braille[] INTERVALS = {
     second, third, fourth, fifth, sixth, seventh, octave
   };
-  private static final Braille[] fingers = {
+  private static final Braille[] FINGERS = {
     finger1, finger2, finger3, finger4, finger5
   };
+
+  public static String toString(AugmentedFraction value, AbstractPitch pitch) {
+    String braille = "";
+    final int log = value.getLog();
+    // FIXME: breve and long notes are not handled at all
+    final int valueType = log > AugmentedFraction.EIGHTH
+      ? log-AugmentedFraction.SIXTEENTH : log-2;
+    if (pitch != null) {
+      final int[] stepDots = {
+        145, 15, 124, 1245, 125, 24, 245
+      };
+      final int[] denomDots = {
+        36, 3, 6, 0
+      };
+      braille += unicodeBraille(
+                   dotsToBits(stepDots[pitch.getStep()])
+                 | dotsToBits(denomDots[valueType]));
+    } else { /* Rest */
+      int[] restDots = {
+        134, 136, 1236, 1346
+      };
+      braille += unicodeBraille(dotsToBits(restDots[valueType]));
+    }
+
+    for (int i = 0; i < value.getDots(); i++) braille += dot;
+
+    return braille;
+  }
 
   public static String toString(Fingering fingering) {
     StringBuilder stringBuilder = new StringBuilder();
@@ -268,5 +325,11 @@ public enum Braille {
     }
 
     return stringBuilder.toString();
+  }
+
+  public static String toString(TimeSignature signature) {
+    return numberSign.toString()
+           + upperNumber(signature.getNumerator())
+           + lowerNumber(signature.getDenominator());
   }
 }

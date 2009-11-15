@@ -171,8 +171,8 @@ public final class FileSaveAsAction extends AbstractAction {
         iterator = new StringCharacterIterator(transcriber.toString());
         for(char c = iterator.first(); c != CharacterIterator.DONE;
             c = iterator.next()) {
-          if (Braille.brfTable.containsKey(new Character(c))) {
-            final Character mapped = Braille.brfTable.get(new Character(c));
+          if (Braille.BRF_TABLE.containsKey(new Character(c))) {
+            final Character mapped = Braille.BRF_TABLE.get(new Character(c));
             fileWriter = fileWriter.append(mapped);
           } else {
             fileWriter = fileWriter.append(c);

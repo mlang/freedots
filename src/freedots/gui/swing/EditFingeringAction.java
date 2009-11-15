@@ -101,12 +101,14 @@ public final class EditFingeringAction extends AbstractAction {
       fingerPanel.add(label, BorderLayout.WEST);
       fingerPanel.add(text, BorderLayout.CENTER);
 
-      okButton = new JButton
-        (UIManager.getString("OptionPane.okButtonText", getLocale()));
+      okButton =
+        new JButton(UIManager.getString("OptionPane.okButtonText",
+                                        getLocale()));
       okButton.addActionListener(this);
 
-      cancelButton = new JButton
-        (UIManager.getString("OptionPane.cancelButtonText", getLocale()));
+      cancelButton =
+        new JButton(UIManager.getString("OptionPane.cancelButtonText",
+                                        getLocale()));
       cancelButton.addActionListener(this);
 
       JPanel buttonPane = new JPanel();

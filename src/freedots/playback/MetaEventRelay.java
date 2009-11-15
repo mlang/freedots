@@ -39,7 +39,9 @@ import javax.sound.midi.MetaMessage;
  *
  * @author Mario Lang
  */
-public final class MetaEventRelay implements javax.sound.midi.MetaEventListener {
+public final class MetaEventRelay
+  implements javax.sound.midi.MetaEventListener
+{
   private int lastId = 0;
   private Map<String, Object> objects = new HashMap<String, Object>();
 
@@ -53,7 +55,7 @@ public final class MetaEventRelay implements javax.sound.midi.MetaEventListener 
    *
    * @param target   initial target to deliver events to
    */
-  public MetaEventRelay(PlaybackObserver target) {
+  public MetaEventRelay(final PlaybackObserver target) {
     addPlaybackObserver(target);
   }
 
@@ -67,10 +69,11 @@ public final class MetaEventRelay implements javax.sound.midi.MetaEventListener 
   }
 
   /**
-   * Create a new MetaMessage which wraps a reference to the provided object
+   * Create a new MetaMessage which wraps a reference to the provided object.
    *
    * @param object  the object reference to return when the MetaMessage
    *                fires inside a Sequencer
+   * @return the MetaMessage
    */
   public MetaMessage createMetaMessage(Object object) {
     if (object != null) {

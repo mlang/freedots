@@ -23,19 +23,6 @@ and transcription.
 
 * MusicXML
 
-** TODO Redo voice handling to support "forks and joins" at arbitrary positions
-
-One of the main reasons why the part-measure in-accord alogirthm is
-so incomplete and potentially buggy is that MusicList.getVoice() is
-apparently insufficient for properly querying changes in the
-structure of the music.  We want to easily see if a voice
-comes in (possibly in the middle of a measure).  MusicList.getVoice()
-currently presumes the whole sequence processed has the same amount
-of voices.  While the data structure is robust enough to work
-for MIDI playback, we'd like to be able to do more intelligent
-querying so that the part-measure in-accord algorithm can be
-rewritten.
-
 ** TODO Properly handle spanners
 *** TODO Fix slur parsing
 
@@ -65,6 +52,23 @@ tuplet element can be ignored for now (but would be nice to have
 for later ideas.))
 
 See [[*Tuplets][tuplets in braille transcription]].
+
+** TODO Redo voice handling to support "forks and joins" at arbitrary positions
+
+One of the main reasons why the part-measure in-accord alogirthm is
+so incomplete and potentially buggy is that MusicList.getVoice() is
+apparently insufficient for properly querying changes in the
+structure of the music.  We want to easily see if a voice
+comes in (possibly in the middle of a measure).  MusicList.getVoice()
+currently presumes the whole sequence processed has the same amount
+of voices.  While the data structure is robust enough to work
+for MIDI playback, we'd like to be able to do more intelligent
+querying so that the part-measure in-accord algorithm can be
+rewritten.
+
+** TODO Note.Notations.Technical.getPluck()
+
+** TODO Note.Notations.Technical.getString()
 
 * Testsuite
 

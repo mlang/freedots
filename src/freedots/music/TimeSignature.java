@@ -22,8 +22,6 @@
  */
 package freedots.music;
 
-import freedots.Braille;
-
 /**
  * The time signature is a notational convention used in Western musical
  * notation to specify how many beats are in each measure and what note value
@@ -42,22 +40,5 @@ public class TimeSignature extends Fraction {
   public boolean equals(TimeSignature other) {
     return this.getNumerator()==other.getNumerator() &&
            this.getDenominator()==other.getDenominator();
-  }
-
-  public String toBraille() {
-    String result = "";
-    int number = denominator;
-    while (number > 0) {
-      int digit = number % 10;
-      number /= 10;
-      result = Braille.lowerDigit(digit) + result;
-    }
-    number = numerator;
-    while (number > 0) {
-      int digit = number % 10;
-      number /= 10;
-      result = Braille.upperDigit(digit) + result;
-    }
-    return Braille.numberSign + result;
   }
 }

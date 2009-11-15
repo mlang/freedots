@@ -71,7 +71,7 @@ class BrailleNote extends BrailleString {
       Braille octaveSign = pitch.getOctaveSign(lastPitch);
       if (octaveSign != null) { braille += octaveSign; }
     }
-    braille += note.getAugmentedFraction().toBrailleString(pitch);
+    braille += Braille.toString(note.getAugmentedFraction(), pitch);
 
     if (options.getShowFingering()) {
       braille += Braille.toString(note.getFingering());

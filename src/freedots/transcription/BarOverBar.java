@@ -43,7 +43,8 @@ class BarOverBar implements Strategy {
   public void transcribe(Transcriber transcriber) {
     options = transcriber.getOptions();
 
-    BrailleStaves brailleStaves = new BrailleStaves(transcriber.getScore().getParts().size());
+    BrailleStaves brailleStaves =
+      new BrailleStaves(transcriber.getScore().getParts().size());
 
     KeySignature initialKeySignature = null;
     TimeSignature initialTimeSignature = null;
@@ -53,14 +54,14 @@ class BarOverBar implements Strategy {
         initialKeySignature = part.getKeySignature();
       } else {
         if (!initialKeySignature.equals(part.getKeySignature())) {
-          log.warning("Parts with different initial key signatures are not implemented");
+          log.warning("Parts with different initial key signatures");
         }
       }
       if (initialTimeSignature == null) {
         initialTimeSignature = part.getTimeSignature();
       } else {
         if (!initialTimeSignature.equals(part.getTimeSignature())) {
-          System.err.println("WARNING: Parts with different initial time signatures");
+          log.warning("Parts with different initial time signatures");
         }
       }
 
@@ -100,11 +101,6 @@ class BarOverBar implements Strategy {
           } else if (event instanceof EndBar) {
             EndBar rightBar = (EndBar)event;
             measure.process();
-            if (startBar != null) {
-            }
-            if (rightBar.getRepeat()) {
-            } else if (rightBar.getEndOfMusic()) {
-            }
             brailleStaff.add(measure);
             measure = new BrailleMeasure(measure);
             measure.setVoiceDirection(voiceDirection);
@@ -117,8 +113,8 @@ class BarOverBar implements Strategy {
     }
 
     if (initialKeySignature != null && initialTimeSignature != null) {
-      transcriber.printLine(initialKeySignature.toBraille() +
-                            initialTimeSignature.toBraille());
+      transcriber.printLine(initialKeySignature.toBraille()
+                            + Braille.toString(initialTimeSignature));
     }
     int paragraph = 1;
     int startIndex = 0;
@@ -127,13 +123,15 @@ class BarOverBar implements Strategy {
       int indent = paragraphNumber.length() + 1;
 
       int endIndex = startIndex + 1;
-      while (endIndex <= brailleStaves.getMeasureCount() &&
-             brailleStaves.maxLength(startIndex, endIndex)+indent < transcriber.getRemainingColumns()) {
+      while (endIndex <= brailleStaves.getMeasureCount()
+             && (brailleStaves.maxLength(startIndex, endIndex)+indent
+                 < transcriber.getRemainingColumns())) {
         endIndex++;
       }
       if (endIndex > startIndex + 1) endIndex--;
       /* Header? */
-      for (int staffIndex = 0; staffIndex < brailleStaves.size(); staffIndex++) {
+      for (int staffIndex = 0; staffIndex < brailleStaves.size();
+           staffIndex++) {
         for (int i = startIndex; i < endIndex; i++) {
           int columnWidth = brailleStaves.maxLengthAt(i);
           BrailleMeasure measure = brailleStaves.get(staffIndex).get(i);
@@ -182,26 +180,21 @@ class BarOverBar implements Strategy {
   }
 
   private class BrailleStaff extends ArrayList<BrailleMeasure> {
-    BrailleStaff() {
-      super();
-    }
     private Braille intro = null;
     public void setIntro(Braille intro) { this.intro = intro; }
     public Braille getIntro() { return intro; }
   }
   @SuppressWarnings("serial")
   private class BrailleStaves extends ArrayList<BrailleStaff> {
-    BrailleStaves(final int initialCapacity) {
-      super(initialCapacity);
-    }
-    public int maxLength(int from, int to) {
+    BrailleStaves(final int initialCapacity) { super(initialCapacity); }
+    int maxLength(int from, int to) {
       int length = 0;
       for (int i = from; i < to; i++) {
         length += maxLengthAt(i);
       }
       return length + (to - from);
     }
-    public int maxLengthAt(int index) {
+    int maxLengthAt(int index) {
       int maxLength = 0;
       for (BrailleStaff brailleStaff : this) {
         BrailleMeasure measure = brailleStaff.get(index);
@@ -210,7 +203,7 @@ class BarOverBar implements Strategy {
       }
       return maxLength;
     }
-    public int getMeasureCount() {
+    int getMeasureCount() {
       if (isEmpty()) return 0;
       return get(0).size();
     }

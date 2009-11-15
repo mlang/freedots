@@ -22,14 +22,12 @@
  */
 package freedots.music;
 
-import freedots.Braille;
-
 public class AugmentedFraction extends Fraction {
   private int dots;
 
   private int normalNotes, actualNotes;
 
-  public AugmentedFraction (
+  public AugmentedFraction(
     final int numerator, final int denominator, final int dots
   ) {
     this(numerator, denominator, dots, 1, 1);
@@ -42,7 +40,7 @@ public class AugmentedFraction extends Fraction {
          augmentedFraction.getDots(),
          augmentedFraction.normalNotes, augmentedFraction.actualNotes);
   }
-  public AugmentedFraction (
+  public AugmentedFraction(
     final int numerator, final int denominator, final int dots,
     final int normalNotes, final int actualNotes
   ) {
@@ -52,7 +50,7 @@ public class AugmentedFraction extends Fraction {
     this.normalNotes = normalNotes;
     this.actualNotes = actualNotes;    
   }
-  public AugmentedFraction(Fraction duration) {
+  public AugmentedFraction(final Fraction duration) {
     this(duration.getNumerator(), duration.getDenominator(), 0);
     if (denominatorIsPowerOfTwo()) {
       for (int dot = 10; dot > 0; dot--) {
@@ -105,25 +103,6 @@ public class AugmentedFraction extends Fraction {
     }
     Fraction basicFraction = undotted.multiply(new Fraction(2, 1)).subtract(rest).multiply(new Fraction(normalNotes, 1)).divide(new Fraction(actualNotes, 1));
     return basicFraction;
-  }
-
-  public String toBrailleString(AbstractPitch pitch) {
-    String braille = "";
-    int log = getLog();
-    if (pitch != null) {
-      int[] stepDots = { 145, 15, 124, 1245, 125, 24, 245 };
-      int[] denomDots = { 36, 3, 6, 0 };
-      braille += Braille.unicodeBraille(
-                   Braille.dotsToBits(stepDots[pitch.getStep()])
-                 | Braille.dotsToBits(denomDots[log > 5? log-6: log-2]));
-    } else { /* Rest */
-      int[] restDots = { 134, 136, 1236, 1346 };
-      braille += Braille.unicodeBraille(Braille.dotsToBits(restDots[log > 5? log-6: log-2]));
-    }
-
-    for (int dot = 0; dot < dots; dot++) braille += Braille.dot;
-
-    return braille;
   }
 
   public static final int EIGHTH = 5;

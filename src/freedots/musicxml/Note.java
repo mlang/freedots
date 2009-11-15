@@ -466,8 +466,8 @@ public final class Note implements RhythmicElement {
 
     private Technical technical = null;
     private Element fermata = null;
-    private Set<Articulation>
-    articulations = EnumSet.noneOf(Articulation.class);
+    private Set<Articulation> articulations =
+      EnumSet.noneOf(Articulation.class);
 
     Notations(Element element) {
       this.element = element;
@@ -489,8 +489,7 @@ public final class Note implements RhythmicElement {
                 if (ARTICULATION_MAP.containsKey(nodeName)) {
                   articulations.add(ARTICULATION_MAP.get(nodeName));
                 } else {
-                  System.err.println("WARNING: Unhandled articulation "
-                                     + nodeName);
+                  log.warning("Unhandled articulation " + nodeName);
                 }
               }
             }

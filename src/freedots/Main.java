@@ -91,7 +91,8 @@ public final class Main {
             FileOutputStream fileOutputStream = new FileOutputStream(file);
             try {
               StandardMidiFileWriter smfw = new StandardMidiFileWriter();
-              smfw.write(new MIDISequence(transcriber.getScore()), 1, fileOutputStream);
+              smfw.write(new MIDISequence(transcriber.getScore()), 1,
+                         fileOutputStream);
             } catch (Exception exception) {
               exception.printStackTrace();
             } finally {
@@ -137,9 +138,8 @@ public final class Main {
       try {
         Class<?> guiClass = Class.forName(options.getUI().getClassName());
         if (GraphicalUserInterface.class.isAssignableFrom(guiClass)) {
-          Constructor constructor = guiClass.getConstructor(new Class []{
-              Transcriber.class
-            });
+          Constructor constructor =
+            guiClass.getConstructor(new Class[] {Transcriber.class});
           try {
             gui = (GraphicalUserInterface)
               constructor.newInstance(new Object[]{transcriber});
