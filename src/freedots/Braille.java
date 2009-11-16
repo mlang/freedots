@@ -34,7 +34,7 @@ import freedots.music.Fingering;
 import freedots.music.TimeSignature;
 
 /**
- * A enum of all the braille signs (and a few utility methods).
+ * All the braille signs required for music and a few utility methods.
  */
 public enum Braille {
   dot(3), wholeRest(134),
@@ -89,7 +89,7 @@ public enum Braille {
   private Braille(final int[] dots) {
     this.dots = dots;
     cachedString = "";
-    for (int element : dots)
+    for (int element: dots)
       cachedString += String.valueOf(unicodeBraille(dotsToBits(element)));
   }
   @Override
@@ -136,7 +136,6 @@ public enum Braille {
    * @return braille music octave sign
    */
   public static Braille octave(final int number) { return OCTAVES[number]; }
-  private static Braille upperDigit(final int digit) { return DIGITS[digit]; }
 
   /** Format a number using the upper dots 1, 2, 4 and 5.
    * @param number is the number to translate to braille
@@ -146,7 +145,7 @@ public enum Braille {
     String string = "";
     while (number > 0) {
       int digit = number % 10;
-      string = upperDigit(digit) + string;
+      string = DIGITS[digit] + string;
       number = number / 10;
     }
     return string;
