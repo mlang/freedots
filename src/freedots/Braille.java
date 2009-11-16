@@ -290,11 +290,11 @@ public enum Braille {
 
   public static Braille valueOf(Accidental accidental) {
     switch (accidental) {
-      case NATURAL: return natural;
-      case DOUBLE_FLAT: return doubleFlat;
-      case FLAT:    return flat;
-      case SHARP:   return sharp;
-      case DOUBLE_SHARP: return doubleSharp;
+    case NATURAL: return natural;
+    case DOUBLE_FLAT: return doubleFlat;
+    case FLAT:    return flat;
+    case SHARP:   return sharp;
+    case DOUBLE_SHARP: return doubleSharp;
     }
     return null;
   }

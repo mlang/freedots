@@ -48,7 +48,7 @@ public abstract class AbstractPitch implements Comparable<AbstractPitch> {
     return midiPitch;
   }
   @Override
-  public boolean equals(Object object) {
+  public final boolean equals(Object object) {
     if (object instanceof AbstractPitch) {
       AbstractPitch other = (AbstractPitch)object;
       if (this.getStep() == other.getStep()) {
@@ -84,11 +84,16 @@ public abstract class AbstractPitch implements Comparable<AbstractPitch> {
     }      
   }
 
-  public AbstractPitch nextStep(AccidentalContext accidentalContext) {
+  public final AbstractPitch nextStep(AccidentalContext accidentalContext) {
     int octave = getOctave();
     int step = getStep();
     double alter = 0;
-    if (step < STEPS-1) { step += 1; } else { octave += 1; step = 0; };
+    if (step < STEPS-1) {
+      step += 1;
+    } else {
+      octave += 1;
+      step = 0;
+    }
     alter = accidentalContext.getAlter(octave, step);
     return new TemporaryPitch(octave, step, (int)alter);
   }

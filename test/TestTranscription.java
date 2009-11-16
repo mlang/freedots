@@ -15,7 +15,8 @@ public class TestTranscription extends junit.framework.TestCase {
            javax.xml.xpath.XPathExpressionException {
     Options options = new Options(new String[] { "-w", "40" });
     Score score = new Score("test/pmia-1.xml");
-    Transcriber transcriber = new Transcriber(score, options);
+    Transcriber transcriber = new Transcriber(options);
+    transcriber.setScore(score);
 
     final String keyAndTimeSignature = "⠩⠼⠉⠲";
     final String expectedResult = "         " + score.getComposer() + NL
@@ -37,7 +38,8 @@ public class TestTranscription extends junit.framework.TestCase {
     final String mxmlFile = "valueambiguity-1.xml";
     Options options = new Options(new String[] { "-w", "40" });
     Score score = new Score("test/" + mxmlFile);
-    Transcriber transcriber = new Transcriber(score, options);
+    Transcriber transcriber = new Transcriber(options);
+    transcriber.setScore(score);
 
     final String keyAndTimeSignature = "⠩⠼⠉⠲";
     final String expectedResult = "         " + score.getComposer() + NL

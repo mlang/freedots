@@ -14,7 +14,7 @@
  * for more details (a copy is included in the LICENSE.txt file that
  * accompanied this code).
  *
- * You should have received a copy of the GNU General Public License 
+ * You should have received a copy of the GNU General Public License
  * along with this work; if not, write to the Free Software Foundation
  * Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
  *
@@ -32,13 +32,13 @@ import javax.sound.midi.Sequencer;
 import javax.sound.midi.Synthesizer;
 
 /**
- * Class <code>MIDIPlayer</code> is a composite that coordinates
- * <link>javax.sound.midi.Sequencer</link> and
- * <link>javax.sound.midi.Synthesizer</link> to provide MIDI playback.
+ * Class {@code MIDIPlayer} is a composite that coordinates
+ * {@link javax.sound.midi.Sequencer} and
+ * {@link javax.sound.midi.Synthesizer} to provide MIDI playback.
  *
- * Optionally it can use <link>MetaEventRelay</link> to resolve object
- * references embedded in <link>freedots.musicxml.MIDISequence</link>
- * and cause <link>PlaybackObserver</link> clients to be notified when a
+ * Optionally it can use {@link MetaEventRelay} to resolve object
+ * references embedded in {@link freedots.musicxml.MIDISequence}
+ * and cause {@link PlaybackObserver} clients to be notified when a
  * certain object is played.
  */
 public final class MIDIPlayer implements Closeable {
@@ -48,8 +48,8 @@ public final class MIDIPlayer implements Closeable {
   private Sequencer sequencer;
 
   public MIDIPlayer(final MetaEventRelay metaEventRelay)
-  throws MidiUnavailableException, InvalidMidiDataException,
-         MetaEventListeningUnavailableException {
+    throws MidiUnavailableException, InvalidMidiDataException,
+           MetaEventListeningUnavailableException {
     this();
     if (!sequencer.addMetaEventListener(metaEventRelay)) {
       throw new MetaEventListeningUnavailableException();

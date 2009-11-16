@@ -33,7 +33,14 @@ import freedots.musicxml.Score;
 public final class Transcriber {
   private Score score;
 
+  /** The score which was used to generate the current transcription.
+   * @return the score object
+   */
   public Score getScore() { return score; }
+
+  /** Transcribe the given score to braille.
+   * @param score is the abstract representation of the music to transcribe
+   */
   public void setScore(final Score score) {
     this.score = score;
     clear();
@@ -41,18 +48,18 @@ public final class Transcriber {
   }
 
   private Options options;
-  public Options getOptions() { return options; }
+  Options getOptions() { return options; }
 
   private BrailleList strings;
   private int characterCount;
   private int lineCount;
   private int pageNumber;
 
-  public boolean isLastLine() {
+  boolean isLastLine() {
     return lineCount == (options.getPageHeight() - 1);
   }
-  public int getCurrentColumn() { return characterCount; }
-  public int getRemainingColumns() {
+  int getCurrentColumn() { return characterCount; }
+  int getRemainingColumns() {
     return options.getPageWidth() - characterCount;
   }
 
@@ -94,13 +101,12 @@ public final class Transcriber {
 
   private Strategy strategy;
 
+  /** Construct a new transcriber object.
+   * @param options is used to pass in command-line or GUI options
+   */
   public Transcriber(final Options options) {
     this.options = options;
     clear();
-  }
-  public Transcriber(final Score score, final Options options) {
-    this(options);
-    setScore(score);
   }
   private void clear() {
     strings = new BrailleList();

@@ -22,7 +22,17 @@
  */
 package freedots.playback;
 
+/**
+ * During playback, this intercace is used to inform the GUI which score
+ * object has just been playing.
+ *
+ * This is an essential feature to provide synchronized caret movements
+ * during playback.
+ */
 public interface PlaybackObserver extends java.util.EventListener {
+  /** Invoked after the playback of the specified object started.
+   * @param object is the score object that just started playing
+   */
   void objectPlaying(Object object);
 }
 

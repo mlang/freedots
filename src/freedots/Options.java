@@ -42,7 +42,7 @@ public final class Options {
   private UI ui = UI.Swing;
 
   private boolean showFingering = true;
-  Method method = Method.SectionBySection;
+  private Method method = Method.SectionBySection;
 
   public Options(final String[] args) {
     for (int index = 0; index < args.length; index++) {
@@ -122,22 +122,32 @@ public final class Options {
   public String getExportMidiFile() { return exportMidiFile; }
   public UI getUI() { return ui; }
 
+  /** Indicates if fingering information should be transcribed to braille.
+   * @return true if fingering should be transcribed
+   */
   public boolean getShowFingering() { return showFingering; }
+  /** Enable or disable fingering transcription
+   * @param value indicates the new state of fingering transcription
+   */
   public void setShowFingering(boolean value) { showFingering = value; }
   public Method getMethod() { return method; }
   public void setMethod(final Method method) { this.method = method; }
 
+  @Deprecated
   public enum MultiStaffMeasures {
     VISUAL, /* break at new system */
     TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, ELEVEN, TWELVE;
   }
-  public enum UI {
+
+  enum UI {
     Swing("swing.Main");
 
     private String className;
     UI(final String name) { className = "freedots.gui." + name; }
     public String getClassName() { return className; }
   }
+  /** This enum defines the available transcription strategies.
+   */
   public enum Method {
     SectionBySection, BarOverBar;
   }

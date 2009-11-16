@@ -31,15 +31,14 @@ import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.LogRecord;
 
-public class Logger extends java.util.logging.Logger {
+public final class Logger extends java.util.logging.Logger {
   private static LogManager manager;
   private static ArrayBlockingQueue<LogRecord> logQueue;
   private static final int LOG_QUEUE_SIZE = 1000;
 
-  private Logger(String name) { super(name, null); }
+  private Logger(final String name) { super(name, null); }
 
-  /**
-   * Report (and possibly create) the logger related to the provided class
+  /** Report (and possibly create) the logger related to the provided class.
    *
    * @param clazz the related class
    * @return the logger
@@ -86,7 +85,7 @@ public class Logger extends java.util.logging.Logger {
 
   /**
    * Report the resulting level for the logger, which may be inherited from
-   * parents higher in the hierarchy
+   * parents higher in the hierarchy.
    *
    * @return The effective logging level for this logger
    */
@@ -106,7 +105,7 @@ public class Logger extends java.util.logging.Logger {
   }
 
   /**
-   * Log the provided message and stop
+   * Log the provided message and stop.
    *
    * @param msg the (severe) message
    */
@@ -117,7 +116,7 @@ public class Logger extends java.util.logging.Logger {
   }
 
   /**
-   * Log the provided message and exception, then stop the application
+   * Log the provided message and exception, then stop the application.
    *
    * @param msg the (severe) message
    * @param thrown the exception

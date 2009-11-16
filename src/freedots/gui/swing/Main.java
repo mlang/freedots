@@ -205,8 +205,8 @@ public final class Main
     setJMenuBar(createMenuBar());
 
     // Create the text area
-    textArea = new JTextArea(transcriber.getOptions().getPageHeight(),
-                             transcriber.getOptions().getPageWidth());
+    textArea = new JTextArea(Options.getInstance().getPageHeight(),
+                             Options.getInstance().getPageWidth());
     Font font = new Font("DejaVu Serif", Font.PLAIN, 14);
     textArea.setFont(font);
     setTranscriber(transcriber);
@@ -290,20 +290,20 @@ public final class Main
     ButtonGroup group = new ButtonGroup();
     group.add(sectionBySectionItem);
     group.add(barOverBarItem);
-    switch (transcriber.getOptions().getMethod()) {
+    switch (Options.getInstance().getMethod()) {
     case SectionBySection: sectionBySectionItem.setSelected(true); break;
     case BarOverBar: barOverBarItem.setSelected(true); break;
     }
     sectionBySectionItem.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
-          transcriber.getOptions().setMethod(Options.Method.SectionBySection);
+          Options.getInstance().setMethod(Options.Method.SectionBySection);
           triggerTranscription();
         }
       });
 
     barOverBarItem.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
-          transcriber.getOptions().setMethod(Options.Method.BarOverBar);
+          Options.getInstance().setMethod(Options.Method.BarOverBar);
           triggerTranscription();
         }
       });
@@ -311,10 +311,10 @@ public final class Main
     transcriptionMenu.add(barOverBarItem);
 
     JCheckBoxMenuItem showFingeringItem = new JCheckBoxMenuItem("Show fingering");
-    showFingeringItem.setSelected(transcriber.getOptions().getShowFingering());
+    showFingeringItem.setSelected(Options.getInstance().getShowFingering());
     showFingeringItem.addItemListener(new ItemListener() {
       public void itemStateChanged(ItemEvent e) {
-        transcriber.getOptions().setShowFingering(e.getStateChange() == ItemEvent.SELECTED);
+        Options.getInstance().setShowFingering(e.getStateChange() == ItemEvent.SELECTED);
         triggerTranscription();
       }
     });

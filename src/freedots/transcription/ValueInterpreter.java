@@ -74,25 +74,21 @@ class ValueInterpreter {
   public Set<Interpretation> getInterpretations() { return interpretations; }
 
   public Object getSplitPoint() {
-    for (Interpretation interpretation : interpretations) {
+    for (Interpretation interpretation: interpretations) {
       if (interpretation.isCorrect()) {
         int begin = 0;
         int end = interpretation.size() - 1;
 
         if (end > begin) {
-          int beginLog = interpretation.get(begin).getLog();
-          int endLog = interpretation.get(end).getLog();
-          boolean beginLarge = beginLog < AugmentedFraction.SIXTEENTH;
-          boolean endLarge = endLog < AugmentedFraction.SIXTEENTH;
+          boolean beginLarge = isWholeToEighth(interpretation.get(begin));
+          boolean endLarge = isWholeToEighth(interpretation.get(end));
 
           if ((beginLarge && !endLarge) || (!beginLarge && endLarge)) {
             int leftIndex = begin;
-            while (interpretation.get(leftIndex).getLog()
-                   < AugmentedFraction.SIXTEENTH == beginLarge)
+            while (isWholeToEighth(interpretation.get(leftIndex)) == beginLarge)
               leftIndex++;
             int rightIndex = end;
-            while (interpretation.get(rightIndex).getLog()
-                   < AugmentedFraction.SIXTEENTH == endLarge)
+            while (isWholeToEighth(interpretation.get(rightIndex)) == endLarge)
               rightIndex--;
             if (rightIndex == leftIndex - 1) {
               return interpretation.get(leftIndex).getNote();
@@ -121,11 +117,11 @@ class ValueInterpreter {
       Set<RhythmicPossibility> head = candidates.get(0);
       List<Set<RhythmicPossibility>>
       tail = candidates.subList(1, candidates.size());
-      for (RhythmicPossibility rhythmicPossibility : head) {
+      for (RhythmicPossibility rhythmicPossibility: head) {
         if (rhythmicPossibility.compareTo(remaining) <= 0) {
-          for (Interpretation interpretation:
-               findInterpretations(tail,
-                                   remaining.subtract(rhythmicPossibility))) {
+          for (Interpretation interpretation
+                 : findInterpretations(tail, remaining
+                                       .subtract(rhythmicPossibility))) {
             interpretation.add(0, rhythmicPossibility);
             result.add(interpretation);
           }
@@ -134,6 +130,10 @@ class ValueInterpreter {
     }
 
     return result;
+  }
+
+  private static boolean isWholeToEighth(RhythmicPossibility item) {
+    return item.getLog() < AugmentedFraction.SIXTEENTH;
   }
 
   @SuppressWarnings("serial")

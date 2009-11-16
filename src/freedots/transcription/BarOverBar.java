@@ -34,83 +34,21 @@ import freedots.music.Staff;
 import freedots.music.StartBar;
 import freedots.music.TimeSignature;
 import freedots.musicxml.Part;
+import freedots.musicxml.Score;
 
 class BarOverBar implements Strategy {
   private static final Logger log = Logger.getLogger(BarOverBar.class);
 
   private Options options = null;
 
+  private BrailleStaves brailleStaves = new BrailleStaves();
+  private KeySignature initialKeySignature = null;
+  private TimeSignature initialTimeSignature = null;
+
   public void transcribe(Transcriber transcriber) {
     options = transcriber.getOptions();
 
-    BrailleStaves brailleStaves =
-      new BrailleStaves(transcriber.getScore().getParts().size());
-
-    KeySignature initialKeySignature = null;
-    TimeSignature initialTimeSignature = null;
-
-    for (Part part:transcriber.getScore().getParts()) {
-      if (initialKeySignature == null) {
-        initialKeySignature = part.getKeySignature();
-      } else {
-        if (!initialKeySignature.equals(part.getKeySignature())) {
-          log.warning("Parts with different initial key signatures");
-        }
-      }
-      if (initialTimeSignature == null) {
-        initialTimeSignature = part.getTimeSignature();
-      } else {
-        if (!initialTimeSignature.equals(part.getTimeSignature())) {
-          log.warning("Parts with different initial time signatures");
-        }
-      }
-
-      MusicList musicList = part.getMusicList();
-      int staffCount = musicList.getStaffCount();
-      for (int staffIndex = 0; staffIndex < staffCount; staffIndex++) {
-        Staff staff = musicList.getStaff(staffIndex);
-        BrailleStaff brailleStaff = new BrailleStaff();
-        BrailleMeasure measure = new BrailleMeasure();
-        boolean displayClefChange = false;
-        int voiceDirection = -1;
-
-        if (staffCount == 1) {
-          brailleStaff.setIntro(Braille.soloPart);
-          if (staff.containsChords()) displayClefChange = true;
-        } else if (staffCount == 2) {
-          if (staffIndex == 0) {
-            brailleStaff.setIntro(Braille.rightHandPart);
-            voiceDirection = -1;
-            measure.setVoiceDirection(voiceDirection);
-          } else if (staffIndex == 1) {
-            brailleStaff.setIntro(Braille.leftHandPart);
-            voiceDirection = 1;
-            measure.setVoiceDirection(voiceDirection);
-          }
-        }
-
-        StartBar startBar = null;
-
-        for (int staffElementIndex = 0; staffElementIndex < staff.size();
-             staffElementIndex++) {
-          Event event = staff.get(staffElementIndex);
-
-          if (event instanceof StartBar) {
-            startBar = (StartBar)event;
-            measure.setTimeSignature(startBar.getTimeSignature());
-          } else if (event instanceof EndBar) {
-            EndBar rightBar = (EndBar)event;
-            measure.process();
-            brailleStaff.add(measure);
-            measure = new BrailleMeasure(measure);
-            measure.setVoiceDirection(voiceDirection);
-          } else {
-            measure.add(event);
-          }
-        }
-        brailleStaves.add(brailleStaff);
-      }
-    }
+    createMeasuresInBrailleStaves(transcriber.getScore());
 
     if (initialKeySignature != null && initialTimeSignature != null) {
       transcriber.printLine(initialKeySignature.toBraille()
@@ -179,6 +117,75 @@ class BarOverBar implements Strategy {
     }
   }
 
+  private void createMeasuresInBrailleStaves(Score score) {
+    brailleStaves.clear();
+    initialTimeSignature = null;
+    initialKeySignature = null;
+
+    for (Part part: score.getParts()) {
+      if (initialKeySignature == null) {
+        initialKeySignature = part.getKeySignature();
+      } else {
+        if (!initialKeySignature.equals(part.getKeySignature())) {
+          log.warning("Parts with different initial key signatures");
+        }
+      }
+      if (initialTimeSignature == null) {
+        initialTimeSignature = part.getTimeSignature();
+      } else {
+        if (!initialTimeSignature.equals(part.getTimeSignature())) {
+          log.warning("Parts with different initial time signatures");
+        }
+      }
+
+      MusicList musicList = part.getMusicList();
+      int staffCount = musicList.getStaffCount();
+      for (int staffIndex = 0; staffIndex < staffCount; staffIndex++) {
+        Staff staff = musicList.getStaff(staffIndex);
+        BrailleStaff brailleStaff = new BrailleStaff();
+        BrailleMeasure measure = new BrailleMeasure();
+        boolean displayClefChange = false;
+        int voiceDirection = -1;
+
+        if (staffCount == 1) {
+          brailleStaff.setIntro(Braille.soloPart);
+          if (staff.containsChords()) displayClefChange = true;
+        } else if (staffCount == 2) {
+          if (staffIndex == 0) {
+            brailleStaff.setIntro(Braille.rightHandPart);
+            voiceDirection = -1;
+            measure.setVoiceDirection(voiceDirection);
+          } else if (staffIndex == 1) {
+            brailleStaff.setIntro(Braille.leftHandPart);
+            voiceDirection = 1;
+            measure.setVoiceDirection(voiceDirection);
+          }
+        }
+
+        StartBar startBar = null;
+
+        for (int staffElementIndex = 0; staffElementIndex < staff.size();
+             staffElementIndex++) {
+          Event event = staff.get(staffElementIndex);
+
+          if (event instanceof StartBar) {
+            startBar = (StartBar)event;
+            measure.setTimeSignature(startBar.getTimeSignature());
+          } else if (event instanceof EndBar) {
+            EndBar rightBar = (EndBar)event;
+            measure.process();
+            brailleStaff.add(measure);
+            measure = new BrailleMeasure(measure);
+            measure.setVoiceDirection(voiceDirection);
+          } else {
+            measure.add(event);
+          }
+        }
+        brailleStaves.add(brailleStaff);
+      }
+    }
+  }
+
   private class BrailleStaff extends ArrayList<BrailleMeasure> {
     private Braille intro = null;
     public void setIntro(Braille intro) { this.intro = intro; }
@@ -186,7 +193,6 @@ class BarOverBar implements Strategy {
   }
   @SuppressWarnings("serial")
   private class BrailleStaves extends ArrayList<BrailleStaff> {
-    BrailleStaves(final int initialCapacity) { super(initialCapacity); }
     int maxLength(int from, int to) {
       int length = 0;
       for (int i = from; i < to; i++) {

@@ -34,20 +34,25 @@ public final class SingleIconSpecification {
   
   
   
-  public SingleIconSpecification(String noteHeadImage, String flagsImage, boolean hasStem,int offsetX, int offsetY,int stemOffsetX,int stemOffsetY)
+  public SingleIconSpecification(final String noteHeadImage,
+                                 final String flagsImage,
+                                 final boolean hasStem,
+                                 final int offsetX, final int offsetY,
+                                 final int stemOffsetX, final int stemOffsetY)
   {
-    this.noteHeadImage=noteHeadImage;
-    this.flagsImage=flagsImage;
-    this.stem=hasStem;
+    this.noteHeadImage = noteHeadImage;
+    this.flagsImage = flagsImage;
+    this.stem = hasStem;
     
-    this.offsetX=offsetX;
-    this.offsetY=offsetY;
-    this.stemOffsetX=stemOffsetX;
-    this.stemOffsetY=stemOffsetY;
-    
+    this.offsetX = offsetX;
+    this.offsetY = offsetY;
+    this.stemOffsetX = stemOffsetX;
+    this.stemOffsetY = stemOffsetY;
   }
   
-  public SingleIconSpecification(String noteHeadImage, String flagsImage, boolean hasStem)
+  public SingleIconSpecification(final String noteHeadImage,
+                                 final String flagsImage,
+                                 final boolean hasStem)
   {
     this.noteHeadImage=noteHeadImage;
     this.flagsImage=flagsImage;

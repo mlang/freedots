@@ -24,8 +24,8 @@ package freedots.playback;
 
 public final class
 MetaEventListeningUnavailableException extends RuntimeException {
-  public MetaEventListeningUnavailableException() { super(); }
-  public MetaEventListeningUnavailableException(final String message) {
+  MetaEventListeningUnavailableException() { super(); }
+  MetaEventListeningUnavailableException(final String message) {
     super(message);
   }
 }
