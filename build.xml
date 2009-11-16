@@ -136,12 +136,8 @@
   <target name="build.manual" depends="build.jar"
 	  description="build the user manual">
     <presetdef name="freedots">
-      <java classname="${freedots.jar.main.class}"
+      <java jar="dist/FreeDots-${DSTAMP}.jar" fork="true"
 	    failonerror="true" logError="true">
-        <classpath>
-          <pathelement location="dist/FreeDots-${DSTAMP}.jar"/>
-          <pathelement path="${java.class.path}"/>
-        </classpath>
       </java>
     </presetdef>
     <!-- Build examples -->
