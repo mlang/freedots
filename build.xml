@@ -6,6 +6,7 @@
   <property name="src" location="src"/>
   <property name="test" location="test"/>
   <property name="build" location="build"/>
+  <property name="javadocs" location="doc/api"/>
   <property name="dist" location="dist"/>
   <property name="freedots.jar.main.class" value="freedots.Main"/>
   <property name="freedots.version" value="0.6" />
@@ -193,11 +194,29 @@
           description="clean up">
     <delete dir="${build}"/>
     <delete dir="${dist}"/>
+    <delete dir="${javadocs}"/>
     <delete file="doc/manual.txt"/>
     <delete file="doc/manual.html"/>
     <delete file="doc/man1/freedots.1"/>
     <delete>
       <fileset dir="doc" includes="example*.*"/>
     </delete>
+  </target>
+
+  <target name="javadoc"
+          description="build program documentation using javadoc">
+    <mkdir dir="${javadocs}"/>
+    <javadoc packagenames="freedots.*"
+             sourcepath="${src}"
+             destdir="${javadocs}"
+             author="true"
+             version="true"
+             use="false"
+             noindex="true"
+             windowtitle="FreeDots"
+             doctitle="freedots"
+             package="true">
+      <classpath refid="class.path"/>
+    </javadoc>
   </target>
 </project>
