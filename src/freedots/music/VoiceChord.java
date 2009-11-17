@@ -31,7 +31,7 @@ VoiceChord extends AbstractChord<RhythmicElement> implements VoiceElement {
   private int staffNumber;
   private String voiceName;
 
-  public VoiceChord(RhythmicElement initialNote) {
+  public VoiceChord(final RhythmicElement initialNote) {
     super(initialNote);
     this.staffNumber = initialNote.getStaffNumber();
     this.voiceName = initialNote.getVoiceName();

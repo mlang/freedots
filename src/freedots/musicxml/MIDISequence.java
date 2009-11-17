@@ -51,7 +51,7 @@ public class MIDISequence extends javax.sound.midi.Sequence {
    *
    * @param score   the score to convert
    */
-  public MIDISequence (Score score) throws InvalidMidiDataException {
+  public MIDISequence(final Score score) throws InvalidMidiDataException {
     this(score, null);
   }
   /**
@@ -60,9 +60,8 @@ public class MIDISequence extends javax.sound.midi.Sequence {
    * @param score           the score to convert
    * @param metaEventRelay  factory for object reference meta message creation
    */
-  public MIDISequence (
-    Score score, MetaEventRelay metaEventRelay
-  ) throws InvalidMidiDataException {
+  public MIDISequence(final Score score, final MetaEventRelay metaEventRelay)
+    throws InvalidMidiDataException {
     super(PPQ, calculatePPQ(score.getDivisions()));
     Track tempoTrack = createTrack();
     for (Part part : score.getParts()) {
@@ -169,12 +168,11 @@ public class MIDISequence extends javax.sound.midi.Sequence {
       }
     }
   }
-  /**
-   * Create an instance of MIDISequence
+  /** Create an instance of MIDISequence.
    *
    * @param note   the note to convert
    */
-  public MIDISequence (Note note) throws InvalidMidiDataException {
+  public MIDISequence(final Note note) throws InvalidMidiDataException {
     super(PPQ, calculatePPQ(note.getPart().getScore().getDivisions()));
     Track track = createTrack();
     int velocity = 64;

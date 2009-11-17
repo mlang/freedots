@@ -129,7 +129,7 @@ public class MusicList extends java.util.ArrayList<Event> {
   }
   private class VoiceComparator implements java.util.Comparator<Voice> {
     private int direction;
-    VoiceComparator(int direction) {
+    VoiceComparator(final int direction) {
       this.direction = direction;
     }
     public int compare(Voice v1, Voice v2) {

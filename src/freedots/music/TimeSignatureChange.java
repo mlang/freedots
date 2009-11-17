@@ -25,7 +25,8 @@ package freedots.music;
 public class TimeSignatureChange extends VerticalEvent {
   private TimeSignature timeSignature;
 
-  public TimeSignatureChange(Fraction offset, TimeSignature timeSignature) {
+  public TimeSignatureChange(final Fraction offset,
+                             final TimeSignature timeSignature) {
     super(offset);
     this.timeSignature = timeSignature;
   }

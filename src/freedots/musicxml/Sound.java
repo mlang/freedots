@@ -31,15 +31,18 @@ import freedots.music.Fraction;
 import org.w3c.dom.Element;
 
 public final class Sound implements Event {
-  Fraction offset;
-  Element xml;
+  private Fraction offset;
+  private Element xml;
 
   public Sound(final Element xml, final Fraction offset) {
     this.xml = xml;
     this.offset = offset;
   }
 
-  public final MetaMessage getTempoMessage() {
+  /** Create MIDI tempo change event if this Sound element specifies tempo.
+   * @return a MetaMessage or null, if no tempo attribute was found
+   */
+  public MetaMessage getTempoMessage() {
     if (xml.hasAttribute("tempo")) {
       final float tempo = Float.parseFloat(xml.getAttribute("tempo"));
       int midiTempo = Math.round((float)60000.0 / tempo * 1000);

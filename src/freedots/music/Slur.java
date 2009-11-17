@@ -23,7 +23,7 @@
 package freedots.music;
 
 public class Slur<T extends RhythmicElement> extends java.util.ArrayList<T> {
-  public Slur(T initialNote) {
+  public Slur(final T initialNote) {
     super(3);
     add(initialNote);
   }

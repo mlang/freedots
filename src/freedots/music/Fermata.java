@@ -36,7 +36,7 @@ public class Fermata {
   private Type type = Type.UPRIGHT;
   private Shape shape = Shape.NORMAL;
 
-  public Fermata(Type type, Shape shape) {
+  public Fermata(final Type type, final Shape shape) {
     this.type = type;
     this.shape = shape;
   }

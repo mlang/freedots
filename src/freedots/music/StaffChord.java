@@ -30,7 +30,7 @@ public final class
 StaffChord extends AbstractChord<RhythmicElement> implements StaffElement {
   private int staffNumber;
 
-  public StaffChord(RhythmicElement initialNote) {
+  public StaffChord(final RhythmicElement initialNote) {
     super(initialNote);
     this.staffNumber = initialNote.getStaffNumber();
   }

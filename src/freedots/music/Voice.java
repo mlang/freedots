@@ -24,9 +24,9 @@ package freedots.music;
 
 @SuppressWarnings("serial")
 public class Voice extends MusicList {
-  String name;
+  private String name;
 
-  Voice(String name) {
+  Voice(final String name) {
     super();
     this.name = name;
   }

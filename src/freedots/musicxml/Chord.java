@@ -30,7 +30,7 @@ import freedots.music.StaffChord;
 import freedots.music.StaffElement;
 
 public final class Chord extends AbstractChord<Note> {
-  Chord(Note initialNote) {
+  Chord(final Note initialNote) {
     super(initialNote);
   }
   public List<StaffElement> getStaffChords() {

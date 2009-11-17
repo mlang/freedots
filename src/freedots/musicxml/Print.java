@@ -24,10 +24,10 @@ package freedots.musicxml;
 
 import org.w3c.dom.Element;
 
-public class Print {
-  Element element;
+public final class Print {
+  private Element element;
 
-  public Print(Element element) { this.element = element; }
+  public Print(final Element element) { this.element = element; }
   public boolean isNewSystem() {
     return element.getAttribute("new-system").trim().toLowerCase()
            .equals("yes");

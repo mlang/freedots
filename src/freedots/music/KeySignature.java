@@ -28,13 +28,13 @@ public class KeySignature {
   private final int type; // number of sharps (+) or flats (-)
   private final int[] modifiers;
 
-  public KeySignature(int type)	{
+  public KeySignature(final int type) {
     this.type = type;
 
     modifiers = new int[7];
     for (int i = 0; i < 7; i++) modifiers[i] = 0;
     if (type > 0) {
-      for (int i=0; i<type; i++) modifiers[sharps[i]] = 1;
+      for (int i = 0; i < type; i++) modifiers[sharps[i]] = 1;
     } else if (type < 0) {
       for (int i=0; i<-type; i++) modifiers[flats[i]] = -1;
     }

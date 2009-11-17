@@ -63,14 +63,14 @@ public abstract class AbstractPitch implements Comparable<AbstractPitch> {
     if (lastPitch != null) {
       int halfSteps = Math.abs(getMIDIPitch() - lastPitch.getMIDIPitch());
 
-      if ((halfSteps < 5) ||
-          (halfSteps >= 5 && halfSteps <= 7 &&
-           getOctave() == lastPitch.getOctave()))
+      if ((halfSteps < 5)
+          || (halfSteps >= 5 && halfSteps <= 7
+              && getOctave() == lastPitch.getOctave()))
         return null;
     }
     return Braille.octave(getOctave());
   }
-  public int diatonicDifference(AbstractPitch other) {
+  public final int diatonicDifference(AbstractPitch other) {
     return ((this.getOctave()*STEPS) + this.getStep()) -
            ((other.getOctave()*STEPS) + other.getStep());
   }
@@ -109,7 +109,7 @@ public abstract class AbstractPitch implements Comparable<AbstractPitch> {
 
   class TemporaryPitch extends AbstractPitch {
     private int octave, step, alter;
-    TemporaryPitch(int octave, int step, int alter) {
+    TemporaryPitch(final int octave, final int step, final int alter) {
       this.octave = octave;
       this.step = step;
       this.alter = alter;
@@ -120,13 +120,13 @@ public abstract class AbstractPitch implements Comparable<AbstractPitch> {
   }
 
   @Override
-  public String toString() {
+  public final String toString() {
     final String[] stepNames = new String[] {"C", "D", "E", "F", "G", "A", "B"};
     return stepNames[getStep()]+getOctave()+" ("+getAlter()+")";
   }
-  private final static int STEPS = 7;
-  private final static int CHROMATIC_STEPS = 12;
-  private final static int[] STEP_TO_CHROMATIC = new int[] {
+  private static final int STEPS = 7;
+  private static final int CHROMATIC_STEPS = 12;
+  private static final int[] STEP_TO_CHROMATIC = new int[] {
     0, 2, 4, 5, 7, 9, 11
   };
 }

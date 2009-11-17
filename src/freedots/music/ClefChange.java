@@ -24,13 +24,14 @@ package freedots.music;
 
 import freedots.Braille;
 
-public class ClefChange implements StaffElement {
+public final class ClefChange implements StaffElement {
   private Fraction offset;
   private Clef clef;
   private int staffNumber;
   private Staff staff;
 
-  public ClefChange(Fraction offset, Clef clef, int staffNumber) {
+  public ClefChange(final Fraction offset,
+                    final Clef clef, final int staffNumber) {
     this.offset = offset;
     this.clef = clef;
     this.staffNumber = staffNumber;

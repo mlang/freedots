@@ -35,7 +35,7 @@ import org.w3c.dom.NodeList;
 public final class Attributes {
   Element element;
   int divisions;
-  public Attributes(Element element, int divisions) {
+  public Attributes(final Element element, final int divisions) {
     this.element = element;
     this.divisions = divisions;
   }
@@ -85,7 +85,7 @@ public final class Attributes {
   class Clef extends freedots.music.Clef {
     Element element = null;
     String staffNumber = null;
-    public Clef(Element element) {
+    public Clef(final Element element) {
       super(getClefSignFromElement(element));
       if (sign != Sign.percussion) {
         line = getClefLineFromElement(element);
@@ -101,7 +101,7 @@ public final class Attributes {
   }
   class Time extends TimeSignature {
     Element element = null;
-    public Time(Element element) {
+    public Time(final Element element) {
       super(getBeatsFromElement(element), getBeatTypeFromElement(element));
       this.element = element;
     }
@@ -109,7 +109,7 @@ public final class Attributes {
   class Key extends KeySignature {
     Element element = null;
     String staffName = null;
-    public Key(Element element) {
+    public Key(final Element element) {
       super(getFifthsFromElement(element));
       this.element = element;
       staffName = element.getAttribute("number");

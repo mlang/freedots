@@ -30,12 +30,13 @@ package freedots.music;
  * @see <a href="http://en.wikipedia.org/wiki/Time_signature">Wikipedia:Time_signature</a>
  */
 public class TimeSignature extends Fraction {
-  public TimeSignature(int numerator, int denominator) {
+  public TimeSignature(final int numerator, final int denominator) {
     super(numerator, denominator);
   }
 
-  /**
-   * 3/4 is not equal to 6/8 when it comes to time signatures
+  /** 3/4 is not equal to 6/8 when it comes to time signatures.
+   * @param other is the time signature to compare to
+   * @return true if the two time signatures are truly equal
    */
   public boolean equals(TimeSignature other) {
     return this.getNumerator()==other.getNumerator() &&

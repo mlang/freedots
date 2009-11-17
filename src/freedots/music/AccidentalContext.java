@@ -36,13 +36,13 @@ import freedots.logging.Logger;
  * the effect of the accidental ends, except when a note affected by an
  * accidental is tied to the same note across a barline.
  */
-public class AccidentalContext {
+public final class AccidentalContext {
   private static final Logger log = Logger.getLogger(AccidentalContext.class);
 
   private KeySignature keySignature;
   private Map<Integer, Accidental> ranks = new HashMap<Integer, Accidental>();
 
-  public AccidentalContext(KeySignature keySignature) {
+  public AccidentalContext(final KeySignature keySignature) {
     this.keySignature = keySignature;
   }
   public double getAlter(int octave, int step) {

@@ -28,7 +28,8 @@ public class KeyChange implements StaffElement {
   private int staffNumber;
   private Staff staff;
 
-  public KeyChange(Fraction offset, KeySignature keySignature, int staffNumber) {
+  public KeyChange(final Fraction offset,
+                   final KeySignature keySignature, final int staffNumber) {
     this.offset = offset;
     this.keySignature = keySignature;
     this.staffNumber = staffNumber;

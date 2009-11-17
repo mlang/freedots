@@ -22,17 +22,19 @@
  */
 package freedots.music;
 
-public class EndBar extends VerticalEvent {
-  public EndBar(Fraction offset) { super(offset); }
-  boolean repeat = false;
+public final class EndBar extends VerticalEvent {
+  public EndBar(final Fraction offset) { super(offset); }
+  private boolean repeat = false;
   public boolean getRepeat() { return repeat; }
   public void setRepeat(boolean repeat) { this.repeat = repeat; }
 
-  boolean endOfMusic = false;
+  private boolean endOfMusic = false;
   public boolean getEndOfMusic() { return endOfMusic; }
-  public void setEndOfMusic(boolean endOfMusic) { this.endOfMusic = endOfMusic; }
+  public void setEndOfMusic(final boolean endOfMusic) {
+    this.endOfMusic = endOfMusic;
+  }
 
-  int endingStop = 0;
+  private int endingStop = 0;
   public int getEndingStop() { return endingStop; }
   public void setEndingStop(int endingStop) { this.endingStop = endingStop; }
 

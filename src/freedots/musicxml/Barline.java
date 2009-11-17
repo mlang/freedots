@@ -25,11 +25,11 @@ package freedots.musicxml;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-public class Barline {
-  Element element;
+public final class Barline {
+  private Element element;
+  private Element ending = null;
 
-  Element ending = null;
-  public Barline(Element element) {
+  public Barline(final Element element) {
     this.element = element;
     
     NodeList nodeList = element.getElementsByTagName("ending");

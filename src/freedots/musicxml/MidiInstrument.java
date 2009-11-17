@@ -31,7 +31,7 @@ public final class MidiInstrument {
   private Text midiProgram;
   private Text midiChannel;
 
-  public MidiInstrument(Element xml) {
+  public MidiInstrument(final Element xml) {
     this.xml = xml;
     midiChannel = Score.getTextNode(xml, "midi-channel");
     midiProgram = Score.getTextNode(xml, "midi-program");

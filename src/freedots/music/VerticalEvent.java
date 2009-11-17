@@ -25,7 +25,7 @@ package freedots.music;
 public abstract class VerticalEvent implements Event {
   Fraction offset;
 
-  public VerticalEvent(Fraction offset) { this.offset = offset; }
+  public VerticalEvent(final Fraction offset) { this.offset = offset; }
 
   public Fraction getOffset() { return offset; }
 }

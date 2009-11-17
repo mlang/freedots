@@ -24,5 +24,5 @@ package freedots.musicxml;
 
 class MusicXMLParseException extends RuntimeException {
   public MusicXMLParseException () { super(); }
-  public MusicXMLParseException (String message) { super(message); }
+  public MusicXMLParseException(final String message) { super(message); }
 }

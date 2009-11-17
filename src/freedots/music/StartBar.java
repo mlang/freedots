@@ -24,12 +24,12 @@ package freedots.music;
 
 public class StartBar extends VerticalEvent {
   int measureNumber;
-  public StartBar(Fraction offset, int measureNumber) {
+  public StartBar(final Fraction offset, final int measureNumber) {
     super(offset);
     this.measureNumber = measureNumber;
   }
 
-  int staffCount;
+  private int staffCount;
   public int getStaffCount() { return staffCount; }
   public void setStaffCount(int staffCount) { this.staffCount = staffCount; }
 
