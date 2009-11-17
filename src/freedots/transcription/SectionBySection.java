@@ -37,9 +37,11 @@ import freedots.music.MusicList;
 import freedots.music.Staff;
 import freedots.music.StartBar;
 import freedots.musicxml.Part;
+import freedots.musicxml.Score;
 
 class SectionBySection implements Strategy {
   private Options options = null;
+  private Score score = null;
 
   /** Main entry point to invoke implemented transcription Strategy.
    *
@@ -47,8 +49,9 @@ class SectionBySection implements Strategy {
    */
   public void transcribe(final Transcriber transcriber) {
     options = transcriber.getOptions();
+    score = transcriber.getScore();
 
-    for (Part part:transcriber.getScore().getParts()) {
+    for (Part part: score.getParts()) {
       transcriber.printLine(part.getName());
       transcriber.printLine(part.getKeySignature().toBraille()
                             + Braille.toString(part.getTimeSignature()));
@@ -194,7 +197,9 @@ class SectionBySection implements Strategy {
     int index = 0;
     int measureCount = 0;
 
-    boolean systemBreakVisual = options.multiStaffMeasures == Options.MultiStaffMeasures.VISUAL;
+    final boolean newSystemEndsSection =
+      options.getNewSystemEndsSection()
+      && score.encodingSupports("print", "new-system", true);
 
     while (true) {
       while (index < musicList.size()) {
@@ -209,31 +214,12 @@ class SectionBySection implements Strategy {
         throw new RuntimeException();
 
       StartBar startBar = (StartBar)musicList.get(index);
-      if ((startBar.getStaffCount() != currentSection.getStaffCount()) ||
-          (currentSection.getStaffCount() > 1 && (
-           (systemBreakVisual && startBar.getNewSystem()) ||
-           (options.multiStaffMeasures == Options.MultiStaffMeasures.TWO &&
-            measureCount == 2) ||
-           (options.multiStaffMeasures == Options.MultiStaffMeasures.THREE &&
-            measureCount == 3) ||
-           (options.multiStaffMeasures == Options.MultiStaffMeasures.FOUR &&
-            measureCount == 4) ||
-           (options.multiStaffMeasures == Options.MultiStaffMeasures.FIVE &&
-            measureCount == 5) ||
-           (options.multiStaffMeasures == Options.MultiStaffMeasures.SIX &&
-            measureCount == 6) ||
-           (options.multiStaffMeasures == Options.MultiStaffMeasures.SEVEN &&
-            measureCount == 7) ||
-           (options.multiStaffMeasures == Options.MultiStaffMeasures.EIGHT &&
-            measureCount == 8) ||
-           (options.multiStaffMeasures == Options.MultiStaffMeasures.NINE &&
-            measureCount == 9) ||
-           (options.multiStaffMeasures == Options.MultiStaffMeasures.TEN &&
-            measureCount == 10) ||
-           (options.multiStaffMeasures == Options.MultiStaffMeasures.ELEVEN &&
-            measureCount == 11) ||
-           (options.multiStaffMeasures == Options.MultiStaffMeasures.TWELVE &&
-            measureCount == 12))) ||
+      if ((startBar.getStaffCount() != currentSection.getStaffCount())
+          ||
+          (newSystemEndsSection && startBar.getNewSystem())
+          ||
+          (measureCount == options.getMeasuresPerSection())
+          ||
           (currentSection.getLyricText().length() >= options.getPageWidth())) {
         currentSection = new Section(part);
         sections.add(currentSection);

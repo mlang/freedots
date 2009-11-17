@@ -310,6 +310,32 @@ public final class Score {
     return true;
   }
 
+  /** Indicates if the encoding supports a particular MusicXML attribute
+   * of a certain element with a given value.
+   * This lets applications communicate, for example, that all system and/or
+   * page breaks are contained in the MusicXML document.
+   */
+  public boolean encodingSupports(String element,
+                                  String attribute, boolean value) {
+    if (encoding != null) {
+      for (Node node = encoding.getFirstChild(); node != null;
+           node = node.getNextSibling()) {
+        if (node.getNodeType() == Node.ELEMENT_NODE
+            && node.getNodeName().equals("supports")) {
+          Element supports = (Element)node;
+         if (supports.getAttribute("element").equals(element)
+              && supports.getAttribute("attribute").equals(attribute)
+              && supports.getAttribute("value").equals(YES) == value) {
+            return supports.getAttribute("type").equals(YES);
+          }
+        }
+      }
+    }
+    return true;
+  }
+
+  static final String YES = "yes";
+
   /* --- W3C DOM convenience access utilities --- */
 
   static Text getTextNode(Element element, String childTagName) {
