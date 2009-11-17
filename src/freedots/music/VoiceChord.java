@@ -55,9 +55,10 @@ VoiceChord extends AbstractChord<RhythmicElement> implements VoiceElement {
 
   public VoiceChord getSorted() {
     VoiceChord newChord = (VoiceChord)this.clone();
-    Collections.sort(newChord, getStaff().getClef(offset).getChordDirection() > 0?
-                                 new AscendingNoteComparator():
-                                 new DescendingNoteComparator());
+    Collections.sort(newChord,
+                     getStaff().getClef(offset).getChordDirection() > 0?
+                     new AscendingNoteComparator():
+                     new DescendingNoteComparator());
     return newChord;
   }
   private class AscendingNoteComparator implements Comparator<RhythmicElement> {

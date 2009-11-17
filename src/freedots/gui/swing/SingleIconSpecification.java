@@ -24,16 +24,14 @@ package freedots.gui.swing;
 
 public final class SingleIconSpecification {
 
-  private boolean stem=false;
-  private String noteHeadImage=null;
-  private String flagsImage=null;
-  private int stemOffsetX=0;
-  private int stemOffsetY=0;
-  private int offsetX=0;
-  private int offsetY=0;
-  
-  
-  
+  private boolean stem = false;
+  private String noteHeadImage = null;
+  private String flagsImage = null;
+  private int stemOffsetX = 0;
+  private int stemOffsetY = 0;
+  private int offsetX = 0;
+  private int offsetY = 0;
+
   public SingleIconSpecification(final String noteHeadImage,
                                  final String flagsImage,
                                  final boolean hasStem,

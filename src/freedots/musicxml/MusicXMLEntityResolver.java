@@ -58,8 +58,7 @@ class MusicXMLEntityResolver implements org.xml.sax.EntityResolver {
 
   public final InputSource resolveEntity(
     String publicID, String systemID
-  ) throws SAXException, IOException
-  {
+  ) throws SAXException, IOException {
     String fileName = PUBLIC_ID_MAP.get(publicID);
     if (fileName != null) {
       InputStream inputStream = getClass().getResourceAsStream(fileName);
