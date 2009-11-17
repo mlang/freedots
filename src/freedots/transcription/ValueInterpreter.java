@@ -24,6 +24,7 @@ package freedots.transcription;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -55,12 +56,10 @@ class ValueInterpreter {
       if (event instanceof Note) {
         Note note = (Note)event;
         if (!note.isGrace()) {
-          RhythmicPossibility large = new RhythmicPossibility(note, true);
-          RhythmicPossibility small = new RhythmicPossibility(note, false);
           Set<RhythmicPossibility>
-          candidate = new HashSet<RhythmicPossibility>();
-          candidate.add(large);
-          candidate.add(small);
+          candidate = new HashSet<RhythmicPossibility>(2);
+          candidate.add(new Large(note));
+          candidate.add(new Small(note));
           candidates.add(candidate);
         }
       } /* FIXME: Handle chords as well */
@@ -73,6 +72,15 @@ class ValueInterpreter {
 
   public Set<Interpretation> getInterpretations() { return interpretations; }
 
+  /**
+   * Determine if the simple distrinction of values sign
+   * {@link freedots.Braille.valueDistinction} can be used to
+   * resolve the note value ambiguity.
+   *
+   * @return the note object before which a value distinction sign
+   * should be inserted, or null if resolution of the value ambiguity
+   * is more complicated.
+   */
   public Object getSplitPoint() {
     for (Interpretation interpretation: interpretations) {
       if (interpretation.isCorrect()) {
@@ -140,37 +148,47 @@ class ValueInterpreter {
   class Interpretation extends ArrayList<RhythmicPossibility> {
     Interpretation() { super(); }
     public boolean isCorrect() {
-      for (RhythmicPossibility rhythmicPossibility : this)
+      for (RhythmicPossibility rhythmicPossibility: this)
         if (rhythmicPossibility.isAltered()) return false;
 
       return true;
     }
     public String toString() {
       StringBuilder sb = new StringBuilder();
-      for (RhythmicPossibility rp : this) {
-        sb.append(rp.toString());
-        sb.append(" ");
+      Iterator<RhythmicPossibility> iter = iterator();
+      while (iter.hasNext()) {
+        sb.append(iter.next().toString());
+        if (iter.hasNext()) sb.append(" ");
       }
       return sb.toString();
     }
   }
-  class RhythmicPossibility extends AugmentedFraction {
+  abstract class RhythmicPossibility extends AugmentedFraction {
     private Note note;
 
-    RhythmicPossibility(final Note note, final boolean larger) {
+    RhythmicPossibility(final Note note) {
       super(note.getAugmentedFraction());
       this.note = note;
-      int log = note.getAugmentedFraction().getLog();
-      if (larger) {
-        if (log > EIGHTH) log = log - 4;
-      } else {
-        if (log < SIXTEENTH) log = log + 4;
-      }
-      setFromLog(log);
     }
     boolean isAltered() {
       return compareTo(note.getAugmentedFraction()) != 0;
     }
     Note getNote() { return note; }
+  }
+  class Large extends RhythmicPossibility {
+    Large(final Note note) {
+      super(note);
+      int log = note.getAugmentedFraction().getLog();
+      if (log > EIGHTH) log = log - 4;
+      setFromLog(log);
+    }
+  }
+  class Small extends RhythmicPossibility {
+    Small(final Note note) {
+      super(note);
+      int log = note.getAugmentedFraction().getLog();
+      if (log < SIXTEENTH) log = log + 4;
+      setFromLog(log);
+    }
   }
 }
