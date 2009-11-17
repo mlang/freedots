@@ -93,7 +93,7 @@ public final class Main {
               StandardMidiFileWriter smfw = new StandardMidiFileWriter();
               smfw.write(new MIDISequence(transcriber.getScore()), 1,
                          fileOutputStream);
-            } catch (Exception exception) {
+            } catch (javax.sound.midi.InvalidMidiDataException exception) {
               exception.printStackTrace();
             } finally {
               fileOutputStream.close();
@@ -149,9 +149,21 @@ public final class Main {
           gui.run();
         }
       } catch (HeadlessException e) {
+        System.err.println("Graphical display not available");
+      } catch (ClassNotFoundException exception) {
+        System.err.println("Requested GUI class "
+                           + options.getUI().getClassName()
+                           + "was not found in the classpath");
+      } catch (InstantiationException exception) {
+        System.err.println("Unable to instantiate GUI");
+      } catch (IllegalAccessException exception) {
+        exception.printStackTrace();
+      } catch (NoSuchMethodException exception) {
+        System.err.println("No constructor for requested GUI found");
+      } catch (Throwable throwable) {
+        throwable.printStackTrace();
+      } finally {
         options.setWindowSystem(false);
-      } catch (Throwable e) {
-        e.printStackTrace();
       }
     }
   }
