@@ -54,9 +54,9 @@ StaffChord extends AbstractChord<RhythmicElement> implements StaffElement {
     for (int index = 1; index < size(); index++) {
       RhythmicElement note = get(index);
       String noteVoiceName = note.getVoiceName();
-      if ((noteVoiceName == null && currentVoiceChord.getVoiceName() == null) ||
-          (noteVoiceName != null &&
-           noteVoiceName.equals(currentVoiceChord.getVoiceName()))) {
+      if ((noteVoiceName == null && currentVoiceChord.getVoiceName() == null)
+          || (noteVoiceName != null
+              && noteVoiceName.equals(currentVoiceChord.getVoiceName()))) {
         currentVoiceChord.add(note);
       } else {
         currentVoiceChord = new VoiceChord(note);

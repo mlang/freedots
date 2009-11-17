@@ -289,10 +289,10 @@ public final class Score {
     return parts;
   }
 
-  /* Indicates if the encoding supports a particular MusicXML element.
+  /** Indicates if the encoding supports a particular MusicXML element.
    * This is recommended for elements like beam, stem, and accidental,
-   * where the absence of an element is ambiguous
-   * if you do not know if the encoding supports that element.
+   * where the absence of an element is ambiguous if you do not know if the
+   * encoding supports that element.
    */
   public boolean encodingSupports(String elementName) {
     if (encoding != null) {

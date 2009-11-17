@@ -22,6 +22,17 @@
  */
 package freedots.music;
 
+/**
+ * An accidental sign raises or lowers the following note from its normal
+ * pitch, usually by a semitone, although microtonal music may use "fractional"
+ * accidental signs, and one occasionally sees double sharps or flats, which
+ * raise or lower the indicated note by a whole tone (though their most common
+ * usage is in keys in which the altered note is already raised or lowered by
+ * the key signature, so the altered note is only a half step from its usual
+ * pitch in that key). Accidentals apply within the measure and octave in which
+ * they appear, unless canceled by another accidental sign, or tied into a
+ * following measure.  See {@link AccidentalContext}.
+ */
 public enum Accidental {
                        NATURAL(0),
               FLAT(-1),           SHARP(1),

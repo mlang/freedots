@@ -60,8 +60,7 @@ public final class Part {
   private TimeSignature timeSignature = new TimeSignature(4, 4);
   private MusicList eventList = new MusicList();
 
-  /**
-   * Construct a new part (and all its relevant child objects)
+  /** Construct a new part (and all its relevant child objects).
    *
    * @throws MusicXMLParseException if an unrecoverable error happens
    */
