@@ -22,6 +22,17 @@
  */
 /**
  * Top-level package for FreeDots.
+ * <p>
+ * {@link freedots.music} is a file-format agnostic library of classes to
+ * deal with concepts related to music notation.
+ * <p>
+ * {@link freedots.musicxml} implements handling of the MusicXML format.
+ * <p>
+ * {@link freedots.transcription} contains classes related to the conversion
+ * of {@link freedots.musicxml.Score} instances to braille representation.
+ * <p>
+ * {@link freedots.playback} implements services required to play
+ * MIDI data via the Java Sound API.
  */
 package freedots;
 

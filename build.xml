@@ -209,14 +209,17 @@
     <javadoc packagenames="freedots.*"
              sourcepath="${src}"
              destdir="${javadocs}"
+             Overview="${src}/overview.html"
              author="true"
-             version="true"
-             use="false"
+             version="false"
+             use="true"
              noindex="true"
              windowtitle="FreeDots"
              doctitle="freedots"
              package="true">
       <classpath refid="class.path"/>
+      <group title="Representation" packages="freedots.music*"/>
+      <link href="http://java.sun.com/j2se/1.6.0/docs/api/"/>
     </javadoc>
   </target>
 </project>
