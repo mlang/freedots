@@ -53,6 +53,28 @@ for later ideas.))
 
 See [[*Tuplets][tuplets in braille transcription]].
 
+** TODO Transposition
+
+*** TODO Handle the transpose element
+
+MusicXML has a <transpose> element which is used in various
+situations around transposing instruments.  This element is currently
+unsupported, should be imlemented.
+
+*** TODO Allow on-the-fly transposition of a score
+
+The user should be able to transpose a given score to a different
+key in fFreeDots.  This will be a method of the Score class.
+The UI would offer the ability to trigger that method, and retranscribe
+the resulting score to braille.  This will be very useful for a lot of
+real-life music situations.  For instance, your teacher wants you to
+play a certain piece in F major, but you could only find an arrangement in
+D major.  With this feature, you'd just instruct FreeDots to tranpose
+the score up by 3 half-steps.
+
+Hint: libmusicxml (C++) used to implement transposition algorithms.
+We can learn from reading that.
+
 ** TODO Redo voice handling to support "forks and joins" at arbitrary positions
 
 One of the main reasons why the part-measure in-accord alogirthm is
