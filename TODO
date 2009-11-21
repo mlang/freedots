@@ -358,6 +358,15 @@ Many more things need doing, like proper dynamics, articulation
 (staccato etc) and mordent etc.
 
 * User interface
+** TODO Transcription preferences
+
+There should be a dialog for configuring the preferences related
+to transcription.  Currently that means all Options that can
+be set from the command-line.  For instance, there is currently no way
+to change the page width and height from within the GUI.
+
+Also, as we implement the various todo items in thsi file,
+more and more preferences should be added.
 
 ** TODO Editing of fingering
 
