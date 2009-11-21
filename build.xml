@@ -218,7 +218,6 @@
              doctitle="freedots"
              package="true">
       <classpath refid="class.path"/>
-      <group title="Representation" packages="freedots.music*"/>
       <link href="http://java.sun.com/j2se/1.6.0/docs/api/"/>
     </javadoc>
   </target>

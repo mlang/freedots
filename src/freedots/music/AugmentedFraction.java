@@ -22,9 +22,12 @@
  */
 package freedots.music;
 
+/**
+ * An {@code AugmentedFraction} encapsulates the concept of musical
+ * duration with augmentation dots and time modifications.
+ */
 public class AugmentedFraction extends Fraction {
   private int dots;
-
   private int normalNotes, actualNotes;
 
   public AugmentedFraction(
@@ -50,6 +53,17 @@ public class AugmentedFraction extends Fraction {
     this.normalNotes = normalNotes;
     this.actualNotes = actualNotes;    
   }
+  /**
+   * Construct an {@code AugmentedFraction} from a basic {@link Fraction}.
+   *
+   * This involved the calculation of augmentation dots and the real
+   * fractional part.
+   *
+   * This is required for MusicXML note elements which do not specify
+   * type and/or dots, but do specify the duration of the note.
+   *
+   * @param duration is the fractional value to deduce dots from.
+   */
   public AugmentedFraction(final Fraction duration) {
     this(duration.getNumerator(), duration.getDenominator(), 0);
     if (denominatorIsPowerOfTwo()) {
@@ -101,8 +115,10 @@ public class AugmentedFraction extends Fraction {
     for (int i = 0; i < dots; i++) {
       rest = rest.divide(new Fraction(2, 1));
     }
-    Fraction basicFraction = undotted.multiply(new Fraction(2, 1)).subtract(rest).multiply(new Fraction(normalNotes, 1)).divide(new Fraction(actualNotes, 1));
-    return basicFraction;
+
+    return undotted.multiply(new Fraction(2, 1)).subtract(rest)
+      .multiply(new Fraction(normalNotes, 1))
+      .divide(new Fraction(actualNotes, 1));
   }
 
   public static final int EIGHTH = 5;
