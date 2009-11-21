@@ -269,6 +269,12 @@ repository for such files is at http://www.wikifonia.org/
 Currently, lyrics are printed, but the alignment and line-breaking
 is not implemented correctly.
 
+*** TODO Implement bindings for liblouis for contracting lyrics
+
+Ideally, lyrics should be contracted with the contracted braille
+of course of the users.  Therefore, we'd like to have bindings
+to liblouis, ideally on Linux *and* Windows.
+
 ** TODO Note groupings
 
 Note grouping is basically beaming for braille music.

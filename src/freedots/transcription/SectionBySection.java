@@ -150,7 +150,7 @@ class SectionBySection implements Strategy {
     }
   }
 
-  class Section extends MusicList {
+  private class Section extends MusicList {
     private Part part;
     Section(final Part part) {
       super();
