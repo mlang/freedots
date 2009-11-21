@@ -26,13 +26,21 @@ of format agnostic classes for music notation representation is
 located in package {@link freedots.music}.
 <h3>MusicXML</h3>
 MusicXML handling is implemented in package {@link freedots.musicxml}.
-The main entry point into this package is class {@link freedots.musicxml.Score}.
-<h2>Transcription to braille music notation</h2>
+The main entry point into this package is class
+{@link freedots.musicxml.Score}.  A MusicXML document is currently not
+loaded into a file format independant internal representation.  The classes
+in package {@link freedots.musicxml} are implemented directly
+on top of {@link org.w3c.dom}. This means that editing operations directly
+manipulate the DOM tree.  As a nice side-effect of this, XML comments and
+indentation are preserved when a changed {@link org.w3c.dom.Document} is saved
+back to disk.
+<h2>Output</h2>
+<h3>Transcription to braille music notation</h3>
 All the classes related to braille transcription are grouped together
 in package {@link freedots.transcription}.  Class
 {@link freedots.transcription.Transcriber} is responsible for transcribing a
 given {@link freedots.musicxml.Score} object to braille music notation.
-<h2>Conversion to MIDI</h2>
+<h3>Conversion to MIDI</h3>
 Package {@link freedots.playback} provides a few classes to fascilitate
 interactive MIDI playback.
 {@link freedots.musicxml.MIDISequence} is used to convert a
