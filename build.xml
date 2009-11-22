@@ -92,7 +92,7 @@
 
   <!-- Testing framework -->
   <target name="compile.test" depends="compile">
-    <javac srcdir="${test}" verbose="false" debug="true">
+    <javac srcdir="${test}" verbose="false" debug="true" encoding="utf8">
       <classpath refid="class.path.test"/>
     </javac>
   </target>
