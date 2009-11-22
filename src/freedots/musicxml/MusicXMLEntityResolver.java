@@ -31,6 +31,13 @@ import java.util.Map;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+/** A XML {@link org.xml.sax.EntityResolver} to load MusicXML DTDs from the
+ * application JAR.
+ * <p>
+ * This class is used by {@link Score} to avoid the XML parser going out
+ * via the network to fetch the MusicXML DTDs referenced in almost all score
+ * files.
+ */
 class MusicXMLEntityResolver implements org.xml.sax.EntityResolver {
   private static final Map<String, String>
   PUBLIC_ID_MAP = Collections.unmodifiableMap(new HashMap<String, String>() {

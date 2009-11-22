@@ -25,7 +25,9 @@ package freedots.musicxml;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-public final class Barline {
+/** A wrapper around the barline element.
+ */
+final class Barline {
   private Element element;
   private Element ending = null;
 

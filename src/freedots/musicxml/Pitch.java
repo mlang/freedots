@@ -25,6 +25,8 @@ package freedots.musicxml;
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
 
+/** A wrapper around the pitch element (a child of {@link Note}).
+ */
 public final class Pitch extends freedots.music.AbstractPitch {
   private Element element;
   private Text step, alter, octave;

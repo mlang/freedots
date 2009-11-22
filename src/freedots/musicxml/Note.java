@@ -51,6 +51,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 
+/** A wrapper around (the most important) note element.
+ */
 public final class Note implements RhythmicElement {
   private static final Logger log = Logger.getLogger(Note.class);
 

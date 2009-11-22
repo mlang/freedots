@@ -21,7 +21,10 @@
  * This file is maintained by Mario Lang <mlang@delysid.org>.
  */
 /**
- * Classes for parsing, representing and (not yet) saving of MusicXML documents.
+ * Classes for parsing and representation of MusicXML documents.
+ * <p>
+ * To load a MusicXML document, call one of the constructors of
+ * {@link Score}.
  */
 package freedots.musicxml;
 

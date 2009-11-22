@@ -49,6 +49,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+/** A wrapper around the MusicXML part element.
+ */
 public final class Part {
   private static final Logger log = Logger.getLogger(Part.class);
 

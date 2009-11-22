@@ -44,6 +44,8 @@ import freedots.music.Ornament;
 import freedots.music.StartBar;
 import freedots.playback.MetaEventRelay;
 
+/** Convert MusicXML objects ({@link Score}, {@link Note}) to MIDI.
+ */
 public class MIDISequence extends javax.sound.midi.Sequence {
   private Map<Integer, AccidentalContext> accidentalContexts;
   /**

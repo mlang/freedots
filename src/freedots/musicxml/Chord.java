@@ -29,6 +29,8 @@ import freedots.music.AbstractChord;
 import freedots.music.StaffChord;
 import freedots.music.StaffElement;
 
+/** A container for all {@link Note} objects which belong to a chord.
+ */
 public final class Chord extends AbstractChord<Note> {
   Chord(final Note initialNote) {
     super(initialNote);

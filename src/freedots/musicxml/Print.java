@@ -24,6 +24,8 @@ package freedots.musicxml;
 
 import org.w3c.dom.Element;
 
+/** A wrapper around the print element (a child of {@link Part}).
+ */
 public final class Print {
   private Element element;
 

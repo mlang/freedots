@@ -28,7 +28,9 @@ import org.w3c.dom.NodeList;
 
 import freedots.music.Fraction;
 
-public final class Backup {
+/** A wrapper around the backup element.
+ */
+final class Backup {
   private int divisions, durationMultiplier;
   private Element element;
 

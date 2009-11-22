@@ -25,6 +25,8 @@ package freedots.musicxml;
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
 
+/** A wrapper around the midi-instrument element.
+ */
 public final class MidiInstrument {
   private Element xml;
 

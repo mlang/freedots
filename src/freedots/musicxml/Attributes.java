@@ -32,6 +32,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+/** A wrapper around the attributes element.
+ */
 public final class Attributes {
   Element element;
   int divisions;
