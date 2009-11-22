@@ -5,46 +5,41 @@
 The main entry point for program execution is class {@link freedots.Main}.
 Command-line options are parsed and stored in class {@link freedots.Options}.
 <h2>Non-interactive use</h2>
-The program can be run in batch-mode from the command-line to transcribe
-input data to braille music or convert the given score to MIDI.
+The program can be run in batch-mode from the command-line to transcribe input
+data to braille music or convert the given score to MIDI.
 <p>
-If no graphical environment is available the program will automatically
-fall back to non-interactive command-line mode.  Otherwise,
-the command-line option "-nw" (no window) can be used to disable startup of
-the graphical user interface.
+If no graphical environment is available the program will automatically fall
+back to non-interactive command-line mode.  Otherwise, the command-line option
+"-nw" (no window) can be used to disable startup of the graphical user
+interface.
 <h2>Graphical user interface</h2>
-By default, the program will start a GUI to present the transcription
-results and allow for a few interactive features.
-Classes for the GUI which are toolkit independant can be found
-in {@link freedots.gui}.  The Swing based implementation is located in
-package {@link freedots.gui.swing}.
+By default, the program will start a GUI to present the transcription results
+and allow for a few interactive features.  Toolkit independant GUI classes are
+put in package {@link freedots.gui}.  The Swing based implementation is located
+in package {@link freedots.gui.swing}.
 <h2>Input file format</h2>
-Currently, the only format supported is MusicXML, therefore a lot of
-things are tailored towards this format.  However, to fasciliate
-separation between various potential file formats, a library
-of format agnostic classes for music notation representation is
-located in package {@link freedots.music}.
+Currently, the only format supported is MusicXML, therefore a lot of things are
+tailored towards this format.  However, to fasciliate separation between
+various potential file formats, a library of format agnostic classes for music
+notation is located in package {@link freedots.music}.
 <h3>MusicXML</h3>
-MusicXML handling is implemented in package {@link freedots.musicxml}.
-The main entry point into this package is class
-{@link freedots.musicxml.Score}.  A MusicXML document is currently not
-loaded into a file format independant internal representation.  The classes
-in package {@link freedots.musicxml} are implemented directly
-on top of {@link org.w3c.dom}. This means that editing operations directly
-manipulate the DOM tree.  As a nice side-effect of this, XML comments and
-indentation are preserved when a changed {@link org.w3c.dom.Document} is saved
-back to disk.
+MusicXML handling is implemented in package {@link freedots.musicxml}.  The
+main entry point into this package is class {@link freedots.musicxml.Score}.  A
+MusicXML document is currently not loaded into a file format independant
+internal representation.  The classes in package {@link freedots.musicxml} are
+implemented directly on top of {@link org.w3c.dom}. This means that editing
+operations directly manipulate the DOM tree.  As a nice side-effect of this,
+XML comments and indentation are preserved when a changed
+{@link org.w3c.dom.Document} is saved back to disk.
 <h2>Output</h2>
 <h3>Transcription to braille music notation</h3>
-All the classes related to braille transcription are grouped together
-in package {@link freedots.transcription}.  Class
+All the classes related to braille transcription are grouped together in
+package {@link freedots.transcription}.  Class
 {@link freedots.transcription.Transcriber} is responsible for transcribing a
-given {@link freedots.musicxml.Score} object to braille music notation.
+given MusicXML {@link freedots.musicxml.Score} object to braille music notation.
 <h3>Conversion to MIDI</h3>
 Package {@link freedots.playback} provides a few classes to fascilitate
-interactive MIDI playback.
-{@link freedots.musicxml.MIDISequence} is used to convert a
-{@link freedots.musicxml.Score} object to a format suitable for
+interactive MIDI playback.  {@link freedots.musicxml.MIDISequence} is used to
+convert a MusicXML {@link freedots.musicxml.Score} to a format suitable for
 playback using the Java Sound API.
 </body>
-
