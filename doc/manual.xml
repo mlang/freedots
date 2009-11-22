@@ -636,7 +636,7 @@ For proper accessibility support you will also need the
             <arg><option>-h</option> <replaceable>LINES</replaceable></arg>
             <arg><option>--height</option> <replaceable>LINES</replaceable></arg>
           </group>
-          <arg><option>-msm</option> <replaceable>visual|NUMBER</replaceable></arg>
+          <arg><option>-mps</option> <replaceable>NUMBER</replaceable></arg>
 	  <arg choice="req"><replaceable>MusicXML file</replaceable></arg>
 	</cmdsynopsis>
       </refsynopsisdiv>
