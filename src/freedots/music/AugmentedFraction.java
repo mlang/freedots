@@ -91,6 +91,9 @@ public class AugmentedFraction extends Fraction {
   public final int getDots() { return dots; }
 
   public final int getNormalNotes() { return normalNotes; }
+  /** Describes how many notes are played in the time usually occupied by the
+   *  number of normalNotes.
+   */
   public final int getActualNotes() { return actualNotes; }
 
   @Override
@@ -98,7 +101,8 @@ public class AugmentedFraction extends Fraction {
     final float undottedValue = super.toFloat();
     float rest = undottedValue;
     for (int dot = 0; dot < dots; dot++) rest /= 2.;
-    return (((undottedValue * 2) - rest) * (float)normalNotes) / (float)actualNotes;    
+    return (undottedValue * 2 - rest)
+      * (float)normalNotes / (float)actualNotes;    
   }
 
   @Override

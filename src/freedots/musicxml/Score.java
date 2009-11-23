@@ -93,12 +93,11 @@ public final class Score {
     parse(inputStream, extension);
   }
 
-  /**
-   * Construct a score object from a URL.
+  /** Construct a score object from a URL.
+   * @param filenameOrURL is either a local filename or a URL.
    */
-  public Score (
-    final String filenameOrURL
-  ) throws ParserConfigurationException,
+  public Score(final String filenameOrURL)
+    throws ParserConfigurationException,
            IOException, SAXException, XPathExpressionException
   {
     File file = new File(filenameOrURL);
@@ -209,6 +208,7 @@ public final class Score {
   }
 
   /** Demarshal this score object back to XML.
+   * @param outputStream will be used to serialize the XML to.
    */ 
   public void save(OutputStream outputStream) {
     assert document != null;
@@ -219,8 +219,10 @@ public final class Score {
     TransformerFactory transformerFactory = TransformerFactory.newInstance();
     try {
       Transformer transformer = transformerFactory.newTransformer();
-      transformer.setOutputProperty(OutputKeys.DOCTYPE_PUBLIC, docType.getPublicId());
-      transformer.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, docType.getSystemId());
+      transformer.setOutputProperty(OutputKeys.DOCTYPE_PUBLIC,
+                                    docType.getPublicId());
+      transformer.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM,
+                                    docType.getSystemId());
       try {
         transformer.transform(domSource, resultStream);
       } catch (javax.xml.transform.TransformerException e) {

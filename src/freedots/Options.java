@@ -34,8 +34,17 @@ public final class Options {
   private int pageWidth = DEFAULT_PAGE_WIDTH;
   private int pageHeight = DEFAULT_PAGE_HEIGHT;
   private int measuresPerSection = 8;
+  /** The number of measures to use per section for
+   *  {@link freedots.transcription.SectionBySection} format.
+   */
   public int getMeasuresPerSection() { return measuresPerSection; }
+
   private boolean newSystemEndsSection = true;
+  /** When using {@link freedots.transcription.SectionBySection} format,
+   *  true indicates section breaks should correspond to system breaks in the
+   *  visual score.  This mode allows for easy communication between
+   *  sighted and blind musicians.
+   */
   public boolean getNewSystemEndsSection() { return newSystemEndsSection; }
 
   private String location;
@@ -85,19 +94,32 @@ public final class Options {
   }
   public static Options getInstance() { return instance; }
 
+  /** The filename or URL specified on the command-line.
+   * @return the string specified on the command-line, or null if absent.
+   */
   public String getLocation() {
     return location;
   }
+  /** Number of lines per braille page.
+   */
   public int getPageHeight() { return pageHeight; }
+  /** Number of columns of a braille page.
+   */
   public int getPageWidth() { return pageWidth; }
-  public boolean getWindowSystem() { return windowSystem; }
-  public void setWindowSystem(final boolean windowSystem) {
+
+  boolean getWindowSystem() { return windowSystem; }
+  void setWindowSystem(final boolean windowSystem) {
     this.windowSystem = windowSystem;
   }
+
+  /** Indicates if playback was requested from the command-line.
+   * @return true if "-p" was specified on the command-line.
+   */
   public boolean getPlayScore() { return playScore; }
 
   public String getExportMidiFile() { return exportMidiFile; }
-  public UI getUI() { return ui; }
+
+  UI getUI() { return ui; }
 
   /** Indicates if fingering information should be transcribed to braille.
    * @return true if fingering should be transcribed
@@ -110,6 +132,10 @@ public final class Options {
   public Method getMethod() { return method; }
   public void setMethod(final Method method) { this.method = method; }
 
+  /** Enumeration of available user interface implementations.
+   * <p>
+   * As of now, there is only one implementation ({@link freedots.gui.swing}).
+   */
   enum UI {
     Swing("swing.Main");
 

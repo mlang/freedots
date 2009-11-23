@@ -330,6 +330,10 @@ public enum Braille {
     return braille;
   }
 
+  /** Convert the given fingering to its braille representation.
+   * @param fingering is the fingering indicator to convert.
+   * @return the Unicode braille representation of fingering.
+   */
   public static String toString(Fingering fingering) {
     StringBuilder stringBuilder = new StringBuilder();
     Iterator<Integer> iter = fingering.getFingers().iterator();
@@ -341,6 +345,11 @@ public enum Braille {
     return stringBuilder.toString();
   }
 
+  /** Convert the given {@link freedots.music.TimeSignature} to its braille
+   *  representation.
+   * @param signature is the {@link freedots.music.TimeSignature} to convert.
+   * @return the Unicode braille representation.
+   */
   public static String toString(TimeSignature signature) {
     return numberSign.toString()
            + upperNumber(signature.getNumerator())
