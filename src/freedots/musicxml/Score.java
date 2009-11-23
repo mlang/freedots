@@ -148,6 +148,8 @@ public final class Score {
 
     Element root = document.getDocumentElement();
 
+    assert root.getTagName().equals("score-partwise");
+
     /* Parse score-header */
     Element partList = null;
 
@@ -206,42 +208,56 @@ public final class Score {
     }
   }
 
+  /** Demarshal this score object back to XML.
+   */ 
   public void save(OutputStream outputStream) {
-    if (document != null) {
-      DocumentType docType = document.getDoctype();
-      DOMSource domSource = new DOMSource(document);
-      StreamResult resultStream = new StreamResult(outputStream);
-      TransformerFactory transformerFactory = TransformerFactory.newInstance();
+    assert document != null;
+
+    DocumentType docType = document.getDoctype();
+    DOMSource domSource = new DOMSource(document);
+    StreamResult resultStream = new StreamResult(outputStream);
+    TransformerFactory transformerFactory = TransformerFactory.newInstance();
+    try {
+      Transformer transformer = transformerFactory.newTransformer();
+      transformer.setOutputProperty(OutputKeys.DOCTYPE_PUBLIC, docType.getPublicId());
+      transformer.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, docType.getSystemId());
       try {
-        Transformer transformer = transformerFactory.newTransformer();
-        transformer.setOutputProperty(OutputKeys.DOCTYPE_PUBLIC, docType.getPublicId());
-        transformer.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, docType.getSystemId());
-        try {
-          transformer.transform(domSource, resultStream);
-        } catch (javax.xml.transform.TransformerException e) {
-          e.printStackTrace();
-        }
-      } catch (javax.xml.transform.TransformerConfigurationException e) {
+        transformer.transform(domSource, resultStream);
+      } catch (javax.xml.transform.TransformerException e) {
         e.printStackTrace();
       }
+    } catch (javax.xml.transform.TransformerConfigurationException e) {
+      e.printStackTrace();
     }
   }
 
+  /** Get the content of the work-number element.
+   */
   public String getWorkNumber() {
     return workNumber != null ? workNumber.getWholeText() : null;
   }
+  /** Get the content of the work-title element.
+   */
   public String getWorkTitle() {
     return workTitle != null ? workTitle.getWholeText() : null;
   }
+  /** Get the content of the movement-number element.
+   */
   public String getMovementNumber() {
     return movementNumber != null ? movementNumber.getWholeText() : null;
   }
+  /** Get the content of the movement-title element.
+   */
   public String getMovementTitle() {
     return movementTitle != null ? movementTitle.getWholeText() : null;
   }
+  /** Get the composer (if set) of this score.
+   */
   public String getComposer() {
     return composer != null ? composer.getWholeText() : null;
   }
+  /** Get the poet (if set) of this score.
+   */
   public String getPoet() {
     return poet != null ? poet.getWholeText() : null;
   }
@@ -256,10 +272,6 @@ public final class Score {
     while ((string = reader.readLine()) != null)
       stringBuilder.append(string + "\n");
     return new InputSource(new StringReader(stringBuilder.toString()));
-  }
-
-  public String getScoreType() {
-    return document.getDocumentElement().getNodeName();
   }
 
   /**
