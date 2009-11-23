@@ -71,6 +71,10 @@ public enum Braille {
 
   finger1(1), finger2(12), finger3(123), finger4(2), finger5(13),
 
+  firstString(146, 1), secondString(146, 12), thirdString(146, 123),
+  fourthString(146, 2), fifthString(146, 13), sixthString(146, 23),
+  seventhString(146, 3),
+
   digit0(245), digit1(1), digit2(12), digit3(14), digit4(145),
   digit5(15), digit6(124), digit7(1245), digit8(125), digit9(24),
   lowerDigit0(356), lowerDigit1(2), lowerDigit2(23), lowerDigit3(25),
