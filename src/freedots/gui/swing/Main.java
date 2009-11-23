@@ -71,6 +71,8 @@ public final class Main
              freedots.gui.GraphicalUserInterface,
              freedots.playback.PlaybackObserver
 {
+  private static final String WELCOME_MESSAGE = "Use \"File -> Open\" (Ctrl+O) to open a new score";
+
   private Score score;
   public Score getScore() { return score; }
 
@@ -209,6 +211,7 @@ public final class Main
                              Options.getInstance().getPageWidth());
     Font font = new Font("DejaVu Serif", Font.PLAIN, 14);
     textArea.setFont(font);
+    textArea.setText(WELCOME_MESSAGE);
     setTranscriber(transcriber);
 
     textArea.setEditable(false);
