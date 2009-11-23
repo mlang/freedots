@@ -141,13 +141,14 @@ public final class Transcriber {
     if (headerAvailable) newLine();
 
     switch (options.getMethod()) {
-    default:
     case SectionBySection:
       strategy = new SectionBySection();
       break;
     case BarOverBar:
       strategy = new BarOverBar();
       break;
+    default:
+      throw new AssertionError(options.getMethod());
     }
     strategy.transcribe(this);
   }

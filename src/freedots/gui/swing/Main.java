@@ -293,6 +293,7 @@ public final class Main
     switch (Options.getInstance().getMethod()) {
     case SectionBySection: sectionBySectionItem.setSelected(true); break;
     case BarOverBar: barOverBarItem.setSelected(true); break;
+    default: throw new AssertionError(Options.getInstance().getMethod());
     }
     sectionBySectionItem.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {

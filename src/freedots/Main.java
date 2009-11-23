@@ -150,19 +150,23 @@ public final class Main {
         }
       } catch (HeadlessException e) {
         System.err.println("Graphical display not available");
+        options.setWindowSystem(false);
       } catch (ClassNotFoundException exception) {
         System.err.println("Requested GUI class "
                            + options.getUI().getClassName()
                            + "was not found in the classpath");
+        options.setWindowSystem(false);
       } catch (InstantiationException exception) {
         System.err.println("Unable to instantiate GUI");
+        options.setWindowSystem(false);
       } catch (IllegalAccessException exception) {
         exception.printStackTrace();
+        options.setWindowSystem(false);
       } catch (NoSuchMethodException exception) {
         System.err.println("No constructor for requested GUI found");
+        options.setWindowSystem(false);
       } catch (Throwable throwable) {
         throwable.printStackTrace();
-      } finally {
         options.setWindowSystem(false);
       }
     }

@@ -295,8 +295,8 @@ public enum Braille {
     case FLAT:    return flat;
     case SHARP:   return sharp;
     case DOUBLE_SHARP: return doubleSharp;
+    default: throw new AssertionError(accidental);
     }
-    return null;
   }
   public static String toString(AugmentedFraction value, AbstractPitch pitch) {
     String braille = "";
