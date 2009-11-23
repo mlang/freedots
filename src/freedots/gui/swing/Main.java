@@ -251,9 +251,8 @@ public final class Main
     if (transcriber != null) {
       this.transcriber = transcriber;
       this.score = transcriber.getScore();
-      textArea.setText(transcriber.toString());
-
-      boolean scoreAvailable = score != null;
+      final boolean scoreAvailable = score != null;
+      if (scoreAvailable) textArea.setText(transcriber.toString());
       fileSaveAsAction.setEnabled(scoreAvailable);
       playScoreAction.setEnabled(scoreAvailable);
     }
