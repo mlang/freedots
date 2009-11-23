@@ -24,7 +24,7 @@
  * Classes for parsing and representation of MusicXML documents.
  * <p>
  * To load a MusicXML document, call one of the constructors of
- * {@link Score}.
+ * {@link freedots.musicxml.Score}.
  */
 package freedots.musicxml;
 

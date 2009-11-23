@@ -67,7 +67,8 @@ public final class Transcriber {
    *
    * @param characterIndex indicates the position relative to toString()
    *
-   * @return the object responsible for the character at index, or null
+   * @return the object responsible for the character at index, or {@code null}
+   *         if none was found / specified.
    */
   public Object getObjectAtIndex(final int characterIndex) {
     StringBuilder stringBuilder = new StringBuilder();

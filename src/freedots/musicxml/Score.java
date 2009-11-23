@@ -233,12 +233,15 @@ public final class Score {
     }
   }
 
-  /** Get the content of the work-number element.
+  /** Gets the content of the work-number element.
+   * @return the work-number of this work or {@code null} if it was not
+   *         specified.
    */
   public String getWorkNumber() {
     return workNumber != null ? workNumber.getWholeText() : null;
   }
-  /** Get the content of the work-title element.
+  /** Gets the content of the work-title element.
+   * @return the title of this work or {@code null} if it was not specified.
    */
   public String getWorkTitle() {
     return workTitle != null ? workTitle.getWholeText() : null;

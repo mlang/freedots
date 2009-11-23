@@ -94,8 +94,9 @@ public final class Options {
   }
   public static Options getInstance() { return instance; }
 
-  /** The filename or URL specified on the command-line.
-   * @return the string specified on the command-line, or null if absent.
+  /** Gets the filename or URL specified on the command-line.
+   * @return the string specified on the command-line, or {@code null} if
+   *         absent.
    */
   public String getLocation() {
     return location;

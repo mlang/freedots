@@ -72,14 +72,13 @@ class ValueInterpreter {
 
   public Set<Interpretation> getInterpretations() { return interpretations; }
 
-  /**
-   * Determine if the simple distrinction of values sign
-   * {@link freedots.Braille.valueDistinction} can be used to
-   * resolve the note value ambiguity.
+  /** Determines if the simple distrinction of values sign can be used to
+   *  resolve a note value ambiguity.
    *
-   * @return the note object before which a value distinction sign
-   * should be inserted, or null if resolution of the value ambiguity
-   * is more complicated.
+   * @return the note object before which a value distinction sign should be
+   *         inserted, or {@code null} if resolution of the value ambiguity is
+   *         more complicated.
+   * @see freedots.Braille#valueDistinction
    */
   public Object getSplitPoint() {
     for (Interpretation interpretation: interpretations) {

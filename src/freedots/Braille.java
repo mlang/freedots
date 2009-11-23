@@ -135,7 +135,7 @@ public enum Braille {
     rightHandPart.needsAdditionalDot3IfOneOfDot123Follows(true);
   }
 
-  /** Get an octave sign for a particular octave.
+  /** Gets an octave sign for a particular octave.
    * @param number indicates the octave
    * @return braille music octave sign
    */
