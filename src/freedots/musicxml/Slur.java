@@ -22,6 +22,13 @@
  */
 package freedots.musicxml;
 
+/** A very simple link between several notes to represent a slur.
+ * <p>
+ * This class does no error checking at all and is probably too simple.
+ * Its main purpose is for {@link freedots.musicxml.Note} instances to be
+ * able to ask if they are part of a slur and if they are the final element
+ * of the slur.
+ */
 public class Slur extends freedots.music.Slur<Note> {
   Slur(final Note initialNote) { super(initialNote); }
   @Override

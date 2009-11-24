@@ -14,7 +14,7 @@
  * for more details (a copy is included in the LICENSE.txt file that
  * accompanied this code).
  *
- * You should have received a copy of the GNU General Public License 
+ * You should have received a copy of the GNU General Public License
  * along with this work; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
  *
@@ -35,11 +35,10 @@ import org.w3c.dom.NodeList;
 /** A wrapper around the attributes element.
  */
 public final class Attributes {
-  Element element;
-  int divisions;
-  public Attributes(final Element element, final int divisions) {
+  private Element element;
+
+  public Attributes(final Element element) {
     this.element = element;
-    this.divisions = divisions;
   }
   public int getDivisions() {
     NodeList nodeList = element.getElementsByTagName("divisions");

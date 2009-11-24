@@ -14,7 +14,7 @@
  * for more details (a copy is included in the LICENSE.txt file that
  * accompanied this code).
  *
- * You should have received a copy of the GNU General Public License 
+ * You should have received a copy of the GNU General Public License
  * along with this work; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
  *
@@ -36,7 +36,7 @@ public class KeySignature {
     if (type > 0) {
       for (int i = 0; i < type; i++) modifiers[sharps[i]] = 1;
     } else if (type < 0) {
-      for (int i=0; i<-type; i++) modifiers[flats[i]] = -1;
+      for (int i = 0; i<-type; i++) modifiers[flats[i]] = -1;
     }
   }
 

@@ -104,7 +104,7 @@ public final class Part {
           if (measureChild.getNodeType() == Node.ELEMENT_NODE) {
             Element musicdata = (Element)measureChild;
             if ("attributes".equals(measureChild.getNodeName())) {
-              Attributes attributes = new Attributes(musicdata, divisions);
+              Attributes attributes = new Attributes(musicdata);
               int newDivisions = attributes.getDivisions();
               Attributes.Time newTimeSignature = attributes.getTime();
               int newStaffCount = attributes.getStaves();

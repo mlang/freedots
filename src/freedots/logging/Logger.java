@@ -49,7 +49,7 @@ public final class Logger extends java.util.logging.Logger {
 
   /**
    * Report (and possibly create) the logger related to the provided name
-   * (usually the full class name)
+   * (usually the full class name).
    *
    * @param name the logger name
    * @return the logger found or created

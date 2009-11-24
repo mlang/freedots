@@ -126,7 +126,7 @@ public final class Options {
    * @return true if fingering should be transcribed
    */
   public boolean getShowFingering() { return showFingering; }
-  /** Enable or disable fingering transcription
+  /** Enables or disable fingering transcription.
    * @param value indicates the new state of fingering transcription
    */
   public void setShowFingering(boolean value) { showFingering = value; }

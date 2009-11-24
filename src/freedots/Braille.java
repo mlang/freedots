@@ -292,6 +292,10 @@ public enum Braille {
     finger1, finger2, finger3, finger4, finger5
   };
 
+  /** Returns the braille representation of the given accidental mark.
+   * @param accidental is the accidental to convert to braille.
+   * @return the braille sign which corresponds to the given accidental.
+   */
   public static Braille valueOf(Accidental accidental) {
     switch (accidental) {
     case NATURAL: return natural;

@@ -56,6 +56,6 @@ public enum Articulation {
     return null;
   }
 
-  public final static Set<Articulation>
-  mezzoStaccatoSet = EnumSet.of(staccato, tenuto);
+  public static final Set<Articulation> mezzoStaccatoSet =
+    EnumSet.of(staccato, tenuto);
 }

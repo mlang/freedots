@@ -52,13 +52,10 @@ public final class SingleIconSpecification {
                                  final String flagsImage,
                                  final boolean hasStem)
   {
-    this.noteHeadImage=noteHeadImage;
-    this.flagsImage=flagsImage;
-    this.stem=hasStem;
-    
-    
+    this.noteHeadImage = noteHeadImage;
+    this.flagsImage = flagsImage;
+    this.stem = hasStem;
   }
-
 
   public String getFlagsImage() {
     return flagsImage;

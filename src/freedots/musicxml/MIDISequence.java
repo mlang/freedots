@@ -14,7 +14,7 @@
  * for more details (a copy is included in the LICENSE.txt file that
  * accompanied this code).
  *
- * You should have received a copy of the GNU General Public License 
+ * You should have received a copy of the GNU General Public License
  * along with this work; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
  *
@@ -48,10 +48,11 @@ import freedots.playback.MetaEventRelay;
  */
 public class MIDISequence extends javax.sound.midi.Sequence {
   private Map<Integer, AccidentalContext> accidentalContexts;
-  /**
-   * Create an instance of MIDISequence
+  /** Create an instance of MIDISequence.
    *
-   * @param score   the score to convert
+   * @param score   the score to convert to MIDI messages
+   * @throws InvalidMidiDataException if the conversion process generated
+   *                                  invalid data.
    */
   public MIDISequence(final Score score) throws InvalidMidiDataException {
     this(score, null);

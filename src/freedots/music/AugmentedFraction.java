@@ -14,7 +14,7 @@
  * for more details (a copy is included in the LICENSE.txt file that
  * accompanied this code).
  *
- * You should have received a copy of the GNU General Public License 
+ * You should have received a copy of the GNU General Public License
  * along with this work; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
  *
@@ -35,8 +35,8 @@ public class AugmentedFraction extends Fraction {
   ) {
     this(numerator, denominator, dots, 1, 1);
   }
-  /**
-   * Copy constructor.
+  /** Copy constructor.
+   * @param augmentedFraction is the object to take initial values from.
    */
   public AugmentedFraction(final AugmentedFraction augmentedFraction) {
     this(augmentedFraction.getNumerator(), augmentedFraction.getDenominator(),
@@ -96,11 +96,11 @@ public class AugmentedFraction extends Fraction {
    */
   public final int getActualNotes() { return actualNotes; }
 
-  public int getLog() {
+  public final int getLog() {
     Fraction normalized = new Fraction(numerator, denominator).divide(FOUR);
     return (int)Math.round(Math.log(normalized.denominator) / Math.log(2));
   }
-  public void setFromLog(int log) {
+  public final void setFromLog(int log) {
     Fraction
     wrapper = new Fraction(1, (int)Math.round(Math.pow(2, log))).multiply(FOUR);
     numerator = wrapper.numerator;

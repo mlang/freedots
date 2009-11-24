@@ -91,7 +91,7 @@ public final class Note implements RhythmicElement {
 
   Text staffNumber, voiceName;
   private Type type = Type.NONE;
-  private final static Map<String, Type> typeMap =
+  private static final Map<String, Type> typeMap =
     Collections.unmodifiableMap(new HashMap<String, Type>() {
       {
         put("long", Type.LONG);
@@ -108,8 +108,8 @@ public final class Note implements RhythmicElement {
       }
     });
   private Accidental accidental = null;
-  private final static Map<String, Accidental>
-  accidentalMap = Collections.unmodifiableMap(new HashMap<String, Accidental>() {
+  private static final Map<String, Accidental> accidentalMap =
+    Collections.unmodifiableMap(new HashMap<String, Accidental>() {
       { put("natural", Accidental.NATURAL);
         put("flat", Accidental.FLAT);
         put("flat-flat", Accidental.DOUBLE_FLAT);
