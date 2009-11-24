@@ -25,6 +25,11 @@
  * <p>
  * To load a MusicXML document, call one of the constructors of
  * {@link freedots.musicxml.Score}.
+ * <p>
+ * This package uses the
+ * <a href="http://en.wikipedia.org/wiki/Decorator_pattern">decorator
+ * pattern</a> to make it possible to extend the functionality of
+ * {@link org.w3c.dom.Document} and {@link org.w3c.dom.Element}.
  */
 package freedots.musicxml;
 
