@@ -23,36 +23,30 @@
 package freedots.music;
 
 /**
- * Represents a fraction value.
+ * Represents a fractional value.
+ * <p>
+ * If Java were a decent programming language (like Common Lisp) we wouldn't
+ * need to reinvent the wheel yet again.
  */
 public class Fraction implements Comparable<Fraction> {
   public static final Fraction ZERO = new Fraction(0, 1);
   public static final Fraction FOUR = new Fraction(4, 1);
 
-  int numerator;
-  int denominator;
+  protected int numerator;
+  protected int denominator;
  
   public Fraction(final int numerator, final int denominator) {
     this.numerator = numerator;
     this.denominator = denominator;
+    // We do not simplify since subclasses might want to preserve the original
+    // values of numerator and denominator
   }
-    
-  public int getNumerator() { return numerator; }
 
+  public int getNumerator() { return numerator; }
   public int getDenominator() { return denominator; }
 
-  public int getLog() {
-    Fraction normalized = new Fraction(numerator, denominator).divide(FOUR);
-    return (int)Math.round(Math.log(normalized.denominator) / Math.log(2));
-  }
-  public void setFromLog(int log) {
-    Fraction
-    wrapper = new Fraction(1, (int)Math.round(Math.pow(2, log))).multiply(FOUR);
-    numerator = wrapper.numerator;
-    denominator = wrapper.denominator;
-  }
-
   public float toFloat() { return (float)numerator / denominator; }
+
   public int toInteger(int divisions) {
     return this.divide(new Fraction(1, 4*divisions)).numerator;
   }

@@ -96,6 +96,17 @@ public class AugmentedFraction extends Fraction {
    */
   public final int getActualNotes() { return actualNotes; }
 
+  public int getLog() {
+    Fraction normalized = new Fraction(numerator, denominator).divide(FOUR);
+    return (int)Math.round(Math.log(normalized.denominator) / Math.log(2));
+  }
+  public void setFromLog(int log) {
+    Fraction
+    wrapper = new Fraction(1, (int)Math.round(Math.pow(2, log))).multiply(FOUR);
+    numerator = wrapper.numerator;
+    denominator = wrapper.denominator;
+  }
+
   @Override
   public float toFloat() {
     final float undottedValue = super.toFloat();
