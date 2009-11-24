@@ -24,13 +24,30 @@ package freedots.music;
 
 import java.util.Map;
 
+/** A container for keeping track of the current value of a certain quantity
+ *  which changes over time.
+ * @param E is the type of the value which is supposed to be stored.
+ */
 @SuppressWarnings("serial")
 public class Timeline<E> extends java.util.TreeMap<Fraction, E> {
-  Timeline() { super(); }
-  Timeline(final E initial) { super(); put(new Fraction(0, 1), initial); }
-  public E get(Fraction offset) {
-    Map.Entry<Fraction, E> entry = floorEntry(offset);
-    if (entry != null) return entry.getValue();
-    return null;
+  /** Construct a new (empty) Timeline.
+   */
+  public Timeline() { super(); }
+  /** Construct a Timeline initialised with the given value.
+   * @param initial is the value at offset 0.
+   */
+  public Timeline(final E initial) { super(); put(Fraction.ZERO, initial); }
+
+  /** Retrieves the active value at a certain offset.
+   * @see #floorEntry
+   */
+  @Override public E get(Object key) {
+    if (key instanceof Fraction) {
+      Fraction offset = (Fraction)key;
+      Map.Entry<Fraction, E> entry = floorEntry(offset);
+      if (entry != null) return entry.getValue();
+      return null;
+    }
+    throw new IllegalArgumentException();
   }
 }

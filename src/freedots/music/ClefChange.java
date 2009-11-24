@@ -48,7 +48,7 @@ public final class ClefChange implements StaffElement {
   public boolean isRest() { return false; }
 
   public String toBrailleString() {
-    if (offset.compareTo(new Fraction(0, 1)) > 0) {
+    if (offset.compareTo(Fraction.ZERO) > 0) {
       Clef initialClef = staff.getClef();
       if (initialClef.isBass())
         if (clef.isTreble()) {

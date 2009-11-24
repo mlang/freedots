@@ -26,10 +26,12 @@ package freedots.music;
  * Represents a fraction value.
  */
 public class Fraction implements Comparable<Fraction> {
+  public static final Fraction ZERO = new Fraction(0, 1);
+  public static final Fraction FOUR = new Fraction(4, 1);
+
   int numerator;
   int denominator;
-  static final Fraction FOUR = new Fraction(4, 1);
-    
+ 
   public Fraction(final int numerator, final int denominator) {
     this.numerator = numerator;
     this.denominator = denominator;
@@ -38,9 +40,6 @@ public class Fraction implements Comparable<Fraction> {
   public int getNumerator() { return numerator; }
 
   public int getDenominator() { return denominator; }
-  public void setDenominator(int denominator) {
-    this.denominator = denominator;
-  }
 
   public int getLog() {
     Fraction normalized = new Fraction(numerator, denominator).divide(FOUR);

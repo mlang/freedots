@@ -91,7 +91,7 @@ public class MIDISequence extends javax.sound.midi.Sequence {
       int round = 1;
       int repeatStartIndex = -1;
 
-      Fraction offset = new Fraction(0, 1);
+      Fraction offset = Fraction.ZERO;
       for (int i = 0; i < events.size(); i++) {
         Event event = events.get(i);
         if (event instanceof Direction) {

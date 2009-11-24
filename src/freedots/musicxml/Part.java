@@ -77,7 +77,7 @@ public final class Part {
     int durationMultiplier = 1;
 
     int measureNumber = 0;
-    Fraction measureOffset = new Fraction(0, 1);
+    Fraction measureOffset = Fraction.ZERO;
     TimeSignature lastTimeSignature = null;
     int staffCount = 1;
     EndBar endbar = null;
@@ -96,8 +96,8 @@ public final class Part {
         int endingStop = 0;
 
         Chord currentChord = null;
-        Fraction offset = new Fraction(0, 1);
-        Fraction measureDuration = new Fraction(0, 1);
+        Fraction offset = Fraction.ZERO;
+        Fraction measureDuration = Fraction.ZERO;
         NodeList measureChildNodes = xmlMeasure.getChildNodes();
         for (int index = 0; index < measureChildNodes.getLength(); index++) {
           Node measureChild = measureChildNodes.item(index);
@@ -122,7 +122,7 @@ public final class Part {
                 lastTimeSignature = newTimeSignature;
                 eventList.add(new TimeSignatureChange(measureOffset.add(offset),
                                                       lastTimeSignature));
-                if (offset.compareTo(new Fraction(0, 1)) == 0) {
+                if (offset.compareTo(Fraction.ZERO) == 0) {
                   startBar.setTimeSignature(newTimeSignature);
                 }
               }
