@@ -125,6 +125,16 @@ is the first element of a tuplet group.  If so, it would
 emit the appropriate braille symbol for the particular tuplet.
 Note that tuplets are subject to doubling, as are most things in braille music.
 
+** TODO Directions
+
+Currently directions like dynamics (forte...) and text ("poco"...) are
+silently ignored.  Some way needs to be found to integrate them
+into the transcription process.  Directions belong to a particular
+staff, but not to a particular voice.  So when parallel voices are present,
+the transcription code needs to decide in which voice to print them.
+Possibly always the first voice.
+The voice handling code needs to somehow take this into account.
+
 ** TODO Repetitions
 
 The simile sign (⠶) is useful for indicating repetitions that
