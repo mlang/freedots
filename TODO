@@ -64,7 +64,7 @@ unsupported, should be imlemented.
 *** TODO Allow on-the-fly transposition of a score
 
 The user should be able to transpose a given score to a different
-key in fFreeDots.  This will be a method of the Score class.
+key.  This will be a method of the Score class.
 The UI would offer the ability to trigger that method, and retranscribe
 the resulting score to braille.  This will be very useful for a lot of
 real-life music situations.  For instance, your teacher wants you to
@@ -86,7 +86,9 @@ currently presumes the whole sequence processed has the same amount
 of voices.  While the data structure is robust enough to work
 for MIDI playback, we'd like to be able to do more intelligent
 querying so that the part-measure in-accord algorithm can be
-rewritten.
+rewritten.  Maybe look into the MusicXML2Braille paper by Goto et al,
+they seem to have worked out a low-level structure for storing
+parallel voices already.
 
 ** TODO Note.Notations.Technical.getPluck()
 
@@ -272,13 +274,20 @@ is not implemented correctly.
 *** TODO Implement bindings for liblouis for contracting lyrics
 
 Ideally, lyrics should be contracted with the contracted braille
-of course of the users.  Therefore, we'd like to have bindings
+of course of the user.  Therefore, we'd like to have bindings
 to liblouis, ideally on Linux *and* Windows.
 
 ** TODO Note groupings
 
 Note grouping is basically beaming for braille music.
 For the detailed rules, see the braille music manual.
+
+The complicated issue about note grouping is that the use of the music hyphen
+disallows note groupings.  So once we have the first braille
+representation of a measure to check if it fits onto the current line,
+we might figure out that the music hyphen needs to be used if it does.
+If we instruct the measure to hyphenate at a certain position,
+the measure needs to undo note groupings.
 
 ** TODO in-accord and partial measures
 
@@ -349,7 +358,8 @@ BWV 1004 Chaconne m1:
 
 For simplicity, grace notes are currently just not played at all.
 This should be fixed, grace notes should be played like any
-other note.
+other note.  A grace note steals time from adjacent notes.  Also, investigate
+cue notes.
 
 ** TODO Play all supported articulations and ornaments
 
@@ -401,6 +411,23 @@ Write a dialog which allows the user to change the articulation marks attached t
 The class freedots.logging.Logger currently implements a simple miltiplex
 of log messages to the console and to a queue.
 The GUI needs some usability work.
+
+** TODO Colors for categories of braille signs and online help
+
+It might be helpful for sighted users if the different types
+of braille signs that can occur in a score would use different
+colours on-screen.  Also, and probably more important, it would be useful
+to have online-help for all braille signs.  So if a reader doesn't know
+a specific sign, they could move the caret to it and invoke the online
+help to get a description of its purpose.
+
+** TODO Look into functionality for blind users who do not use braille
+
+Currently out of scope for this project, but still something we should keep
+open for.  I've received a few emails from potential users who didn't or
+could not use braille.  They would have prefered a speech based
+interface for reading music.
+
 
 * MS Windows Installer
 ** TODO Check error during installation
