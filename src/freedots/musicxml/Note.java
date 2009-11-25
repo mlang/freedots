@@ -63,19 +63,6 @@ public final class Note implements RhythmicElement {
   private static final String STAFF_ELEMENT = "staff";
   private static final String TIME_MODIFICATION_ELEMENT = "time-modification";
 
-  private static final Map<String, Articulation>
-  ARTICULATION_MAP = Collections.unmodifiableMap
-    (new HashMap<String, Articulation>() {
-      {
-        put("accent", Articulation.accent);
-        put("strong-accent", Articulation.strongAccent);
-        put("breath-mark", Articulation.breathMark);
-        put("staccato", Articulation.staccato);
-        put("staccatissimo", Articulation.staccatissimo);
-        put("tenuto", Articulation.tenuto);
-      }
-    });
-
   private int divisions, durationMultiplier;
   private Element element;
 
@@ -88,25 +75,27 @@ public final class Note implements RhythmicElement {
   Element grace = null;
   Pitch pitch = null;
   Text duration = null;
-
   Text staffNumber, voiceName;
-  private Type type = Type.NONE;
-  private static final Map<String, Type> typeMap =
-    Collections.unmodifiableMap(new HashMap<String, Type>() {
+
+  Element type;
+  private static final Map<String, Fraction> TYPE_MAP =
+    Collections.unmodifiableMap(new HashMap<String, Fraction>() {
       {
-        put("long", Type.LONG);
-        put("breve", Type.BREVE);
-        put("whole", Type.WHOLE);
-        put("half", Type.HALF);
-        put("quarter", Type.QUARTER);
-        put("eighth", Type.EIGHTH);
-        put("16th", Type.SIXTEENTH);
-        put("32nd", Type.THIRTYSECOND);
-        put("64th", Type.SIXTYFOURTH);
-        put("128th", Type.ONEHUNDREDTWENTYEIGHTH);
-        put("256th", Type.TWOHUNDREDFIFTYSIXTH);
+        put("long", new Fraction(4, 1));
+        put("breve", new Fraction(2, 1));
+        put("whole", new Fraction(1, 1));
+        put("half", new Fraction(1, 2));
+        put("quarter", new Fraction(1, 4));
+        put("eighth", new Fraction(1, 8));
+        put("16th", new Fraction(1, 16));
+        put("32nd", new Fraction(1, 32));
+        put("64th", new Fraction(1, 64));
+        put("128th", new Fraction(1, 128));
+        put("256th", new Fraction(1, 256));
       }
     });
+  List<Element> dot = new ArrayList<Element>(3);
+
   private Accidental accidental = null;
   private static final Map<String, Accidental> accidentalMap =
     Collections.unmodifiableMap(new HashMap<String, Accidental>() {
@@ -155,15 +144,9 @@ public final class Note implements RhythmicElement {
         } else if (child.getTagName().equals("voice")) {
           voiceName = firstTextNode(child);
         } else if (child.getTagName().equals("type")) {
-          Text textNode = firstTextNode(child);
-          if (textNode != null) {
-            String typeName = textNode.getWholeText();
-            String santizedTypeName = typeName.trim().toLowerCase();
-            if (typeMap.containsKey(santizedTypeName))
-              type = typeMap.get(santizedTypeName);
-            else
-              throw new MusicXMLParseException("Illegal <type> content '"+typeName+"'");
-          }
+          type = child;
+        } else if (child.getTagName().equals("dot")) {
+          dot.add(child);
         } else if (child.getTagName().equals(ACCIDENTAL_ELEMENT)) {
           if (part.getScore().encodingSupports(ACCIDENTAL_ELEMENT)) {
             Text textNode = firstTextNode(child);
@@ -225,17 +208,32 @@ public final class Note implements RhythmicElement {
     }
   }
 
+  /** Gets the relative duration of this note.
+   * @return the numerator, denominator, the amount of dots and the time
+   *         modification involved in the actual duration represented.
+   */
   public AugmentedFraction getAugmentedFraction() {
-    if (type != Type.NONE) {
+    Fraction base = null;
+    if (type != null) {
+      String typeName = type.getTextContent();
+      if (typeName != null) {
+        String santizedTypeName = typeName.trim().toLowerCase();
+        if (TYPE_MAP.containsKey(santizedTypeName))
+          base = TYPE_MAP.get(santizedTypeName);
+        else
+          log.warning("Illegal <type> content '"+typeName+"', "
+                      + "guessing using the duration element");
+      }
+    }
+    if (base != null) {
       int normalNotes = 1;
       int actualNotes = 1;
       if (timeModification != null) {
         normalNotes = Integer.parseInt(Score.getTextNode(timeModification, "normal-notes").getWholeText());
         actualNotes = Integer.parseInt(Score.getTextNode(timeModification, "actual-notes").getWholeText());
       }
-      return new AugmentedFraction(type.getNumerator(), type.getDenominator(),
-                                   element.getElementsByTagName("dot").getLength(),
-                                   normalNotes, actualNotes);
+      return new AugmentedFraction(base.getNumerator(), base.getDenominator(),
+                                   dot.size(), normalNotes, actualNotes);
     } else {
       return new AugmentedFraction(getDuration());
     }
@@ -297,22 +295,6 @@ public final class Note implements RhythmicElement {
   public Fraction getOffset() { return offset; }
   public Staff getStaff() { return staff; }
   public void setStaff(Staff staff) { this.staff = staff; }
-
-  private enum Type {
-    LONG(4, 1), BREVE(2, 1), WHOLE(1, 1), HALF(1, 2), QUARTER(1, 4),
-    EIGHTH(1, 8), SIXTEENTH(1, 16), THIRTYSECOND(1, 32),
-    SIXTYFOURTH(1, 64), ONEHUNDREDTWENTYEIGHTH(1, 128),
-    TWOHUNDREDFIFTYSIXTH(1, 256), NONE(0, 1);
-
-    int numerator;
-    int denominator;
-    private Type(int numerator, int denominator) {
-      this.numerator = numerator;
-      this.denominator = denominator;
-    }
-    int getNumerator() { return numerator; }
-    int getDenominator() { return denominator; }      
-  }
 
   class Lyric implements freedots.music.Lyric {
     Element element;
@@ -459,7 +441,19 @@ public final class Note implements RhythmicElement {
     return null;
   }
 
-  class Notations {
+  static class Notations {
+    private static final Map<String, Articulation> ARTICULATION_MAP =
+      Collections.unmodifiableMap(new HashMap<String, Articulation>() {
+        {
+          put("accent", Articulation.accent);
+          put("strong-accent", Articulation.strongAccent);
+          put("breath-mark", Articulation.breathMark);
+          put("staccato", Articulation.staccato);
+          put("staccatissimo", Articulation.staccatissimo);
+          put("tenuto", Articulation.tenuto);
+        }
+      });
+
     private static final String TECHNICAL_ELEMENT = "technical";
     private static final String FERMATA_ELEMENT = "fermata";
     private static final String ARTICULATIONS_ELEMENT = "articulations";
