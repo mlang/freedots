@@ -33,6 +33,7 @@ import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
 import java.io.InputStream;
 import java.util.concurrent.BlockingQueue;
 import java.util.logging.LogRecord;
@@ -69,8 +70,7 @@ public final class Main
   extends JFrame
   implements javax.swing.event.CaretListener,
              freedots.gui.GraphicalUserInterface,
-             freedots.playback.PlaybackObserver
-{
+             freedots.playback.PlaybackObserver {
   private static final String WELCOME_MESSAGE = "Use \"File -> Open\" (Ctrl+O) to open a new score";
 
   private Score score;
@@ -78,6 +78,8 @@ public final class Main
 
   private Transcriber transcriber;
   public Transcriber getTranscriber() { return transcriber; }
+
+  private Options options = Options.getInstance();
 
   protected StatusBar statusBar = null;
   protected SingleNoteRenderer noteRenderer = null;
@@ -207,8 +209,7 @@ public final class Main
     setJMenuBar(createMenuBar());
 
     // Create the text area
-    textArea = new JTextArea(Options.getInstance().getPageHeight(),
-                             Options.getInstance().getPageWidth());
+    textArea = new JTextArea(options.getPageHeight(), options.getPageWidth());
     Font font = new Font("DejaVu Serif", Font.PLAIN, 14);
     textArea.setFont(font);
     textArea.setText(WELCOME_MESSAGE);
@@ -245,6 +246,15 @@ public final class Main
   }
   public void run() {
     setVisible(true);
+
+    if (options.getSoundfont() != null) {
+      if (!midiPlayer.loadSoundbank(new File(options.getSoundfont()))) {
+        String message = "Requested Soundfont '"+options.getSoundfont()
+                         +" could not be loaded";
+        JOptionPane.showMessageDialog(this, message, "Alert",
+                                      JOptionPane.ERROR_MESSAGE);
+      }
+    }
   }
 
   public void setTranscriber(Transcriber transcriber) {
@@ -292,21 +302,21 @@ public final class Main
     ButtonGroup group = new ButtonGroup();
     group.add(sectionBySectionItem);
     group.add(barOverBarItem);
-    switch (Options.getInstance().getMethod()) {
+    switch (options.getMethod()) {
     case SectionBySection: sectionBySectionItem.setSelected(true); break;
     case BarOverBar: barOverBarItem.setSelected(true); break;
-    default: throw new AssertionError(Options.getInstance().getMethod());
+    default: throw new AssertionError(options.getMethod());
     }
     sectionBySectionItem.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
-          Options.getInstance().setMethod(Options.Method.SectionBySection);
+          options.setMethod(Options.Method.SectionBySection);
           triggerTranscription();
         }
       });
 
     barOverBarItem.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
-          Options.getInstance().setMethod(Options.Method.BarOverBar);
+          options.setMethod(Options.Method.BarOverBar);
           triggerTranscription();
         }
       });
@@ -314,10 +324,10 @@ public final class Main
     transcriptionMenu.add(barOverBarItem);
 
     JCheckBoxMenuItem showFingeringItem = new JCheckBoxMenuItem("Show fingering");
-    showFingeringItem.setSelected(Options.getInstance().getShowFingering());
+    showFingeringItem.setSelected(options.getShowFingering());
     showFingeringItem.addItemListener(new ItemListener() {
       public void itemStateChanged(ItemEvent e) {
-        Options.getInstance().setShowFingering(e.getStateChange() == ItemEvent.SELECTED);
+        options.setShowFingering(e.getStateChange() == ItemEvent.SELECTED);
         triggerTranscription();
       }
     });

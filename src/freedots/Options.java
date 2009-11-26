@@ -56,6 +56,13 @@ public final class Options {
   private boolean showFingering = true;
   private Method method = Method.SectionBySection;
 
+  private String soundfont = null;
+  /** Gets the soundfont requested for synthesis (if specified).
+   * @return the path to the selected soundfont, or {@code null} if none was
+   *         specified.
+   */
+  public String getSoundfont() { return soundfont; }
+
   public Options(final String[] args) {
     for (int index = 0; index < args.length; index++) {
       String option = args[index];
@@ -84,6 +91,10 @@ public final class Options {
         showFingering = false;
       } else if ("-bob".equals(option)) {
         method = Method.BarOverBar;
+      } else if ("-sf".equals(option)) {
+        if (index < args.length-1) {
+          soundfont = args[++index];
+        }
       } else {
         if (index == args.length-1) {
           location = args[index];

@@ -34,6 +34,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
 
 import freedots.gui.GraphicalUserInterface;
+import freedots.logging.Logger;
 import freedots.musicxml.MIDISequence;
 import freedots.musicxml.Score;
 import freedots.playback.MIDIPlayer;
@@ -47,6 +48,8 @@ import org.xml.sax.SAXParseException;
  * This is the main program entry point.
  */
 public final class Main {
+  private static final Logger LOG = Logger.getLogger(Main.class);
+
   private static GraphicalUserInterface gui = null;
 
   private Main() { super(); }
@@ -105,6 +108,12 @@ public final class Main {
         if (options.getPlayScore() && transcriber.getScore() != null) {
           try {
             MIDIPlayer player = new MIDIPlayer();
+            if (options.getSoundfont() != null) {
+              if (!player.loadSoundbank(new File(options.getSoundfont()))) {
+                LOG.warning("Soundfont '"+options.getSoundfont()+"'"
+                            + " could not be loaded");
+              }
+            }
             player.setSequence(new MIDISequence(transcriber.getScore()));
             player.start();
             try {

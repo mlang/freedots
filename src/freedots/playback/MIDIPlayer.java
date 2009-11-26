@@ -23,12 +23,14 @@
 package freedots.playback;
 
 import java.io.Closeable;
+import java.io.File;
 
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Sequence;
 import javax.sound.midi.Sequencer;
+import javax.sound.midi.Soundbank;
 import javax.sound.midi.Synthesizer;
 
 /**
@@ -63,6 +65,23 @@ public final class MIDIPlayer implements Closeable {
     synthesizer.open();
     sequencer.getTransmitter().setReceiver(synthesizer.getReceiver());
     //sequencer.setTempoInBPM(60);
+  }
+
+  /** Load a Soundfont (extension .sf2 or .dls) for use with the Synthesizer.
+   * @return true if the Soundfont was loaded successfully, false otherwise.
+   */
+  public boolean loadSoundbank(File file) {
+    try {
+      Soundbank soundbank = MidiSystem.getSoundbank(file);
+      if (synthesizer.isSoundbankSupported(soundbank)) {
+        return synthesizer.loadAllInstruments(soundbank);
+      }
+    } catch (javax.sound.midi.InvalidMidiDataException exception) {
+      return false;
+    } catch (java.io.IOException exception) {
+      return false;
+    }
+    return false;
   }
 
   public void setSequence(Sequence sequence) throws InvalidMidiDataException {
