@@ -21,10 +21,18 @@
  * This file is maintained by Mario Lang <mlang@delysid.org>.
  */
 /**
- * This package groups all playback related classes.
- *
+ * Classes for interactive playback of MIDI data.
+ * <p>
  * This currently uses the Java Sound API to do MIDI synthesis.
- * Java Sound works pretty nicely on Windows, but is poor sounding on Linux.
+ * By default, the sound quality on Windows is better because a high quality
+ * soundfont is used.  On Linux, a better soundfont needs to be placed in
+ * $JAVA_HOME/jre/lib/audio/ to achieve decent quality.
+ * <p>
+ * For example:
+ * <pre>
+ * # mkdir -p $JAVA_HOME/jre/lib/audio
+ * # ln -s /usr/share/sounds/sf2/FluidR3_GM.sf2 $JAVA_HOME/jre/lib/audio
+ * </pre>
  */
 package freedots.playback;
 
