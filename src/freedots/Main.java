@@ -129,15 +129,16 @@ public final class Main {
         System.err.println("No window system available and "
                            + "no filename specified.");
         printUsage();
-        System.exit(1);
+        System.exit(0);
       }
     }
   }
 
+  // Constants from build.xml
   public static final String VERSION;
   static {
-    ResourceBundle
-    compilationProperties = ResourceBundle.getBundle("compilation");
+    ResourceBundle compilationProperties =
+      ResourceBundle.getBundle("compilation");
     VERSION = compilationProperties.getString("freedots.compile.version");
   }
 
@@ -185,10 +186,16 @@ public final class Main {
   private static void printUsage() {
     System.out.println("FreeDots " + VERSION);
     System.out.println("Usage: java -jar freedots.jar "
-                       + "[-w PAGEWIDTH] [-nw] [-p] [-bob] [FILENAME|URL]");
+                       + "[OPTIONS...] [FILENAME|URL]");
+    System.out.println();
     System.out.println("Options:");
-    System.out.println("\t-nw:\t\tNo Window System");
-    System.out.println("\t-p:\t\tPlay complete score");
-    System.out.println("\t-bob:\t\tBar-over-bar method");
+    System.out.println("\t-nw\t\tNo Window System");
+    System.out.println("\t-emf file.mid\tExport score to MIDI file");
+    System.out.println("\t-p\t\tPlay complete score");
+    System.out.println("\t-sf soundfont\tUse the given Soundfont for synthesis");
+    System.out.println();
+    System.out.println("\t-w WIDTH\tSet braille page width");
+    System.out.println("\t-mps NUM\tSpecify number of measures per section");
+    System.out.println("\t-bob\t\tBar-over-bar method");
   }
 }
