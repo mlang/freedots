@@ -23,7 +23,7 @@
 package freedots;
 
 import java.awt.HeadlessException;
-import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
@@ -59,7 +59,13 @@ public final class Main {
    * @param args Arguments from the command-line
    */
   public static void main(final String[] args) {
-    Options options = new Options(args);
+    Options options = null;
+    try {
+      options = new Options(args);
+    } catch (FileNotFoundException exception) {
+      System.err.println("File not found: "+exception.getMessage());
+      System.exit(1);
+    }
     Transcriber transcriber = new Transcriber(options);
     if (options.getLocation() != null) {
       Score score = null;
@@ -72,14 +78,14 @@ public final class Main {
         // TODO Auto-generated catch block
         e.printStackTrace();
       } catch (IOException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
+        System.err.println("Unable to open score file: "+options.getLocation());
+        System.exit(2);
       } catch (SAXParseException e) {
-        System.exit(1);
+        System.exit(3);
       } catch (SAXException e) {
         // TODO Auto-generated catch block
         e.printStackTrace();
-        System.exit(1);
+        System.exit(4);
       }
       if (score != null) transcriber.setScore(score);
     }
@@ -89,9 +95,9 @@ public final class Main {
         System.out.println(transcriber.toString());
 
         if (options.getExportMidiFile() != null) {
-          File file = new File(options.getExportMidiFile());
           try {
-            FileOutputStream fileOutputStream = new FileOutputStream(file);
+            FileOutputStream fileOutputStream =
+              new FileOutputStream(options.getExportMidiFile());
             try {
               MidiSystem.write(new MIDISequence(transcriber.getScore()), 1,
                                fileOutputStream);
@@ -108,7 +114,7 @@ public final class Main {
           try {
             MIDIPlayer player = new MIDIPlayer();
             if (options.getSoundfont() != null) {
-              if (!player.loadSoundbank(new File(options.getSoundfont()))) {
+              if (!player.loadSoundbank(options.getSoundfont())) {
                 LOG.warning("Soundfont '"+options.getSoundfont()+"'"
                             + " could not be loaded");
               }

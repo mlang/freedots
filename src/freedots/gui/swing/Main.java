@@ -33,7 +33,6 @@ import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.File;
 import java.io.InputStream;
 import java.util.concurrent.BlockingQueue;
 import java.util.logging.LogRecord;
@@ -248,7 +247,7 @@ public final class Main
     setVisible(true);
 
     if (options.getSoundfont() != null) {
-      if (!midiPlayer.loadSoundbank(new File(options.getSoundfont()))) {
+      if (!midiPlayer.loadSoundbank(options.getSoundfont())) {
         String message = "Requested Soundfont '"+options.getSoundfont()
                          +" could not be loaded";
         JOptionPane.showMessageDialog(this, message, "Alert",

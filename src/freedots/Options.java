@@ -22,6 +22,9 @@
  */
 package freedots;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+
 /**
  * Store and process command-line options (transcription parameters included).
  */
@@ -50,20 +53,20 @@ public final class Options {
   private String location;
   private boolean windowSystem = true;
   private boolean playScore = false;
-  private String exportMidiFile = null;
+  private File exportMidiFile = null;
   private UI ui = UI.Swing;
 
   private boolean showFingering = true;
   private Method method = Method.SectionBySection;
 
-  private String soundfont = null;
+  private File soundfont = null;
   /** Gets the soundfont requested for synthesis (if specified).
    * @return the path to the selected soundfont, or {@code null} if none was
    *         specified.
    */
-  public String getSoundfont() { return soundfont; }
+  public File getSoundfont() { return soundfont; }
 
-  public Options(final String[] args) {
+  public Options(final String[] args) throws FileNotFoundException {
     for (int index = 0; index < args.length; index++) {
       String option = args[index];
       if (option.equals("-w") || option.equals("--width")) {
@@ -85,7 +88,7 @@ public final class Options {
         playScore = true;
       } else if ("-emf".equals(option) || "--export-midi-file".equals(option)) {
         if (index < args.length-1) {
-          exportMidiFile = args[++index];
+          exportMidiFile = new File(args[++index]);
         }
       } else if ("-nofg".equals(option)) {
         showFingering = false;
@@ -93,7 +96,12 @@ public final class Options {
         method = Method.BarOverBar;
       } else if ("-sf".equals(option)) {
         if (index < args.length-1) {
-          soundfont = args[++index];
+          File file = new File(args[++index]);
+          if (file.exists()) {
+            soundfont = file;
+          } else {
+            throw new FileNotFoundException(file.toString());
+          }
         }
       } else {
         if (index == args.length-1) {
@@ -129,7 +137,7 @@ public final class Options {
    */
   public boolean getPlayScore() { return playScore; }
 
-  public String getExportMidiFile() { return exportMidiFile; }
+  public File getExportMidiFile() { return exportMidiFile; }
 
   UI getUI() { return ui; }
 
