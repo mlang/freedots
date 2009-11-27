@@ -28,6 +28,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.util.ResourceBundle;
+import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.xml.parsers.ParserConfigurationException;
@@ -38,7 +39,6 @@ import freedots.logging.Logger;
 import freedots.musicxml.MIDISequence;
 import freedots.musicxml.Score;
 import freedots.playback.MIDIPlayer;
-import freedots.playback.StandardMidiFileWriter;
 import freedots.transcription.Transcriber;
 
 import org.xml.sax.SAXException;
@@ -93,9 +93,8 @@ public final class Main {
           try {
             FileOutputStream fileOutputStream = new FileOutputStream(file);
             try {
-              StandardMidiFileWriter smfw = new StandardMidiFileWriter();
-              smfw.write(new MIDISequence(transcriber.getScore()), 1,
-                         fileOutputStream);
+              MidiSystem.write(new MIDISequence(transcriber.getScore()), 1,
+                               fileOutputStream);
             } catch (javax.sound.midi.InvalidMidiDataException exception) {
               exception.printStackTrace();
             } finally {

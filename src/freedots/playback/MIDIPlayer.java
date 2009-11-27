@@ -46,8 +46,8 @@ import javax.sound.midi.Synthesizer;
 public final class MIDIPlayer implements Closeable {
   public static final int SLEEP_TIME = 250;
 
-  private Synthesizer synthesizer;
-  private Sequencer sequencer;
+  private Synthesizer synthesizer = MidiSystem.getSynthesizer();
+  private Sequencer sequencer = MidiSystem.getSequencer();
 
   public MIDIPlayer(final MetaEventRelay metaEventRelay)
     throws MidiUnavailableException, InvalidMidiDataException,
@@ -59,8 +59,6 @@ public final class MIDIPlayer implements Closeable {
   }
   public MIDIPlayer() throws MidiUnavailableException,
                              InvalidMidiDataException {
-    sequencer = MidiSystem.getSequencer();
-    synthesizer = MidiSystem.getSynthesizer();
     sequencer.open();
     synthesizer.open();
     sequencer.getTransmitter().setReceiver(synthesizer.getReceiver());

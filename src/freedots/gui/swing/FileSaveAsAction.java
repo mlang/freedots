@@ -31,6 +31,7 @@ import java.io.IOException;
 import java.io.Writer;
 import java.text.CharacterIterator;
 import java.text.StringCharacterIterator;
+import javax.sound.midi.MidiSystem;
 import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
@@ -39,7 +40,6 @@ import javax.swing.JOptionPane;
 import freedots.Braille;
 import freedots.musicxml.MIDISequence;
 import freedots.musicxml.Score;
-import freedots.playback.StandardMidiFileWriter;
 import freedots.transcription.Transcriber;
 
 /**
@@ -134,8 +134,7 @@ public final class FileSaveAsAction extends AbstractAction {
     try {
       fileOutputStream = new FileOutputStream(file);
       try {
-        StandardMidiFileWriter mfw = new StandardMidiFileWriter();
-        mfw.write(new MIDISequence(score), 1, fileOutputStream);
+        MidiSystem.write(new MIDISequence(score), 1, fileOutputStream);
       } catch (Exception exception) {
         exception.printStackTrace();
       } finally {
