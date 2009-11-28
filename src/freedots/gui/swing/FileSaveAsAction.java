@@ -103,13 +103,13 @@ public final class FileSaveAsAction extends AbstractAction {
       if (fileChooser.showSaveDialog(gui) == JFileChooser.APPROVE_OPTION) {
         File file = fileChooser.getSelectedFile();
         String ext = getExtension(file);
-        if (ext != null && ext.equals("mid")) {
+        if ("mid".equals(ext)) {
           exportToMidi(score, file);
-        } else if (ext != null && ext.equals("brl")) {
+        } else if ("brl".equals(ext)) {
           exportToUnicodeBraille(gui.getTranscriber(), file);
-        } else if (ext != null && ext.equals("brf")) {
+        } else if ("brf".equals(ext)) {
           exportToBRF(gui.getTranscriber(), file);
-        } else if (ext != null && ext.equals("xml")) {
+        } else if ("xml".equals(ext)) {
           exportToMusicXML(score, file);
         } else if (ext != null) {
           String message = "Unknown file extension '"+ext+"'";
