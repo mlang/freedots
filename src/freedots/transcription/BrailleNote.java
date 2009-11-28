@@ -48,16 +48,13 @@ class BrailleNote extends BrailleString {
     return note.getPitch();
   }
 
-  @Override
-  public String toString() {
+  @Override public String toString() {
     String braille = "";
     Note note = (Note)getModel();
 
-    if (note.isGrace()) {
-      braille += Braille.grace;
-    }
+    if (note.isGrace()) braille += Braille.grace;
 
-    for (Ornament ornament:note.getOrnaments())
+    for (Ornament ornament: note.getOrnaments())
       braille += ornament.toBraille();
     for (Articulation articulation: note.getArticulations())
       braille += articulation.toBraille();
@@ -69,7 +66,7 @@ class BrailleNote extends BrailleString {
     AbstractPitch pitch = (AbstractPitch)note.getPitch();
     if (pitch != null) {
       Braille octaveSign = pitch.getOctaveSign(lastPitch);
-      if (octaveSign != null) { braille += octaveSign; }
+      if (octaveSign != null) braille += octaveSign;
     }
     braille += Braille.toString(note.getAugmentedFraction(), pitch);
 
@@ -78,9 +75,7 @@ class BrailleNote extends BrailleString {
     }
 
     Fermata fermata = note.getFermata();
-    if (fermata != null) {
-      braille += fermata.toBraille();
-    }
+    if (fermata != null) braille += fermata.toBraille();
 
     if (note.isTieStart()) {
       braille += Braille.tie;

@@ -313,8 +313,8 @@ class BrailleMeasure {
             braille += Braille.valueOf(accidental);
           }
           AbstractPitch currentPitch = (AbstractPitch)currentNote.getPitch();
-          int diatonicDifference = Math.abs
-            (currentPitch.diatonicDifference(firstPitch));
+          int diatonicDifference =
+            Math.abs(currentPitch.diatonicDifference(firstPitch));
           if (diatonicDifference == 0) {
             braille += currentPitch.getOctaveSign(null);
             diatonicDifference = 7;

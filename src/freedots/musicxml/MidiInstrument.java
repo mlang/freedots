@@ -27,13 +27,13 @@ import org.w3c.dom.Text;
 
 /** A wrapper around the midi-instrument element.
  */
-public final class MidiInstrument {
+final class MidiInstrument {
   private Element xml;
 
   private Text midiProgram;
   private Text midiChannel;
 
-  public MidiInstrument(final Element xml) {
+  MidiInstrument(final Element xml) {
     this.xml = xml;
     midiChannel = Score.getTextNode(xml, "midi-channel");
     midiProgram = Score.getTextNode(xml, "midi-program");
