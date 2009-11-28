@@ -29,7 +29,7 @@ import java.util.List;
 /**
  * @see <a href="http://en.wikipedia.org/wiki/Fingering">Wikipedia:Fingering</a>
  */
-public class Fingering {
+public final class Fingering {
   private List<Integer> fingers = new ArrayList<Integer>(2);
 
   public List<Integer> getFingers() { return fingers; }

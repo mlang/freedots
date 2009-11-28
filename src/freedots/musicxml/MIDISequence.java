@@ -51,7 +51,7 @@ import freedots.playback.MetaEventRelay;
  * references to the underlying objects in the MIDI sequence.
  * @see freedots.playback.PlaybackObserver
  */
-public class MIDISequence extends javax.sound.midi.Sequence {
+public final class MIDISequence extends javax.sound.midi.Sequence {
   private boolean unroll = true;
   /** Some MIDI reading applications do prefer if all tempo changes are bundled
    *  in the first track of the file.
