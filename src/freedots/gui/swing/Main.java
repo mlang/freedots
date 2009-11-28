@@ -157,7 +157,7 @@ public final class Main
   public boolean startPlayback() {
     if (score != null)
       try {
-        midiPlayer.setSequence(new MIDISequence(score, metaEventRelay));
+        midiPlayer.setSequence(new MIDISequence(score, true, metaEventRelay));
         midiPlayer.start();
         return true;
       } catch (javax.sound.midi.InvalidMidiDataException exception) {
