@@ -30,9 +30,8 @@ import java.util.Map;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MetaMessage;
 
-/**
- * Class <code>MetaEventRelay</code> allows to encode object references
- * inside {@link javax.sound.midi.MetaMessage} instances.
+/** Encodes object references inside {@link javax.sound.midi.MetaMessage}
+ *  instances.
  * This is used by {@link freedots.musicxml.MIDISequence} to
  * annotate MIDI sequences with references to the objects responsible
  * for individual MIDI messages.
@@ -59,35 +58,30 @@ public final class MetaEventRelay
   }
 
   /** Add a callback object to the list of observers.
-   *
-   * @param playbackObserver   the observer to add
+   * @param playbackObserver is the observer to notify upon object playback
    */
-  public void addPlaybackObserver(PlaybackObserver playbackObserver) {
+  public void addPlaybackObserver(final PlaybackObserver playbackObserver) {
     playbackObservers.add(playbackObserver);
   }
 
   /**
-   * Create a new MetaMessage which wraps a reference to the provided object.
-   *
-   * @param object  the object reference to return when the MetaMessage
-   *                fires inside a Sequencer
+   * Create a new MetaMessage which wraps a reference to the specified object.
+   * @param object  the object to return when the MetaMessage fires
    * @return the MetaMessage
    */
-  public MetaMessage createMetaMessage(Object object) {
+  public MetaMessage createMetaMessage(Object object)
+  throws InvalidMidiDataException {
     if (object != null) {
-      int id = ++lastId;
-      String key = Integer.toString(id);
+      final int id = ++lastId;
+      final String key = Integer.toString(id);
       objects.put(key, object);
 
       MetaMessage metaMessage = new MetaMessage();
-      try {
-        metaMessage.setMessage(PROPRIETARY, key.getBytes(), key.length());
-      } catch (InvalidMidiDataException e) {
-        return null;
-      }
+      metaMessage.setMessage(PROPRIETARY, key.getBytes(), key.length());
+
       return metaMessage;
     }
-    return null;
+    throw new NullPointerException();
   }
 
   /**
