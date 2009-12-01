@@ -164,6 +164,7 @@
     <!--module name="ExplicitInitialization"/-->
     <module name="UnnecessaryParentheses"/>
     <module name="StringLiteralEquality"/>
+    <module name="ClassFanOutComplexity"/>
     <module name="CyclomaticComplexity"/>
     <module name="NPathComplexity"/>
   </module>

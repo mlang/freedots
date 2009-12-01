@@ -22,10 +22,9 @@
  */
 package freedots.playback;
 
-/**
- * During playback, this intercace is used to inform the GUI which score
- * object has just been playing.
- *
+/** During playback, this intercace is used to inform the GUI which score
+ *  object is currently playing.
+ * <p>
  * This is an essential feature to provide synchronized caret movements
  * during playback.
  */
