@@ -103,7 +103,7 @@ public final class MIDISequence extends javax.sound.midi.Sequence {
     Track track = createTrack();
 
     MetaMessage metaMessage;
-    int velocity = 64;
+    velocity = 64;
 
     if (part.getName() != null) {
       String trackName = new String(part.getName());
@@ -151,11 +151,9 @@ public final class MIDISequence extends javax.sound.midi.Sequence {
         if (metaEventRelay != null) {
           int midiTick = event.getOffset().add(offset).toInteger(resolution);
           metaMessage = metaEventRelay.createMetaMessage((Chord)event);
-          if (metaMessage != null) {
-            track.add(new MidiEvent(metaMessage, midiTick));
-            temp = metaEventRelay;
-            metaEventRelay = null; // Only notify once for a chord
-          }
+          track.add(new MidiEvent(metaMessage, midiTick));
+          temp = metaEventRelay;
+          metaEventRelay = null; // Only notify once for a chord
         }
         for (Note note: (Chord)event) addToTrack(track, note, offset);
         if (temp != null) metaEventRelay = temp;
@@ -225,11 +223,7 @@ public final class MIDISequence extends javax.sound.midi.Sequence {
       } else if (articulations.contains(Articulation.mezzoStaccato)) {
         duration -= duration / 4;
       }
-      boolean turn = false;
       Set<Ornament> ornaments = note.getOrnaments();
-      if (ornaments.contains(Ornament.turn)) {
-        turn = true;
-      }
       if (metaEventRelay != null) {
         MetaMessage metaMessage = metaEventRelay.createMetaMessage(note);
         if (metaMessage != null) {
@@ -243,28 +237,43 @@ public final class MIDISequence extends javax.sound.midi.Sequence {
         }
         final int midiPitch = pitch.getMIDIPitch();
         final int midiChannel = note.getMidiChannel();
-        if (turn && accidentalContexts != null) {
+        if (accidentalContexts != null) {
           Integer staffNumber = new Integer(note.getStaffNumber());
           AccidentalContext accidentalContext =
             accidentalContexts.get(staffNumber);
-          final int upperPitch = pitch.nextStep(accidentalContext).getMIDIPitch();
-          final int lowerPitch = pitch.previousStep(accidentalContext).getMIDIPitch();
-          duration /= 4;
-          noteOnOff(track, midiChannel, upperPitch, velocity,
-                    offset, duration);
-          offset += duration;
-          noteOnOff(track, midiChannel, midiPitch, velocity,
-                    offset, duration);
-          offset += duration;
-          noteOnOff(track, midiChannel, lowerPitch, velocity,
-                    offset, duration);
-          offset += duration;
-          noteOnOff(track, midiChannel, midiPitch, velocity,
-                    offset, duration);
-        } else {
-          noteOnOff(track, note.getMidiChannel(), midiPitch, velocity,
-                    offset, duration);
+          if (ornaments.contains(Ornament.turn)) {
+            final int upperPitch = pitch.nextStep(accidentalContext).getMIDIPitch();
+            final int lowerPitch = pitch.previousStep(accidentalContext).getMIDIPitch();
+            duration /= 4;
+            noteOnOff(track, midiChannel, upperPitch, velocity,
+                      offset, duration);
+            offset += duration;
+            noteOnOff(track, midiChannel, midiPitch, velocity,
+                      offset, duration);
+            offset += duration;
+            noteOnOff(track, midiChannel, lowerPitch, velocity,
+                      offset, duration);
+            offset += duration;
+            noteOnOff(track, midiChannel, midiPitch, velocity,
+                      offset, duration);
+            return;
+          } else if (ornaments.contains(Ornament.mordent)) {
+            final int lowerPitch = pitch.previousStep(accidentalContext).getMIDIPitch();
+            duration /= 8;
+            noteOnOff(track, midiChannel, midiPitch, velocity,
+                      offset, duration);
+            offset += duration;
+            noteOnOff(track, midiChannel, lowerPitch, velocity,
+                      offset, duration);
+            offset += duration;
+            noteOnOff(track, midiChannel, midiPitch, velocity,
+                      offset, duration*6);
+            return;
+          }
         }
+
+        noteOnOff(track, note.getMidiChannel(), midiPitch, velocity,
+                  offset, duration);
       }
     }
   }
