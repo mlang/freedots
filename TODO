@@ -135,6 +135,23 @@ the transcription code needs to decide in which voice to print them.
 Possibly always the first voice.
 The voice handling code needs to somehow take this into account.
 
+** TODO Key and clef changes
+
+These are also currently not output.  They are somewhat related to Directions
+since they belong to a staff, but not to a particular voice.
+
+*** Clef change
+
+Clef changes are basically irrelevant to the braille music reader.
+However, for collaboration and communication with sighted music readers,
+it can be very helpful to know where the clef changes.
+
+*** TODO Key change
+
+Key changes usually occur at the beginning of a measure.  Can they also occur
+in the middle?  A key change is very important, and needs to be printed for
+the music to make sense.
+
 ** TODO Repetitions
 
 The simile sign (⠶) is useful for indicating repetitions that
