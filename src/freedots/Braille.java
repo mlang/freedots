@@ -123,6 +123,7 @@ public enum Braille {
    * @return true if this braille music symbol needs an additional dot 3
    * if one of dots 1, 2 or 3 is following.
    */
+  // TODO: Method name should be changed to something better!
   public boolean needsAdditionalDot3IfOneOfDot123Follows() {
     return needsAdditionalDot3IfOneOfDot123Follows;
   }
@@ -133,6 +134,7 @@ public enum Braille {
     leftHandPart.needsAdditionalDot3IfOneOfDot123Follows(true);
     soloPart.needsAdditionalDot3IfOneOfDot123Follows(true);
     rightHandPart.needsAdditionalDot3IfOneOfDot123Follows(true);
+    // TODO: There are probabbly more, figure out the complete list
   }
 
   /** Gets an octave sign for a particular octave.

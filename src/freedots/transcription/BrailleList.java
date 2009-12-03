@@ -44,6 +44,12 @@ class BrailleList extends java.util.ArrayList<BrailleString> {
     for (BrailleString string : list) string.setContainer(this);
     return changed;
   }
+
+  /** Gets the element following a particular item.
+   * This method is used to implement the fact that some braille symbols
+   * need to know the dots which follow after themselves.
+   * @see freedots.Braille#needsAdditionalDot3IfOneOfDot123Follows
+   */
   public BrailleString getNext(BrailleString item) {
     int index = indexOf(item);
     if (index != -1 && index < size() - 1) return get(index+1);
