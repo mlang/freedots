@@ -68,7 +68,7 @@ public final class EditFingeringAction extends AbstractAction {
       if (!dialogShowing) {
         fingeringEditor.setNote((Note)scoreObject);
         dialogShowing = true;
-        fingeringEditor.show();
+        fingeringEditor.setVisible(true);
         dialogShowing = false;
       }
     }
