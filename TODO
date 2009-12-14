@@ -21,6 +21,24 @@ Also, maybe create staff objects at construction time inside of the measure.
 This will need major refactoring of all the client code, namely playback
 and transcription.
 
+** TODO Review and upgrade scores/*.xml
+
+The example scores ("Library") are generated with different methods.  Some have
+been scanned with PhotoScore (MusicXML 1.0/1.1) from Lilypond generated
+printouts, others were mostly written by hand in Emacs with a few Lisp macros,
+and one score has been written in Sibelius by a very kind contributor.
+Many scores do not support beam/stem/accidental elements.  FreeDots doesn't
+really care about those, but other programs might.  Some scores even contain
+minor remaining errors.  They all should be imported into a pro notation editor
+like Sibelius or Finale, and checked for validity that way.  Where apropriate,
+beaming and stem directions should be added and the resoluting scores should
+be normalized so that a diff shows the actual changes done by the application
+in use.  Ideally, all scores should be upgraded to MusicXML 2.0.  While
+FreeDots is deliberately designed to be very liberal with what it accepts
+(braille music doesn't care about stem direction, so we simply totally ignore
+it), other more visually oriented notation programs might have problems with
+scores in such a "raw" encoding.
+
 ** TODO Portable exception reporting to a central place
 
 For better quality of MusicXML parsing, a fascility should be developed
