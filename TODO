@@ -21,6 +21,15 @@ Also, maybe create staff objects at construction time inside of the measure.
 This will need major refactoring of all the client code, namely playback
 and transcription.
 
+** TODO Portable exception reporting to a central place
+
+For better quality of MusicXML parsing, a fascility should be developed
+which sends an exception whenever it happens via email + the
+XML in question attached.  This should only trigger after
+the user confirmed this to happen.  This fascility should also
+only be enabled in download versions so that developers do not
+accidentally generate such mails.
+
 * MusicXML
 
 ** TODO Properly handle spanners

@@ -41,5 +41,7 @@ given MusicXML {@link freedots.musicxml.Score} object to braille music notation.
 Package {@link freedots.playback} provides a few classes to fascilitate
 interactive MIDI playback.  {@link freedots.musicxml.MIDISequence} is used to
 convert a MusicXML {@link freedots.musicxml.Score} to a format suitable for
-playback using the Java Sound API.
+playback using the Java Sound API.  {@link freedots.gui.swing.Main} implements
+the {@link freedots.playback.PlaybackObserver} interface which allow the GUI
+to follow along as notes and chords are synthesized.
 </body>
