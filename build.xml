@@ -143,17 +143,17 @@
     </presetdef>
     <!-- Build examples -->
     <freedots output="doc/example1-2.brl">
-      <arg value="-emf"/><arg value="doc/example1-2.mid"/>
+      <arg value="-nw"/><arg value="-emf"/><arg value="doc/example1-2.mid"/>
       <arg value="input/nimobmn-examples/example1-2.xml"/>
     </freedots>
     <freedots output="doc/example1-11.brl">
-      <arg value="-emf"/><arg value="doc/example1-11.mid"/>
+      <arg value="-nw"/><arg value="-emf"/><arg value="doc/example1-11.mid"/>
       <arg value="input/nimobmn-examples/example1-11.xml"/>
     </freedots>
 
     <exec executable="xsltproc" logError="true" failonerror="true" output="doc/manual.html">
       <arg value="--xinclude"/>
-      <arg value="doc/html.xsl"/> <arg value="doc/manual.xml"/>
+      <arg value="${style.docbook.xhtml}"/> <arg value="doc/manual.xml"/>
     </exec>
     <exec executable="lynx" logError="true" output="doc/manual.txt">
       <arg value="--nonumbers"/><arg value="--dump"/>

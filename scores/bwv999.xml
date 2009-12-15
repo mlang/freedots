@@ -16,6 +16,7 @@
 	</identification>
 	<part-list>
 		<score-part id="P1">
+			<part-name></part-name>
 			<score-instrument id="P1-I1">
 				<instrument-name>Lute, Guitar</instrument-name>
 			</score-instrument>
