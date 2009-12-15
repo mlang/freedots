@@ -12,14 +12,15 @@ of refactoring of the current codebase.  Some ideas:
 I have been going back and forth between a relatively flat event-list
 representation (what we currently have in MusicList) and a representation
 where measures are container objects, like they are in musicxml.
-I am still not sure whats better, but it looks like the measure abstraction
+I am still not sure what is better, but it looks like the measure abstraction
 is useful for a number of reasons.
 
 Create a musicxml.Measure class which has start/stopBar accessors.
 Also, maybe create staff objects at construction time inside of the measure.
 
 This will need major refactoring of all the client code, namely playback
-and transcription.
+and transcription.  It would also mean that all classes derived
+from VerticalEvent can go away.
 
 ** TODO Review and upgrade scores/*.xml
 
@@ -86,7 +87,7 @@ See [[*Tuplets][tuplets in braille transcription]].
 
 MusicXML has a <transpose> element which is used in various
 situations around transposing instruments.  This element is currently
-unsupported, should be imlemented.
+unsupported, should be imlemented (see scores/bwv999.xml).
 
 *** TODO Allow on-the-fly transposition of a score
 
