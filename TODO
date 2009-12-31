@@ -318,13 +318,16 @@ Seen from that perspective, doubling should probably be scored on the basis
 of how many cells it saves.  A user configurable value with a default
 of 2 seems sensible at first thought.)
 
-** TODO Lead sheets (lyrics)
+** TODO Lead sheets (lyrics and chord symbols)
 
 MusicXML supports parts with lyric text.  A very good
 repository for such files is at http://www.wikifonia.org/
 
 Currently, lyrics are printed, but the alignment and line-breaking
-is not implemented correctly.
+is not implemented correctly.  Additionally, chord symbols are currently
+totally ignored.  They should be parsed from MusicXML and
+appropriately transcribed to Braille.
+
 
 *** TODO Implement bindings for liblouis for contracting lyrics
 
