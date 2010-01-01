@@ -63,6 +63,7 @@ public enum Braille {
   octave(36),
 
   rightHandPart(46, 345), soloPart(5, 345), leftHandPart(456, 345),
+  harmonyPart(25, 345),
 
   hyphen(5),
 
@@ -134,6 +135,7 @@ public enum Braille {
     leftHandPart.needsAdditionalDot3IfOneOfDot123Follows(true);
     soloPart.needsAdditionalDot3IfOneOfDot123Follows(true);
     rightHandPart.needsAdditionalDot3IfOneOfDot123Follows(true);
+    harmonyPart.needsAdditionalDot3IfOneOfDot123Follows(true);
     // TODO: There are probabbly more, figure out the complete list
   }
 
