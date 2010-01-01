@@ -84,9 +84,11 @@ public final class Part {
 
     List<List<Slur>> slurs = new ArrayList<List<Slur>>();
 
-    for (Element xmlElement : Score.getChildElements(part)) {
-      if ("measure".equals(xmlElement.getNodeName())) {
-        Element xmlMeasure = xmlElement;
+    for (Node partNode = part.getFirstChild(); partNode != null;
+         partNode = partNode.getNextSibling()) {
+      if (partNode.getNodeType() == Node.ELEMENT_NODE
+       && "measure".equals(partNode.getNodeName())) {
+        Element xmlMeasure = (Element)partNode;
 
         StartBar startBar = new StartBar(measureOffset, ++measureNumber);
         startBar.setStaffCount(staffCount);
@@ -98,12 +100,13 @@ public final class Part {
         Chord currentChord = null;
         Fraction offset = Fraction.ZERO;
         Fraction measureDuration = Fraction.ZERO;
-        NodeList measureChildNodes = xmlMeasure.getChildNodes();
-        for (int index = 0; index < measureChildNodes.getLength(); index++) {
-          Node measureChild = measureChildNodes.item(index);
-          if (measureChild.getNodeType() == Node.ELEMENT_NODE) {
-            Element musicdata = (Element)measureChild;
-            if ("attributes".equals(measureChild.getNodeName())) {
+
+        for (Node measureNode = xmlMeasure.getFirstChild();
+             measureNode != null; measureNode = measureNode.getNextSibling()) {
+          if (measureNode.getNodeType() == Node.ELEMENT_NODE) {
+            Element musicdata = (Element)measureNode;
+            String tagName = musicdata.getTagName();
+            if ("attributes".equals(tagName)) {
               Attributes attributes = new Attributes(musicdata);
               int newDivisions = attributes.getDivisions();
               Attributes.Time newTimeSignature = attributes.getTime();
@@ -142,7 +145,7 @@ public final class Part {
                     eventList.add(new KeyChange(measureOffset.add(offset), key, Integer.parseInt(key.getStaffName()) - 1));
                 }
               }
-            } else if ("note".equals(measureChild.getNodeName())) {
+            } else if ("note".equals(tagName)) {
               Note note = new Note(musicdata, divisions, durationMultiplier,
                                    this);
               note.setDate(measureOffset.add(offset));
@@ -203,17 +206,17 @@ public final class Part {
               if (advanceTime) {
                 offset = offset.add(note.getDuration());
               }
-            } else if ("direction".equals(measureChild.getNodeName())) {
+            } else if ("direction".equals(tagName)) {
               Direction direction = new Direction(musicdata, measureOffset.add(offset));
               eventList.add(direction);
-            } else if ("backup".equals(measureChild.getNodeName())) { 
+            } else if ("backup".equals(tagName)) { 
               if (currentChord != null) {
                 offset = offset.add(currentChord.get(0).getDuration());
                 currentChord = null;
               }
               Backup backup = new Backup(musicdata, divisions, durationMultiplier);
               offset = offset.subtract(backup.getDuration());
-            } else if ("forward".equals(measureChild.getNodeName())) {
+            } else if ("forward".equals(tagName)) {
               if (currentChord != null) {
                 offset = offset.add(currentChord.get(0).getDuration());
                 currentChord = null;
@@ -224,13 +227,13 @@ public final class Part {
               invisibleRest.setDate(measureOffset.add(offset));
               eventList.add(invisibleRest);
               offset = offset.add(invisibleRest.getDuration());
-            } else if ("print".equals(measureChild.getNodeName())) {
+            } else if ("print".equals(tagName)) {
               Print print = new Print(musicdata);
               if (print.isNewSystem()) startBar.setNewSystem(true);
-            } else if ("sound".equals(measureChild.getNodeName())) {
+            } else if ("sound".equals(tagName)) {
               Sound sound = new Sound(musicdata, measureOffset.add(offset));
               eventList.add(sound);
-            } else if ("barline".equals(measureChild.getNodeName())) {
+            } else if ("barline".equals(tagName)) {
               Barline barline = new Barline(musicdata);
 
               if (barline.getLocation() == Barline.Location.LEFT) {
@@ -251,8 +254,7 @@ public final class Part {
                 }
               }
             } else
-              log.info("Unsupported musicdata element "
-                       + measureChild.getNodeName());
+              log.info("Unsupported musicdata element " + tagName);
             if (offset.compareTo(measureDuration) > 0) measureDuration = offset;
           }
         }
