@@ -168,23 +168,31 @@ class SectionBySection implements Strategy {
           if (lyricText.length() > 0) {
             if (transcriber.getCurrentColumn() > 0) transcriber.newLine();
             transcriber.printString(Braille.textPart);
+            Syllabic lastSyllabic = null;
             for (Event event: staff) {
               if (event instanceof Note) {
                 Lyric lyric = ((Note)event).getLyric();
                 if (lyric != null) {
                   String text = lyric.getText();
                   if (text.length() <= transcriber.getRemainingColumns()) {
-                    transcriber.printString(text);
+                    transcriber.printString(new BrailleString(text, event));
                   } else {
+                    if (lastSyllabic != Syllabic.SINGLE
+                     && lastSyllabic != Syllabic.END) {
+                      transcriber.printString("-");
+                    }
                     transcriber.newLine();
+                    transcriber.printString(new BrailleString(text, event));
                   }
                   if (lyric.getSyllabic() == Syllabic.SINGLE
                    || lyric.getSyllabic() == Syllabic.END) {
                     if (transcriber.getRemainingColumns() <= 0)
                       transcriber.newLine();
                     else
-                      transcriber.printString(" ");
+                      if (transcriber.getCurrentColumn() >= 0)
+                        transcriber.printString(" ");
                   }
+                  lastSyllabic = lyric.getSyllabic();
                 }
               }
             }
