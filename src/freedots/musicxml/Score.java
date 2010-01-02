@@ -79,7 +79,7 @@ public final class Score {
   /* --- Header fields --- */
   private Text workNumber, workTitle;
   private Text movementNumber, movementTitle;
-  private Text composer, poet;
+  private Text composer, lyricist;
   private Text rights;
 
   private Element encoding;
@@ -173,8 +173,8 @@ public final class Score {
             }
             if (creator.getAttribute("type").equals("composer")) {
               composer = textNode;
-            } else if (creator.getAttribute("type").equals("poet")) {
-              poet = textNode;
+            } else if (creator.getAttribute("type").equals("lyricist")) {
+              lyricist = textNode;
             }
           } else if (identificationElement.getNodeName().equals("encoding")) { 
             encoding = identificationElement;
@@ -261,10 +261,10 @@ public final class Score {
   public String getComposer() {
     return composer != null ? composer.getWholeText() : null;
   }
-  /** Get the poet (if set) of this score.
+  /** Get the lyricist (if set) of this score.
    */
-  public String getPoet() {
-    return poet != null ? poet.getWholeText() : null;
+  public String getLyricist() {
+    return lyricist != null ? lyricist.getWholeText() : null;
   }
 
   private InputSource getInputSourceFromZipInputStream(

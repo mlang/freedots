@@ -121,6 +121,7 @@ public final class Transcriber {
     String workTitle = score.getWorkTitle();
     String movementTitle = score.getMovementTitle();
     String composer = score.getComposer();
+    String lyricist = score.getLyricist();
     boolean headerAvailable = false;
 
     if (isNonEmpty(workNumber)) {
@@ -135,7 +136,11 @@ public final class Transcriber {
       printCenteredLine(movementTitle);
       headerAvailable = true;
     }
-    if (isNonEmpty(composer)) {
+    if (isNonEmpty(composer) && isNonEmpty(lyricist)) {
+      printCenteredLine("Music by "+composer);
+      printCenteredLine("Lyrics by "+lyricist);
+      headerAvailable = true;
+    } else if (isNonEmpty(composer)) {
       printCenteredLine(composer);
       headerAvailable = true;
     }
