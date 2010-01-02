@@ -32,14 +32,18 @@ import freedots.Braille;
 import freedots.logging.Logger;
 import freedots.music.Event;
 import freedots.music.Fraction;
+import freedots.music.Staff;
+import freedots.music.StaffElement;
 
-public final class Harmony implements Event {
+public final class Harmony implements StaffElement {
   private static final Logger log = Logger.getLogger(Harmony.class);
 
   private Element element;
   private Fraction initialDate;
 
   private List<HarmonyChord> chords = new ArrayList<HarmonyChord>();
+  private Element staffNumber = null;
+
   public Harmony(final Element element, final Fraction offset) {
     this.element = element;
     this.initialDate = offset;
@@ -64,10 +68,11 @@ public final class Harmony implements Event {
         } else if ("degree".equals(child.getTagName())) {
           if (currentChord != null)
             currentChord.addDegree(child);
+        } else if ("staff".equals(child.getTagName())) {
+          staffNumber = child;
         }
       }
     }
-    log.info("Harmony: "+Braille.toString(this));
   }
   public List<HarmonyChord> getChords() { return chords; }
 
@@ -75,6 +80,15 @@ public final class Harmony implements Event {
   public boolean equalsIgnoreOffset(Event object) {
     return false;
   }
+  public int getStaffNumber() {
+    if (staffNumber != null)
+      return Integer.parseInt(staffNumber.getTextContent()) - 1;
+    return 0;
+  }
+  private Staff staff = null;
+  public Staff getStaff() { return staff; }
+  public void setStaff(Staff staff) { this.staff = staff; }
+  public boolean isRest() { return false; }
 
   @Override public String toString() {
     StringBuilder sb = new StringBuilder();

@@ -211,7 +211,7 @@ public final class Part {
               eventList.add(direction);
             } else if ("harmony".equals(tagName)) {
               Harmony harmony = new Harmony(musicdata, measureOffset.add(offset));
-              //eventList.add(direction);
+              eventList.add(harmony);
             } else if ("backup".equals(tagName)) { 
               if (currentChord != null) {
                 offset = offset.add(currentChord.get(0).getDuration());

@@ -36,6 +36,7 @@ import freedots.music.KeyChange;
 import freedots.music.MusicList;
 import freedots.music.Staff;
 import freedots.music.StartBar;
+import freedots.musicxml.Harmony;
 import freedots.musicxml.Part;
 import freedots.musicxml.Score;
 
@@ -142,6 +143,19 @@ class SectionBySection implements Strategy {
               measure.setVoiceDirection(voiceDirection);
             } else {
               measure.add(event);
+            }
+          }
+
+          if (staff.containsHarmony()) {
+            if (transcriber.getCurrentColumn() > 0) transcriber.newLine();
+            transcriber.printString(Braille.harmonyPart);
+            for (Event event: staff) {
+              if (event instanceof Harmony) {
+                Harmony harmony = (Harmony)event;
+                transcriber.printString(Braille.toString(harmony));
+              } else if (event instanceof StartBar) {
+                transcriber.printString(" ");
+              }
             }
           }
         }

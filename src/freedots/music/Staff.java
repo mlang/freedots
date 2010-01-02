@@ -54,4 +54,9 @@ public class Staff extends MusicList {
     for (Event event:this) if (event instanceof StaffChord) return true;
     return false;
   }
+  public boolean containsHarmony() {
+    for (Event event:this) if (event instanceof freedots.musicxml.Harmony)
+      return true;
+    return false;
+  }
 }
