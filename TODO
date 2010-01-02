@@ -412,6 +412,12 @@ BWV 1004 Chaconne m1:
 
 * Playback
 
+** TODO Correctly play tied notes
+
+Currently, tied notes are played as their individual notes.  Their
+actualy duration should be summed up and only one pair of MIDI
+events should be generated so that no additional attack(s) are heard.
+
 ** TODO Play grace notes
 
 For simplicity, grace notes are currently just not played at all.
