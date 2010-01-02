@@ -67,7 +67,7 @@ public enum Braille {
   harmonyPart(25, 345),
   upcase(46),
   letterA(1), letterB(12), letterC(14), letterD(145), letterE(15), letterF(124),
-  letterG(1245), letterM(134),
+  letterG(1245), slash(5, 2), letterM(134),
 
   hyphen(5),
 
@@ -405,6 +405,12 @@ public enum Braille {
         else if (degree.getAlter() == 1) sb.append(sharp.toString());
         sb.append(numberSign.toString());
         sb.append(upperNumber(degree.getValue()));
+      }
+      if (chord.hasBass()) {
+        sb.append(slash.toString());
+        sb.append(ENGLISH_STEPS[chord.getBassStep()].toString());
+        if (chord.getBassAlter() == -1) sb.append(flat.toString());
+        else if (chord.getBassAlter() == 1) sb.append(sharp.toString());
       }
     }
     return sb.toString();

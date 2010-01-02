@@ -58,6 +58,9 @@ public final class Harmony implements Event {
         } else if ("inversion".equals(child.getTagName())) {
           if (currentChord != null)
             currentChord.setInversion(child);
+        } else if ("bass".equals(child.getTagName())) {
+          if (currentChord != null)
+            currentChord.setBass(child);
         } else if ("degree".equals(child.getTagName())) {
           if (currentChord != null)
             currentChord.addDegree(child);
@@ -86,7 +89,7 @@ public final class Harmony implements Event {
     private Element function = null; //Unsupported
     private Element kind;
     private Element inversion = null;
-
+    private Element bassStep = null, bassAlter = null;
     private List<Degree> degrees = new ArrayList<Degree>();
 
     HarmonyChord(Element initial) {
@@ -134,6 +137,31 @@ public final class Harmony implements Event {
       if (inversion != null) {
         return Integer.parseInt(inversion.getTextContent());
       }
+      return 0;
+    }
+    void setBass(Element bass) {
+      for (Node node = bass.getFirstChild(); node != null;
+           node = node.getNextSibling()) {
+        if (node.getNodeType() == Node.ELEMENT_NODE) {
+          if ("bass-step".equals(node.getNodeName()))
+            bassStep = (Element)node;
+          else if ("bass-alter".equals(node.getNodeName()))
+            bassAlter = (Element)node;
+        }
+      }
+    }
+    public boolean hasBass() {
+      return bassStep != null;
+    }
+    public int getBassStep() {
+      if (hasBass()) {
+        return "CDEFGAB".indexOf(bassStep.getTextContent().trim().toUpperCase());
+      }
+      return 0;
+    }
+    public float getBassAlter() {
+      if (hasBass() && bassAlter != null)
+        return Float.parseFloat(bassAlter.getTextContent());
       return 0;
     }
     void addDegree(Element degree) { degrees.add(new Degree(degree)); }
