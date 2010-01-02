@@ -28,7 +28,6 @@ import java.util.List;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
-import freedots.Braille;
 import freedots.logging.Logger;
 import freedots.music.Event;
 import freedots.music.Fraction;

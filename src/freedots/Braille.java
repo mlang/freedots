@@ -64,7 +64,7 @@ public enum Braille {
   octave(36),
 
   rightHandPart(46, 345), soloPart(5, 345), leftHandPart(456, 345),
-  harmonyPart(25, 345),
+  harmonyPart(25, 345), musicPart(6, 3), textPart(56, 23),
   upcase(46),
   letterA(1), letterB(12), letterC(14), letterD(145), letterE(15), letterF(124),
   letterG(1245), slash(5, 2), letterM(134),

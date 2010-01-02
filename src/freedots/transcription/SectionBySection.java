@@ -33,10 +33,13 @@ import freedots.music.Event;
 import freedots.music.Fraction;
 import freedots.music.GlobalKeyChange;
 import freedots.music.KeyChange;
+import freedots.music.Lyric;
 import freedots.music.MusicList;
 import freedots.music.Staff;
 import freedots.music.StartBar;
+import freedots.music.Syllabic;
 import freedots.musicxml.Harmony;
+import freedots.musicxml.Note;
 import freedots.musicxml.Part;
 import freedots.musicxml.Score;
 
@@ -62,14 +65,13 @@ class SectionBySection implements Strategy {
         for (int staffIndex = 0; staffIndex < staffCount; staffIndex++) {
           Staff staff = section.getStaff(staffIndex);
           BrailleMeasure measure = new BrailleMeasure();
-          boolean displayClefChange = false;
           int voiceDirection = -1;
 
           if (transcriber.getCurrentColumn() > 0) transcriber.newLine();
           transcriber.indentTo(2);
 
-          if (staffCount == 1 && staff.containsChords()) {
-            displayClefChange = true;
+          if (staffCount == 1 && staff.containsHarmony()) {
+            transcriber.printString(Braille.musicPart);
           } else if (staffCount == 2) {
             if (staffIndex == 0) {
               transcriber.printString(Braille.rightHandPart);
@@ -81,9 +83,6 @@ class SectionBySection implements Strategy {
               measure.setVoiceDirection(voiceDirection);
             }
           }
-
-          String lyric = staff.getLyricText();
-          if (lyric.length() > 0) transcriber.printLine(lyric);
 
           StartBar startBar = null;
 
@@ -152,9 +151,41 @@ class SectionBySection implements Strategy {
             for (Event event: staff) {
               if (event instanceof Harmony) {
                 Harmony harmony = (Harmony)event;
-                transcriber.printString(Braille.toString(harmony));
-              } else if (event instanceof StartBar) {
+                String chord = Braille.toString(harmony);
+                if (chord.length() <= transcriber.getRemainingColumns())
+                  transcriber.printString(Braille.toString(harmony));
+                else {
+                  transcriber.newLine();
+                  transcriber.printString(Braille.toString(harmony));
+                }
+              } else if (event instanceof EndBar) {
                 transcriber.printString(" ");
+              }
+            }
+          }
+
+          String lyricText = staff.getLyricText();
+          if (lyricText.length() > 0) {
+            if (transcriber.getCurrentColumn() > 0) transcriber.newLine();
+            transcriber.printString(Braille.textPart);
+            for (Event event: staff) {
+              if (event instanceof Note) {
+                Lyric lyric = ((Note)event).getLyric();
+                if (lyric != null) {
+                  String text = lyric.getText();
+                  if (text.length() <= transcriber.getRemainingColumns()) {
+                    transcriber.printString(text);
+                  } else {
+                    transcriber.newLine();
+                  }
+                  if (lyric.getSyllabic() == Syllabic.SINGLE
+                   || lyric.getSyllabic() == Syllabic.END) {
+                    if (transcriber.getRemainingColumns() <= 0)
+                      transcriber.newLine();
+                    else
+                      transcriber.printString(" ");
+                  }
+                }
               }
             }
           }
@@ -233,9 +264,7 @@ class SectionBySection implements Strategy {
           ||
           (newSystemEndsSection && startBar.getNewSystem())
           ||
-          (measureCount == options.getMeasuresPerSection())
-          ||
-          (currentSection.getLyricText().length() >= options.getPageWidth())) {
+          (measureCount == options.getMeasuresPerSection())) {
         currentSection = new Section(part);
         sections.add(currentSection);
         measureCount = 0;

@@ -54,6 +54,9 @@ public class Staff extends MusicList {
     for (Event event:this) if (event instanceof StaffChord) return true;
     return false;
   }
+  /** Determines if this staff segment contains harmony (chordsymbols).
+   * @return true if any Harmony objects are contained in the sequence.
+   */
   public boolean containsHarmony() {
     for (Event event:this) if (event instanceof freedots.musicxml.Harmony)
       return true;
