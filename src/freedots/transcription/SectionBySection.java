@@ -52,7 +52,8 @@ class SectionBySection implements Strategy {
     score = transcriber.getScore();
 
     for (Part part: score.getParts()) {
-      transcriber.printLine(part.getName());
+      String name = part.getName();
+      if (name != null && !name.isEmpty()) transcriber.printLine(name);
       transcriber.printLine(part.getKeySignature().toBraille()
                             + Braille.toString(part.getTimeSignature()));
       for (Section section:getSections(part)) {

@@ -372,13 +372,17 @@ public final class Part {
   public MusicList getMusicList () { return eventList; }
 
   public String getName() {
-    XPath xpath = XPathFactory.newInstance().newXPath();
-    try {
-      return (String) xpath.evaluate("part-name", scorePart,
-                                     XPathConstants.STRING);
-    } catch (XPathExpressionException e) {
-      return null;
+    for (Node node = scorePart.getFirstChild(); node != null;
+         node = node.getNextSibling()) {
+      if (node.getNodeType() == Node.ELEMENT_NODE
+       && "part-name".equals(node.getNodeName())) {
+        Element partName = (Element)node;
+        if (!"no".equals(partName.getAttribute("print-object"))) {
+          return partName.getTextContent();
+        }
+      }
     }
+    return null;
   }
 
   private static boolean noteStartsChord(Node note) {
