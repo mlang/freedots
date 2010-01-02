@@ -209,6 +209,9 @@ public final class Part {
             } else if ("direction".equals(tagName)) {
               Direction direction = new Direction(musicdata, measureOffset.add(offset));
               eventList.add(direction);
+            } else if ("harmony".equals(tagName)) {
+              Harmony harmony = new Harmony(musicdata, measureOffset.add(offset));
+              //eventList.add(direction);
             } else if ("backup".equals(tagName)) { 
               if (currentChord != null) {
                 offset = offset.add(currentChord.get(0).getDuration());

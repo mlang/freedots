@@ -32,6 +32,7 @@ import freedots.music.Accidental;
 import freedots.music.AugmentedFraction;
 import freedots.music.Fingering;
 import freedots.music.TimeSignature;
+import freedots.musicxml.Harmony;
 
 /**
  * All the braille signs required for music and a few utility methods.
@@ -64,6 +65,9 @@ public enum Braille {
 
   rightHandPart(46, 345), soloPart(5, 345), leftHandPart(456, 345),
   harmonyPart(25, 345),
+  upcase(46),
+  letterA(1), letterB(12), letterC(14), letterD(145), letterE(15), letterF(124),
+  letterG(1245), letterM(134),
 
   hyphen(5),
 
@@ -295,6 +299,9 @@ public enum Braille {
   private static final Braille[] FINGERS = {
     finger1, finger2, finger3, finger4, finger5
   };
+  private static final Braille[] ENGLISH_STEPS = {
+    letterC, letterD, letterE, letterF, letterG, letterA, letterB
+  };
 
   /** Returns the braille representation of the given accidental mark.
    * @param accidental is the accidental to convert to braille.
@@ -362,5 +369,44 @@ public enum Braille {
     return numberSign.toString()
            + upperNumber(signature.getNumerator())
            + lowerNumber(signature.getDenominator());
+  }
+  public static String toString(Harmony harmony) {
+    StringBuilder sb = new StringBuilder();
+    for (Harmony.HarmonyChord chord: harmony.getChords()) {
+      int rootStep = chord.getRootStep();
+      float rootAlter = chord.getRootAlter();
+      String kind = chord.getKind();
+      sb.append(upcase.toString());
+      sb.append(ENGLISH_STEPS[rootStep].toString());
+      if (rootAlter == 1) sb.append(sharp.toString());
+      else if (rootAlter == -1) sb.append(flat.toString());
+      if ("major".equals(kind))
+        sb.append("");
+      else if ("minor".equals(kind))
+        sb.append(letterM.toString());
+      else if ("augmented".equals(kind)) {
+        sb.append(flat.toString());
+        sb.append(numberSign.toString());
+        sb.append(upperNumber(5));
+      } else if ("dominant".equals(kind)) {
+        sb.append(numberSign.toString());
+        sb.append(upperNumber(7));
+      } else if ("major-seventh".equals(kind)) {
+        sb.append("maj");
+        sb.append(numberSign.toString());
+        sb.append(upperNumber(7));
+      } else if ("minor-seventh".equals(kind)) {
+        sb.append("m");
+        sb.append(numberSign.toString());
+        sb.append(upperNumber(7));
+      }
+      for (Harmony.HarmonyChord.Degree degree: chord.getAlterations()) {
+        if (degree.getAlter() == -1) sb.append(flat.toString());
+        else if (degree.getAlter() == 1) sb.append(sharp.toString());
+        sb.append(numberSign.toString());
+        sb.append(upperNumber(degree.getValue()));
+      }
+    }
+    return sb.toString();
   }
 }
