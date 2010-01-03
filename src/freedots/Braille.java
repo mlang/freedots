@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import freedots.logging.Logger;
 import freedots.music.AbstractPitch;
 import freedots.music.Accidental;
 import freedots.music.AugmentedFraction;
@@ -86,6 +87,7 @@ public enum Braille {
   lowerDigit4(256), lowerDigit5(26), lowerDigit6(235), lowerDigit7(2356),
   lowerDigit8(236), lowerDigit9(35);
 
+  private static final Logger log = Logger.getLogger(Braille.class);
   private int[] dots;
   private String cachedString;
   private boolean needsAdditionalDot3IfOneOfDot123Follows = false;
@@ -360,7 +362,7 @@ public enum Braille {
     return stringBuilder.toString();
   }
 
-  /** Convert the given {@link freedots.music.TimeSignature} to its braille
+  /** Converts the given {@link freedots.music.TimeSignature} to its braille
    *  representation.
    * @param signature is the {@link freedots.music.TimeSignature} to convert.
    * @return the Unicode braille representation.
@@ -370,6 +372,12 @@ public enum Braille {
            + upperNumber(signature.getNumerator())
            + lowerNumber(signature.getDenominator());
   }
+
+  /** Converts the given {@link freedots.musicxml.Harmony} instance to its
+   *  braille representation.
+   * @return a Unicode String with the braille music representation of the
+   * given chord symbol.
+   */
   public static String toString(Harmony harmony) {
     StringBuilder sb = new StringBuilder();
     for (Harmony.HarmonyChord chord: harmony.getChords()) {
@@ -388,15 +396,15 @@ public enum Braille {
         sb.append("maj").append(numberSign).append(upperNumber(7));
       } else if ("minor-seventh".equals(kind)) {
         sb.append("m").append(numberSign).append(upperNumber(7));
-      }
-      for (Harmony.HarmonyChord.Degree degree: chord.getAlterations()) {
+      } else log.warning("Unhandled harmony-chord kind '"+kind+"'");
+
+      for (Harmony.HarmonyChord.Degree degree: chord.getAlterations())
         sb.append(accidentalFromAlter(degree.getAlter()))
           .append(numberSign).append(upperNumber(degree.getValue()));
-      }
-      if (chord.hasBass()) {
+
+      if (chord.hasBass())
         sb.append(slash).append(ENGLISH_STEPS[chord.getBassStep()])
           .append(accidentalFromAlter(chord.getBassAlter()));
-      }
     }
     return sb.toString();
   }

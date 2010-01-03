@@ -80,6 +80,7 @@
       <fileset dir="scores">
 	<include name="bwv*.xml"/>
         <include name="lvb-*.xml"/>
+        <include name="autumn_leaves.xml"/>
       </fileset>	    
     </copy>
 

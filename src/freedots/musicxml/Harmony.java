@@ -91,9 +91,7 @@ public final class Harmony implements StaffElement {
 
   @Override public String toString() {
     StringBuilder sb = new StringBuilder();
-    for (HarmonyChord chord: chords) {
-      sb.append(chord.toString());
-    }
+    for (HarmonyChord chord: chords) sb.append(chord);
     return sb.toString();
   }
 

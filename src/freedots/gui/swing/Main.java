@@ -472,6 +472,20 @@ public final class Main
 
     libraryMenu.add(classicalMenu);
 
+    JMenu fakebookMenu = new JMenu("Fakebook");
+    fakebookMenu.setMnemonic(KeyEvent.VK_F);
+
+    JMenuItem autumnLeavesItem = new JMenuItem("Autumn Leaves", KeyEvent.VK_A);
+    autumnLeavesItem.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        Library library = new Library();
+        setScore(library.loadScore("autumn_leaves.xml"));
+      }
+    });
+    fakebookMenu.add(autumnLeavesItem);
+
+    libraryMenu.add(fakebookMenu);
+
     return libraryMenu;
   }
 

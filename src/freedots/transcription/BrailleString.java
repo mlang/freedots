@@ -45,13 +45,13 @@ class BrailleString {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append(string != null ? string : braille.toString());
+    sb.append(string != null? string: braille);
     if (braille != null && braille.needsAdditionalDot3IfOneOfDot123Follows()) {
       if (container != null) {
         BrailleString next = container.getNext(this);
         if (next != null) {
           if (next.startsWithOneOf123()) {
-            sb.append(Braille.dot.toString());
+            sb.append(Braille.dot);
           }
         }
       }
