@@ -121,7 +121,7 @@ public final class Harmony implements StaffElement {
     }
     public int getRootStep() {
       if (rootStep != null) {
-        return "CDEFGAB".indexOf(rootStep.getTextContent().trim().toUpperCase());
+        return Pitch.convertStep(rootStep.getTextContent());
       }
       log.warning("Unsupported harmony type without root-step");
       return 0;
@@ -166,7 +166,7 @@ public final class Harmony implements StaffElement {
     }
     public int getBassStep() {
       if (hasBass()) {
-        return "CDEFGAB".indexOf(bassStep.getTextContent().trim().toUpperCase());
+        return Pitch.convertStep(bassStep.getTextContent());
       }
       return 0;
     }

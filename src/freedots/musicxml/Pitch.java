@@ -41,12 +41,16 @@ public final class Pitch extends freedots.music.AbstractPitch {
     }
   }
   public int getStep() {
-    return "CDEFGAB".indexOf(step.getWholeText().trim().toUpperCase());
+    return convertStep(step.getWholeText());
   }
   public int getAlter() {
     return alter != null? Integer.parseInt(alter.getWholeText()): 0;
   }
   public int getOctave() {
     return Integer.parseInt(octave.getWholeText());
+  }
+
+  public static int convertStep(String step) {
+    return "CDEFGAB".indexOf(step.trim().toUpperCase());
   }
 }
