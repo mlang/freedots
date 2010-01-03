@@ -373,46 +373,38 @@ public enum Braille {
   public static String toString(Harmony harmony) {
     StringBuilder sb = new StringBuilder();
     for (Harmony.HarmonyChord chord: harmony.getChords()) {
-      int rootStep = chord.getRootStep();
-      float rootAlter = chord.getRootAlter();
       String kind = chord.getKind();
-      sb.append(upcase.toString());
-      sb.append(ENGLISH_STEPS[rootStep].toString());
-      if (rootAlter == 1) sb.append(sharp.toString());
-      else if (rootAlter == -1) sb.append(flat.toString());
+      sb.append(upcase).append(ENGLISH_STEPS[chord.getRootStep()])
+        .append(accidentalFromAlter(chord.getRootAlter()));
       if ("major".equals(kind))
         sb.append("");
       else if ("minor".equals(kind))
-        sb.append(letterM.toString());
+        sb.append(letterM);
       else if ("augmented".equals(kind)) {
-        sb.append(flat.toString());
-        sb.append(numberSign.toString());
-        sb.append(upperNumber(5));
+        sb.append(sharp).append(numberSign).append(upperNumber(5));
       } else if ("dominant".equals(kind)) {
-        sb.append(numberSign.toString());
-        sb.append(upperNumber(7));
+        sb.append(numberSign).append(upperNumber(7));
       } else if ("major-seventh".equals(kind)) {
-        sb.append("maj");
-        sb.append(numberSign.toString());
-        sb.append(upperNumber(7));
+        sb.append("maj").append(numberSign).append(upperNumber(7));
       } else if ("minor-seventh".equals(kind)) {
-        sb.append("m");
-        sb.append(numberSign.toString());
-        sb.append(upperNumber(7));
+        sb.append("m").append(numberSign).append(upperNumber(7));
       }
       for (Harmony.HarmonyChord.Degree degree: chord.getAlterations()) {
-        if (degree.getAlter() == -1) sb.append(flat.toString());
-        else if (degree.getAlter() == 1) sb.append(sharp.toString());
-        sb.append(numberSign.toString());
-        sb.append(upperNumber(degree.getValue()));
+        sb.append(accidentalFromAlter(degree.getAlter()))
+          .append(numberSign).append(upperNumber(degree.getValue()));
       }
       if (chord.hasBass()) {
-        sb.append(slash.toString());
-        sb.append(ENGLISH_STEPS[chord.getBassStep()].toString());
-        if (chord.getBassAlter() == -1) sb.append(flat.toString());
-        else if (chord.getBassAlter() == 1) sb.append(sharp.toString());
+        sb.append(slash).append(ENGLISH_STEPS[chord.getBassStep()])
+          .append(accidentalFromAlter(chord.getBassAlter()));
       }
     }
     return sb.toString();
+  }
+  private static String accidentalFromAlter(float alter) {
+    if (alter == -2) return doubleFlat.toString();
+    else if (alter == -1) return flat.toString();
+    else if (alter == 1) return sharp.toString();
+    else if (alter == 2) return doubleSharp.toString();
+    return "";
   }
 }
