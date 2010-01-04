@@ -77,11 +77,10 @@ public final class Score {
   }
 
   /* --- Header fields --- */
-  private Text workNumber, workTitle;
-  private Text movementNumber, movementTitle;
-  private Text composer, lyricist;
-  private Text rights;
-
+  private Element workNumber, workTitle;
+  private Element movementNumber, movementTitle;
+  private Element composer, lyricist;
+  private Element rights;
   private Element encoding;
 
   private List<Part> parts;
@@ -150,60 +149,65 @@ public final class Score {
     assert root.getTagName().equals("score-partwise");
 
     /* Parse score-header */
+    parts = new ArrayList<Part>();
     Element partList = null;
 
-    movementNumber = getTextNode(root, "movement-number");
-    movementTitle = getTextNode(root, "movement-title");
+    for (Node node = root.getFirstChild(); node != null;
+         node = node.getNextSibling()) {
+      if (node.getNodeType() == Node.ELEMENT_NODE) {
+        Element scoreElement = (Element)node;
 
-    for (Element scoreElement:getChildElements(root)) {
-      if (scoreElement.getNodeName().equals("work")) {
-        workNumber = getTextNode(scoreElement, "work-number");
-        workTitle = getTextNode(scoreElement, "work-title");
-      } else if (scoreElement.getNodeName().equals("identification")) {
-        for (Element identificationElement:getChildElements(scoreElement)) {
-          if (identificationElement.getNodeName().equals("creator")) {
-            Element creator = identificationElement;
-            NodeList creatorNodes = creator.getChildNodes();
-            Text textNode = null;
-            for (int i = 0; i < creatorNodes.getLength(); i++) {
-              Node creatorNode = creatorNodes.item(i);
-              if (creatorNode.getNodeType() == Node.TEXT_NODE) {
-                textNode = (Text)creatorNode;
+        if ("work".equals(scoreElement.getTagName())) {
+          for (Node workNode = scoreElement.getFirstChild(); workNode != null;
+               workNode = workNode.getNextSibling()) {
+            if (workNode.getNodeType() == Node.ELEMENT_NODE) {
+              Element workElement = (Element)workNode;
+              if ("work-number".equals(workElement.getTagName())) {
+                workNumber = workElement;
+              } else if ("work-title".equals(workElement.getTagName())) {
+                workTitle = workElement;
               }
             }
-            if (creator.getAttribute("type").equals("composer")) {
-              composer = textNode;
-            } else if (creator.getAttribute("type").equals("lyricist")) {
-              lyricist = textNode;
-            }
-          } else if (identificationElement.getNodeName().equals("encoding")) { 
-            encoding = identificationElement;
           }
+        } else if ("identification".equals(scoreElement.getTagName())) {
+          for (Node subNode = scoreElement.getFirstChild(); subNode != null;
+               subNode = subNode.getNextSibling()) {
+            if (subNode.getNodeType() == Node.ELEMENT_NODE) {
+              Element identificationElement = (Element)subNode;
+              if ("creator".equals(identificationElement.getTagName())) {
+                Element creator = identificationElement;
+                if (creator.getAttribute("type").equals("composer")) {
+                  composer = creator;
+                } else if (creator.getAttribute("type").equals("lyricist")) {
+                  lyricist = creator;
+                }
+              } else if ("encoding".equals(identificationElement.getTagName())) { 
+                encoding = identificationElement;
+              }
+            }
+          }
+        } else if ("part-list".equals(scoreElement.getTagName())) {
+          partList = scoreElement;
+        } else if ("part".equals(scoreElement.getTagName())) {
+          Element part = scoreElement;
+          String idValue = part.getAttribute("id");
+          Element scorePart = null;
+          for (Node partlistNode = partList.getFirstChild(); partlistNode != null;
+               partlistNode = partlistNode.getNextSibling()) {
+            if (partlistNode.getNodeType() == Node.ELEMENT_NODE
+             && "score-part".equals(partlistNode.getNodeName())) {
+              Element sp = (Element)partlistNode;
+              if (idValue.equals(sp.getAttribute("id"))) {
+                scorePart = sp;
+              }
+            }
+          }
+          if (scorePart != null)
+            parts.add(new Part(part, scorePart, this));
+          else
+            throw new RuntimeException("No <score-part> for part " + idValue);
         }
-      } else if (scoreElement.getNodeName().equals("part-list"))
-        partList = scoreElement;
-    }
-
-
-    /* Parse (partwise) part elements */
-    parts = new ArrayList<Part>();
-
-    NodeList nodes = root.getElementsByTagName("part");
-    List<Element> partListElements = getChildElements(partList);
-    for (int i = 0; i < nodes.getLength(); i++) {
-      Element part = (Element) nodes.item(i);
-      String idValue = part.getAttribute("id");
-      Element scorePart = null;
-      for (Element partListElement : partListElements) {
-        if (partListElement.getNodeName().equals("score-part") &&
-            idValue.equals(partListElement.getAttribute("id")))
-          scorePart = partListElement;
       }
-      if (scorePart != null)
-        parts.add(new Part(part, scorePart, this));
-      else
-        throw new RuntimeException("Unable to find <score-part> for part "
-                                   + idValue);
     }
   }
 
@@ -238,33 +242,33 @@ public final class Score {
    *         specified.
    */
   public String getWorkNumber() {
-    return workNumber != null ? workNumber.getWholeText() : null;
+    return workNumber != null ? workNumber.getTextContent() : null;
   }
   /** Gets the content of the work-title element.
    * @return the title of this work or {@code null} if it was not specified.
    */
   public String getWorkTitle() {
-    return workTitle != null ? workTitle.getWholeText() : null;
+    return workTitle != null ? workTitle.getTextContent() : null;
   }
   /** Get the content of the movement-number element.
    */
   public String getMovementNumber() {
-    return movementNumber != null ? movementNumber.getWholeText() : null;
+    return movementNumber != null ? movementNumber.getTextContent() : null;
   }
   /** Get the content of the movement-title element.
    */
   public String getMovementTitle() {
-    return movementTitle != null ? movementTitle.getWholeText() : null;
+    return movementTitle != null ? movementTitle.getTextContent() : null;
   }
   /** Get the composer (if set) of this score.
    */
   public String getComposer() {
-    return composer != null ? composer.getWholeText() : null;
+    return composer != null ? composer.getTextContent() : null;
   }
   /** Get the lyricist (if set) of this score.
    */
   public String getLyricist() {
-    return lyricist != null ? lyricist.getWholeText() : null;
+    return lyricist != null ? lyricist.getTextContent() : null;
   }
 
   private InputSource getInputSourceFromZipInputStream(
@@ -365,16 +369,5 @@ public final class Score {
       }
     }
     return null;
-  }
-  static List<Element> getChildElements(Element root) {
-    final NodeList children = root.getChildNodes();
-    final int childCount = children.getLength();
-    List<Element> elements = new ArrayList<Element>(childCount);
-    for (int i = 0; i < childCount; i++) {
-      Node node = children.item(i);
-      if (node.getNodeType() == Node.ELEMENT_NODE)
-        elements.add((Element)node);
-    }
-    return elements;
   }
 }
