@@ -390,14 +390,20 @@ public enum Braille {
         sb.append(letterM);
       else if ("augmented".equals(kind)) {
         sb.append(sharp).append(numberSign).append(upperNumber(5));
+      } else if ("diminished".equals(kind)) {
+        sb.append("dim");
       } else if ("dominant".equals(kind)) {
         sb.append(numberSign).append(upperNumber(7));
+      } else if ("major-sixth".equals(kind)) {
+        sb.append(numberSign).append(upperNumber(6));
       } else if ("major-seventh".equals(kind)) {
         sb.append("maj").append(numberSign).append(upperNumber(7));
       } else if ("minor-seventh".equals(kind)) {
         sb.append("m").append(numberSign).append(upperNumber(7));
       } else if ("diminished-seventh".equals(kind)) {
         sb.append("dim").append(numberSign).append(upperNumber(7));
+      } else if ("dominant-ninth".equals(kind)) {
+        sb.append(numberSign).append(upperNumber(9));
       } else log.warning("Unhandled harmony-chord kind '"+kind+"'");
 
       for (Harmony.HarmonyChord.Degree degree: chord.getAlterations())
