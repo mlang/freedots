@@ -396,6 +396,8 @@ public enum Braille {
         sb.append("maj").append(numberSign).append(upperNumber(7));
       } else if ("minor-seventh".equals(kind)) {
         sb.append("m").append(numberSign).append(upperNumber(7));
+      } else if ("diminished-seventh".equals(kind)) {
+        sb.append("dim").append(numberSign).append(upperNumber(7));
       } else log.warning("Unhandled harmony-chord kind '"+kind+"'");
 
       for (Harmony.HarmonyChord.Degree degree: chord.getAlterations())
