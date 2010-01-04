@@ -116,9 +116,8 @@ public final class Score {
     parse(inputStream, extension);
   }
 
-  private void parse(
-    InputStream inputStream, String extension
-  ) throws ParserConfigurationException, IOException, SAXException,
+  private void parse (InputStream inputStream, String extension)
+    throws ParserConfigurationException, IOException, SAXException,
            XPathExpressionException {
     if ("mxl".equalsIgnoreCase(extension)) {
       String zipEntryName = null;
@@ -148,7 +147,6 @@ public final class Score {
 
     assert root.getTagName().equals("score-partwise");
 
-    /* Parse score-header */
     parts = new ArrayList<Part>();
     Element partList = null;
 
@@ -169,6 +167,10 @@ public final class Score {
               }
             }
           }
+        } else if ("movement-title".equals(scoreElement.getTagName())) {
+          movementTitle = scoreElement;
+        } else if ("movement-number".equals(scoreElement.getTagName())) {
+          movementNumber = scoreElement;
         } else if ("identification".equals(scoreElement.getTagName())) {
           for (Node subNode = scoreElement.getFirstChild(); subNode != null;
                subNode = subNode.getNextSibling()) {
@@ -323,7 +325,7 @@ public final class Score {
             node.getNodeName().equals("supports")) {
           Element supports = (Element)node;
           if (supports.getAttribute("element").equals(elementName)) {
-            return supports.getAttribute("type").equals("yes");
+            return supports.getAttribute("type").equals(YES);
           }
         }
       }

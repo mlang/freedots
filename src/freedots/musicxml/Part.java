@@ -268,8 +268,8 @@ public final class Part {
           currentChord = null;
         }
         TimeSignature activeTimeSignature = lastTimeSignature != null ? lastTimeSignature : timeSignature;
-        if (xmlMeasure.getAttribute("implicit").equalsIgnoreCase("yes") &&
-            measureDuration.compareTo(timeSignature) < 0) {
+        if (xmlMeasure.getAttribute("implicit").equalsIgnoreCase(Score.YES)
+         && measureDuration.compareTo(timeSignature) < 0) {
           measureOffset = measureOffset.add(measureDuration);
         } else {
           if (measureDuration.compareTo(activeTimeSignature) != 0) {

@@ -164,7 +164,6 @@ public final class Main {
           gui.run();
         }
       } catch (HeadlessException e) {
-        System.err.println("Graphical display not available");
         options.setWindowSystem(false);
       } catch (ClassNotFoundException exception) {
         System.err.println("Requested GUI class "
