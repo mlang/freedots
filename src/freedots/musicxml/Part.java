@@ -388,6 +388,22 @@ public final class Part {
     return null;
   }
 
+  public List<String> getDirectives() {
+    List<String> directives = new ArrayList<String>();
+    for (Event event: eventList) {
+      if (event instanceof Direction) {
+        Direction direction = (Direction)event;
+        if (direction.isDirective()) {
+          String directive = direction.getWords();
+          if (directive != null && !directive.isEmpty()) {
+            directives.add(directive);
+          }
+        }
+      }
+    }
+    return directives;
+  }
+
   private static boolean noteStartsChord(Node note) {
     Node node = note;
     while ((node = node.getNextSibling()) != null) {

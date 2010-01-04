@@ -26,6 +26,7 @@ import freedots.music.Event;
 import freedots.music.Fraction;
 
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 public final class Direction implements Event {
@@ -37,6 +38,28 @@ public final class Direction implements Event {
     this.offset = offset;
   }
 
+  public boolean isDirective () {
+    return Score.YES.equalsIgnoreCase(xml.getAttribute("directive"));
+  }
+  public String getWords () {
+    for (Node node = xml.getFirstChild(); node != null;
+         node = node.getNextSibling()) {
+      if (node.getNodeType() == Node.ELEMENT_NODE
+       && "direction-type".equals(node.getNodeName())) {
+        Element directionType = (Element)node;
+        for (Node directionTypeNode = directionType.getFirstChild();
+             directionTypeNode != null;
+             directionTypeNode = directionTypeNode.getNextSibling()) {
+          if (directionTypeNode.getNodeType() == Node.ELEMENT_NODE
+           && "words".equals(directionTypeNode.getNodeName())) {
+            Element words = (Element)directionTypeNode;
+            return words.getTextContent();
+          }
+        }
+      }
+    }
+    return null;
+  }
   public Sound getSound() {
     NodeList nodeList = xml.getElementsByTagName("sound");
     if (nodeList.getLength() > 0) {
