@@ -142,5 +142,21 @@ public class TestAugmentedFraction extends junit.framework.TestCase {
     f = new Fraction(99,8);
     l = f.decompose();
     assertEquals("aflist", l.size(), 13);
+
+    f = new Fraction(2, 4);
+    l = f.decompose();
+    assertEquals("aflist", l.size(), 1);
+
+    for (int n = 1; n <= 128; n++)
+      for (int  d = 1; d <= 32; d = d<<1) {
+        f = new Fraction(n, d);
+        l = f.decompose();
+        assertEquals(f.toString()+" = "+l.toString(), f, sum(f.decompose()));
+      }
+  }
+  private Fraction sum(List<AugmentedFraction> list) {
+    Fraction result = Fraction.ZERO;
+    for (AugmentedFraction af: list) result = result.add(af);
+    return result;
   }
 }

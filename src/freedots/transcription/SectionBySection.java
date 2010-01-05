@@ -201,35 +201,86 @@ class SectionBySection implements Strategy {
 
   private void transcribeHarmony(Staff staff) {
     transcriber.printString(Braille.harmonyPart);
-    List<Harmony> measure = new ArrayList<Harmony>();
+    MeasureOfHarmonies measure = new MeasureOfHarmonies();
     for (Event event: staff) {
       if (event instanceof Harmony) {
-        measure.add((Harmony)event);
+        measure.add(new HarmonyInfo((Harmony)event));
       } else if (event instanceof EndBar) {
-        Iterator<Harmony> iterator = measure.iterator();
-        Harmony last = null;
-        while (iterator.hasNext()) {
-          Harmony current = iterator.next();
-          if (last != null) {
-            Fraction duration = current.getOffset().subtract(last.getOffset());
-            transcriber.printString(Braille.toString(duration.decompose()));
+        if (measure.size() > 0) {
+          measure.calculateDurations(((EndBar)event).getOffset());
+          boolean includeStems = !measure.isEvenRhythm();
+          Iterator<HarmonyInfo> iterator = measure.iterator();
+          boolean first = true;
+          while (iterator.hasNext()) {
+            HarmonyInfo current = iterator.next();
+            String chord = Braille.toString(current.getHarmony());
+            if (includeStems && iterator.hasNext())
+              chord += Braille.toString(current.getDuration().decompose());
+
+            if (chord.length() <= transcriber.getRemainingColumns())
+              transcriber.printString(chord);
+            else {
+              if (!first) transcriber.printString(Braille.hyphen);
+              transcriber.newLine();
+              transcriber.printString(chord);
+            }
+            first = false;
           }
-          String chord = Braille.toString(current);
-          if (chord.length() <= transcriber.getRemainingColumns())
-            transcriber.printString(chord);
-          else {
-            transcriber.printString(Braille.hyphen);
-            transcriber.newLine();
-            transcriber.printString(chord);
-          }
-          last = current;
         }
         measure.clear();
         transcriber.printString(" ");
       }
     }
   }
+  /** A simple container for storing calculated duration.
+   */
+  private class HarmonyInfo {
+    private Harmony harmony;
+    HarmonyInfo(Harmony harmony) { this.harmony = harmony; }
+    Harmony getHarmony() { return harmony; }
+    Fraction getOffset() { return harmony.getOffset(); }
 
+    private Fraction duration = null;
+    void setDuration(Fraction duration) { this.duration = duration; }
+    Fraction getDuration() { return duration; }
+  }
+  private class MeasureOfHarmonies extends ArrayList<HarmonyInfo> {
+    /** Calculates the durations of the various Harmony elements contained
+     *  in thsi measure.
+     * This should probably be done in the core MusicXML library instead.
+     */
+    void calculateDurations (Fraction measureEnd) {
+      if (size() > 0) {
+        Iterator<HarmonyInfo> iterator = iterator();
+        HarmonyInfo last = iterator.next();
+        while (iterator.hasNext()) {
+          HarmonyInfo current = iterator.next();
+          last.setDuration(current.getOffset().subtract(last.getOffset()));
+          last = current;
+        }
+        last.setDuration(measureEnd.subtract(last.getOffset()));
+      }
+    }  
+    /** Determines if all harmonies are of the same duration.
+     * @return false if any duration differs from any other.
+     */
+    boolean isEvenRhythm() {
+      Iterator<HarmonyInfo> iterator = iterator();
+      if (iterator.hasNext()) {
+        HarmonyInfo last = iterator.next();
+        while (iterator.hasNext()) {
+          HarmonyInfo current = iterator.next();
+          if (!last.getDuration().equals(current.getDuration())) return false;
+          last = current;
+        }
+      }
+      return true;
+    }
+  }
+
+  /** A container class for keeping sections of music apart.
+   * This should probably be moved into package {@link freedots.music}.
+   */
   private class Section extends MusicList {
     private Part part;
     Section(final Part part) {

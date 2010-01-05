@@ -94,7 +94,7 @@
 			</attributes>
 			<direction placement='above' directive='yes'>
 				<direction-type>
-					<words font-weight='bold'>SLOWLY, WITH A LIFT</words>
+					<words font-weight='bold'>Slowly, with a lift</words>
 				</direction-type>
 			</direction>
 			<harmony print-frame='no' default-y='25' relative-x='8'>

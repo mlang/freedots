@@ -378,6 +378,13 @@ public enum Braille {
            + upperNumber(signature.getNumerator())
            + lowerNumber(signature.getDenominator());
   }
+
+  /** Formats a list of augmented musical fractions using stem and slur signs.
+   * This method is typically used together with
+   * {@link freedots.music.Fraction#decompose} for annotating chord symbols
+   * with their duration.
+   * @see #toString(Harmony)
+   */
   public static String toString(List<AugmentedFraction> afList) {
     StringBuilder sb = new StringBuilder();
     Iterator<AugmentedFraction> iterator = afList.iterator();
@@ -399,6 +406,7 @@ public enum Braille {
     }
     return sb.toString();
   }
+
   /** Converts the given {@link freedots.musicxml.Harmony} instance to its
    *  braille representation.
    * @return a Unicode String with the braille music representation of the
