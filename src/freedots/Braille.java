@@ -25,6 +25,7 @@ package freedots;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import freedots.logging.Logger;
@@ -377,7 +378,27 @@ public enum Braille {
            + upperNumber(signature.getNumerator())
            + lowerNumber(signature.getDenominator());
   }
-
+  public static String toString(List<AugmentedFraction> afList) {
+    StringBuilder sb = new StringBuilder();
+    Iterator<AugmentedFraction> iterator = afList.iterator();
+    while (iterator.hasNext()) {
+      AugmentedFraction af = iterator.next();
+      if (af.getNumerator() == 1) {
+        if (af.getDenominator() == 1) sb.append(wholeStem);
+        else if (af.getDenominator() == 2) sb.append(halfStem);
+        else if (af.getDenominator() == 4) sb.append(quarterStem);
+        else if (af.getDenominator() == 8) sb.append(eighthStem);
+        else if (af.getDenominator() == 16) sb.append(sixteenthStem);
+        else if (af.getDenominator() == 32) sb.append(thirtysecondthStem);
+        else log.warning("Unmapped denominator: "+af.getDenominator());
+      } else log.warning("Unmapped numerator: "+af.getNumerator());
+      if (af.getDots() > 0) {
+        for (int i = 0; i < af.getDots(); i++) sb.append(dot);
+      }
+      if (iterator.hasNext()) sb.append(slur);
+    }
+    return sb.toString();
+  }
   /** Converts the given {@link freedots.musicxml.Harmony} instance to its
    *  braille representation.
    * @return a Unicode String with the braille music representation of the

@@ -1,4 +1,7 @@
 /* -*- c-basic-offset: 2; -*- */
+
+import java.util.List;
+
 import freedots.music.AugmentedFraction;
 import freedots.music.Fraction;
 
@@ -126,5 +129,18 @@ public class TestAugmentedFraction extends junit.framework.TestCase {
     AugmentedFraction af1 = new AugmentedFraction(1, 8, 0, 3, 2);
     AugmentedFraction af2 = new AugmentedFraction(1, 8, 0, 3, 2);
     assertTrue("1/8 (3 in 2) == 1/8 (3 in 2)", af1.equals(af2));
+    af1 = new AugmentedFraction(1, 8, 0);
+    af2 = new AugmentedFraction(1, 8, 1);
+    assertFalse("1/8 != 1/8.", af1.equals(af2));
+  }
+  public void testList() {
+    Fraction f = new Fraction(19,16);
+    List<AugmentedFraction> l = f.decompose();
+    assertEquals("aflist", l.size(), 2);
+    assertTrue("1/8.", l.get(0).equals(new AugmentedFraction(1, 8, 1)));
+    assertTrue("1/1", l.get(1).equals(new AugmentedFraction(1, 1, 0)));
+    f = new Fraction(99,8);
+    l = f.decompose();
+    assertEquals("aflist", l.size(), 13);
   }
 }

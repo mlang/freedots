@@ -22,6 +22,10 @@
  */
 package freedots.music;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * Represents a fractional value.
  * <p>
@@ -112,5 +116,37 @@ public class Fraction implements Comparable<Fraction> {
   }
   static int calcGcd(int larger, int smaller) {
     return smaller == 0? larger: calcGcd(smaller, larger%smaller);
+  }
+
+  /** Converts an arbitrary fractional value to a list of fractions with
+   *  augmentation dots.
+   * @return a {@link java.util.List} of
+   *         {@link freedots.music.AugmentedFraction} instances
+   */
+  public List<AugmentedFraction> decompose() {
+    List<AugmentedFraction> list = new ArrayList<AugmentedFraction>();
+    Fraction f = new Fraction(getNumerator(), getDenominator());
+    f.simplify();
+    while (f.getNumerator() > 0) {
+      f.simplify();
+      int x = f.getNumerator();
+      int y = f.getDenominator();
+      if (y == 1) {
+        for (int i = 0; i < x; i++) list.add(new AugmentedFraction(1, 1, 0));
+        return list;
+      }
+      int n = firstZeroBit(x);
+      /* x is always odd, so n is always at least 1 */
+      AugmentedFraction af = new AugmentedFraction(1<<(n-1), y, n-1);
+      list.add(af);
+      f = f.subtract(new Fraction((1<<n)-1,y));
+    }
+    Collections.reverse(list);
+    return list;
+  }
+  private static int firstZeroBit(int i) {
+    int bit = 0;
+    while ((i & 1<<bit) == 1<<bit) bit++;
+    return bit;
   }
 }

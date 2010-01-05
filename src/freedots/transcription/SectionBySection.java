@@ -23,6 +23,7 @@
 package freedots.transcription;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import freedots.Braille;
@@ -46,12 +47,14 @@ import freedots.musicxml.Score;
 class SectionBySection implements Strategy {
   private Options options = null;
   private Score score = null;
+  private Transcriber transcriber = null;
 
   /** Main entry point to invoke implemented transcription Strategy.
    *
    * @param transcriber is the Transcriber object to use
    */
   public void transcribe(final Transcriber transcriber) {
+    this.transcriber = transcriber;
     options = transcriber.getOptions();
     score = transcriber.getScore();
 
@@ -61,7 +64,7 @@ class SectionBySection implements Strategy {
       List<String> directives = part.getDirectives();
       String directive = "";
       if (directives.size() == 1) {
-        directive = directives.get(0);
+        directive = directives.get(0).trim() + " ";
       }
       transcriber.printLine(directive
                             + part.getKeySignature().toBraille()
@@ -153,21 +156,7 @@ class SectionBySection implements Strategy {
 
           if (staff.containsHarmony()) {
             if (transcriber.getCurrentColumn() > 0) transcriber.newLine();
-            transcriber.printString(Braille.harmonyPart);
-            for (Event event: staff) {
-              if (event instanceof Harmony) {
-                Harmony harmony = (Harmony)event;
-                String chord = Braille.toString(harmony);
-                if (chord.length() <= transcriber.getRemainingColumns())
-                  transcriber.printString(Braille.toString(harmony));
-                else {
-                  transcriber.newLine();
-                  transcriber.printString(Braille.toString(harmony));
-                }
-              } else if (event instanceof EndBar) {
-                transcriber.printString(" ");
-              }
-            }
+            transcribeHarmony(staff);
           }
 
           String lyricText = staff.getLyricText();
@@ -207,6 +196,37 @@ class SectionBySection implements Strategy {
       }
       if (transcriber.getCurrentColumn() > 0) transcriber.newLine();
       transcriber.newLine();
+    }
+  }
+
+  private void transcribeHarmony(Staff staff) {
+    transcriber.printString(Braille.harmonyPart);
+    List<Harmony> measure = new ArrayList<Harmony>();
+    for (Event event: staff) {
+      if (event instanceof Harmony) {
+        measure.add((Harmony)event);
+      } else if (event instanceof EndBar) {
+        Iterator<Harmony> iterator = measure.iterator();
+        Harmony last = null;
+        while (iterator.hasNext()) {
+          Harmony current = iterator.next();
+          if (last != null) {
+            Fraction duration = current.getOffset().subtract(last.getOffset());
+            transcriber.printString(Braille.toString(duration.decompose()));
+          }
+          String chord = Braille.toString(current);
+          if (chord.length() <= transcriber.getRemainingColumns())
+            transcriber.printString(chord);
+          else {
+            transcriber.printString(Braille.hyphen);
+            transcriber.newLine();
+            transcriber.printString(chord);
+          }
+          last = current;
+        }
+        measure.clear();
+        transcriber.printString(" ");
+      }
     }
   }
 
