@@ -210,7 +210,7 @@ public final class Part {
               Direction direction = new Direction(musicdata, measureOffset.add(offset));
               eventList.add(direction);
             } else if ("harmony".equals(tagName)) {
-              Harmony harmony = new Harmony(musicdata, measureOffset.add(offset));
+              Harmony harmony = new Harmony(musicdata, durationMultiplier, divisions, measureOffset.add(offset));
               eventList.add(harmony);
             } else if ("backup".equals(tagName)) { 
               if (currentChord != null) {

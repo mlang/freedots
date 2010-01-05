@@ -39,12 +39,16 @@ public final class Harmony implements StaffElement {
 
   private Element element;
   private Fraction initialDate;
+  private int durationMultiplier, divisions;
 
   private List<HarmonyChord> chords = new ArrayList<HarmonyChord>();
-  private Element staffNumber = null;
+  private Element offset = null, staffNumber = null;
 
-  public Harmony(final Element element, final Fraction offset) {
+  public Harmony(final Element element, int durationMultiplier, int divisions,
+                 final Fraction offset) {
     this.element = element;
+    this.durationMultiplier = durationMultiplier;
+    this.divisions = divisions;
     this.initialDate = offset;
 
     HarmonyChord currentChord = null;
@@ -67,6 +71,8 @@ public final class Harmony implements StaffElement {
         } else if ("degree".equals(child.getTagName())) {
           if (currentChord != null)
             currentChord.addDegree(child);
+        } else if ("offset".equals(child.getTagName())) {
+          this.offset = child;
         } else if ("staff".equals(child.getTagName())) {
           staffNumber = child;
         }
@@ -75,7 +81,20 @@ public final class Harmony implements StaffElement {
   }
   public List<HarmonyChord> getChords() { return chords; }
 
-  public Fraction getOffset() { return initialDate; }
+  /** Calculates the musical position of this object.
+   * Harmony elements do have an optional offset element to modify the
+   * initial musical position further.
+   * This method takes that into account.
+   * @return the musical position as a fractional value.
+   */
+  public Fraction getOffset() {
+    if (offset != null) {
+      int value = Integer.parseInt(offset.getTextContent());
+      return initialDate.add(new Fraction(value * durationMultiplier,
+                                          4 * divisions));
+    }
+    return initialDate;
+  }
   public boolean equalsIgnoreOffset(Event object) {
     return false;
   }
