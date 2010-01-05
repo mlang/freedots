@@ -484,6 +484,15 @@ public final class Main
     });
     fakebookMenu.add(autumnLeavesItem);
 
+    JMenuItem blueAndSentimentalItem = new JMenuItem("Blue and sentimental", KeyEvent.VK_B);
+    blueAndSentimentalItem.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        Library library = new Library();
+        setScore(library.loadScore("blue_and_sentimental.xml"));
+      }
+    });
+    fakebookMenu.add(blueAndSentimentalItem);
+
     libraryMenu.add(fakebookMenu);
 
     return libraryMenu;
