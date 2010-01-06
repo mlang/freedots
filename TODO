@@ -323,11 +323,9 @@ of 2 seems sensible at first thought.)
 MusicXML supports parts with lyric text.  A very good
 repository for such files is at http://www.wikifonia.org/
 
-Currently, lyrics are printed, but the alignment and line-breaking
-is not implemented correctly.  Additionally, chord symbols are currently
-totally ignored.  They should be parsed from MusicXML and
-appropriately transcribed to Braille.
-
+Currently only section by section format prints lyrics *and* chord symbols.
+Bar over Bar format needs additional work to print chord symbols,
+and allow for fancy alignment.
 
 *** TODO Implement bindings for liblouis for contracting lyrics
 
