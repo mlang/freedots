@@ -57,7 +57,7 @@ public class KeySignature {
     else return Braille.sharp.repeat(type);
   }
 
-  public boolean equals(Object object) {
+  @Override public boolean equals(Object object) {
     if (object instanceof KeySignature) {
       KeySignature other = (KeySignature)object;
       if (this.type == other.type) return true;

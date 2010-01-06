@@ -34,6 +34,7 @@ import freedots.music.Event;
 import freedots.music.Fraction;
 import freedots.music.GlobalKeyChange;
 import freedots.music.KeyChange;
+import freedots.music.KeySignature;
 import freedots.music.Lyric;
 import freedots.music.MusicList;
 import freedots.music.Staff;
@@ -94,6 +95,7 @@ class SectionBySection implements Strategy {
           }
 
           StartBar startBar = null;
+          KeySignature currentSignature = part.getKeySignature();
 
           for (int staffElementIndex = 0; staffElementIndex < staff.size();
                staffElementIndex++) {
@@ -102,6 +104,12 @@ class SectionBySection implements Strategy {
             if (event instanceof StartBar) {
               startBar = (StartBar)event;
               measure.setTimeSignature(startBar.getTimeSignature());
+            } else if (event instanceof GlobalKeyChange) {
+              GlobalKeyChange gkc = (GlobalKeyChange)event;
+              if (!gkc.getKeySignature().equals(currentSignature)) {
+                currentSignature = gkc.getKeySignature();
+                transcriber.printString(currentSignature.toBraille());
+              }
             } else if (event instanceof EndBar) {
               EndBar rightBar = (EndBar)event;
               int charactersLeft = transcriber.getRemainingColumns();
