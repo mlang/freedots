@@ -59,7 +59,7 @@ public abstract class AbstractPitch implements Comparable<AbstractPitch> {
     }
     return false;
   }
-  public Braille getOctaveSign(AbstractPitch lastPitch) {
+  public final Braille getOctaveSign(AbstractPitch lastPitch) {
     if (lastPitch != null) {
       int halfSteps = Math.abs(getMIDIPitch() - lastPitch.getMIDIPitch());
 
@@ -71,8 +71,8 @@ public abstract class AbstractPitch implements Comparable<AbstractPitch> {
     return Braille.octave(getOctave());
   }
   public final int diatonicDifference(AbstractPitch other) {
-    return ((this.getOctave()*STEPS) + this.getStep()) -
-           ((other.getOctave()*STEPS) + other.getStep());
+    return ((this.getOctave()*STEPS) + this.getStep())
+           - ((other.getOctave()*STEPS) + other.getStep());
   }
   public int compareTo(AbstractPitch other) {
     int diatonicDifference = diatonicDifference(other);
@@ -102,7 +102,11 @@ public abstract class AbstractPitch implements Comparable<AbstractPitch> {
     int octave = getOctave();
     int step = getStep();
     double alter = 0;
-    if (step > 0) { step -= 1; } else { octave -= 1; step = STEPS-1; };
+    if (step > 0) step -= 1;
+    else {
+      octave -= 1;
+      step = STEPS-1;
+    }
     alter = accidentalContext.getAlter(octave, step);
     return new TemporaryPitch(octave, step, (int)alter);
   }

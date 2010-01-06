@@ -246,7 +246,7 @@ class SectionBySection implements Strategy {
   }
   private class MeasureOfHarmonies extends ArrayList<HarmonyInfo> {
     /** Calculates the durations of the various Harmony elements contained
-     *  in thsi measure.
+     *  in this measure.
      * This should probably be done in the core MusicXML library instead.
      */
     void calculateDurations (Fraction measureEnd) {

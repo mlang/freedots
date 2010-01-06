@@ -65,7 +65,7 @@ public final class Transcriber {
 
   /** Find Object responsible for character at specified index.
    *
-   * @param characterIndex indicates the position relative to toString()
+   * @param characterIndex indicates the position relative to {@link #toString}
    *
    * @return the object responsible for the character at index, or {@code null}
    *         if none was found / specified.

@@ -108,7 +108,7 @@ public class AugmentedFraction extends Fraction {
   }
 
   @Override
-  public float toFloat() {
+  public final float toFloat() {
     final float undottedValue = super.toFloat();
     float rest = undottedValue;
     for (int dot = 0; dot < dots; dot++) rest /= 2.;
@@ -117,7 +117,7 @@ public class AugmentedFraction extends Fraction {
   }
 
   @Override
-  public String toString() {
+  public final String toString() {
     String result = super.toString();
     for (int i = 0; i < dots; i++) result += ".";
     return result;
@@ -140,9 +140,9 @@ public class AugmentedFraction extends Fraction {
   public static final int SIXTEENTH = 6;
 
   private boolean denominatorIsPowerOfTwo() {
-    if (denominator == 2 || denominator == 4 || denominator == 8 ||
-        denominator == 16 || denominator == 32 || denominator == 64 ||
-        denominator == 128 || denominator == 256)
+    if (denominator == 2 || denominator == 4 || denominator == 8
+     || denominator == 16 || denominator == 32 || denominator == 64
+     || denominator == 128 || denominator == 256)
       return true;
     return false;
   }

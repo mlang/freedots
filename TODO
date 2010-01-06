@@ -439,7 +439,7 @@ to transcription.  Currently that means all Options that can
 be set from the command-line.  For instance, there is currently no way
 to change the page width and height from within the GUI.
 
-Also, as we implement the various todo items in thsi file,
+Also, as we implement the various todo items in this file,
 more and more preferences should be added.
 
 ** TODO Editing of fingering

@@ -52,9 +52,9 @@ public final class ClefChange implements StaffElement {
       Clef initialClef = staff.getClef();
       if (initialClef.isBass())
         if (clef.isTreble()) {
-          return "" + Braille.unicodeBraille(Braille.dotsToBits(345)) +
-                 Braille.unicodeBraille(Braille.dotsToBits(34)) +
-                 Braille.unicodeBraille(Braille.dotsToBits(13));
+          return String.valueOf(Braille.unicodeBraille(Braille.dotsToBits(345)))
+                 + Braille.unicodeBraille(Braille.dotsToBits(34))
+                 + Braille.unicodeBraille(Braille.dotsToBits(13));
         }
       else if (initialClef.isTreble())
         if (clef.isBass()) {

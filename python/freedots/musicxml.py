@@ -198,7 +198,7 @@ class Score(object):
         """Composer.""")
 
     def __iter__(self):
-        """Iterate over all parts contained in thsi score."""
+        """Iterate over all parts contained in this score."""
         for node in self.partwise.findall("part"):
             yield Part(self, node)
 

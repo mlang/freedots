@@ -26,7 +26,6 @@ import java.util.Map;
 
 /** A container for keeping track of the current value of a certain quantity
  *  which changes over time.
- * @param E is the type of the value which is supposed to be stored.
  */
 @SuppressWarnings("serial")
 public class Timeline<E> extends java.util.TreeMap<Fraction, E> {

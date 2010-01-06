@@ -46,8 +46,8 @@ public class Fraction implements Comparable<Fraction> {
     // values of numerator and denominator
   }
 
-  public int getNumerator() { return numerator; }
-  public int getDenominator() { return denominator; }
+  public final int getNumerator() { return numerator; }
+  public final int getDenominator() { return denominator; }
 
   public float toFloat() { return (float)numerator / denominator; }
 
@@ -70,8 +70,8 @@ public class Fraction implements Comparable<Fraction> {
 
   @Override
   public String toString() {
-    return denominator == 1? Integer.toString(numerator):
-                             Integer.toString(numerator) + "/" + Integer.toString(denominator);
+    return denominator == 1? Integer.toString(numerator)
+           : Integer.toString(numerator) + "/" + Integer.toString(denominator);
   }
 
   public Fraction negate() {
