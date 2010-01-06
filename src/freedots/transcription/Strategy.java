@@ -22,6 +22,15 @@
  */
 package freedots.transcription;
 
+/** Braille music can be transcribed in various different basic formats.
+ * This interface is used to identify classes which implement a specific
+ * braille music format.
+ */
 interface Strategy {
+  /** During transcription this method is called once (after title
+   *  information has been transcribed first) to kick off the transcription
+   *  of the specified score.
+   * @see Transcriber#getScore
+   */
   void transcribe(Transcriber transcriber);
 }
