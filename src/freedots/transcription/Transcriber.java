@@ -191,6 +191,9 @@ public final class Transcriber {
     strings.add(new BrailleString(text));
     newLine();
   }
+  void spaceOrNewLine() {
+    if (getRemainingColumns() > 1) printString(" "); else newLine();
+  }
   void newLine() {
     strings.add(new BrailleString(LINE_SEPARATOR));
     characterCount = 0;

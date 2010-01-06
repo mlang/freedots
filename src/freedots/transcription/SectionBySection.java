@@ -109,9 +109,7 @@ class SectionBySection implements Strategy {
               if (!kc.getKeySignature().equals(currentSignature)) {
                 currentSignature = kc.getKeySignature();
                 transcriber.printString(currentSignature.toBraille());
-                if (transcriber.getRemainingColumns() > 1)
-                  transcriber.printString(" ");
-                else transcriber.newLine();
+                transcriber.spaceOrNewLine();
               }
             } else if (event instanceof EndBar) {
               EndBar rightBar = (EndBar)event;
@@ -156,7 +154,7 @@ class SectionBySection implements Strategy {
               else if (rightBar.getEndOfMusic())
                 transcriber.printString(Braille.doubleBar.toString());
 
-              if (!rightBar.getEndOfMusic()) transcriber.printString(" ");
+              if (!rightBar.getEndOfMusic()) transcriber.spaceOrNewLine();
 
               measure = new BrailleMeasure(measure);
               measure.setVoiceDirection(voiceDirection);
@@ -192,11 +190,7 @@ class SectionBySection implements Strategy {
                   }
                   if (lyric.getSyllabic() == Syllabic.SINGLE
                    || lyric.getSyllabic() == Syllabic.END) {
-                    if (transcriber.getRemainingColumns() <= 0)
-                      transcriber.newLine();
-                    else
-                      if (transcriber.getCurrentColumn() >= 0)
-                        transcriber.printString(" ");
+                    transcriber.spaceOrNewLine();
                   }
                   lastSyllabic = lyric.getSyllabic();
                 }
@@ -237,9 +231,11 @@ class SectionBySection implements Strategy {
             }
             first = false;
           }
+        } else {
+          transcriber.printString(Braille.artificialWholeRest);
         }
         measure.clear();
-        transcriber.printString(" ");
+        transcriber.spaceOrNewLine();
       }
     }
   }

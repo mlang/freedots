@@ -70,6 +70,7 @@ public enum Braille {
   upcase(46),
   letterA(1), letterB(12), letterC(14), letterD(145), letterE(15), letterF(124),
   letterG(1245), slash(5, 2), letterM(134),
+  artificialWholeRest(5, 134),
 
   // Stem signs are written after the notes (or chords) to which they belong
   wholeStem(456, 3), halfStem(456, 13),
