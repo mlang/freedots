@@ -104,11 +104,14 @@ class SectionBySection implements Strategy {
             if (event instanceof StartBar) {
               startBar = (StartBar)event;
               measure.setTimeSignature(startBar.getTimeSignature());
-            } else if (event instanceof GlobalKeyChange) {
-              GlobalKeyChange gkc = (GlobalKeyChange)event;
-              if (!gkc.getKeySignature().equals(currentSignature)) {
-                currentSignature = gkc.getKeySignature();
+            } else if (event instanceof KeyChange) {
+              KeyChange kc = (KeyChange)event;
+              if (!kc.getKeySignature().equals(currentSignature)) {
+                currentSignature = kc.getKeySignature();
                 transcriber.printString(currentSignature.toBraille());
+                if (transcriber.getRemainingColumns() > 1)
+                  transcriber.printString(" ");
+                else transcriber.newLine();
               }
             } else if (event instanceof EndBar) {
               EndBar rightBar = (EndBar)event;
