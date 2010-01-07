@@ -104,7 +104,7 @@
   
   <target name="test" depends="compile.test"
           description="run the test suite">
-    <junit failureProperty="test.failure">
+    <junit fork="yes" forkmode="once" failureProperty="test.failure">
       <classpath refid="class.path.test" />
       <formatter type="brief" usefile="false" />
       <batchtest>
