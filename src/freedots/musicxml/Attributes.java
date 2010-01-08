@@ -88,7 +88,7 @@ public final class Attributes {
     String staffNumber = null;
     public Clef(final Element element) {
       super(getClefSignFromElement(element));
-      if (sign != Sign.percussion) {
+      if (sign != Sign.percussion && sign != Sign.none) {
         line = getClefLineFromElement(element);
       }
       this.element = element;

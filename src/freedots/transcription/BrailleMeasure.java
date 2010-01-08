@@ -278,6 +278,8 @@ class BrailleMeasure {
           braille += Braille.valueOf(accidental);
         }
         AbstractPitch firstPitch = (AbstractPitch)firstNote.getPitch();
+        if (firstPitch == null)
+          firstPitch = (AbstractPitch)firstNote.getUnpitched();
         Braille octaveSign = firstPitch.getOctaveSign(state.getLastPitch());
         if (octaveSign != null) { braille += octaveSign; }
         state.setLastPitch(firstPitch);
@@ -313,6 +315,9 @@ class BrailleMeasure {
             braille += Braille.valueOf(accidental);
           }
           AbstractPitch currentPitch = (AbstractPitch)currentNote.getPitch();
+          if (currentPitch == null)
+            currentPitch = (AbstractPitch)currentNote.getUnpitched();
+
           int diatonicDifference =
             Math.abs(currentPitch.diatonicDifference(firstPitch));
           if (diatonicDifference == 0) {

@@ -74,6 +74,7 @@ public final class Note implements RhythmicElement {
 
   Element grace = null;
   Pitch pitch = null;
+  Unpitched unpitched = null;
   Text duration = null;
   Text staffNumber, voiceName;
 
@@ -137,6 +138,8 @@ public final class Note implements RhythmicElement {
           grace = child;
         } else if (child.getTagName().equals("pitch")) {
           pitch = new Pitch(child);
+        } else if (child.getTagName().equals("unpitched")) {
+          unpitched = new Unpitched(child);
         } else if (child.getTagName().equals("duration")) {
           duration = firstTextNode(child);
         } else if (child.getTagName().equals("tie")) {
@@ -190,6 +193,7 @@ public final class Note implements RhythmicElement {
     return false;
   }
   public Pitch getPitch() { return pitch; }
+  public Unpitched getUnpitched() { return unpitched; }
   public int getStaffNumber() {
     if (staffNumber != null) {
       return Integer.parseInt(staffNumber.getWholeText()) - 1;
@@ -603,5 +607,14 @@ public final class Note implements RhythmicElement {
         }
       }
     }
+  }
+  @Override public String toString() {
+    StringBuilder sb = new StringBuilder();
+    if (getPitch() != null) sb.append(getPitch());
+    sb.append(getAugmentedFraction().toString());
+    Element measure = (Element)this.element.getParentNode();
+    Element part = (Element)measure.getParentNode();
+    sb.append(part.getAttribute("id")).append(" ").append(measure.getAttribute("number"));
+    return sb.toString();
   }
 }

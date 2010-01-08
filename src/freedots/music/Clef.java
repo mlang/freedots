@@ -23,7 +23,7 @@
 package freedots.music;
 
 public class Clef {
-  public enum Sign { G, F, C, TAB, percussion; };
+  public enum Sign { G, F, C, TAB, percussion, none; };
 
   public Sign sign;
   public int line = 0;

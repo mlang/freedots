@@ -64,6 +64,8 @@ class BrailleNote extends BrailleString {
       braille += Braille.valueOf(accidental);
     }
     AbstractPitch pitch = (AbstractPitch)note.getPitch();
+    if (pitch == null)
+      pitch = (AbstractPitch)note.getUnpitched();
     if (pitch != null) {
       Braille octaveSign = pitch.getOctaveSign(lastPitch);
       if (octaveSign != null) braille += octaveSign;
