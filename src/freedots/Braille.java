@@ -398,7 +398,7 @@ public enum Braille {
         else if (af.getDenominator() == 8) sb.append(eighthStem);
         else if (af.getDenominator() == 16) sb.append(sixteenthStem);
         else if (af.getDenominator() == 32) sb.append(thirtysecondthStem);
-        else log.warning("Unmapped denominator: "+af.getDenominator());
+        else log.warning("Unmapped denominator: "+af);
       } else log.warning("Unmapped numerator: "+af.getNumerator());
       if (af.getDots() > 0) {
         for (int i = 0; i < af.getDots(); i++) sb.append(dot);
@@ -429,6 +429,10 @@ public enum Braille {
         sb.append("dim");
       } else if ("dominant".equals(kind)) {
         sb.append(numberSign).append(upperNumber(7));
+      } else if ("suspended-second".equals(kind)) {
+        sb.append("sus").append(numberSign).append(upperNumber(2));
+      } else if ("suspended-fourth".equals(kind)) {
+        sb.append("sus").append(numberSign).append(upperNumber(4));
       } else if ("major-sixth".equals(kind)) {
         sb.append(numberSign).append(upperNumber(6));
       } else if ("major-seventh".equals(kind)) {
@@ -437,8 +441,18 @@ public enum Braille {
         sb.append("m").append(numberSign).append(upperNumber(7));
       } else if ("diminished-seventh".equals(kind)) {
         sb.append("dim").append(numberSign).append(upperNumber(7));
+      } else if ("major-ninth".equals(kind)) {
+        sb.append("maj").append(numberSign).append(upperNumber(9));
+      } else if ("minor-ninth".equals(kind)) {
+        sb.append(letterM).append(numberSign).append(upperNumber(9));
       } else if ("dominant-ninth".equals(kind)) {
         sb.append(numberSign).append(upperNumber(9));
+      } else if ("major-11th".equals(kind)) {
+        sb.append("maj").append(numberSign).append(upperNumber(11));
+      } else if ("minor-11th".equals(kind)) {
+        sb.append(letterM).append(numberSign).append(upperNumber(11));
+      } else if ("dominant-13th".equals(kind)) {
+        sb.append(numberSign).append(upperNumber(13));
       } else log.warning("Unhandled harmony-chord kind '"+kind+"'");
 
       for (Harmony.HarmonyChord.Degree degree: chord.getAlterations())
