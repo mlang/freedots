@@ -1,0 +1,401 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<!DOCTYPE score-partwise PUBLIC '-//Recordare//DTD MusicXML 2.0 Partwise//EN' 'http://www.musicxml.org/dtds/partwise.dtd'>
+<score-partwise version='2.0'>
+	<movement-title>No Chord</movement-title>
+	<identification>
+		<encoding>
+			<software>Sibelius 6.1</software>
+			<software>Dolet 5.1 for Sibelius</software>
+			<encoding-date>2010-01-09</encoding-date>
+			<supports element='accidental' type='no'/>
+			<supports element='transpose' type='no'/>
+			<supports attribute='new-page' element='print' type='yes' value='yes'/>
+			<supports attribute='new-system' element='print' type='yes' value='yes'/>
+		</encoding>
+	</identification>
+	<defaults>
+		<scaling>
+			<millimeters>6</millimeters>
+			<tenths>40</tenths>
+		</scaling>
+		<page-layout>
+			<page-height>1863</page-height>
+			<page-width>1439</page-width>
+			<page-margins type='both'>
+				<left-margin>100</left-margin>
+				<right-margin>100</right-margin>
+				<top-margin>100</top-margin>
+				<bottom-margin>100</bottom-margin>
+			</page-margins>
+		</page-layout>
+		<system-layout>
+			<system-margins>
+				<left-margin>21.875</left-margin>
+				<right-margin>0</right-margin>
+			</system-margins>
+			<system-distance>100</system-distance>
+			<top-system-distance>93.4375</top-system-distance>
+		</system-layout>
+		<appearance>
+			<line-width type='beam'>5</line-width>
+			<line-width type='heavy barline'>6.25</line-width>
+			<line-width type='leger'>2.1875</line-width>
+			<line-width type='light barline'>2.1875</line-width>
+			<line-width type='slur middle'>4.375</line-width>
+			<line-width type='slur tip'>2.8125</line-width>
+			<line-width type='staff'>1.25</line-width>
+			<line-width type='stem'>1.875</line-width>
+			<line-width type='tie middle'>4.375</line-width>
+			<line-width type='tie tip'>2.8125</line-width>
+			<note-size type='grace'>60</note-size>
+			<note-size type='cue'>75</note-size>
+		</appearance>
+		<music-font font-family='Reprise,handwritten'/>
+		<word-font font-family='Times New Roman'/>
+	</defaults>
+	<part-list>
+		<score-part id='P1'>
+			<part-name print-object='no'>Music</part-name>
+		</score-part>
+	</part-list>
+<!--=========================================================-->
+	<part id='P1'>
+		<measure number='1'>
+			<print>
+				<system-layout>
+					<top-system-distance>160</top-system-distance>
+				</system-layout>
+			</print>
+			<attributes>
+				<divisions>768</divisions>
+				<key>
+					<fifths>0</fifths>
+					<mode>major</mode>
+				</key>
+				<time>
+					<beats>5</beats>
+					<beat-type>2</beat-type>
+				</time>
+				<clef>
+					<sign>G</sign>
+					<line>2</line>
+				</clef>
+			</attributes>
+			<direction placement='above' directive='yes'>
+				<direction-type>
+					<metronome>
+						<beat-unit>half</beat-unit>
+						<per-minute>100</per-minute>
+					</metronome>
+				</direction-type>
+				<sound tempo='200'/>
+			</direction>
+			<harmony print-frame='no' default-y='25' relative-x='8'>
+				<root>
+					<root-step>C</root-step>
+				</root>
+				<kind text='ma7'>major-seventh</kind>
+			</harmony>
+			<note>
+				<pitch>
+					<step>E</step>
+					<octave>5</octave>
+				</pitch>
+				<duration>384</duration>
+				<voice>1</voice>
+				<type>eighth</type>
+				<beam number='1'>begin</beam>
+			</note>
+			<note>
+				<pitch>
+					<step>G</step>
+					<octave>5</octave>
+				</pitch>
+				<duration>1536</duration>
+				<voice>1</voice>
+				<type>half</type>
+			</note>
+			<harmony print-frame='no' default-y='25' relative-x='8'>
+				<root>
+					<root-step>A</root-step>
+				</root>
+				<kind text='m7'>minor-seventh</kind>
+				<offset>-384</offset>
+			</harmony>
+			<note>
+				<pitch>
+					<step>D</step>
+					<octave>5</octave>
+				</pitch>
+				<duration>384</duration>
+				<voice>1</voice>
+				<type>eighth</type>
+				<beam number='1'>begin</beam>
+			</note>
+			<note>
+				<pitch>
+					<step>D</step>
+					<octave>5</octave>
+				</pitch>
+				<duration>384</duration>
+				<voice>1</voice>
+				<type>eighth</type>
+				<beam number='1'>continue</beam>
+			</note>
+			<note>
+				<pitch>
+					<step>C</step>
+					<octave>5</octave>
+				</pitch>
+				<duration>384</duration>
+				<voice>1</voice>
+				<type>eighth</type>
+				<beam number='1'>continue</beam>
+			</note>
+			<harmony print-frame='no' default-y='25' relative-x='8'>
+				<root>
+					<root-step>D</root-step>
+				</root>
+				<kind text='m7'>minor-seventh</kind>
+			</harmony>
+			<note>
+				<pitch>
+					<step>D</step>
+					<octave>5</octave>
+				</pitch>
+				<duration>1536</duration>
+				<voice>1</voice>
+				<type>half</type>
+			</note>
+			<harmony print-frame='no' default-y='25' relative-x='8'>
+				<root>
+					<root-step>E</root-step>
+				</root>
+				<kind text='m7'>minor-seventh</kind>
+			</harmony>
+			<note>
+				<pitch>
+					<step>B</step>
+					<octave>4</octave>
+				</pitch>
+				<duration>1536</duration>
+				<voice>1</voice>
+				<type>half</type>
+			</note>
+			<harmony print-frame='no' default-y='25' relative-x='8'>
+				<root>
+					<root-step>F</root-step>
+				</root>
+				<kind text='ma7'>major-seventh</kind>
+			</harmony>
+			<note>
+				<pitch>
+					<step>A</step>
+					<octave>4</octave>
+				</pitch>
+				<duration>1536</duration>
+				<voice>1</voice>
+				<type>half</type>
+			</note>
+		</measure>
+<!--=========================================================-->
+		<measure number='2'>
+			<harmony print-frame='no' default-y='25' relative-x='8'>
+				<root>
+					<root-step text=''>C</root-step>
+				</root>
+				<kind text='N.C.'>none</kind>
+			</harmony>
+			<note>
+				<pitch>
+					<step>E</step>
+					<octave>5</octave>
+				</pitch>
+				<duration>384</duration>
+				<voice>1</voice>
+				<type>eighth</type>
+				<beam number='1'>begin</beam>
+			</note>
+			<note>
+				<pitch>
+					<step>G</step>
+					<octave>5</octave>
+				</pitch>
+				<duration>1536</duration>
+				<voice>1</voice>
+				<type>half</type>
+			</note>
+			<note>
+				<pitch>
+					<step>D</step>
+					<octave>5</octave>
+				</pitch>
+				<duration>384</duration>
+				<voice>1</voice>
+				<type>eighth</type>
+				<beam number='1'>begin</beam>
+			</note>
+			<note>
+				<pitch>
+					<step>D</step>
+					<octave>5</octave>
+				</pitch>
+				<duration>384</duration>
+				<voice>1</voice>
+				<type>eighth</type>
+				<beam number='1'>continue</beam>
+			</note>
+			<note>
+				<pitch>
+					<step>C</step>
+					<octave>5</octave>
+				</pitch>
+				<duration>384</duration>
+				<voice>1</voice>
+				<type>eighth</type>
+				<beam number='1'>continue</beam>
+			</note>
+			<note>
+				<pitch>
+					<step>D</step>
+					<octave>5</octave>
+				</pitch>
+				<duration>1536</duration>
+				<voice>1</voice>
+				<type>half</type>
+			</note>
+			<note>
+				<pitch>
+					<step>B</step>
+					<octave>4</octave>
+				</pitch>
+				<duration>1536</duration>
+				<voice>1</voice>
+				<type>half</type>
+			</note>
+			<note>
+				<pitch>
+					<step>A</step>
+					<octave>4</octave>
+				</pitch>
+				<duration>1536</duration>
+				<voice>1</voice>
+				<type>half</type>
+			</note>
+		</measure>
+<!--=========================================================-->
+		<measure number='3'>
+			<harmony print-frame='no' default-y='25' relative-x='8'>
+				<root>
+					<root-step>F</root-step>
+				</root>
+				<kind text='ma7'>major-seventh</kind>
+			</harmony>
+			<note>
+				<pitch>
+					<step>E</step>
+					<octave>5</octave>
+				</pitch>
+				<duration>384</duration>
+				<voice>1</voice>
+				<type>eighth</type>
+				<beam number='1'>begin</beam>
+			</note>
+			<note>
+				<pitch>
+					<step>G</step>
+					<octave>5</octave>
+				</pitch>
+				<duration>1536</duration>
+				<voice>1</voice>
+				<type>half</type>
+			</note>
+			<harmony print-frame='no' default-y='25' relative-x='8'>
+				<root>
+					<root-step>E</root-step>
+				</root>
+				<kind text='m7'>minor-seventh</kind>
+				<offset>-384</offset>
+			</harmony>
+			<note>
+				<pitch>
+					<step>D</step>
+					<octave>5</octave>
+				</pitch>
+				<duration>384</duration>
+				<voice>1</voice>
+				<type>eighth</type>
+				<beam number='1'>begin</beam>
+			</note>
+			<note>
+				<pitch>
+					<step>D</step>
+					<octave>5</octave>
+				</pitch>
+				<duration>384</duration>
+				<voice>1</voice>
+				<type>eighth</type>
+				<beam number='1'>continue</beam>
+			</note>
+			<note>
+				<pitch>
+					<step>C</step>
+					<octave>5</octave>
+				</pitch>
+				<duration>384</duration>
+				<voice>1</voice>
+				<type>eighth</type>
+				<beam number='1'>continue</beam>
+			</note>
+			<harmony print-frame='no' default-y='25' relative-x='8'>
+				<root>
+					<root-step>D</root-step>
+				</root>
+				<kind text='m7'>minor-seventh</kind>
+			</harmony>
+			<note>
+				<pitch>
+					<step>D</step>
+					<octave>5</octave>
+				</pitch>
+				<duration>1536</duration>
+				<voice>1</voice>
+				<type>half</type>
+			</note>
+			<harmony print-frame='no' default-y='25' relative-x='8'>
+				<root>
+					<root-step>E</root-step>
+				</root>
+				<kind text='m7'>minor-seventh</kind>
+			</harmony>
+			<note>
+				<pitch>
+					<step>B</step>
+					<octave>4</octave>
+				</pitch>
+				<duration>1536</duration>
+				<voice>1</voice>
+				<type>half</type>
+			</note>
+			<harmony print-frame='no' default-y='25' relative-x='8'>
+				<root>
+					<root-step>A</root-step>
+				</root>
+				<kind text=''>major</kind>
+			</harmony>
+			<note>
+				<pitch>
+					<step>A</step>
+					<octave>4</octave>
+				</pitch>
+				<duration>1536</duration>
+				<voice>1</voice>
+				<type>half</type>
+			</note>
+			<barline location='right'>
+				<bar-style>light-heavy</bar-style>
+			</barline>
+		</measure>
+	</part>
+<!--=========================================================-->
+</score-partwise>

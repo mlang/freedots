@@ -52,4 +52,28 @@ public class TestTranscription extends junit.framework.TestCase {
       + NL;
     assertEquals(mxmlFile, transcriber.toString(), expectedResult);
   }
+
+  public void testHarmonyNoChord()
+    throws javax.xml.parsers.ParserConfigurationException,
+           java.io.IOException,
+           org.xml.sax.SAXException,
+           javax.xml.xpath.XPathExpressionException {
+    final String mxmlFile = "harmony-nc.xml";
+    Options options = new Options(new String[] { "-w", "40" });
+    Score score = new Score("test/" + mxmlFile);
+    Transcriber transcriber = new Transcriber(options);
+    transcriber.setScore(score);
+
+    final String keyAndTimeSignature = "⠼⠑⠆";
+    final String expectedResult = "                " + score.getMovementTitle() + NL
+      + NL
+      + keyAndTimeSignature + NL
+      + "  "
+      + Braille.musicPart + "⠨⠋⠗⠑⠑⠙⠕⠞⠎ ⠨⠋⠗⠑⠑⠙⠕⠞⠎ ⠨⠋⠗⠑⠑⠙⠕⠞⠎"
+      + Braille.doubleBar + NL
+      + "⠒⠜⠨⠉maj⠼⠛⠨⠁m⠼⠛⠨⠙m⠼⠛⠨⠑m⠼⠛⠨⠋maj⠼⠛ ⠨nc " + NL
+      + "⠨⠋maj⠼⠛⠨⠑m⠼⠛⠨⠙m⠼⠛⠨⠑m⠼⠛⠨⠁ " + NL
+      + NL;
+    assertEquals(mxmlFile, transcriber.toString(), expectedResult);
+  }
 }

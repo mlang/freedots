@@ -417,51 +417,55 @@ public enum Braille {
     StringBuilder sb = new StringBuilder();
     for (Harmony.HarmonyChord chord: harmony.getChords()) {
       String kind = chord.getKind();
-      sb.append(upcase).append(ENGLISH_STEPS[chord.getRootStep()])
-        .append(accidentalFromAlter(chord.getRootAlter()));
-      if ("major".equals(kind))
-        sb.append("");
-      else if ("minor".equals(kind))
-        sb.append(letterM);
-      else if ("augmented".equals(kind)) {
-        sb.append(sharp).append(numberSign).append(upperNumber(5));
-      } else if ("diminished".equals(kind)) {
-        sb.append("dim");
-      } else if ("dominant".equals(kind)) {
-        sb.append(numberSign).append(upperNumber(7));
-      } else if ("suspended-second".equals(kind)) {
-        sb.append("sus").append(numberSign).append(upperNumber(2));
-      } else if ("suspended-fourth".equals(kind)) {
-        sb.append("sus").append(numberSign).append(upperNumber(4));
-      } else if ("major-sixth".equals(kind)) {
-        sb.append(numberSign).append(upperNumber(6));
-      } else if ("major-seventh".equals(kind)) {
-        sb.append("maj").append(numberSign).append(upperNumber(7));
-      } else if ("minor-seventh".equals(kind)) {
-        sb.append("m").append(numberSign).append(upperNumber(7));
-      } else if ("diminished-seventh".equals(kind)) {
-        sb.append("dim").append(numberSign).append(upperNumber(7));
-      } else if ("major-ninth".equals(kind)) {
-        sb.append("maj").append(numberSign).append(upperNumber(9));
-      } else if ("minor-ninth".equals(kind)) {
-        sb.append(letterM).append(numberSign).append(upperNumber(9));
-      } else if ("dominant-ninth".equals(kind)) {
-        sb.append(numberSign).append(upperNumber(9));
-      } else if ("major-11th".equals(kind)) {
-        sb.append("maj").append(numberSign).append(upperNumber(11));
-      } else if ("minor-11th".equals(kind)) {
-        sb.append(letterM).append(numberSign).append(upperNumber(11));
-      } else if ("dominant-13th".equals(kind)) {
-        sb.append(numberSign).append(upperNumber(13));
-      } else log.warning("Unhandled harmony-chord kind '"+kind+"'");
+      if ("none".equals(kind)) {
+        sb.append(upcase).append("nc");
+      } else {
+        sb.append(upcase).append(ENGLISH_STEPS[chord.getRootStep()])
+          .append(accidentalFromAlter(chord.getRootAlter()));
+        if ("major".equals(kind))
+          sb.append("");
+        else if ("minor".equals(kind))
+          sb.append(letterM);
+        else if ("augmented".equals(kind))
+          sb.append(sharp).append(numberSign).append(upperNumber(5));
+        else if ("diminished".equals(kind))
+          sb.append("dim");
+        else if ("dominant".equals(kind))
+          sb.append(numberSign).append(upperNumber(7));
+        else if ("suspended-second".equals(kind))
+          sb.append("sus").append(numberSign).append(upperNumber(2));
+        else if ("suspended-fourth".equals(kind))
+          sb.append("sus").append(numberSign).append(upperNumber(4));
+        else if ("major-sixth".equals(kind))
+          sb.append(numberSign).append(upperNumber(6));
+        else if ("major-seventh".equals(kind))
+          sb.append("maj").append(numberSign).append(upperNumber(7));
+        else if ("minor-seventh".equals(kind))
+          sb.append("m").append(numberSign).append(upperNumber(7));
+        else if ("diminished-seventh".equals(kind))
+          sb.append("dim").append(numberSign).append(upperNumber(7));
+        else if ("major-ninth".equals(kind))
+          sb.append("maj").append(numberSign).append(upperNumber(9));
+        else if ("minor-ninth".equals(kind))
+          sb.append(letterM).append(numberSign).append(upperNumber(9));
+        else if ("dominant-ninth".equals(kind))
+          sb.append(numberSign).append(upperNumber(9));
+        else if ("major-11th".equals(kind))
+          sb.append("maj").append(numberSign).append(upperNumber(11));
+        else if ("minor-11th".equals(kind))
+          sb.append(letterM).append(numberSign).append(upperNumber(11));
+        else if ("dominant-13th".equals(kind))
+          sb.append(numberSign).append(upperNumber(13));
+        else log.warning("Unhandled harmony-chord kind '"+kind+"'");
 
-      for (Harmony.HarmonyChord.Degree degree: chord.getAlterations())
-        sb.append(accidentalFromAlter(degree.getAlter()))
-          .append(numberSign).append(upperNumber(degree.getValue()));
+        for (Harmony.HarmonyChord.Degree degree: chord.getAlterations())
+          sb.append(accidentalFromAlter(degree.getAlter()))
+            .append(numberSign).append(upperNumber(degree.getValue()));
 
-      if (chord.hasBass())
-        sb.append(slash).append(ENGLISH_STEPS[chord.getBassStep()])
-          .append(accidentalFromAlter(chord.getBassAlter()));
+        if (chord.hasBass())
+          sb.append(slash).append(ENGLISH_STEPS[chord.getBassStep()])
+            .append(accidentalFromAlter(chord.getBassAlter()));
+      }
     }
     return sb.toString();
   }
