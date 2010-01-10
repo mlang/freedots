@@ -44,7 +44,7 @@ public final class Harmony implements StaffElement {
   private List<HarmonyChord> chords = new ArrayList<HarmonyChord>();
   private Element offset = null, staffNumber = null;
 
-  public Harmony(final Element element, final int durationMultiplier, final int divisions,
+  Harmony(final Element element, final int durationMultiplier, final int divisions,
                  final Fraction offset) {
     this.element = element;
     this.durationMultiplier = durationMultiplier;

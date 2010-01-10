@@ -24,14 +24,13 @@ package freedots.musicxml;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-import org.w3c.dom.Text;
 
 /** A wrapper around the unpitched element (a child of {@link Note}).
  */
 public final class Unpitched extends freedots.music.AbstractPitch {
   private Element element;
   private Element step, octave;
-  public Unpitched(Element element) {
+  Unpitched(final Element element) {
     this.element = element;
 
     for (Node node = element.getFirstChild(); node != null;
@@ -48,7 +47,7 @@ public final class Unpitched extends freedots.music.AbstractPitch {
   }
   public int getStep() {
     if (step != null) {
-      return convertStep(step.getTextContent());
+      return Pitch.convertStep(step.getTextContent());
     }
     // TODO
     return 0;
@@ -60,9 +59,5 @@ public final class Unpitched extends freedots.music.AbstractPitch {
     }
     // TODO
     return 4;
-  }
-
-  public static int convertStep(String step) {
-    return "CDEFGAB".indexOf(step.trim().toUpperCase());
   }
 }

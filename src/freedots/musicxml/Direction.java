@@ -33,7 +33,7 @@ public final class Direction implements Event {
   Fraction offset;
   private Element xml;
 
-  public Direction(final Element xml, final Fraction offset) {
+  Direction(final Element xml, final Fraction offset) {
     this.xml = xml;
     this.offset = offset;
   }

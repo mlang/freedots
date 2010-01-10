@@ -31,7 +31,7 @@ public final class Pitch extends freedots.music.AbstractPitch {
   private Element element;
   private Text step, alter, octave;
 
-  public Pitch(Element element) throws MusicXMLParseException {
+  Pitch(Element element) throws MusicXMLParseException {
     this.element = element;
     step = Score.getTextNode(element, "step");
     alter = Score.getTextNode(element, "alter");
