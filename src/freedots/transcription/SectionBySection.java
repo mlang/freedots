@@ -70,137 +70,148 @@ class SectionBySection implements Strategy {
       transcriber.printLine(directive
                             + part.getKeySignature().toBraille()
                             + Braille.toString(part.getTimeSignature()));
-      for (Section section:getSections(part)) {
-        int staffCount = section.getStaffCount();
-        for (int staffIndex = 0; staffIndex < staffCount; staffIndex++) {
-          Staff staff = section.getStaff(staffIndex);
-          BrailleMeasure measure = new BrailleMeasure();
-          int voiceDirection = -1;
-
-          if (transcriber.getCurrentColumn() > 0) transcriber.newLine();
-          transcriber.indentTo(2);
-
-          if (staffCount == 1 && staff.containsHarmony()) {
-            transcriber.printString(Braille.musicPart);
-          } else if (staffCount == 2) {
-            if (staffIndex == 0) {
-              transcriber.printString(Braille.rightHandPart);
-              voiceDirection = -1;
-              measure.setVoiceDirection(voiceDirection);
-            } else if (staffIndex == 1) {
-              transcriber.printString(Braille.leftHandPart);
-              voiceDirection = 1;
-              measure.setVoiceDirection(voiceDirection);
-            }
-          }
-
-          StartBar startBar = null;
-          KeySignature currentSignature = part.getKeySignature();
-
-          for (int staffElementIndex = 0; staffElementIndex < staff.size();
-               staffElementIndex++) {
-            Event event = staff.get(staffElementIndex);
-
-            if (event instanceof StartBar) {
-              startBar = (StartBar)event;
-              measure.setTimeSignature(startBar.getTimeSignature());
-            } else if (event instanceof KeyChange) {
-              KeyChange kc = (KeyChange)event;
-              if (!kc.getKeySignature().equals(currentSignature)) {
-                currentSignature = kc.getKeySignature();
-                transcriber.printString(currentSignature.toBraille());
-                transcriber.spaceOrNewLine();
-              }
-            } else if (event instanceof EndBar) {
-              EndBar rightBar = (EndBar)event;
-              int charactersLeft = transcriber.getRemainingColumns();
-              if (charactersLeft <= 2) {
-                transcriber.newLine();
-                charactersLeft = transcriber.getRemainingColumns();
-              }
-
-              boolean lastLine = transcriber.isLastLine();
-              measure.process();
-              BrailleList head = measure.head(charactersLeft, lastLine);
-              BrailleList tail = measure.tail();
-              if (head.length() <= tail.length() / 10) {
-                transcriber.newLine();
-                charactersLeft = transcriber.getRemainingColumns();
-                head = measure.head(charactersLeft, lastLine);
-                tail = measure.tail();
-              }
-              if (startBar != null) {
-                if (startBar.getRepeatForward()) {
-                  String braille = Braille.postDottedDoubleBar.toString();
-                  braille += Braille.unicodeBraille(Braille.dotsToBits(3));
-                  transcriber.printString(braille);
-                }
-                if (startBar.getEndingStart() > 0) {
-                  String braille = Braille.numberSign.toString();
-                  braille += Braille.lowerNumber(startBar.getEndingStart());
-                  braille += Braille.dot.toString();
-                  transcriber.printString(braille);
-                }
-              }
-              transcriber.printString(head);
-              if (tail.length() > 0) {
-                transcriber.printString(Braille.hyphen.toString());
-                transcriber.newLine();
-                transcriber.printString(tail);
-              }
-
-              if (rightBar.getRepeat())
-                transcriber.printString(Braille.dottedDoubleBar.toString());
-              else if (rightBar.getEndOfMusic())
-                transcriber.printString(Braille.doubleBar.toString());
-
-              if (!rightBar.getEndOfMusic()) transcriber.spaceOrNewLine();
-
-              measure = new BrailleMeasure(measure);
-              measure.setVoiceDirection(voiceDirection);
-            } else {
-              measure.add(event);
-            }
-          }
-
-          if (staff.containsHarmony()) {
-            if (transcriber.getCurrentColumn() > 0) transcriber.newLine();
-            transcribeHarmony(staff);
-          }
-
-          String lyricText = staff.getLyricText();
-          if (lyricText.length() > 0) {
-            if (transcriber.getCurrentColumn() > 0) transcriber.newLine();
-            transcriber.printString(Braille.textPart);
-            Syllabic lastSyllabic = null;
-            for (Event event: staff) {
-              if (event instanceof Note) {
-                Lyric lyric = ((Note)event).getLyric();
-                if (lyric != null) {
-                  String text = lyric.getText();
-                  if (text.length() <= transcriber.getRemainingColumns()) {
-                    transcriber.printString(new BrailleString(text, event));
-                  } else {
-                    if (lastSyllabic != Syllabic.SINGLE
-                     && lastSyllabic != Syllabic.END) {
-                      transcriber.printString("-");
-                    }
-                    transcriber.newLine();
-                    transcriber.printString(new BrailleString(text, event));
-                  }
-                  if (lyric.getSyllabic() == Syllabic.SINGLE
-                   || lyric.getSyllabic() == Syllabic.END) {
-                    transcriber.spaceOrNewLine();
-                  }
-                  lastSyllabic = lyric.getSyllabic();
-                }
-              }
-            }
-          }
-        }
-      }
+      for (Section section:getSections(part)) transcribeSection(part, section);
       if (transcriber.getCurrentColumn() > 0) transcriber.newLine();
       transcriber.newLine();
+    }
+  }
+
+  /** Transcribes a section of music (possibly consisting of several staves
+   *  and including lyrics and chords).
+   */
+  private void transcribeSection(final Part part, final Section section) {
+    final int staffCount = section.getStaffCount();
+    for (int staffIndex = 0; staffIndex < staffCount; staffIndex++) {
+      final Staff staff = section.getStaff(staffIndex);
+
+      if (transcriber.getCurrentColumn() > 0) transcriber.newLine();
+      transcriber.indentTo(2);
+
+      int chordDirection = -1;
+      if (staffCount == 1 && staff.containsHarmony()) {
+        transcriber.printString(Braille.musicPart);
+      } else if (staffCount == 2) {
+        if (staffIndex == 0) {
+          transcriber.printString(Braille.rightHandPart);
+          chordDirection = -1;
+        } else if (staffIndex == 1) {
+          transcriber.printString(Braille.leftHandPart);
+          chordDirection = 1;
+        }
+      }
+
+      transcribeMusic(staff, chordDirection);
+
+      if (staff.containsHarmony()) {
+        if (transcriber.getCurrentColumn() > 0) transcriber.newLine();
+        transcribeHarmony(staff);
+      }
+
+      String lyricText = staff.getLyricText();
+      if (lyricText.length() > 0) transcribeLyrics(staff);
+    }
+  }
+
+  private void transcribeMusic(Staff staff, final int chordDirection) {
+    BrailleMeasure measure = new BrailleMeasure();
+    measure.setVoiceDirection(chordDirection);
+
+    StartBar startBar = null;
+    KeySignature currentSignature = staff.getKeySignature(staff.get(0).getOffset());
+
+    for (int staffElementIndex = 0; staffElementIndex < staff.size();
+         staffElementIndex++) {
+      Event event = staff.get(staffElementIndex);
+
+      if (event instanceof StartBar) {
+        startBar = (StartBar)event;
+        measure.setTimeSignature(startBar.getTimeSignature());
+      } else if (event instanceof KeyChange) {
+        KeyChange kc = (KeyChange)event;
+        if (!kc.getKeySignature().equals(currentSignature)) {
+          currentSignature = kc.getKeySignature();
+          transcriber.printString(currentSignature.toBraille());
+          transcriber.spaceOrNewLine();
+        }
+      } else if (event instanceof EndBar) {
+        EndBar rightBar = (EndBar)event;
+        int charactersLeft = transcriber.getRemainingColumns();
+        if (charactersLeft <= 2) {
+          transcriber.newLine();
+          charactersLeft = transcriber.getRemainingColumns();
+        }
+
+        boolean lastLine = transcriber.isLastLine();
+        measure.process();
+        BrailleList head = measure.head(charactersLeft, lastLine);
+        BrailleList tail = measure.tail();
+        if (head.length() <= tail.length() / 10) {
+          transcriber.newLine();
+          charactersLeft = transcriber.getRemainingColumns();
+          head = measure.head(charactersLeft, lastLine);
+          tail = measure.tail();
+        }
+        if (startBar != null) {
+          if (startBar.getRepeatForward()) {
+            String braille = Braille.postDottedDoubleBar.toString();
+            braille += Braille.unicodeBraille(Braille.dotsToBits(3));
+            transcriber.printString(braille);
+          }
+          if (startBar.getEndingStart() > 0) {
+            String braille = Braille.numberSign.toString();
+            braille += Braille.lowerNumber(startBar.getEndingStart());
+            braille += Braille.dot.toString();
+            transcriber.printString(braille);
+          }
+        }
+        transcriber.printString(head);
+        if (tail.length() > 0) {
+          transcriber.printString(Braille.hyphen.toString());
+          transcriber.newLine();
+          transcriber.printString(tail);
+        }
+
+        if (rightBar.getRepeat())
+          transcriber.printString(Braille.dottedDoubleBar.toString());
+        else if (rightBar.getEndOfMusic())
+          transcriber.printString(Braille.doubleBar.toString());
+
+        if (!rightBar.getEndOfMusic()) transcriber.spaceOrNewLine();
+
+        measure = new BrailleMeasure(measure);
+        measure.setVoiceDirection(chordDirection);
+      } else {
+        measure.add(event);
+      }
+    }
+
+  }
+  private void transcribeLyrics(Staff staff) {
+    if (transcriber.getCurrentColumn() > 0) transcriber.newLine();
+    transcriber.printString(Braille.textPart);
+    Syllabic lastSyllabic = null;
+    for (Event event: staff) {
+      if (event instanceof Note) {
+        Lyric lyric = ((Note)event).getLyric();
+        if (lyric != null) {
+          String text = lyric.getText();
+          if (text.length() <= transcriber.getRemainingColumns()) {
+            transcriber.printString(new BrailleString(text, event));
+          } else {
+            if (lastSyllabic != Syllabic.SINGLE
+             && lastSyllabic != Syllabic.END) {
+              transcriber.printString("-");
+            }
+            transcriber.newLine();
+            transcriber.printString(new BrailleString(text, event));
+          }
+          if (lyric.getSyllabic() == Syllabic.SINGLE
+           || lyric.getSyllabic() == Syllabic.END) {
+            transcriber.spaceOrNewLine();
+          }
+          lastSyllabic = lyric.getSyllabic();
+        }
+      }
     }
   }
 
