@@ -188,8 +188,8 @@ class BarOverBar implements Strategy {
 
   private class BrailleStaff extends ArrayList<BrailleMeasure> {
     private Braille intro = null;
-    public void setIntro(Braille intro) { this.intro = intro; }
-    public Braille getIntro() { return intro; }
+    void setIntro(Braille intro) { this.intro = intro; }
+    Braille getIntro() { return intro; }
   }
   @SuppressWarnings("serial")
   private class BrailleStaves extends ArrayList<BrailleStaff> {

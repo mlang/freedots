@@ -31,7 +31,7 @@ import java.io.FileNotFoundException;
 public final class Options {
   private static Options instance;
 
-  private static final int DEFAULT_PAGE_WIDTH = 32;
+  private static final int DEFAULT_PAGE_WIDTH = 40;
   private static final int DEFAULT_PAGE_HEIGHT = 20;
 
   private int pageWidth = DEFAULT_PAGE_WIDTH;
