@@ -76,4 +76,23 @@ public class TestTranscription extends junit.framework.TestCase {
       + NL;
     assertEquals(mxmlFile, transcriber.toString(), expectedResult);
   }
+  public void testIntervals()
+    throws javax.xml.parsers.ParserConfigurationException,
+           java.io.IOException,
+           org.xml.sax.SAXException,
+           javax.xml.xpath.XPathExpressionException {
+    final String mxmlFile = "intervals.xml";
+    Options options = new Options(new String[] { "-w", "40" });
+    Score score = new Score("test/" + mxmlFile);
+    Transcriber transcriber = new Transcriber(options);
+    transcriber.setScore(score);
+
+    final String keyAndTimeSignature = "⠼⠙⠲";
+    final String expectedResult = keyAndTimeSignature + NL
+      + "  "
+      + "⠐⠳⠌⠪⠼⠺⠴⠳⠌ ⠨⠽⠤ ⠐⠳⠪⠺⠳⠣⠜⠐⠻⠫⠱⠻ ⠨⠽⠣⠜⠐⠽"
+      + Braille.doubleBar + NL
+      + NL;
+    assertEquals(mxmlFile, transcriber.toString(), expectedResult);
+  }
 }
