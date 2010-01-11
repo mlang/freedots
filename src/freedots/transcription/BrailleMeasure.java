@@ -23,6 +23,7 @@
 package freedots.transcription;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -33,6 +34,7 @@ import freedots.music.AbstractPitch;
 import freedots.music.Accidental;
 import freedots.music.Event;
 import freedots.music.MusicList;
+import freedots.music.RhythmicElement;
 import freedots.music.Slur;
 import freedots.music.TimeSignature;
 import freedots.music.Voice;
@@ -269,78 +271,80 @@ class BrailleMeasure {
         }
         state.append(brailleNote);
       } else if (element instanceof VoiceChord) {
-        String braille = "";
-        VoiceChord chord = (VoiceChord)element;
-        chord = chord.getSorted();
-        Note firstNote = (Note)chord.get(0);
-        Accidental accidental = firstNote.getAccidental();
-        if (accidental != null) {
-          braille += Braille.valueOf(accidental);
-        }
-        AbstractPitch firstPitch = (AbstractPitch)firstNote.getPitch();
-        if (firstPitch == null)
-          firstPitch = (AbstractPitch)firstNote.getUnpitched();
-        Braille octaveSign = firstPitch.getOctaveSign(state.getLastPitch());
-        if (octaveSign != null) { braille += octaveSign; }
-        state.setLastPitch(firstPitch);
-        braille += Braille.toString(firstNote.getAugmentedFraction(),
-                                    firstPitch);
-        if (Options.getInstance().getShowFingering()) {
-          braille += Braille.toString(firstNote.getFingering());
-        }
+        printChord((VoiceChord)element, state);
+      }
+    }
+  }
 
-        if (firstNote.isTieStart()) {
-          braille += Braille.tie;
-        } else {
-          boolean printSlur = false;
-          for (Slur<Note> slur:firstNote.getSlurs()) {
-            if (!slur.lastNote(firstNote)) {
-              printSlur = true;
-              break;
-            }
-          }
-          if (printSlur) {
-            braille += Braille.slur;
-          }
-        }
+  /** Transcribes a chord with the use of interval signs.
+   */
+  private void printChord(VoiceChord chord, State state) {
+    StringBuilder braille = new StringBuilder();
+    final boolean showFingering = Options.getInstance().getShowFingering();
 
-        state.append(new BrailleString(braille, firstNote));
-        braille = "";
+    final Iterator<RhythmicElement> iterator = chord.getSorted().iterator();
+    assert iterator.hasNext();
+    final Note firstNote = (Note)iterator.next();
+    Accidental accidental = firstNote.getAccidental();
+    if (accidental != null) braille.append(Braille.valueOf(accidental));
 
-        for (int chordElementIndex = 1; chordElementIndex < chord.size();
-             chordElementIndex++) {
-          Note currentNote = (Note)chord.get(chordElementIndex);
-          accidental = currentNote.getAccidental();
-          if (accidental != null) {
-            braille += Braille.valueOf(accidental);
-          }
-          AbstractPitch currentPitch = (AbstractPitch)currentNote.getPitch();
-          if (currentPitch == null)
-            currentPitch = (AbstractPitch)currentNote.getUnpitched();
+    AbstractPitch firstPitch = (AbstractPitch)firstNote.getPitch();
+    if (firstPitch == null)
+      firstPitch = (AbstractPitch)firstNote.getUnpitched();
+    Braille octaveSign = firstPitch.getOctaveSign(state.getLastPitch());
+    if (octaveSign != null) braille.append(octaveSign);
+    state.setLastPitch(firstPitch);
+    braille.append(Braille.toString(firstNote.getAugmentedFraction(),
+                                    firstPitch));
+    if (showFingering)
+      braille.append(Braille.toString(firstNote.getFingering()));
 
-          int diatonicDifference =
-            Math.abs(currentPitch.diatonicDifference(firstPitch));
-          if (diatonicDifference == 0) {
-            braille += currentPitch.getOctaveSign(null);
-            diatonicDifference = 7;
-          } else if (diatonicDifference > 7) {
-            braille += currentPitch.getOctaveSign(null);
-            while (diatonicDifference > 7) diatonicDifference -= 7;
-          }
-          braille += Braille.interval(diatonicDifference);
-
-          if (Options.getInstance().getShowFingering()) {
-            braille += Braille.toString(currentNote.getFingering());
-          }
-
-          if (currentNote.isTieStart()) {
-            braille += Braille.tie;
-          }
-
-          state.append(new BrailleString(braille, currentNote));
-          braille = "";
+    if (firstNote.isTieStart()) {
+      braille.append(Braille.tie);
+    } else {
+      boolean printSlur = false;
+      for (Slur<Note> slur:firstNote.getSlurs()) {
+        if (!slur.lastNote(firstNote)) {
+          printSlur = true;
+          break;
         }
       }
+      if (printSlur) braille.append(Braille.slur);
+    }
+
+    state.append(new BrailleString(braille.toString(), firstNote));
+    braille = new StringBuilder();
+
+    assert iterator.hasNext();
+
+    while (iterator.hasNext()) {
+      final Note currentNote = (Note)iterator.next();
+      accidental = currentNote.getAccidental();
+      if (accidental != null) braille.append(Braille.valueOf(accidental));
+      AbstractPitch currentPitch = (AbstractPitch)currentNote.getPitch();
+      if (currentPitch == null)
+        currentPitch = (AbstractPitch)currentNote.getUnpitched();
+
+      int diatonicDifference =
+        Math.abs(currentPitch.diatonicDifference(firstPitch));
+      if (diatonicDifference == 0) {
+        braille.append(currentPitch.getOctaveSign(null));
+        diatonicDifference = 7;
+      } else if (diatonicDifference > 7) {
+        braille.append(currentPitch.getOctaveSign(null));
+        while (diatonicDifference > 7) diatonicDifference -= 7;
+      }
+      braille.append(Braille.interval(diatonicDifference));
+
+      if (showFingering)
+        braille.append(Braille.toString(currentNote.getFingering()));
+
+      if (currentNote.isTieStart()) {
+        braille.append(Braille.tie);
+      }
+
+      state.append(new BrailleString(braille.toString(), currentNote));
+      if (iterator.hasNext()) braille = new StringBuilder();
     }
   }
 }
