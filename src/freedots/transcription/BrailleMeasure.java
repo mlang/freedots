@@ -325,16 +325,7 @@ class BrailleMeasure {
       if (currentPitch == null)
         currentPitch = (AbstractPitch)currentNote.getUnpitched();
 
-      int diatonicDifference =
-        Math.abs(currentPitch.diatonicDifference(firstPitch));
-      if (diatonicDifference == 0) {
-        braille.append(currentPitch.getOctaveSign(null));
-        diatonicDifference = 7;
-      } else if (diatonicDifference > 7) {
-        braille.append(currentPitch.getOctaveSign(null));
-        while (diatonicDifference > 7) diatonicDifference -= 7;
-      }
-      braille.append(Braille.interval(diatonicDifference));
+      braille.append(Braille.interval(currentPitch, firstPitch));
 
       if (showFingering)
         braille.append(Braille.toString(currentNote.getFingering()));

@@ -187,12 +187,20 @@ public enum Braille {
     }
     return string;
   }
-  /** Retrieve an interval sign.
-   * @param interval is a integer 1 and 7
-   * @return a interval sign
+  /** Calcualtes a braille string representing a musical interval.
+   * @return a Unicode string, optionally with an octave sign prepended if
+   *         the interval exceeds an octave.
    */
-  public static Braille interval(final int interval) {
-    return INTERVALS[interval - 1];
+  public static String interval(final AbstractPitch pitch,
+                                final AbstractPitch relativeTo) {
+    StringBuilder braille = new StringBuilder();
+    int diatonicDifference = Math.abs(pitch.diatonicDifference(relativeTo));
+    if (diatonicDifference == 0 || diatonicDifference > 7) {
+      braille.append(pitch.getOctaveSign(null));
+      while (diatonicDifference > 7) diatonicDifference -= 7;
+    }
+    braille.append(INTERVALS[diatonicDifference]);
+    return sb.toString();
   }
   /** Retrieve a finger indicator.
    * @param finger is the finger number from 1 to 5
@@ -303,7 +311,7 @@ public enum Braille {
     lowerDigit7, lowerDigit8, lowerDigit9
   };
   private static final Braille[] INTERVALS = {
-    second, third, fourth, fifth, sixth, seventh, octave
+    octave, second, third, fourth, fifth, sixth, seventh, octave
   };
   private static final Braille[] FINGERS = {
     finger1, finger2, finger3, finger4, finger5
