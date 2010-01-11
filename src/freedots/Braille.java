@@ -200,7 +200,7 @@ public enum Braille {
       while (diatonicDifference > 7) diatonicDifference -= 7;
     }
     braille.append(INTERVALS[diatonicDifference]);
-    return sb.toString();
+    return braille.toString();
   }
   /** Retrieve a finger indicator.
    * @param finger is the finger number from 1 to 5
