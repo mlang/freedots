@@ -52,11 +52,10 @@ public class Fraction implements Comparable<Fraction> {
   public float toFloat() { return (float)numerator / denominator; }
 
   public int toInteger(int divisions) {
-    return this.divide(new Fraction(1, 4*divisions)).numerator;
+    return divide(new Fraction(1, 4*divisions)).numerator;
   }
 
-  @Override
-  public boolean equals(Object object) {
+  @Override public boolean equals(Object object) {
     if (object instanceof Fraction) {
       Fraction other = (Fraction)object;
       return this.toFloat() == other.toFloat();
@@ -86,10 +85,11 @@ public class Fraction implements Comparable<Fraction> {
     return newFraction;
   }
   public Fraction subtract(Fraction other) {
-    Fraction
-      newFraction = new Fraction(this.basicFraction().numerator * other.basicFraction().denominator +
-                                 -other.basicFraction().numerator * this.basicFraction().denominator,
-                                 this.basicFraction().denominator * other.basicFraction().denominator);
+    Fraction a = this.basicFraction();
+    Fraction b = other.basicFraction();
+    Fraction newFraction = new Fraction(a.numerator * b.denominator
+                                      + -b.numerator * a.denominator,
+                                        a.denominator * b.denominator);
     newFraction.simplify();
     return newFraction;
   }

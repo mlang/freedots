@@ -36,8 +36,25 @@ import freedots.music.Fingering;
 import freedots.music.TimeSignature;
 import freedots.musicxml.Harmony;
 
-/**
- * All the braille signs required for music and a few utility methods.
+/** All the braille signs required for music and a few utility methods.
+ * <p>
+ * Braille patterns are specified with a decimal encoding for maximum
+ * readability and maintainability.  The integer 123456 represents a 6-dot
+ * pattern with all dots set.  Empty cells are represented with 0.
+ * <p>
+ * TODO: This class is an enum for purely historical reasons, there is actually
+ * no real use of the properties of an enum except for the syntactic sugar
+ * it offers for initialising static members.
+ * This class should probably be split into an interface/abstract superclass
+ * and various specific implementations to increase readability and
+ * flexibility.
+ * At least a textual description field needs to be added to every
+ * defined sign so that online help can use it for on-screen display.
+ * However, we will need to deal with double meanings of signs, so we will need
+ * some context to actually provide the correct explanation the user is looking
+ * for.  This context will be provided by the {@link freedots.transcrpiton}
+ * package.  That is why this class shouldn't have been defined an an enum in
+ * the first place.
  */
 public enum Braille {
   dot(3), wholeRest(134),
@@ -59,14 +76,18 @@ public enum Braille {
   fullMeasureInAccord(126, 345),
   partMeasureInAccord(46, 13), partMeasureInAccordDivision(5, 2),
 
+  // Octave signs
   octave1(4, 4), octave2(4), octave3(45), octave4(456), octave5(5),
   octave6(46), octave7(56), octave8(6), octave9(6, 6),
 
+  // Interval signs
   second(34), third(346), fourth(3456), fifth(35), sixth(356), seventh(25),
   octave(36),
 
+  // Signs for announcing the type of "staff"
   rightHandPart(46, 345), soloPart(5, 345), leftHandPart(456, 345),
   harmonyPart(25, 345), musicPart(6, 3), textPart(56, 23),
+
   upcase(46),
   letterA(1), letterB(12), letterC(14), letterD(145), letterE(15), letterF(124),
   letterG(1245), slash(5, 2), letterM(134),
@@ -77,6 +98,7 @@ public enum Braille {
   quarterStem(456, 1), eighthStem(456, 12), sixteenthStem(456, 123),
   thirtysecondthStem(456, 2),
 
+  // Linebreak within a measure
   hyphen(5),
 
   postDottedDoubleBar(126, 2356), dottedDoubleBar(126, 23), doubleBar(126, 13),
@@ -88,8 +110,11 @@ public enum Braille {
   fourthString(146, 2), fifthString(146, 13), sixthString(146, 23),
   seventhString(146, 3),
 
+  // Digits written in the upper part of a cell
   digit0(245), digit1(1), digit2(12), digit3(14), digit4(145),
   digit5(15), digit6(124), digit7(1245), digit8(125), digit9(24),
+
+  // Digits written in the lower part of a cell
   lowerDigit0(356), lowerDigit1(2), lowerDigit2(23), lowerDigit3(25),
   lowerDigit4(256), lowerDigit5(26), lowerDigit6(235), lowerDigit7(2356),
   lowerDigit8(236), lowerDigit9(35);

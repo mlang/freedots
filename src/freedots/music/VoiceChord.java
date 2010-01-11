@@ -25,20 +25,29 @@ package freedots.music;
 import java.util.Collections;
 import java.util.Comparator;
 
+/** A chord limited to notes belonging to a particular voice.
+ * <p>
+ * In our current model, a chord belongs to a part and can potentially
+ * span across staves and individual voices.  This is a property we inherited
+ * from the structure of MusicXML documents.
+ * <p>
+ * However, in braille music a chord generally only belongs to a particular
+ * voice because vertical alignment of several staves or voices is usually
+ * not possible.
+ */
 @SuppressWarnings("serial")
 public final class
 VoiceChord extends AbstractChord<RhythmicElement> implements VoiceElement {
   private int staffNumber;
+  private Staff staff = null;
   private String voiceName;
 
   public VoiceChord(final RhythmicElement initialNote) {
     super(initialNote);
     this.staffNumber = initialNote.getStaffNumber();
     this.voiceName = initialNote.getVoiceName();
-    this.staff = initialNote.getStaff();
+    setStaff(initialNote.getStaff());
   }
-
-  private Staff staff = null;
 
   public Staff getStaff() { return staff; }
   public void setStaff(Staff staff) { this.staff = staff; }

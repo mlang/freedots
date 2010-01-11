@@ -25,6 +25,17 @@ package freedots.music;
 import java.util.ArrayList;
 import java.util.List;
 
+/** A chord limited to notes belonging to a particular staff.
+ * <p>
+ * In our current model, a chord belongs to a part and can potentially
+ * span across staves.  This is a property we inherited
+ * from the structure of MusicXML documents.
+ * <p>
+ * However, in braille music a chord generally only belongs to a particular
+ * voice of a particular staff because vertical alignment of several staves
+ * or voices is usually not possible.
+ * @see freedots.music.VoiceChord
+ */
 @SuppressWarnings("serial")
 public final class
 StaffChord extends AbstractChord<RhythmicElement> implements StaffElement {
