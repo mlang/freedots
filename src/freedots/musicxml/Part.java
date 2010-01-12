@@ -66,10 +66,8 @@ public final class Part {
    *
    * @throws MusicXMLParseException if an unrecoverable error happens
    */
-  public Part (
-    Element part, Element scorePart,
-    Score score
-  ) throws MusicXMLParseException {
+  Part(Element part, Element scorePart, Score score)
+    throws MusicXMLParseException {
     this.scorePart = scorePart;
     this.score = score;
 
@@ -194,7 +192,7 @@ public final class Part {
                   currentChord = null;
                 }
               }
-              if (currentChord == null && noteStartsChord(musicdata)) {
+              if (currentChord == null && note.isStartOfChord()) {
                 currentChord = new Chord(note);
                 advanceTime = false;
                 eventList.add(currentChord);
@@ -372,8 +370,17 @@ public final class Part {
     return new KeySignature(0);
   }
 
+  /** Gets a flat list of all events occuring in thsi part.
+   * Events are ordered from left to right with increasing time.
+   * Several events can have the same musical offset.
+   * Chords are represented with container objects.
+   * TODO: Group events by measure.
+   */
   public MusicList getMusicList () { return eventList; }
 
+  /** Gets the name of this part.
+   * @return the part name as a string, or null if printing is not adviced
+   */
   public String getName() {
     for (Node node = scorePart.getFirstChild(); node != null;
          node = node.getNextSibling()) {
@@ -388,6 +395,13 @@ public final class Part {
     return null;
   }
 
+  /** Gets a list of all directives contained in this part.
+   * Directives are special directions usually occuring at the start of
+   * the piece.
+   * TODO: Change signature to return Directive instances instead of
+   * strings to give the caller a chance to look at the musical offset or
+   * staff assignment of a list with several entries.
+   */
   public List<String> getDirectives() {
     List<String> directives = new ArrayList<String>();
     for (Event event: eventList) {
@@ -403,21 +417,7 @@ public final class Part {
     }
     return directives;
   }
-
-  private static boolean noteStartsChord(Node note) {
-    Node node = note;
-    while ((node = node.getNextSibling()) != null) {
-      if (node.getNodeType() == Node.ELEMENT_NODE) {
-        String nodeName = node.getNodeName();
-        if ("note".equals(nodeName)) {
-          return elementHasChild((Element)node, Note.CHORD_ELEMENT);
-        } else if ("backup".equals(nodeName) || "forward".equals(nodeName))
-          return false;
-      }
-    }
-    return false;
-  }
-  private static boolean elementHasChild(Element element, String tagName) {
+  static boolean elementHasChild(Element element, String tagName) {
     for (Node node = element.getFirstChild(); node != null;
          node = node.getNextSibling())
       if (node.getNodeType() == Node.ELEMENT_NODE

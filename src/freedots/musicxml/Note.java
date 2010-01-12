@@ -617,4 +617,21 @@ public final class Note implements RhythmicElement {
     sb.append(part.getAttribute("id")).append(" ").append(measure.getAttribute("number"));
     return sb.toString();
   }
+
+  /** Determines if this note is the start of a chord.
+   * @return true if the next note elemnt has a chord child element.
+   */
+  boolean isStartOfChord() {
+    Node node = element;
+    while ((node = node.getNextSibling()) != null) {
+      if (node.getNodeType() == Node.ELEMENT_NODE) {
+        String nodeName = node.getNodeName();
+        if ("note".equals(nodeName)) {
+          return Part.elementHasChild((Element)node, CHORD_ELEMENT);
+        } else if ("backup".equals(nodeName) || "forward".equals(nodeName))
+          return false;
+      }
+    }
+    return false;
+  }
 }
