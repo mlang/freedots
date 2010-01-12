@@ -71,7 +71,8 @@ public enum Braille {
   staccato(236), mezzoStaccato(5, 236), staccatissimo(6, 236),
   tenuto(456, 236),
 
-  grace(5, 26), mordent(5, 235, 123), trill(235), turn(6, 256),
+  grace(5, 26),
+  mordent(5, 235, 123), invertedMordent(6, 235, 123), trill(235), turn(6, 256),
 
   fullMeasureInAccord(126, 345),
   partMeasureInAccord(46, 13), partMeasureInAccordDivision(5, 2),
