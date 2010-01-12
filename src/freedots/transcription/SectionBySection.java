@@ -218,7 +218,9 @@ class SectionBySection implements Strategy {
   private void transcribeHarmony(Staff staff) {
     transcriber.printString(Braille.harmonyPart);
     MeasureOfHarmonies measure = new MeasureOfHarmonies();
-    for (Event event: staff) {
+    Iterator<Event> staffIterator = staff.iterator();
+    while (staffIterator.hasNext()) {
+      Event event = staffIterator.next();
       if (event instanceof Harmony) {
         measure.add(new HarmonyInfo((Harmony)event));
       } else if (event instanceof EndBar) {
@@ -246,7 +248,8 @@ class SectionBySection implements Strategy {
           transcriber.printString(Braille.artificialWholeRest);
         }
         measure.clear();
-        transcriber.spaceOrNewLine();
+        if (staffIterator.hasNext()) transcriber.spaceOrNewLine();
+        else transcriber.printString(Braille.doubleBar);
       }
     }
   }
