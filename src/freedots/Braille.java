@@ -71,6 +71,9 @@ public enum Braille {
   staccato(236), mezzoStaccato(5, 236), staccatissimo(6, 236),
   tenuto(456, 236),
 
+  // Piano pedal marks
+  pedalPress(126, 14), pedalRelease(16, 14), pedalChange(16, 126, 14),
+
   grace(5, 26),
   mordent(5, 235, 123), invertedMordent(6, 235, 123), trill(235), turn(6, 256),
 
@@ -182,7 +185,10 @@ public enum Braille {
    * @param number indicates the octave
    * @return braille music octave sign
    */
-  public static Braille octave(final int number) { return OCTAVES[number]; }
+  public static Braille octave(final int number) {
+    if (number >= 0) return OCTAVES[number];
+    else return OCTAVES[0];
+  }
 
   /** Format a number using the upper dots 1, 2, 4 and 5.
    * @param number is the number to translate to braille
