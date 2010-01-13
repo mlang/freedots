@@ -22,53 +22,85 @@
  */
 package freedots.musicxml;
 
-import freedots.music.Event;
-import freedots.music.Fraction;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
-public final class Direction implements Event {
-  Fraction offset;
-  private Element xml;
+import freedots.music.Event;
+import freedots.music.Fraction;
 
-  Direction(final Element xml, final Fraction offset) {
-    this.xml = xml;
-    this.offset = offset;
-  }
+public final class Direction extends AbstractDirection {
+  private final List<Element> directionTypes = new ArrayList<Element>();
+  private Sound sound;
 
-  public boolean isDirective () {
-    return Score.YES.equalsIgnoreCase(xml.getAttribute("directive"));
-  }
-  public String getWords () {
-    for (Node node = xml.getFirstChild(); node != null;
+  Direction(final Element element, final int durationMultiplier, final int divisions, final Fraction offset) {
+    super(element, durationMultiplier, divisions, offset);
+
+    for (Node node = element.getFirstChild(); node != null;
          node = node.getNextSibling()) {
-      if (node.getNodeType() == Node.ELEMENT_NODE
-       && "direction-type".equals(node.getNodeName())) {
-        Element directionType = (Element)node;
-        for (Node directionTypeNode = directionType.getFirstChild();
-             directionTypeNode != null;
-             directionTypeNode = directionTypeNode.getNextSibling()) {
-          if (directionTypeNode.getNodeType() == Node.ELEMENT_NODE
-           && "words".equals(directionTypeNode.getNodeName())) {
-            Element words = (Element)directionTypeNode;
-            return words.getTextContent();
-          }
+      if (node.getNodeType() == Node.ELEMENT_NODE) {
+        Element child = (Element)node;
+        if ("direction-type".equals(child.getTagName())) {
+          directionTypes.add(child);
+        } else if ("sound".equals(child.getTagName())) {
+          sound = new Sound(child, getOffset());
         }
       }
     }
-    return null;
   }
-  public Sound getSound() {
-    NodeList nodeList = xml.getElementsByTagName("sound");
-    if (nodeList.getLength() > 0) {
-      return new Sound((Element)nodeList.item(nodeList.getLength() - 1), offset);
+
+  public boolean isDirective () {
+    return Score.YES.equalsIgnoreCase(element.getAttribute("directive"));
+  }
+  public String getWords () {
+    // There can be several words elements in several direction-type elements
+    // TODO: Do we want to add a space when concatenating?
+    StringBuilder sb = new StringBuilder();
+
+    for (Element directionType: directionTypes) {
+      for (Node node = directionType.getFirstChild(); node != null;
+           node = node.getNextSibling()) {
+        if (node.getNodeType() == Node.ELEMENT_NODE
+         && "words".equals(node.getNodeName())) {
+          Element words = (Element)node;
+          sb.append(words.getTextContent());
+        }
+      }
     }
-    return null;
+    if (sb.length() == 0) return null;
+    return sb.toString();
   }
+  public boolean isPedalPress () {
+    for (Element directionType: directionTypes) {
+      for (Node node = directionType.getFirstChild(); node != null;
+           node = node.getNextSibling()) {
+        if (node.getNodeType() == Node.ELEMENT_NODE
+         && "pedal".equals(node.getNodeName())) {
+          Element pedal = (Element)node;
+          if ("start".equals(pedal.getAttribute("type"))) return true;
+        }
+      }
+    }
+    return false;
+  }
+  public boolean isPedalRelease () {
+    for (Element directionType: directionTypes) {
+      for (Node node = directionType.getFirstChild(); node != null;
+           node = node.getNextSibling()) {
+        if (node.getNodeType() == Node.ELEMENT_NODE
+         && "pedal".equals(node.getNodeName())) {
+          Element pedal = (Element)node;
+          if ("stop".equals(pedal.getAttribute("type"))) return true;
+        }
+      }
+    }
+    return false;
+  }
+  public Sound getSound() { return sound; }
     
-  public Fraction getOffset() { return offset; }
+  // TODO: Incomplete, needs to be rethought
   public boolean equalsIgnoreOffset(Event object) {
     if (object instanceof Direction) {
       Direction other = (Direction)object;

@@ -31,19 +31,24 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
 import freedots.musicxml.Chord; // FIXME
+import freedots.musicxml.Direction;
 
 public class MusicList extends java.util.ArrayList<Event> {
   public MusicList() {
     super();
   }
+  /** Add a new element, inserting at the last possible position.
+   */
   public boolean add(Event newElement) {
+    Fraction offset = newElement.getOffset();
     int index;
     for (index = 0; index < size(); index++)
-      if (get(index).getOffset().compareTo(newElement.getOffset()) > 0) break;
+      if (get(index).getOffset().compareTo(offset) > 0) break;
 
     add(index, newElement);
     return true;
@@ -120,12 +125,46 @@ public class MusicList extends java.util.ArrayList<Event> {
 
     List<Voice> voiceList = new ArrayList<Voice>(voices.values());    
     if (defaultVoice != null) voiceList.add(defaultVoice);
+
+    // Now that we have distributed all notes to their voices we can
+    // insert directions at appropriate positions in appropriate voices
+    insertDirections(voiceList);
+
     return voiceList;
   }
   public List<Voice> getVoices(int ordering) {
     List<Voice> voices = getVoices();
     Collections.sort(voices, new VoiceComparator(ordering));
     return voices;
+  }
+  /** Insert directions into appropriate voices.
+   * <p>
+   * For every {@link freedots.musicxml.Direction} contained in this list,
+   * find a voice which has a note/rest at the position of the direction
+   * and insert it there.
+   * This is necessary because braille music needs directions attached
+   * to specific notes or rests, not just a vertical staff position as with
+   * print music.
+   */
+  private void insertDirections(List<Voice> voices) {
+    for (Event event: this) {
+      if (event instanceof Direction) {
+        Direction direction = (Direction)event;
+        Fraction offset = direction.getOffset();
+        SEARCH: for (Voice voice: voices) {
+          ListIterator<Event> iterator = voice.listIterator();
+          while (iterator.hasNext()) {
+            Event next = iterator.next();
+            if (next.getOffset().compareTo(offset) == 0
+             && !(next instanceof Direction)) {
+              iterator.previous(); iterator.add(direction);
+              break SEARCH;
+            }
+          }
+          iterator.add(direction);
+        }
+      }
+    }
   }
   private class VoiceComparator implements java.util.Comparator<Voice> {
     private int direction;

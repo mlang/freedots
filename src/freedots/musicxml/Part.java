@@ -205,7 +205,7 @@ public final class Part {
                 offset = offset.add(note.getDuration());
               }
             } else if ("direction".equals(tagName)) {
-              Direction direction = new Direction(musicdata, measureOffset.add(offset));
+              Direction direction = new Direction(musicdata, durationMultiplier, divisions, measureOffset.add(offset));
               eventList.add(direction);
             } else if ("harmony".equals(tagName)) {
               Harmony harmony = new Harmony(musicdata, durationMultiplier, divisions, measureOffset.add(offset));

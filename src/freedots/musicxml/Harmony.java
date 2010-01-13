@@ -34,22 +34,14 @@ import freedots.music.Fraction;
 import freedots.music.Staff;
 import freedots.music.StaffElement;
 
-public final class Harmony implements StaffElement {
+public final class Harmony extends AbstractDirection {
   private static final Logger log = Logger.getLogger(Harmony.class);
 
-  private Element element;
-  private Fraction initialDate;
-  private int durationMultiplier, divisions;
-
   private List<HarmonyChord> chords = new ArrayList<HarmonyChord>();
-  private Element offset = null, staffNumber = null;
 
   Harmony(final Element element, final int durationMultiplier, final int divisions,
                  final Fraction offset) {
-    this.element = element;
-    this.durationMultiplier = durationMultiplier;
-    this.divisions = divisions;
-    this.initialDate = offset;
+    super(element, durationMultiplier, divisions, offset);
 
     HarmonyChord currentChord = null;
     for (Node node = element.getFirstChild(); node != null;
@@ -71,42 +63,11 @@ public final class Harmony implements StaffElement {
         } else if ("degree".equals(child.getTagName())) {
           if (currentChord != null)
             currentChord.addDegree(child);
-        } else if ("offset".equals(child.getTagName())) {
-          this.offset = child;
-        } else if ("staff".equals(child.getTagName())) {
-          staffNumber = child;
         }
       }
     }
   }
   public List<HarmonyChord> getChords() { return chords; }
-
-  /** Calculates the musical position of this object.
-   * Harmony elements do have an optional offset element to modify the
-   * initial musical position further.
-   * This method takes that into account.
-   * @return the musical position as a fractional value.
-   */
-  public Fraction getOffset() {
-    if (offset != null) {
-      int value = Integer.parseInt(offset.getTextContent());
-      return initialDate.add(new Fraction(value * durationMultiplier,
-                                          4 * divisions));
-    }
-    return initialDate;
-  }
-  public boolean equalsIgnoreOffset(Event object) {
-    return false;
-  }
-  public int getStaffNumber() {
-    if (staffNumber != null)
-      return Integer.parseInt(staffNumber.getTextContent()) - 1;
-    return 0;
-  }
-  private Staff staff = null;
-  public Staff getStaff() { return staff; }
-  public void setStaff(Staff staff) { this.staff = staff; }
-  public boolean isRest() { return false; }
 
   @Override public String toString() {
     StringBuilder sb = new StringBuilder();

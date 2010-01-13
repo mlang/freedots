@@ -39,6 +39,7 @@ import freedots.music.Slur;
 import freedots.music.TimeSignature;
 import freedots.music.Voice;
 import freedots.music.VoiceChord;
+import freedots.musicxml.Direction;
 import freedots.musicxml.Note;
 
 class BrailleMeasure {
@@ -272,6 +273,10 @@ class BrailleMeasure {
         state.append(brailleNote);
       } else if (element instanceof VoiceChord) {
         printChord((VoiceChord)element, state);
+      } else if (element instanceof Direction) {
+        Direction direction = (Direction)element;
+        if (direction.isPedalPress()) state.append(Braille.pedalPress.toString());
+        else if (direction.isPedalRelease()) state.append(Braille.pedalRelease.toString());
       }
     }
   }
