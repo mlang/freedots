@@ -72,32 +72,58 @@ public final class Direction extends AbstractDirection {
     if (sb.length() == 0) return null;
     return sb.toString();
   }
-  public boolean isPedalPress () {
+
+  private boolean isPedalType (String type) {
     for (Element directionType: directionTypes) {
       for (Node node = directionType.getFirstChild(); node != null;
            node = node.getNextSibling()) {
         if (node.getNodeType() == Node.ELEMENT_NODE
          && "pedal".equals(node.getNodeName())) {
           Element pedal = (Element)node;
-          if ("start".equals(pedal.getAttribute("type"))) return true;
+          if (type.equals(pedal.getAttribute("type"))) return true;
         }
       }
     }
     return false;
+  }
+  public boolean isPedalPress () {
+    return isPedalType("start");
   }
   public boolean isPedalRelease () {
+    return isPedalType("stop");
+  }
+
+  /** Checks if this direction contains dynamics.
+   * @return a list of found dynamics indicators, or null if no dynamics
+   *         element was found in this direction.
+   */
+  public List<String> getDynamics () {
+    List<String> dynamics = null;
     for (Element directionType: directionTypes) {
       for (Node node = directionType.getFirstChild(); node != null;
            node = node.getNextSibling()) {
         if (node.getNodeType() == Node.ELEMENT_NODE
-         && "pedal".equals(node.getNodeName())) {
-          Element pedal = (Element)node;
-          if ("stop".equals(pedal.getAttribute("type"))) return true;
+         && "dynamics".equals(node.getNodeName())) {
+          if (dynamics == null) dynamics = new ArrayList<String>();
+          for (Node dynamicsNode = node.getFirstChild(); dynamicsNode != null;
+               dynamicsNode = dynamicsNode.getNextSibling()) {
+            if (dynamicsNode.getNodeType() == Node.ELEMENT_NODE) {
+              Element element = (Element)dynamicsNode;
+              String text;
+              if ("other-dynamics".equals(element.getTagName())) {
+                text = element.getTextContent();
+              } else {
+                text = element.getTagName();
+              }
+              dynamics.add(text);
+            }
+          }
         }
       }
     }
-    return false;
+    return dynamics;
   }
+
   public Sound getSound() { return sound; }
     
   // TODO: Incomplete, needs to be rethought

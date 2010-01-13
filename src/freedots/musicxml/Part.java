@@ -54,13 +54,13 @@ import org.w3c.dom.NodeList;
 public final class Part {
   private static final Logger log = Logger.getLogger(Part.class);
 
-  private Element scorePart;
+  private final Element scorePart;
 
-  private Score score;
+  private final Score score;
   public Score getScore() { return score; }
 
   private TimeSignature timeSignature = new TimeSignature(4, 4);
-  private MusicList eventList = new MusicList();
+  private final MusicList eventList = new MusicList();
 
   /** Construct a new part (and all its relevant child objects).
    *

@@ -146,6 +146,7 @@ public class MusicList extends java.util.ArrayList<Event> {
    * to specific notes or rests, not just a vertical staff position as with
    * print music.
    */
+   // TODO: take direction position (above, below) into account.
   private void insertDirections(List<Voice> voices) {
     for (Event event: this) {
       if (event instanceof Direction) {

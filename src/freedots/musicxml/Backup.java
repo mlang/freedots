@@ -31,8 +31,8 @@ import freedots.music.Fraction;
 /** A wrapper around the backup element.
  */
 final class Backup {
-  private int divisions, durationMultiplier;
-  private Element element;
+  private final int divisions, durationMultiplier;
+  private final Element element;
 
   Backup(final Element element,
          final int divisions, final int durationMultiplier) {

@@ -28,7 +28,7 @@ import org.w3c.dom.Text;
 /** A wrapper around the midi-instrument element.
  */
 final class MidiInstrument {
-  private Element xml;
+  private final Element xml;
 
   private Text midiProgram;
   private Text midiChannel;

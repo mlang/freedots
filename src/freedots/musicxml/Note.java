@@ -63,8 +63,8 @@ public final class Note implements RhythmicElement {
   private static final String STAFF_ELEMENT = "staff";
   private static final String TIME_MODIFICATION_ELEMENT = "time-modification";
 
-  private int divisions, durationMultiplier;
-  private Element element;
+  private final int divisions, durationMultiplier;
+  private final Element element;
 
   private Part part;
   public Part getPart() { return part; }

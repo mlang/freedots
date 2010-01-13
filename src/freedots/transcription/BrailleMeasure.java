@@ -275,8 +275,25 @@ class BrailleMeasure {
         printChord((VoiceChord)element, state);
       } else if (element instanceof Direction) {
         Direction direction = (Direction)element;
-        if (direction.isPedalPress()) state.append(Braille.pedalPress.toString());
-        else if (direction.isPedalRelease()) state.append(Braille.pedalRelease.toString());
+
+        List<String> dynamics = direction.getDynamics();
+        if (dynamics != null) {
+          for (String dyn: dynamics) {
+            state.append(new BrailleString(Braille.wordSign, direction));
+            state.append(dyn);
+          }
+        }
+
+        String words = direction.getWords();
+        if (words != null && !words.isEmpty()) {
+          state.append(new BrailleString(Braille.wordSign, direction));
+          state.append(words);
+        }
+
+        if (direction.isPedalPress())
+          state.append(Braille.pedalPress.toString());
+        else if (direction.isPedalRelease())
+          state.append(Braille.pedalRelease.toString());
       }
     }
   }

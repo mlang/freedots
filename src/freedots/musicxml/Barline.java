@@ -28,7 +28,7 @@ import org.w3c.dom.NodeList;
 /** A wrapper around the barline element.
  */
 final class Barline {
-  private Element element;
+  private final Element element;
   private Element ending = null;
 
   public Barline(final Element element) {

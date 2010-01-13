@@ -35,7 +35,7 @@ import org.w3c.dom.NodeList;
 /** A wrapper around the attributes element.
  */
 public final class Attributes {
-  private Element element;
+  private final Element element;
 
   public Attributes(final Element element) {
     this.element = element;

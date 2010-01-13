@@ -39,6 +39,10 @@ class BrailleString {
     this(string);
     this.model = model;
   }
+  BrailleString(final Braille braille, final Object model) {
+    this(braille);
+    this.model = model;
+  }
   Object getModel() { return model; }
   void setContainer(BrailleList list) { container = list; }
 
