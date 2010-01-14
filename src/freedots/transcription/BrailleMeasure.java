@@ -281,6 +281,7 @@ class BrailleMeasure {
           for (String dyn: dynamics) {
             state.append(new BrailleString(Braille.wordSign, direction));
             state.append(dyn);
+            state.setLastPitch(null);
           }
         }
 
