@@ -38,7 +38,7 @@ class BrailleNote extends BrailleString {
   private Options options;
 
   BrailleNote(final Note note, final AbstractPitch lastPitch) {
-    super(null, note);
+    super((String)null, note);
     this.lastPitch = lastPitch;
     this.options = Options.getInstance();
   }
