@@ -51,9 +51,10 @@ class BrailleMeasure {
   private AbstractPitch finalPitch = null;
   private TimeSignature timeSignature = null;
   private int voiceDirection = -1; /* By default, top to bottom */
-  BrailleMeasure() {}
-  BrailleMeasure(final BrailleMeasure previous) {
-    this();
+  private final Transcriber transcriber;
+  BrailleMeasure(Transcriber transcriber) { this.transcriber = transcriber; }
+  BrailleMeasure(final Transcriber transcriber, final BrailleMeasure previous) {
+    this(transcriber);
     this.previous = previous;
   }
 
@@ -150,9 +151,8 @@ class BrailleMeasure {
       append(new BrailleString(braille));
     }
     void append(BrailleString braille) {
-      if (braille.length() <= width && !hyphenated) {
+      if (head.length() + braille.length() <= width && !hyphenated) {
         head.add(braille);
-        width -= braille.length();
       } else {
         hyphenated = true;
         tail.add(braille);
@@ -276,6 +276,7 @@ class BrailleMeasure {
       } else if (element instanceof Direction) {
         Direction direction = (Direction)element;
 
+        if (!transcriber.alreadyPrintedDirections.contains(direction)) {
         List<String> dynamics = direction.getDynamics();
         if (dynamics != null) {
           for (String dyn: dynamics) {
@@ -295,6 +296,7 @@ class BrailleMeasure {
           state.append(Braille.pedalPress.toString());
         else if (direction.isPedalRelease())
           state.append(Braille.pedalRelease.toString());
+        }
       }
     }
   }

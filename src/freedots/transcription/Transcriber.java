@@ -22,9 +22,13 @@
  */
 package freedots.transcription;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import freedots.Braille;
 import freedots.Options;
 
+import freedots.musicxml.Direction;
 import freedots.musicxml.Score;
 
 /**
@@ -223,4 +227,6 @@ public final class Transcriber {
   @Override public String toString() {
     return strings.toString();
   }
+
+  List<Direction> alreadyPrintedDirections = new ArrayList<Direction>();
 }

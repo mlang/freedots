@@ -39,6 +39,7 @@ import freedots.musicxml.Score;
 class BarOverBar implements Strategy {
   private static final Logger log = Logger.getLogger(BarOverBar.class);
 
+  private Transcriber transcriber;
   private Options options = null;
 
   private BrailleStaves brailleStaves = new BrailleStaves();
@@ -46,6 +47,7 @@ class BarOverBar implements Strategy {
   private TimeSignature initialTimeSignature = null;
 
   public void transcribe(Transcriber transcriber) {
+    this.transcriber= transcriber;
     options = transcriber.getOptions();
 
     createMeasuresInBrailleStaves(transcriber.getScore());
@@ -143,7 +145,7 @@ class BarOverBar implements Strategy {
       for (int staffIndex = 0; staffIndex < staffCount; staffIndex++) {
         Staff staff = musicList.getStaff(staffIndex);
         BrailleStaff brailleStaff = new BrailleStaff();
-        BrailleMeasure measure = new BrailleMeasure();
+        BrailleMeasure measure = new BrailleMeasure(transcriber);
         boolean displayClefChange = false;
         int voiceDirection = -1;
 
@@ -175,7 +177,7 @@ class BarOverBar implements Strategy {
             EndBar rightBar = (EndBar)event;
             measure.process();
             brailleStaff.add(measure);
-            measure = new BrailleMeasure(measure);
+            measure = new BrailleMeasure(transcriber, measure);
             measure.setVoiceDirection(voiceDirection);
           } else {
             measure.add(event);

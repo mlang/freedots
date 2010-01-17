@@ -40,6 +40,7 @@ import freedots.music.MusicList;
 import freedots.music.Staff;
 import freedots.music.StartBar;
 import freedots.music.Syllabic;
+import freedots.musicxml.Direction;
 import freedots.musicxml.Harmony;
 import freedots.musicxml.Note;
 import freedots.musicxml.Part;
@@ -62,12 +63,14 @@ class SectionBySection implements Strategy {
     for (Part part: score.getParts()) {
       String name = part.getName();
       if (name != null && !name.isEmpty()) transcriber.printLine(name);
-      List<String> directives = part.getDirectives();
-      String directive = "";
+      List<Direction> directives = part.getDirectives();
+      String directiveText = "";
       if (directives.size() == 1) {
-        directive = directives.get(0).trim() + " ";
+        final Direction directive = directives.get(0);
+        directiveText = directives.get(0).getWords().trim() + " ";
+        transcriber.alreadyPrintedDirections.add(directive);
       }
-      transcriber.printLine(directive
+      transcriber.printLine(directiveText
                             + part.getKeySignature().toBraille()
                             + Braille.toString(part.getTimeSignature()));
       for (Section section:getSections(part)) transcribeSection(part, section);
@@ -113,7 +116,7 @@ class SectionBySection implements Strategy {
   }
 
   private void transcribeMusic(Staff staff, final int chordDirection) {
-    BrailleMeasure measure = new BrailleMeasure();
+    BrailleMeasure measure = new BrailleMeasure(transcriber);
     measure.setVoiceDirection(chordDirection);
 
     StartBar startBar = null;
@@ -178,7 +181,7 @@ class SectionBySection implements Strategy {
 
         if (!rightBar.getEndOfMusic()) transcriber.spaceOrNewLine();
 
-        measure = new BrailleMeasure(measure);
+        measure = new BrailleMeasure(transcriber, measure);
         measure.setVoiceDirection(chordDirection);
       } else {
         measure.add(event);

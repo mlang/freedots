@@ -46,8 +46,7 @@ class BrailleString {
   Object getModel() { return model; }
   void setContainer(BrailleList list) { container = list; }
 
-  @Override
-  public String toString() {
+  @Override public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append(string != null? string: braille);
     if (braille != null && braille.needsAdditionalDot3IfOneOfDot123Follows()) {

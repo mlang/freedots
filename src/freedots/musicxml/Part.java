@@ -398,19 +398,16 @@ public final class Part {
   /** Gets a list of all directives contained in this part.
    * Directives are special directions usually occuring at the start of
    * the piece.
-   * TODO: Change signature to return Directive instances instead of
-   * strings to give the caller a chance to look at the musical offset or
-   * staff assignment of a list with several entries.
    */
-  public List<String> getDirectives() {
-    List<String> directives = new ArrayList<String>();
+  public List<Direction> getDirectives() {
+    final List<Direction> directives = new ArrayList<Direction>();
     for (Event event: eventList) {
       if (event instanceof Direction) {
-        Direction direction = (Direction)event;
+        final Direction direction = (Direction)event;
         if (direction.isDirective()) {
-          String directive = direction.getWords();
+          final String directive = direction.getWords();
           if (directive != null && !directive.isEmpty()) {
-            directives.add(directive);
+            directives.add(direction);
           }
         }
       }
