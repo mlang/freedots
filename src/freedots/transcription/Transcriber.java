@@ -118,6 +118,8 @@ public final class Transcriber {
     characterCount = 0;
     lineCount = 0;
     pageNumber = 1;
+
+    alreadyPrintedDirections = new ArrayList<Direction>();
   }
 
   private void transcribe() {
@@ -228,5 +230,5 @@ public final class Transcriber {
     return strings.toString();
   }
 
-  List<Direction> alreadyPrintedDirections = new ArrayList<Direction>();
+  List<Direction> alreadyPrintedDirections;
 }
