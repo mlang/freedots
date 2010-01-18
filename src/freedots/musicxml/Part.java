@@ -52,7 +52,7 @@ import org.w3c.dom.NodeList;
 /** A wrapper around the MusicXML part element.
  */
 public final class Part {
-  private static final Logger log = Logger.getLogger(Part.class);
+  private static final Logger LOG = Logger.getLogger(Part.class);
 
   private final Element scorePart;
 
@@ -255,7 +255,7 @@ public final class Part {
                 }
               }
             } else
-              log.info("Unsupported musicdata element " + tagName);
+              LOG.info("Unsupported musicdata element " + tagName);
             if (offset.compareTo(measureDuration) > 0) measureDuration = offset;
           }
         }
@@ -271,7 +271,7 @@ public final class Part {
           measureOffset = measureOffset.add(measureDuration);
         } else {
           if (measureDuration.compareTo(activeTimeSignature) != 0) {
-            log.warning("Incomplete measure "
+            LOG.warning("Incomplete measure "
                         + xmlMeasure.getAttribute("number") + ": "
                         + timeSignature + " " + measureDuration);
           }

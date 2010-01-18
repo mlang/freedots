@@ -125,7 +125,7 @@ public enum Braille {
   lowerDigit4(256), lowerDigit5(26), lowerDigit6(235), lowerDigit7(2356),
   lowerDigit8(236), lowerDigit9(35);
 
-  private static final Logger log = Logger.getLogger(Braille.class);
+  private static final Logger LOG = Logger.getLogger(Braille.class);
   private int[] dots;
   private String cachedString;
   private boolean needsAdditionalDot3IfOneOfDot123Follows = false;
@@ -440,8 +440,8 @@ public enum Braille {
         else if (af.getDenominator() == 8) sb.append(eighthStem);
         else if (af.getDenominator() == 16) sb.append(sixteenthStem);
         else if (af.getDenominator() == 32) sb.append(thirtysecondthStem);
-        else log.warning("Unmapped denominator: "+af);
-      } else log.warning("Unmapped numerator: "+af.getNumerator());
+        else LOG.warning("Unmapped denominator: "+af);
+      } else LOG.warning("Unmapped numerator: "+af.getNumerator());
       if (af.getDots() > 0) {
         for (int i = 0; i < af.getDots(); i++) sb.append(dot);
       }
@@ -498,7 +498,7 @@ public enum Braille {
           sb.append(letterM).append(numberSign).append(upperNumber(11));
         else if ("dominant-13th".equals(kind))
           sb.append(numberSign).append(upperNumber(13));
-        else log.warning("Unhandled harmony-chord kind '"+kind+"'");
+        else LOG.warning("Unhandled harmony-chord kind '"+kind+"'");
 
         for (Harmony.HarmonyChord.Degree degree: chord.getAlterations())
           sb.append(accidentalFromAlter(degree.getAlter()))

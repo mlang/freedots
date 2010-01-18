@@ -34,9 +34,9 @@ public class KeySignature {
     modifiers = new int[7];
     for (int i = 0; i < 7; i++) modifiers[i] = 0;
     if (type > 0) {
-      for (int i = 0; i < type; i++) modifiers[sharps[i]] = 1;
+      for (int i = 0; i < type; i++) modifiers[SHARPS[i]] = 1;
     } else if (type < 0) {
-      for (int i = 0; i<-type; i++) modifiers[flats[i]] = -1;
+      for (int i = 0; i<-type; i++) modifiers[FLATS[i]] = -1;
     }
   }
 
@@ -48,8 +48,8 @@ public class KeySignature {
     return modifiers[reducedRank];
   }
 
-  private static final int[] sharps = {3, 0, 4, 1, 5, 2, 6};
-  private static final int[] flats  = {6, 2, 5, 1, 4, 0, 3};
+  private static final int[] SHARPS = {3, 0, 4, 1, 5, 2, 6};
+  private static final int[] FLATS  = {6, 2, 5, 1, 4, 0, 3};
 
   public String toBraille() {
     if (type == 0) return "";

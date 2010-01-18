@@ -70,7 +70,8 @@ public final class Main
   implements javax.swing.event.CaretListener,
              freedots.gui.GraphicalUserInterface,
              freedots.playback.PlaybackObserver {
-  private static final String WELCOME_MESSAGE = "Use \"File -> Open\" (Ctrl+O) to open a new score";
+  private static final String WELCOME_MESSAGE =
+    "Use \"File -> Open\" (Ctrl+O) to open a new score";
 
   private Score score;
   public Score getScore() { return score; }
@@ -296,8 +297,10 @@ public final class Main
     JMenu transcriptionMenu = new JMenu("Transcription");
     transcriptionMenu.setMnemonic(KeyEvent.VK_T);
 
-    JRadioButtonMenuItem sectionBySectionItem = new JRadioButtonMenuItem("Section by Section");
-    JRadioButtonMenuItem barOverBarItem = new JRadioButtonMenuItem("Bar over Bar");
+    JRadioButtonMenuItem sectionBySectionItem =
+      new JRadioButtonMenuItem("Section by Section");
+    JRadioButtonMenuItem barOverBarItem =
+      new JRadioButtonMenuItem("Bar over Bar");
     ButtonGroup group = new ButtonGroup();
     group.add(sectionBySectionItem);
     group.add(barOverBarItem);
@@ -322,7 +325,8 @@ public final class Main
     transcriptionMenu.add(sectionBySectionItem);
     transcriptionMenu.add(barOverBarItem);
 
-    JCheckBoxMenuItem showFingeringItem = new JCheckBoxMenuItem("Show fingering");
+    JCheckBoxMenuItem showFingeringItem =
+      new JCheckBoxMenuItem("Show fingering");
     showFingeringItem.setSelected(options.getShowFingering());
     showFingeringItem.addItemListener(new ItemListener() {
       public void itemStateChanged(ItemEvent e) {
@@ -349,7 +353,8 @@ public final class Main
     autoPlayItem.setSelected(autoPlay);
     playbackMenu.add(autoPlayItem);
 
-    JCheckBoxMenuItem caretFollowsPlaybackItem = new JCheckBoxMenuItem("Caret follows playback");
+    JCheckBoxMenuItem caretFollowsPlaybackItem =
+      new JCheckBoxMenuItem("Caret follows playback");
     caretFollowsPlaybackItem.addItemListener(new ItemListener() {
       public void itemStateChanged(ItemEvent e) {
         caretFollowsPlayback = e.getStateChange() == ItemEvent.SELECTED;
@@ -399,7 +404,8 @@ public final class Main
 
     jsBachMenu.add(bwv988Menu);
 
-    JMenu bwv1013Menu = new JMenu("BWV 1013: Partita in A minor for solo flute");
+    JMenu bwv1013Menu =
+      new JMenu("BWV 1013: Partita in A minor for solo flute");
 
     JMenuItem bwv1013_1Item = new JMenuItem("1. Allemande", KeyEvent.VK_A);
     bwv1013_1Item.getAccessibleContext().setAccessibleDescription(
@@ -458,7 +464,8 @@ public final class Main
 
     lvBeethovenMenu.add(moonshineMenu);
 
-    JMenuItem moonshine_1Item = new JMenuItem("1. First movement", KeyEvent.VK_1);
+    JMenuItem moonshine_1Item =
+      new JMenuItem("1. First movement", KeyEvent.VK_1);
     moonshine_1Item.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         Library library = new Library();
@@ -484,7 +491,8 @@ public final class Main
     });
     fakebookMenu.add(autumnLeavesItem);
 
-    JMenuItem blueAndSentimentalItem = new JMenuItem("Blue and sentimental", KeyEvent.VK_B);
+    JMenuItem blueAndSentimentalItem =
+      new JMenuItem("Blue and sentimental", KeyEvent.VK_B);
     blueAndSentimentalItem.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         Library library = new Library();

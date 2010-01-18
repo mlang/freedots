@@ -14,7 +14,7 @@
  * for more details (a copy is included in the LICENSE.txt file that
  * accompanied this code).
  *
- * You should have received a copy of the GNU General Public License 
+ * You should have received a copy of the GNU General Public License
  * along with this work; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
  *
@@ -54,7 +54,7 @@ import org.w3c.dom.Text;
 /** A wrapper around (the most important) note element.
  */
 public final class Note implements RhythmicElement {
-  private static final Logger log = Logger.getLogger(Note.class);
+  private static final Logger LOG = Logger.getLogger(Note.class);
 
   static final String ACCIDENTAL_ELEMENT = "accidental";
   static final String CHORD_ELEMENT = "chord";
@@ -69,16 +69,16 @@ public final class Note implements RhythmicElement {
   private Part part;
   public Part getPart() { return part; }
 
-  Fraction offset;
-  Staff staff = null;
+  private Fraction offset;
+  private Staff staff = null;
 
-  Element grace = null;
-  Pitch pitch = null;
-  Unpitched unpitched = null;
-  Text duration = null;
-  Text staffNumber, voiceName;
+  private Element grace = null;
+  private Pitch pitch = null;
+  private Unpitched unpitched = null;
+  private Text duration = null;
+  private Text staffNumber, voiceName;
 
-  Element type;
+  private Element type;
   private static final Map<String, Fraction> TYPE_MAP =
     Collections.unmodifiableMap(new HashMap<String, Fraction>() {
       {
@@ -95,7 +95,7 @@ public final class Note implements RhythmicElement {
         put("256th", new Fraction(1, 256));
       }
     });
-  List<Element> dot = new ArrayList<Element>(3);
+  private List<Element> dot = new ArrayList<Element>(3);
 
   private Accidental accidental = null;
   private static final Map<String, Accidental> accidentalMap =
@@ -225,7 +225,7 @@ public final class Note implements RhythmicElement {
         if (TYPE_MAP.containsKey(santizedTypeName))
           base = TYPE_MAP.get(santizedTypeName);
         else
-          log.warning("Illegal <type> content '"+typeName+"', "
+          LOG.warning("Illegal <type> content '"+typeName+"', "
                       + "guessing using the duration element");
       }
     }
@@ -489,7 +489,7 @@ public final class Note implements RhythmicElement {
                 if (ARTICULATION_MAP.containsKey(nodeName)) {
                   articulations.add(ARTICULATION_MAP.get(nodeName));
                 } else {
-                  log.warning("Unhandled articulation " + nodeName);
+                  LOG.warning("Unhandled articulation " + nodeName);
                 }
               }
             }
@@ -554,7 +554,7 @@ public final class Note implements RhythmicElement {
             } else if (node.getNodeName().equals("turn")) {
               ornaments.add(Ornament.turn);
             } else {
-              log.warning("Unhandled ornament " + node.getNodeName());
+              LOG.warning("Unhandled ornament " + node.getNodeName());
             }
           }
         }

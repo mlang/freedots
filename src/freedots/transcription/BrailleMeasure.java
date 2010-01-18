@@ -43,7 +43,7 @@ import freedots.musicxml.Direction;
 import freedots.musicxml.Note;
 
 class BrailleMeasure {
-  private static final Logger log = Logger.getLogger(BrailleMeasure.class);
+  private static final Logger LOG = Logger.getLogger(BrailleMeasure.class);
 
   private BrailleMeasure previous = null;
   private MusicList events = new MusicList();
@@ -226,7 +226,7 @@ class BrailleMeasure {
                   sb.append((interpretation.isCorrect()?" * ":"   ")
                             + interpretation.toString() + "\n");
                 }
-                log.warning(sb.toString());
+                LOG.warning(sb.toString());
               }
             }
             printNoteList(fmia.getParts().get(p), state, splitPoint);

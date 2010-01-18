@@ -116,7 +116,7 @@
     <module name="EmptyBlock"/>
     <module name="LeftCurly"/>
     <module name="NeedBraces">
-      <property name="tokens" value="LITERAL_DO, LITERAL_ELSE"/>
+      <property name="tokens" value="LITERAL_DO"/>
     </module>
     <module name="RightCurly"/>
 
@@ -129,7 +129,6 @@
     <module name="EqualsHashCode"/>
     <!--module name="HiddenField"/-->
     <module name="IllegalInstantiation"/>
-    <module name="InnerAssignment"/>
     <!--module name="MagicNumber"/-->
     <module name="MissingSwitchDefault"/>
     <module name="RedundantThrows"/>

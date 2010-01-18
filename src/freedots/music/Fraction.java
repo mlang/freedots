@@ -78,9 +78,11 @@ public class Fraction implements Comparable<Fraction> {
     return new Fraction(-basic.numerator, basic.denominator);
   }
   public Fraction add(Fraction other) {
-    Fraction newFraction = new Fraction(this.basicFraction().numerator * other.basicFraction().denominator +
-                                        other.basicFraction().numerator * this.basicFraction().denominator,
-                                        this.basicFraction().denominator * other.basicFraction().denominator);
+    Fraction a = this.basicFraction();
+    Fraction b = other.basicFraction();
+    Fraction newFraction = new Fraction(a.numerator * b.denominator
+                                      + b.numerator * a.denominator,
+                                        a.denominator * b.denominator);
     newFraction.simplify();
     return newFraction;
   }

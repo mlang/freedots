@@ -37,7 +37,7 @@ import freedots.musicxml.Part;
 import freedots.musicxml.Score;
 
 class BarOverBar implements Strategy {
-  private static final Logger log = Logger.getLogger(BarOverBar.class);
+  private static final Logger LOG = Logger.getLogger(BarOverBar.class);
 
   private Transcriber transcriber;
   private Options options = null;
@@ -129,14 +129,14 @@ class BarOverBar implements Strategy {
         initialKeySignature = part.getKeySignature();
       } else {
         if (!initialKeySignature.equals(part.getKeySignature())) {
-          log.warning("Parts with different initial key signatures");
+          LOG.warning("Parts with different initial key signatures");
         }
       }
       if (initialTimeSignature == null) {
         initialTimeSignature = part.getTimeSignature();
       } else {
         if (!initialTimeSignature.equals(part.getTimeSignature())) {
-          log.warning("Parts with different initial time signatures");
+          LOG.warning("Parts with different initial time signatures");
         }
       }
 

@@ -32,7 +32,7 @@ import freedots.logging.Logger;
 import freedots.music.Fraction;
 
 public final class Harmony extends AbstractDirection {
-  private static final Logger log = Logger.getLogger(Harmony.class);
+  private static final Logger LOG = Logger.getLogger(Harmony.class);
 
   private final List<HarmonyChord> chords = new ArrayList<HarmonyChord>();
 
@@ -100,7 +100,7 @@ public final class Harmony extends AbstractDirection {
       if (rootStep != null) {
         return Pitch.convertStep(rootStep.getTextContent());
       }
-      log.warning("Unsupported harmony type without root-step");
+      LOG.warning("Unsupported harmony type without root-step");
       return 0;
     }
     public float getRootAlter () {

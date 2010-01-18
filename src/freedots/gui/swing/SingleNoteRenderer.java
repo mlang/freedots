@@ -86,7 +86,7 @@ final class SingleNoteRenderer extends JPanel {
         System.err.println("File "+filename+" not found");
         return;
       }
-      D = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(inputStream);  //"/home/skainz/workspace/trunk/G_CLEF.xml"));
+      D = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(inputStream);
     } catch (SAXException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();

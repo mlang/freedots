@@ -37,7 +37,7 @@ import freedots.logging.Logger;
  * accidental is tied to the same note across a barline.
  */
 public final class AccidentalContext {
-  private static final Logger log = Logger.getLogger(AccidentalContext.class);
+  private static final Logger LOG = Logger.getLogger(AccidentalContext.class);
 
   private KeySignature keySignature;
   private Map<Integer, Accidental> ranks = new HashMap<Integer, Accidental>();
@@ -69,12 +69,12 @@ public final class AccidentalContext {
         if (ranks.containsKey(rank)) {
           Accidental impliedAccidental = ranks.get(rank);
           if ((int)impliedAccidental.getAlter() != alter) {
-            log.info("Pitch alter ("+alter+") != implied accidental "
+            LOG.info("Pitch alter ("+alter+") != implied accidental "
                      + impliedAccidental);
           }
         } else {
           if (keySignature.getModifier(pitch.getStep()) != alter) {
-            log.info("Pitch " +pitch + " != key signature alteration "
+            LOG.info("Pitch " +pitch + " != key signature alteration "
                      + keySignature.getModifier(pitch.getStep()));
           }
         }
