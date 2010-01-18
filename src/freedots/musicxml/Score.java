@@ -337,6 +337,9 @@ public final class Score {
    * of a certain element with a given value.
    * This lets applications communicate, for example, that all system and/or
    * page breaks are contained in the MusicXML document.
+   * @param element is the tagName of the {@link org.w3c.dom.Element}
+   * @param attribute is the name of the attribute which is queried
+   * @param value is true if support and false if absence is queried
    */
   public boolean encodingSupports(String element,
                                   String attribute, boolean value) {

@@ -48,12 +48,18 @@ import javax.swing.text.JTextComponent;
 import freedots.music.Fingering;
 import freedots.musicxml.Note;
 
+/** Defines functionality to edit fingering information attached to a
+ *  Note object.
+ */
 @SuppressWarnings("serial")
 public final class EditFingeringAction extends AbstractAction {
   private Main gui;
   private FingeringEditor fingeringEditor = null;
   private boolean dialogShowing = false;
 
+  /** Construct a new fingering editing action object.
+   * @param gui is used to retrieve the object underneath the caret
+   */
   public EditFingeringAction(final Main gui) {
     super("Fingering...");
     this.gui = gui;
@@ -74,6 +80,8 @@ public final class EditFingeringAction extends AbstractAction {
     }
   }
 
+  /** A dialog for changing fingering information attached to a Note.
+   */
   class FingeringEditor extends JDialog implements ActionListener {
     private Note note;
     private Main main;
@@ -81,7 +89,7 @@ public final class EditFingeringAction extends AbstractAction {
     private JTextField text;
     private JButton okButton, cancelButton;
 
-    public FingeringEditor(final Main parent) {
+    FingeringEditor(final Main parent) {
       super(parent, "Fingering", true);
       this.main = parent;
 
@@ -129,7 +137,7 @@ public final class EditFingeringAction extends AbstractAction {
       setLocationRelativeTo(parent);
     }
 
-    public void setNote(Note note) {
+    void setNote(Note note) {
       this.note = note;
 
       text.setText(note.getFingering().toString("-"));

@@ -260,12 +260,12 @@ class SectionBySection implements Strategy {
    */
   private class HarmonyInfo {
     private Harmony harmony;
-    HarmonyInfo(Harmony harmony) { this.harmony = harmony; }
+    HarmonyInfo(final Harmony harmony) { this.harmony = harmony; }
     Harmony getHarmony() { return harmony; }
     Fraction getOffset() { return harmony.getOffset(); }
 
     private Fraction duration = null;
-    void setDuration(Fraction duration) { this.duration = duration; }
+    void setDuration(final Fraction duration) { this.duration = duration; }
     Fraction getDuration() { return duration; }
   }
   private class MeasureOfHarmonies extends ArrayList<HarmonyInfo> {
@@ -273,7 +273,7 @@ class SectionBySection implements Strategy {
      *  in this measure.
      * This should probably be done in the core MusicXML library instead.
      */
-    void calculateDurations (Fraction measureEnd) {
+    void calculateDurations (final Fraction measureEnd) {
       if (size() > 0) {
         Iterator<HarmonyInfo> iterator = iterator();
         HarmonyInfo last = iterator.next();

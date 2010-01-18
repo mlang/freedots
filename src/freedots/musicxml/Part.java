@@ -57,21 +57,23 @@ public final class Part {
   private final Element scorePart;
 
   private final Score score;
+  /** Gets the parent {@link freedots.musicxml.Score} of this part.
+   */
   public Score getScore() { return score; }
 
   private TimeSignature timeSignature = new TimeSignature(4, 4);
   private final MusicList eventList = new MusicList();
 
-  /** Construct a new part (and all its relevant child objects).
+  /** Constructs a new part (and all its relevant child objects).
    *
    * @throws MusicXMLParseException if an unrecoverable error happens
    */
-  Part(Element part, Element scorePart, Score score)
+  Part(final Element part, final Element scorePart, final Score score)
     throws MusicXMLParseException {
     this.scorePart = scorePart;
     this.score = score;
 
-    int divisions = score.getDivisions();
+    final int divisions = score.getDivisions();
     int durationMultiplier = 1;
 
     int measureNumber = 0;
@@ -86,7 +88,7 @@ public final class Part {
          partNode = partNode.getNextSibling()) {
       if (partNode.getNodeType() == Node.ELEMENT_NODE
        && "measure".equals(partNode.getNodeName())) {
-        Element xmlMeasure = (Element)partNode;
+        final Element xmlMeasure = (Element)partNode;
 
         StartBar startBar = new StartBar(measureOffset, ++measureNumber);
         startBar.setStaffCount(staffCount);
@@ -140,7 +142,9 @@ public final class Part {
                   if (key.getStaffName() == null)
                     eventList.add(new GlobalKeyChange(measureOffset.add(offset), key));
                   else
-                    eventList.add(new KeyChange(measureOffset.add(offset), key, Integer.parseInt(key.getStaffName()) - 1));
+                    eventList.add(new KeyChange(measureOffset.add(offset),
+                                                key,
+                                                Integer.parseInt(key.getStaffName()) - 1));
                 }
               }
             } else if ("note".equals(tagName)) {

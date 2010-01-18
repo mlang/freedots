@@ -39,7 +39,7 @@ public final class Sound implements Event {
     this.offset = offset;
   }
 
-  /** Create MIDI tempo change event if this Sound element specifies tempo.
+  /** Creates a MIDI tempo change event if this Sound element specifies tempo.
    * @return a MetaMessage or null, if no tempo attribute was found
    */
   public MetaMessage getTempoMessage() {
@@ -61,6 +61,10 @@ public final class Sound implements Event {
     return null;
   }
 
+  /** Gets the MIDI velocity if this sound element specifies it.
+   * @return an Integer in the range of 0 to 127, or null of velocity was not
+   *         specified
+   */
   public Integer getMidiVelocity() {
     if (xml.hasAttribute("dynamics")) {
       Float dynamics = Float.parseFloat(xml.getAttribute("dynamics"));

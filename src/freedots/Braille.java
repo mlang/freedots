@@ -368,6 +368,13 @@ public enum Braille {
     default: throw new AssertionError(accidental);
     }
   }
+  /** Generates the main sign used to describe a pitch with a certain musical
+   *  duration.
+   * @param value is the musical duration
+   * @param pitch indicates the pitch to express excluding any possible
+   *        octave signs
+   * @return an Unicode braille string of length 1
+   */
   public static String toString(AugmentedFraction value, AbstractPitch pitch) {
     String braille = "";
     final int log = value.getLog();

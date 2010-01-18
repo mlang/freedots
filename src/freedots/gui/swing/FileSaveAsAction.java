@@ -49,6 +49,10 @@ import freedots.transcription.Transcriber;
 @SuppressWarnings("serial")
 public final class FileSaveAsAction extends AbstractAction {
   private Main gui;
+
+  /** Constructs a new action object for saving files.
+   * @param gui is used to retrieve the currently loaded score object
+   */
   public FileSaveAsAction(final Main gui) {
     super("Save as...");
     this.gui = gui;
@@ -120,6 +124,10 @@ public final class FileSaveAsAction extends AbstractAction {
     }
   }
 
+  /** Saves the given score to MusicXML format.
+   * @param score is the score to save
+   * @param file identifies the target filename
+   */
   private static void exportToMusicXML(Score score, File file) {
     FileOutputStream fileOutputStream = null;
     try {
@@ -129,6 +137,11 @@ public final class FileSaveAsAction extends AbstractAction {
       exception.printStackTrace();
     }
   }
+
+  /** Saves the given score to as a MIDI file.
+   * @param score is the score to convert to MIDI
+   * @param file identifies the target filename
+   */
   private static void exportToMidi(Score score, File file) {
     FileOutputStream fileOutputStream = null;
     try {
@@ -145,6 +158,8 @@ public final class FileSaveAsAction extends AbstractAction {
     }
   }
 
+  /** Saves the braille trnascription in Unicode encoding.
+   */
   private static void
   exportToUnicodeBraille(Transcriber transcriber, File file) {
     Writer fileWriter = null;
@@ -160,6 +175,8 @@ public final class FileSaveAsAction extends AbstractAction {
     }
   }
 
+  /** Saves the braille trnascription result with BRF encoding.
+   */
   private static void
   exportToBRF(Transcriber transcriber, File file) {
     Writer fileWriter = null;

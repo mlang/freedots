@@ -66,6 +66,8 @@ public final class Options {
    */
   public File getSoundfont() { return soundfont; }
 
+  /** Constructs a new instance from a list of command-line arguments.
+   */
   public Options(final String[] args) throws FileNotFoundException {
     for (int index = 0; index < args.length; index++) {
       String option = args[index];
@@ -137,6 +139,9 @@ public final class Options {
    */
   public boolean getPlayScore() { return playScore; }
 
+  /** Indicates if MIDI file export was requested from the command-line.
+   * @return {@code null} if MIDI file export was not requested
+   */
   public File getExportMidiFile() { return exportMidiFile; }
 
   UI getUI() { return ui; }
@@ -163,7 +168,8 @@ public final class Options {
     UI(final String name) { className = "freedots.gui." + name; }
     public String getClassName() { return className; }
   }
-  /** This enum defines the available transcription strategies.
+  /** Defines the available transcription formats, like section by section or
+   * bar over bar.
    */
   public enum Method {
     SectionBySection, BarOverBar;
