@@ -198,7 +198,8 @@ public final class Transcriber {
     newLine();
   }
   void spaceOrNewLine() {
-    if (getRemainingColumns() > 1) printString(" "); else newLine();
+    if (getRemainingColumns() > 1) printString(" ");
+    else newLine();
   }
   void newLine() {
     strings.add(new BrailleString(LINE_SEPARATOR));
