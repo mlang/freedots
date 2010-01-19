@@ -133,6 +133,17 @@ public final class MIDISequence extends javax.sound.midi.Sequence {
       if (event instanceof Direction) {
         Direction direction = (Direction)event;
         if (direction.getSound() != null) event = direction.getSound();
+        if (direction.isPedalPress()) {
+          ShortMessage msg = new ShortMessage();
+          msg.setMessage(ShortMessage.CONTROL_CHANGE,
+                         0/*FIXME*/, 64, 127);
+          track.add(new MidiEvent(msg, direction.getOffset().add(offset).toInteger(resolution)));
+        } else if (direction.isPedalRelease()) {
+          ShortMessage msg = new ShortMessage();
+          msg.setMessage(ShortMessage.CONTROL_CHANGE,
+                         0/*FIXME*/, 64, 0);
+          track.add(new MidiEvent(msg, direction.getOffset().add(offset).toInteger(resolution)));
+        }
       }          
 
       if (event instanceof GlobalKeyChange) {
