@@ -133,16 +133,12 @@ public final class MIDISequence extends javax.sound.midi.Sequence {
       if (event instanceof Direction) {
         Direction direction = (Direction)event;
         if (direction.getSound() != null) event = direction.getSound();
+
+        final int tick = direction.getOffset().add(offset).toInteger(resolution);
         if (direction.isPedalPress()) {
-          ShortMessage msg = new ShortMessage();
-          msg.setMessage(ShortMessage.CONTROL_CHANGE,
-                         0/*FIXME*/, 64, 127);
-          track.add(new MidiEvent(msg, direction.getOffset().add(offset).toInteger(resolution)));
+          track.add(new MidiEvent(createPedalMessage(0, true), tick));
         } else if (direction.isPedalRelease()) {
-          ShortMessage msg = new ShortMessage();
-          msg.setMessage(ShortMessage.CONTROL_CHANGE,
-                         0/*FIXME*/, 64, 0);
-          track.add(new MidiEvent(msg, direction.getOffset().add(offset).toInteger(resolution)));
+          track.add(new MidiEvent(createPedalMessage(0, false), tick));
         }
       }          
 
@@ -318,5 +314,13 @@ public final class MIDISequence extends javax.sound.midi.Sequence {
                      0);
       track.add(new MidiEvent(msg, 0));
     }
+  }
+
+  private static ShortMessage createPedalMessage(final int channel,
+                                                 final boolean press)
+    throws InvalidMidiDataException {
+    ShortMessage msg = new ShortMessage();
+    msg.setMessage(ShortMessage.CONTROL_CHANGE, channel, 64, press? 127: 0);
+    return msg;
   }
 }
