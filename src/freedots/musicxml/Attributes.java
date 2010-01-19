@@ -84,9 +84,9 @@ public final class Attributes {
     return keys;
   }
   class Clef extends freedots.music.Clef {
-    Element element = null;
-    String staffNumber = null;
-    public Clef(final Element element) {
+    private Element element = null;
+    private String staffNumber = null;
+    Clef(final Element element) {
       super(getClefSignFromElement(element));
       if (sign != Sign.percussion && sign != Sign.none) {
         line = getClefLineFromElement(element);
@@ -101,16 +101,16 @@ public final class Attributes {
     }
   }
   class Time extends TimeSignature {
-    Element element = null;
-    public Time(final Element element) {
+    private Element element = null;
+    Time(final Element element) {
       super(getBeatsFromElement(element), getBeatTypeFromElement(element));
       this.element = element;
     }
   }
   class Key extends KeySignature {
-    Element element = null;
-    String staffName = null;
-    public Key(final Element element) {
+    private Element element = null;
+    private String staffName = null;
+    Key(final Element element) {
       super(getFifthsFromElement(element));
       this.element = element;
       staffName = element.getAttribute("number");
@@ -119,8 +119,8 @@ public final class Attributes {
     public String getStaffName() { return staffName; }
   }
 
-  private static int
-  getBeatsFromElement(Element element) throws MusicXMLParseException {
+  private static int getBeatsFromElement(Element element)
+    throws MusicXMLParseException {
     NodeList nodeList = element.getElementsByTagName("beats");
     int nodeCount = nodeList.getLength();
     if (nodeCount >= 1) {

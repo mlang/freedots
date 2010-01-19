@@ -434,6 +434,7 @@ public enum Braille {
    * {@link freedots.music.Fraction#decompose} for annotating chord symbols
    * with their duration.
    * @see #toString(Harmony)
+   * @return a Unicode braille string
    */
   public static String toString(List<AugmentedFraction> afList) {
     StringBuilder sb = new StringBuilder();

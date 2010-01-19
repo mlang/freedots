@@ -61,14 +61,14 @@ final class SingleNoteRenderer extends JPanel {
   
   private static final char TRANSPARENT = '-';
   private static final char[] CHARTABLE = new char[] {
-  '#', // 0 Black
-  '$', // 1
-  '*', // 2
-  '0', // 3
-  'o', // 4
-  '+', // 5
-  '.', // 6
-  TRANSPARENT // 7
+    '#', // 0 Black
+    '$', // 1
+    '*', // 2
+    '0', // 3
+    'o', // 4
+    '+', // 5
+    '.', // 6
+    TRANSPARENT // 7
   };
   
   private Map<String, BufferedImage> icons =

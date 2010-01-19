@@ -38,8 +38,10 @@ public class TimeSignature extends Fraction {
    * @param other is the time signature to compare to
    * @return true if the two time signatures are truly equal
    */
-  public boolean equals(TimeSignature other) {
-    return this.getNumerator()==other.getNumerator() &&
-           this.getDenominator()==other.getDenominator();
+  @Override public boolean equals(Object object) {
+    if (!(object instanceof TimeSignature)) return false;
+    TimeSignature other = (TimeSignature)object;
+    return this.getNumerator() == other.getNumerator() &&
+           this.getDenominator() == other.getDenominator();
   }
 }

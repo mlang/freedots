@@ -39,6 +39,7 @@ public final class Options {
   private int measuresPerSection = 8;
   /** The number of measures to use per section for
    *  {@link freedots.transcription.SectionBySection} format.
+   * @return 8 by default, otherwise the number specified at the command-line
    */
   public int getMeasuresPerSection() { return measuresPerSection; }
 
@@ -47,6 +48,7 @@ public final class Options {
    *  true indicates section breaks should correspond to system breaks in the
    *  visual score.  This mode allows for easy communication between
    *  sighted and blind musicians.
+   * @return true if system breaks should correlate with sections
    */
   public boolean getNewSystemEndsSection() { return newSystemEndsSection; }
 
@@ -67,6 +69,9 @@ public final class Options {
   public File getSoundfont() { return soundfont; }
 
   /** Constructs a new instance from a list of command-line arguments.
+   * @param args is the list of command-line arguments specified at startup
+   * @throws FileNotFoundException if a required file was not found on the
+   *                               filesystem.
    */
   public Options(final String[] args) throws FileNotFoundException {
     for (int index = 0; index < args.length; index++) {
@@ -122,10 +127,14 @@ public final class Options {
   public String getLocation() {
     return location;
   }
-  /** Number of lines per braille page.
+  /** Retrieves the requested number of lines per braille page.
+   * @return {@code DEFAULT_PAGE_HEIGHT} is no value was specified
+   * @see #DEFAULT_PAGE_HEIGHT
    */
   public int getPageHeight() { return pageHeight; }
   /** Number of columns of a braille page.
+   * @return {@code DEFAULT_PAGE_WIDTH} is no value was specified
+   * @see #DEFAULT_PAGE_WIDTH
    */
   public int getPageWidth() { return pageWidth; }
 

@@ -43,8 +43,8 @@ public class KeyChange implements StaffElement {
   public boolean equalsIgnoreOffset(Event other) {
     if (other instanceof KeyChange) {
       KeyChange otherKeyChange = (KeyChange)other;
-      if (getStaffNumber() == otherKeyChange.getStaffNumber() &&
-          keySignature.equals(otherKeyChange.getKeySignature()))
+      if (getStaffNumber() == otherKeyChange.getStaffNumber()
+       && keySignature.equals(otherKeyChange.getKeySignature()))
         return true;
     }
     return false;

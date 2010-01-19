@@ -32,12 +32,11 @@ public enum Ornament {
 
   public Braille toBraille() {
     switch (this) {
-      case mordent: return Braille.mordent;
-      case invertedMordent: return Braille.invertedMordent;
-      case trill: return Braille.trill;
-      case turn: return Braille.turn;
+    case mordent: return Braille.mordent;
+    case invertedMordent: return Braille.invertedMordent;
+    case trill: return Braille.trill;
+    case turn: return Braille.turn;
+    default: throw new AssertionError(this);
     }
-
-    return null;
   }
 }

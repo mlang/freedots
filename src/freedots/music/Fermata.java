@@ -42,10 +42,10 @@ public class Fermata {
   }
   public Braille toBraille() {
     switch (shape) {
-      case ANGLED: return Braille.fermataTent;
-      case SQUARE: return Braille.fermataSquare;
+    case ANGLED: return Braille.fermataTent;
+    case SQUARE: return Braille.fermataSquare;
+    default: return Braille.fermata;
     }
-    return Braille.fermata;
   }
 
   public enum Shape { NORMAL, ANGLED, SQUARE; };
