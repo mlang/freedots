@@ -64,7 +64,10 @@ public final class Transcriber {
   }
   int getCurrentColumn() { return characterCount; }
   int getRemainingColumns() {
-    return options.getPageWidth() - characterCount;
+    String text = toString();
+    final int index = text.lastIndexOf(LINE_SEPARATOR);
+    if (index == -1) return options.getPageWidth() - text.length();
+    else return options.getPageWidth() - (text.length() - index);
   }
 
   /** Find Object responsible for character at specified index.
