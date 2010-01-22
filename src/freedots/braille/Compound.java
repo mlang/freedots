@@ -34,8 +34,7 @@ public class Compound extends LinkedList<Sign> implements Sign {
     return "Groups several signs as a logical unit.";
   }
   public boolean needsGuideDot(Sign next) {
-    if (!isEmpty()) return getLast().needsGuideDot(next);
-    return false;
+    return !isEmpty() && getLast().needsGuideDot(next);
   }
   public Object getScoreObject() { return null; }
 
