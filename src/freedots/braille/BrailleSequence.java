@@ -1,6 +1,8 @@
 package freedots.braille;
 
-public interface Sign extends CharSequence {
+/** Identifies a sequence of Unicode braille characters.
+ */
+public interface BrailleSequence extends CharSequence {
   /** Gets a human readable description of the characters making up a sign.
    */
   String getDescription();
@@ -8,7 +10,7 @@ public interface Sign extends CharSequence {
   /** Checks if a {@link freedots.braille.GuideDot} needs to be
    *  inserted between this and the next sign.
    */
-  boolean needsGuideDot(Sign next);
+  boolean needsGuideDot(BrailleSequence next);
 
   /** Gets the parent of this sign if it is part of a
    *  {@link freedots.braille.Compound}.

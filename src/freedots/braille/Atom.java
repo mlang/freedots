@@ -3,12 +3,12 @@ package freedots.braille;
 /** The smallest possible unit of braille.
  * Usually consists of 1 or 2 cells, not much more.
  */
-public abstract class Atom implements Sign {
+public abstract class Atom implements BrailleSequence {
   protected final String data;
   protected Atom(final String data) { this.data = data; }
 
   public abstract String getDescription();
-  public boolean needsGuideDot(Sign next) { return false; }
+  public boolean needsGuideDot(BrailleSequence next) { return false; }
 
   private Compound parent = null;
   public Compound getParent() { return parent; }

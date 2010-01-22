@@ -10,7 +10,7 @@ public class Test {
     braille.add(new NewLine());
     System.out.println(braille.toString() + " = " + braille.getDescription());
     for (int i = 0; i < braille.length(); i++) {
-      final Sign sign = braille.getSignAtIndex(i);
+      final Atom sign = braille.getSignAtIndex(i);
       final Object object = braille.getScoreObjectAtIndex(i);
       System.out.println("i = "+i+": '"+sign+"' = "+sign.getDescription());
       System.out.println("  "+object);

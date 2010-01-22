@@ -3,9 +3,10 @@ package freedots.braille;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-/** Represents a logical unit comprised of several smaller objects.
+/** Represents a logical unit composed of several smaller objects.
  */
-public class Compound extends LinkedList<Sign> implements Sign {
+public class Compound extends LinkedList<BrailleSequence>
+                      implements BrailleSequence {
   Compound() { super(); }
 
   private Compound parent = null;
@@ -16,31 +17,29 @@ public class Compound extends LinkedList<Sign> implements Sign {
    * This method takes care of inserting {@link GuideDot} objects if
    * required.
    */
-  @Override public boolean add(Sign item) {
-    if (!isEmpty()) {
-      final Sign last = getLast();
-      if (last.needsGuideDot(item)) {
-        Sign dot = new GuideDot();
-        dot.setParent(this);
-        super.add(dot);
-      }
+  @Override public boolean add(final BrailleSequence item) {
+    if (!isEmpty() && getLast().needsGuideDot(item)) {
+      BrailleSequence dot = new GuideDot();
+      dot.setParent(this);
+      super.add(dot);
     }
+
     item.setParent(this);
     return super.add(item);
   }
-  @Override public void addLast(Sign item) { add(item); }
+  @Override public void addLast(final BrailleSequence item) { add(item); }
 
   public String getDescription() {
     return "Groups several signs as a logical unit.";
   }
-  public boolean needsGuideDot(Sign next) {
+  public boolean needsGuideDot(BrailleSequence next) {
     return !isEmpty() && getLast().needsGuideDot(next);
   }
   public Object getScoreObject() { return null; }
 
   @Override public String toString() {
     StringBuilder sb = new StringBuilder();
-    for (Sign item: this) sb.append(item.toString());
+    for (BrailleSequence item: this) sb.append(item.toString());
     return sb.toString();
   }
   public int length() { return toString().length(); }
@@ -51,16 +50,16 @@ public class Compound extends LinkedList<Sign> implements Sign {
 
   /** Retrieves the {@code Atom} at index.
    */
-  public Sign getSignAtIndex(final int index) {
-    final Iterator<Sign> iterator = iterator();
+  public Atom getSignAtIndex(final int index) {
+    final Iterator<BrailleSequence> iterator = iterator();
     int pos = 0;
     while (iterator.hasNext()) {
-      final Sign current = iterator.next();
+      final BrailleSequence current = iterator.next();
       final int length = current.length();
       if (pos + length > index)
         return (current instanceof Compound)?
           ((Compound)current).getSignAtIndex(index - pos):
-          current;
+          (Atom)current;
       else pos += length;
     }
     return null;
@@ -69,21 +68,25 @@ public class Compound extends LinkedList<Sign> implements Sign {
    * @see #getSignAtIndex
    */
   public Object getScoreObjectAtIndex(final int index) {
-    for (Sign sign = getSignAtIndex(index); sign != null;
+    for (BrailleSequence sign = getSignAtIndex(index); sign != null;
          sign = sign.getParent()) {
       final Object object = sign.getScoreObject();
       if (object != null) return object;
     }
     return null;
   }
+
+  /**
+   * @return -1 if the given score object was not found
+   */
   public int getIndexOfScoreObject(final Object scoreObject) {
     if (scoreObject == null)
       throw new NullPointerException("Trying to search for null");
 
-    final Iterator<Sign> iterator = iterator();
+    final Iterator<BrailleSequence> iterator = iterator();
     int index = 0;
     while (iterator.hasNext()) {
-      final Sign current = iterator.next();
+      final BrailleSequence current = iterator.next();
       if (current.getScoreObject() == scoreObject) return index;
       if (current instanceof Compound) {
         final Compound compound = (Compound)current;
