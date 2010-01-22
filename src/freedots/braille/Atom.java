@@ -10,9 +10,9 @@ public abstract class Atom implements Sign {
   public abstract String getDescription();
   public boolean mightNeedAdditionalDot() { return false; }
 
-  private Sign parent = null;
-  public Sign getParent() { return parent; }
-  public void setParent(final Sign parent) { this.parent = parent; }
+  private Compound parent = null;
+  public Compound getParent() { return parent; }
+  public void setParent(final Compound parent) { this.parent = parent; }
 
   public Object getScoreObject() { return null; }
 

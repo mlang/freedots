@@ -8,9 +8,9 @@ import java.util.LinkedList;
 public class Compound extends LinkedList<Sign> implements Sign {
   Compound() { super(); }
 
-  private Sign parent = null;
-  public Sign getParent() { return parent; }
-  public void setParent(final Sign parent) { this.parent = parent; }
+  private Compound parent = null;
+  public Compound getParent() { return parent; }
+  public void setParent(final Compound parent) { this.parent = parent; }
 
   /** Append a sign.
    * This method takes care of inserting {@link GuideDot} objects if
