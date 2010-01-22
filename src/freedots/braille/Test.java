@@ -8,7 +8,6 @@ public class Test {
     braille.add(new BrailleTimeSignature(new TimeSignature(9, 16)));
     braille.add(new NewLine());
     braille.add(new RightHandPart());
-    braille.add(new BrailleChord());
     braille.add(new Space());
     braille.add(new OctaveSign(1));
     System.out.println(braille.toString() + " = " + braille.getDescription());

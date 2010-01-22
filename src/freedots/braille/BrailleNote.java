@@ -1,9 +1,13 @@
 package freedots.braille;
 
+import freedots.Options;
 import freedots.music.AbstractPitch;
 import freedots.music.Accidental;
 import freedots.music.Articulation;
+import freedots.music.AugmentedFraction;
+import freedots.music.Fingering;
 import freedots.music.Ornament;
+import freedots.music.Slur;
 import freedots.musicxml.Note;
 
 public class BrailleNote extends BrailleList {
@@ -24,16 +28,42 @@ public class BrailleNote extends BrailleList {
     if (accidental != null) add(new AccidentalSign(accidental));
 
     AbstractPitch pitch = (AbstractPitch)note.getPitch();
-    if (pitch == null)
-	pitch = (AbstractPitch)note.getUnpitched();
-    if (pitch != null) {
+    if (pitch == null) /* A hack to support unpitched notes */
+      pitch = (AbstractPitch)note.getUnpitched();
+
+    final AugmentedFraction value = note.getAugmentedFraction();
+
+    if (pitch != null) { /* A sounding note */
       if (isOctaveSignRequired(pitch, lastPitch))
-	add(new OctaveSign(pitch.getOctave()));
-      add(new ValueAndPitch(0, 0));
+        add(new OctaveSign(pitch.getOctave()));
+
+      add(new ValueAndPitch(value, pitch));
     } else {
-       
+      add(new RestSign(value));
+    }
+    for (int i = 0; i < value.getDots(); i++) add(new Dot());
+
+    if (Options.getInstance().getShowFingering()) {
+      final Fingering fingering = note.getFingering();
+      if (!fingering.getFingers().isEmpty()) {
+	add(new BrailleFingering(fingering));
+      }
     }
 
+    if (note.isTieStart()) {
+      add(new TieSign());
+    } else {
+      boolean addSlur = false;
+      for (Slur<Note> slur:note.getSlurs()) {
+        if (!slur.lastNote(note)) {
+          addSlur = true;
+          break;
+        }
+      }
+      if (addSlur) {
+        add(new SlurSign());
+      }
+    }
   }
   @Override public String getDescription() {
     return "A note.";
@@ -44,10 +74,10 @@ public class BrailleNote extends BrailleList {
                                               final AbstractPitch lastPitch) {
     if (lastPitch != null) {
       final int halfSteps = Math.abs(pitch.getMIDIPitch()
-				     - lastPitch.getMIDIPitch());
+                                     - lastPitch.getMIDIPitch());
       if ((halfSteps < 5)
-	  || (halfSteps >= 5 && halfSteps <= 7
-	   && pitch.getOctave() == lastPitch.getOctave())) return false;
+          || (halfSteps >= 5 && halfSteps <= 7
+           && pitch.getOctave() == lastPitch.getOctave())) return false;
     }
     return true;
   }

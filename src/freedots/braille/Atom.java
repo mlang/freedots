@@ -23,14 +23,17 @@ public abstract class Atom implements BrailleSequence {
     return toString().subSequence(start, end);
   }
 
-  protected static String braille(int dots) {
-    int bits = 0X2800;
+  protected static int dotsToBits(int dots) {
+    int bits = 0;
     while (dots > 0) {
       final int number = dots % 10;
       dots /= 10;
       bits |= 1 << (number - 1);
     }
-    return String.valueOf((char)bits);
+    return bits;
+  }
+  protected static String braille(final int dots) {
+    return String.valueOf((char)(0X2800|dotsToBits(dots)));
   }
   protected static String braille(int dots1, int dots2) {
     return braille(dots1) + braille(dots2);

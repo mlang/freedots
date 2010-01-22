@@ -1,18 +1,32 @@
 package freedots.braille;
 
-public class ValueAndPitch extends Atom {
-  private int value, step;
+import freedots.music.AbstractPitch;
+import freedots.music.AugmentedFraction;
 
-  ValueAndPitch(int value, int step) {
-    super(getSign(value, step));
+public class ValueAndPitch extends Atom {
+  private final AbstractPitch pitch;
+  private final AugmentedFraction value;
+
+  ValueAndPitch(final AugmentedFraction value, final AbstractPitch pitch) {
+    super(getSign(value, pitch));
     this.value = value;
-    this.step = step;
+    this.pitch = pitch;
   }
 
   public String getDescription() {
-    return "";
+    return "A " + pitch.toString() + " with duration " + value.toString();
   }
-  private static String getSign(int value, int step) {
-    return braille(13456);
+  private static String getSign(final AugmentedFraction value,
+				final AbstractPitch pitch) {
+    final int log = value.getLog();
+    // FIXME: breve and long notes are not handled at all
+    final int valueType = log > AugmentedFraction.EIGHTH
+      ? log-AugmentedFraction.SIXTEENTH : log-2;
+
+    final int[] stepDots = { 145, 15, 124, 1245, 125, 24, 245 };
+    final int[] denomDots = { 36, 3, 6, 0 };
+    return String.valueOf((char)(0X2800
+                                 | dotsToBits(stepDots[pitch.getStep()])
+				 | dotsToBits(denomDots[valueType])));
   }
 }
