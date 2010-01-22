@@ -2,7 +2,7 @@ package freedots.braille;
 
 public class Test {
   public static final void main(String[] args) {
-    Compound braille = new Compound();
+    BrailleList braille = new BrailleList();
     braille.add(new RightHandPart());
     braille.add(new BrailleNote(0, 3, 0, 1));
     braille.add(new Space());

@@ -13,14 +13,14 @@ public interface BrailleSequence extends CharSequence {
   boolean needsGuideDot(BrailleSequence next);
 
   /** Gets the parent of this sign if it is part of a
-   *  {@link freedots.braille.Compound}.
+   *  {@link freedots.braille.BrailleList}.
    * @return null if this sign has not been added to a parent yet
    */
-  Compound getParent();
+  BrailleList getParent();
 
-  /** Sets the {@link freedots.braille.Compound} which contains this sign.
+  /** Sets the {@link freedots.braille.BrailleList} which contains this sign.
    */
-  void setParent(Compound parent);
+  void setParent(BrailleList parent);
 
   /** Gets the visual score object responsible for the creation of this sign.
    */

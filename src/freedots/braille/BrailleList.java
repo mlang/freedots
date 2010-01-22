@@ -5,13 +5,13 @@ import java.util.LinkedList;
 
 /** Represents a logical unit composed of several smaller objects.
  */
-public class Compound extends LinkedList<BrailleSequence>
-                      implements BrailleSequence {
-  Compound() { super(); }
+public class BrailleList extends LinkedList<BrailleSequence>
+                         implements BrailleSequence {
+  BrailleList() { super(); }
 
-  private Compound parent = null;
-  public Compound getParent() { return parent; }
-  public void setParent(final Compound parent) { this.parent = parent; }
+  private BrailleList parent = null;
+  public BrailleList getParent() { return parent; }
+  public void setParent(final BrailleList parent) { this.parent = parent; }
 
   /** Append a sign.
    * This method takes care of inserting {@link GuideDot} objects if
@@ -57,8 +57,8 @@ public class Compound extends LinkedList<BrailleSequence>
       final BrailleSequence current = iterator.next();
       final int length = current.length();
       if (pos + length > index)
-        return (current instanceof Compound)?
-          ((Compound)current).getSignAtIndex(index - pos):
+        return (current instanceof BrailleList)?
+          ((BrailleList)current).getSignAtIndex(index - pos):
           (Atom)current;
       else pos += length;
     }
@@ -88,8 +88,8 @@ public class Compound extends LinkedList<BrailleSequence>
     while (iterator.hasNext()) {
       final BrailleSequence current = iterator.next();
       if (current.getScoreObject() == scoreObject) return index;
-      if (current instanceof Compound) {
-        final Compound compound = (Compound)current;
+      if (current instanceof BrailleList) {
+        final BrailleList compound = (BrailleList)current;
         final int subIndex = compound.getIndexOfScoreObject(scoreObject);
         if (subIndex >= 0) return index + subIndex;
       }

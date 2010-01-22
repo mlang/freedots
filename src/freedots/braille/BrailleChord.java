@@ -1,6 +1,6 @@
 package freedots.braille;
 
-public class BrailleChord extends Compound {
+public class BrailleChord extends BrailleList {
   private Object chord;
 
   public BrailleChord(int value, int octave, int step, float alter) {

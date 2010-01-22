@@ -10,9 +10,9 @@ public abstract class Atom implements BrailleSequence {
   public abstract String getDescription();
   public boolean needsGuideDot(BrailleSequence next) { return false; }
 
-  private Compound parent = null;
-  public Compound getParent() { return parent; }
-  public void setParent(final Compound parent) { this.parent = parent; }
+  private BrailleList parent = null;
+  public BrailleList getParent() { return parent; }
+  public void setParent(final BrailleList parent) { this.parent = parent; }
 
   public Object getScoreObject() { return null; }
 

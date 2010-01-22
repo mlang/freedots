@@ -1,26 +1,27 @@
 package freedots.braille;
 
-public class AccidentalSign extends Atom {
-  private final float alter;
+import freedots.music.Accidental;
 
-  AccidentalSign(float alter) {
-    super(getSignFromAlter(alter));
-    this.alter = alter;
+public class AccidentalSign extends Atom {
+  private final Accidental accidental;
+
+  AccidentalSign(final Accidental accidental) {
+    super(getSign(accidental));
+    this.accidental = accidental;
   }
 
   public String getDescription() {
-    if (alter == 1) return "sharp";
-    else if (alter == 2) return "double sharp";
-    else if (alter == -1) return "flat.";
-    else if (alter == -2) return "double flat.";
-    else throw new AssertionError(alter);
+    return accidental.toString();
   }
-  private static String getSignFromAlter(float alter) {
-    if (alter == 1) return braille(146);
-    else if (alter == 2) return braille(146, 146);
-    else if (alter == -1) return braille(126);
-    else if (alter == -2) return braille(126, 126);
-    else if (alter == 0) return braille(16);
-    else throw new AssertionError(alter);
+
+  private static String getSign(final Accidental accidental) {
+    switch (accidental) {
+    case SHARP:        return braille(146);
+    case DOUBLE_SHARP: return braille(146, 146);
+    case FLAT:         return braille(126);
+    case DOUBLE_FLAT:  return braille(126, 126);
+    case NATURAL:      return braille(16);
+    default: throw new AssertionError(accidental);
+    }
   }
 }
