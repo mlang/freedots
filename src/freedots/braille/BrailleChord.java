@@ -1,12 +1,14 @@
 package freedots.braille;
 
+import freedots.music.Accidental;
+
 public class BrailleChord extends BrailleList {
   private Object chord;
 
-  public BrailleChord(int value, int octave, int step, float alter) {
+  public BrailleChord() {
     super();
     chord = new Object();
-    add(new AccidentalSign(1));
+    add(new AccidentalSign(Accidental.SHARP));
     add(new OctaveSign(3));
     add(new ValueAndPitch(0, 0));
   }

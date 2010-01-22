@@ -4,7 +4,7 @@ public class Test {
   public static final void main(String[] args) {
     BrailleList braille = new BrailleList();
     braille.add(new RightHandPart());
-    braille.add(new BrailleNote(0, 3, 0, 1));
+    braille.add(new BrailleChord());
     braille.add(new Space());
     braille.add(new OctaveSign(1));
     braille.add(new NewLine());
