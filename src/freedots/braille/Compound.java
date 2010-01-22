@@ -19,13 +19,10 @@ public class Compound extends LinkedList<Sign> implements Sign {
   @Override public boolean add(Sign item) {
     if (!isEmpty()) {
       final Sign last = getLast();
-      if (last.mightNeedAdditionalDot()) {
-        String string = item.toString();
-        if (string.length() > 0) {
-          char ch = string.charAt(0);
-          if (((int)ch & 0X2807) > 0X2800)
-            super.add(new GuideDot());
-        }
+      if (last.needsGuideDot(item)) {
+        Sign dot = new GuideDot();
+        dot.setParent(this);
+        super.add(dot);
       }
     }
     item.setParent(this);
@@ -36,8 +33,8 @@ public class Compound extends LinkedList<Sign> implements Sign {
   public String getDescription() {
     return "Groups several signs as a logical unit.";
   }
-  public boolean mightNeedAdditionalDot() {
-    if (!isEmpty()) return getLast().mightNeedAdditionalDot();
+  public boolean needsGuideDot(Sign next) {
+    if (!isEmpty()) return getLast().needsGuideDot(next);
     return false;
   }
   public Object getScoreObject() { return null; }

@@ -8,7 +8,7 @@ public abstract class Atom implements Sign {
   protected Atom(final String data) { this.data = data; }
 
   public abstract String getDescription();
-  public boolean mightNeedAdditionalDot() { return false; }
+  public boolean needsGuideDot(Sign next) { return false; }
 
   private Compound parent = null;
   public Compound getParent() { return parent; }

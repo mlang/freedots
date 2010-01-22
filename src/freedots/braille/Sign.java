@@ -5,10 +5,10 @@ public interface Sign extends CharSequence {
    */
   String getDescription();
 
-  /** Indicates that a {@link freedots.braille.GuideDot} might need to be
+  /** Checks if a {@link freedots.braille.GuideDot} needs to be
    *  inserted between this and the next sign.
    */
-  boolean mightNeedAdditionalDot();
+  boolean needsGuideDot(Sign next);
 
   /** Gets the parent of this sign if it is part of a
    *  {@link freedots.braille.Compound}.
