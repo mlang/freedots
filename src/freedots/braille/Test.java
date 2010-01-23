@@ -7,6 +7,9 @@ public class Test {
     BrailleList braille = new BrailleList();
     braille.add(new BrailleTimeSignature(new TimeSignature(9, 16)));
     braille.add(new NewLine());
+    braille.add(new HarmonyPart());
+    braille.add(new ArtificialWholeRest());
+    braille.add(new NewLine()); 
     braille.add(new RightHandPart());
     braille.add(new Space());
     braille.add(new OctaveSign(1));
