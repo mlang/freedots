@@ -12,7 +12,7 @@ import freedots.musicxml.Note;
 
 public class BrailleChord extends BrailleList {
   private final VoiceChord chord;
-  private final Note firstNote;
+  private final BrailleNote topNote;
 
   public BrailleChord(final VoiceChord chord, final AbstractPitch lastPitch) {
     super();
@@ -21,8 +21,9 @@ public class BrailleChord extends BrailleList {
     final Iterator<RhythmicElement> iterator = chord.getSorted().iterator();
     assert iterator.hasNext();
 
-    firstNote = (Note)iterator.next();
-    add(new BrailleNote(firstNote, lastPitch));
+    final Note firstNote = (Note)iterator.next();
+    topNote = new BrailleNote(firstNote, lastPitch);
+    add(topNote);
 
     assert iterator.hasNext();
 
@@ -50,6 +51,8 @@ public class BrailleChord extends BrailleList {
     return "A chord.";
   }
   @Override public Object getScoreObject() { return chord; }
+
+  public AbstractPitch getNotePitch() { return topNote.getPitch(); }
 
   public static class ChordStep extends BrailleList {
     private final Note note;

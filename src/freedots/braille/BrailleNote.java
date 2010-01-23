@@ -70,6 +70,8 @@ public class BrailleNote extends BrailleList {
   }
   @Override public Object getScoreObject() { return note; }
 
+  public AbstractPitch getPitch() { return note.getPitch(); }
+
   private static boolean isOctaveSignRequired(final AbstractPitch pitch,
                                               final AbstractPitch lastPitch) {
     if (lastPitch != null) {
