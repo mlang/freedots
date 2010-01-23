@@ -38,7 +38,7 @@ public class BrailleFingering extends BrailleList {
       return "Indicates that finger " + finger + " should be used";
     }
     private static String getSign(final int number) {
-      return FINGERS[number];
+      return FINGERS[number - 1];
     }
     private static String[] FINGERS = new String[] {
       braille(1), braille(12), braille(123), braille(4), braille(13)
