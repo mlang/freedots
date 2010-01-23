@@ -71,12 +71,9 @@ public enum Braille {
   staccato(236), mezzoStaccato(5, 236), staccatissimo(6, 236),
   tenuto(456, 236),
 
-  wordSign(345),
-
   // Piano pedal marks
   pedalPress(126, 14), pedalRelease(16, 14), pedalChange(16, 126, 14),
 
-  grace(5, 26),
   mordent(5, 235, 123), invertedMordent(6, 235, 123), trill(235), turn(6, 256),
 
   fullMeasureInAccord(126, 345),

@@ -1,3 +1,25 @@
+/* -*- c-basic-offset: 2; indent-tabs-mode: nil; -*- */
+/*
+ * FreeDots -- MusicXML to braille music transcription
+ *
+ * Copyright 2008-2010 Mario Lang  All Rights Reserved.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License version 3, as
+ * published by the Free Software Foundation.
+ *
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+ * for more details (a copy is included in the LICENSE.txt file that
+ * accompanied this code).
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this work; if not, write to the Free Software Foundation,
+ * Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
+ *
+ * This file is maintained by Mario Lang <mlang@delysid.org>.
+ */
 package freedots.braille;
 
 import java.util.Iterator;
@@ -33,13 +55,13 @@ public class BrailleChord extends BrailleList {
       if (accidental != null) add(new AccidentalSign(accidental));
       AbstractPitch currentPitch = (AbstractPitch)currentNote.getPitch();
       if (currentPitch == null)
-	currentPitch = (AbstractPitch)currentNote.getUnpitched();
+        currentPitch = (AbstractPitch)currentNote.getUnpitched();
       add(new ChordStep(currentNote, firstNote));
 
       if (Options.getInstance().getShowFingering()) {
-	final Fingering fingering = currentNote.getFingering();
-	if (!fingering.getFingers().isEmpty())
-	  add(new BrailleFingering(fingering));
+        final Fingering fingering = currentNote.getFingering();
+        if (!fingering.getFingers().isEmpty())
+          add(new BrailleFingering(fingering));
       }
 
       if (currentNote.isTieStart()) {
@@ -69,7 +91,7 @@ public class BrailleChord extends BrailleList {
       int diatonicDiff = Math.abs(thisPitch.diatonicDifference(otherPitch));
       if (diatonicDiff == 0 || diatonicDiff > 7) {
         add(new OctaveSign(thisPitch.getOctave()));
-	while (diatonicDiff > 7) diatonicDiff -= 7;
+        while (diatonicDiff > 7) diatonicDiff -= 7;
       }
       add(new Interval(diatonicDiff));
     }

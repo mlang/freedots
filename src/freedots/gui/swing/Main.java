@@ -52,6 +52,7 @@ import javax.swing.JTextArea;
 import javax.swing.event.CaretEvent;
 
 import freedots.Options;
+import freedots.braille.Atom;
 import freedots.logging.Logger;
 import freedots.musicxml.Library;
 import freedots.musicxml.MIDISequence;
@@ -109,35 +110,41 @@ public final class Main
 
   public void caretUpdate(CaretEvent caretEvent) {
     int index = caretEvent.getDot();
-    Object object = null;
+    Object scoreObject = null;
+    Atom brailleSign = null;
     if (transcriber != null) {
-      object = transcriber.getObjectAtIndex(index);
+      scoreObject = transcriber.getScoreObjectAtIndex(index);
+      brailleSign = transcriber.getSignAtIndex(index);
+      if (statusBar != null && brailleSign != null) {
+        statusBar.setMessage(brailleSign.toString() + ": "
+                             + brailleSign.getDescription());
+      }
     }
-    if (object != lastObject) {
-      final boolean isPitchedNote = object != null && object instanceof Note
-                                 && !((Note)object).isRest();
+    if (scoreObject != lastObject) {
+      final boolean isPitchedNote =
+        scoreObject != null
+        && scoreObject instanceof Note && !((Note)scoreObject).isRest();
       editFingeringAction.setEnabled(isPitchedNote);
-      if (object != null) {
-        
-        if (object instanceof Note)  noteRenderer.setNote((Note)object);
-            
-        if (statusBar != null){
-          statusBar.setMessage(object.toString());
-        }
+      if (scoreObject != null) {
 
-        if (autoPlay && object instanceof Note) {
-          Note note = (Note)object;
-          midiPlayer.stop();
-          try {
-            MIDISequence sequence = new MIDISequence(note);
-            midiPlayer.setSequence(sequence);
-            midiPlayer.start();
-          } catch (javax.sound.midi.InvalidMidiDataException e) {
-            e.printStackTrace();
+        if (scoreObject instanceof Note) {
+          Note note = (Note)scoreObject;
+
+          noteRenderer.setNote(note);
+
+          if (autoPlay) {
+            midiPlayer.stop();
+            try {
+              MIDISequence sequence = new MIDISequence(note);
+              midiPlayer.setSequence(sequence);
+              midiPlayer.start();
+            } catch (javax.sound.midi.InvalidMidiDataException e) {
+              e.printStackTrace();
+            }
           }
         }
       }
-      lastObject = object;
+      lastObject = scoreObject;
     }
   }
 
@@ -145,7 +152,7 @@ public final class Main
   private MetaEventRelay metaEventRelay = new MetaEventRelay(this);
   public void objectPlaying(Object object) {
     if (caretFollowsPlayback) {
-      int pos = transcriber.getIndexOfObject(object);
+      int pos = transcriber.getIndexOfScoreObject(object);
       if (pos >= 0) {
         boolean old = autoPlay;
         autoPlay = false;
@@ -230,6 +237,9 @@ public final class Main
 
     scrollPane = new JScrollPane(logArea);
     contentPane.add(scrollPane, BorderLayout.SOUTH);
+
+    statusBar = new StatusBar();
+    contentPane.add(statusBar, BorderLayout.SOUTH);
 
     noteRenderer = new SingleNoteRenderer();
     contentPane.add(noteRenderer, BorderLayout.AFTER_LAST_LINE);
@@ -508,7 +518,7 @@ public final class Main
 
   Object getCurrentScoreObject() {
     int position = textArea.getCaretPosition();
-    return transcriber.getObjectAtIndex(position);
+    return transcriber.getScoreObjectAtIndex(position);
   }
   void triggerTranscription() {
     int position = textArea.getCaretPosition();
@@ -516,7 +526,7 @@ public final class Main
     transcriber.setScore(score);
     textArea.setText(transcriber.toString());
     if (object != null) {
-      int objectPosition = transcriber.getIndexOfObject(object);
+      int objectPosition = transcriber.getIndexOfScoreObject(object);
       if (objectPosition != -1) position = objectPosition;
     }
     textArea.setCaretPosition(position);

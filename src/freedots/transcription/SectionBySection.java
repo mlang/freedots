@@ -30,6 +30,7 @@ import freedots.Braille;
 import freedots.braille.ArtificialWholeRest;
 import freedots.braille.BrailleList;
 import freedots.braille.BrailleSyllable;
+import freedots.braille.BrailleTimeSignature;
 import freedots.braille.DoubleBarSign;
 import freedots.braille.HarmonyPart;
 import freedots.braille.LeftHandPart;
@@ -80,9 +81,12 @@ class SectionBySection implements Strategy {
         directiveText = directives.get(0).getWords().trim() + " ";
         transcriber.alreadyPrintedDirections.add(directive);
       }
-      transcriber.printLine(directiveText
-                            + part.getKeySignature().toBraille()
-                            + Braille.toString(part.getTimeSignature()));
+      BrailleTimeSignature bTimeSig =
+        new BrailleTimeSignature(part.getTimeSignature());
+      transcriber.printString(directiveText);
+      transcriber.printString(part.getKeySignature().toBraille());
+      transcriber.printString(bTimeSig);
+      transcriber.newLine();
       for (Section section:getSections(part)) transcribeSection(part, section);
       if (transcriber.getCurrentColumn() > 0) transcriber.newLine();
       transcriber.newLine();
@@ -237,6 +241,8 @@ class SectionBySection implements Strategy {
       if (event instanceof Harmony) {
         measure.add(new HarmonyInfo((Harmony)event));
       } else if (event instanceof EndBar) {
+        EndBar endBar = (EndBar)event;
+
         if (measure.size() > 0) {
           measure.calculateDurations(((EndBar)event).getOffset());
           boolean includeStems = !measure.isEvenRhythm();
@@ -261,7 +267,7 @@ class SectionBySection implements Strategy {
           transcriber.printString(new ArtificialWholeRest());
         }
         measure.clear();
-        if (staffIterator.hasNext()) transcriber.spaceOrNewLine();
+        if (!endBar.getEndOfMusic()) transcriber.spaceOrNewLine();
         else transcriber.printString(new DoubleBarSign());
       }
     }

@@ -23,7 +23,6 @@
 package freedots.transcription;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -36,13 +35,9 @@ import freedots.braille.BrailleSequence;
 import freedots.braille.BrailleWords;
 import freedots.braille.Text;
 import freedots.logging.Logger;
-import freedots.Options;
 import freedots.music.AbstractPitch;
-import freedots.music.Accidental;
 import freedots.music.Event;
 import freedots.music.MusicList;
-import freedots.music.RhythmicElement;
-import freedots.music.Slur;
 import freedots.music.TimeSignature;
 import freedots.music.Voice;
 import freedots.music.VoiceChord;

@@ -25,9 +25,9 @@ package freedots.transcription;
 import java.util.ArrayList;
 import java.util.List;
 
-import freedots.Braille;
 import freedots.Options;
 
+import freedots.braille.Atom;
 import freedots.braille.BrailleList;
 import freedots.braille.BrailleSequence;
 import freedots.braille.NewLine;
@@ -76,6 +76,12 @@ public final class Transcriber {
     else return options.getPageWidth() - (text.length() - index);
   }
 
+  /** Find the braille sign at a given character index.
+   */
+  public Atom getSignAtIndex(final int index) {
+    return strings.getSignAtIndex(index);
+  }
+
   /** Find Object responsible for character at specified index.
    *
    * @param characterIndex indicates the position relative to {@link #toString}
@@ -83,7 +89,7 @@ public final class Transcriber {
    * @return the object responsible for the character at index, or {@code null}
    *         if none was found / specified.
    */
-  public Object getObjectAtIndex(final int characterIndex) {
+  public Object getScoreObjectAtIndex(final int characterIndex) {
     return strings.getScoreObjectAtIndex(characterIndex);
   }
   /** Find the starting index of the character sequence for Object.
@@ -94,9 +100,11 @@ public final class Transcriber {
    *
    * @return the index of the first character that was generated due to object
    */
-  public int getIndexOfObject(final Object object) {
+  public int getIndexOfScoreObject(final Object object) {
     return strings.getIndexOfScoreObject(object);
   }
+  public char charAt(final int index) { return strings.charAt(index); }
+  public Object getScoreObject() { return score; }
 
   public static final String LINE_SEPARATOR =
     System.getProperty("line.separator");

@@ -35,7 +35,7 @@ public class TimeSignature extends Fraction {
   }
 
   /** 3/4 is not equal to 6/8 when it comes to time signatures.
-   * @param other is the time signature to compare to
+   * @param object is the time signature to compare to
    * @return true if the two time signatures are truly equal
    */
   @Override public boolean equals(Object object) {
