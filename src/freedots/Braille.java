@@ -50,12 +50,8 @@ import freedots.musicxml.Harmony;
  * flexibility.
  * At least a textual description field needs to be added to every
  * defined sign so that online help can use it for on-screen display.
- * However, we will need to deal with double meanings of signs, so we will need
- * some context to actually provide the correct explanation the user is looking
- * for.  This context will be provided by the {@link freedots.transcrpiton}
- * package.  That is why this class shouldn't have been defined an an enum in
- * the first place.
  */
+@Deprecated
 public enum Braille {
   dot(3), wholeRest(134),
   doubleFlat(126, 126), flat(126),
