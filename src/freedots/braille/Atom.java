@@ -38,14 +38,14 @@ public abstract class Atom implements BrailleSequence {
 
   public Object getScoreObject() { return null; }
 
-  public String toString() { return data; }
-  public int length() { return toString().length(); }
-  public char charAt(int index) { return toString().charAt(index); }
-  public CharSequence subSequence(int start, int end) {
-    return toString().subSequence(start, end);
+  public final String toString() { return data; }
+  public final int length() { return data.length(); }
+  public final char charAt(int index) { return data.charAt(index); }
+  public final CharSequence subSequence(final int start, final int end) {
+    return data.subSequence(start, end);
   }
 
-  protected static int dotsToBits(int dots) {
+  protected final static int dotsToBits(int dots) {
     int bits = 0;
     while (dots > 0) {
       final int number = dots % 10;

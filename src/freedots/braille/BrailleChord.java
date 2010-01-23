@@ -86,7 +86,7 @@ public class BrailleChord extends BrailleList {
       AbstractPitch thisPitch = note.getPitch();
       if (thisPitch == null) thisPitch = note.getUnpitched();
       AbstractPitch otherPitch = relativeTo.getPitch();
-      if (thisPitch == null) otherPitch = relativeTo.getUnpitched();
+      if (otherPitch == null) otherPitch = relativeTo.getUnpitched();
 
       int diatonicDiff = Math.abs(thisPitch.diatonicDifference(otherPitch));
       if (diatonicDiff == 0 || diatonicDiff > 7) {
