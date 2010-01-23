@@ -6,7 +6,7 @@ import java.util.Iterator;
  */
 public class BrailleList extends java.util.LinkedList<BrailleSequence>
                          implements BrailleSequence {
-  BrailleList() { super(); }
+  public BrailleList() { super(); }
 
   private BrailleList parent = null;
   public BrailleList getParent() { return parent; }
