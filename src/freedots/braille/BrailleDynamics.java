@@ -6,7 +6,7 @@ public class BrailleDynamics extends BrailleList {
   private final String abbrev;
   private final Direction scoreObject;
 
-  BrailleDynamics(String abbrev, Direction direction) {
+  public BrailleDynamics(String abbrev, Direction direction) {
     super();
     this.abbrev = abbrev;
     this.scoreObject = direction;
