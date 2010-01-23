@@ -1,11 +1,10 @@
 package freedots.braille;
 
 import java.util.Iterator;
-import java.util.LinkedList;
 
 /** Represents a logical unit composed of several smaller objects.
  */
-public class BrailleList extends LinkedList<BrailleSequence>
+public class BrailleList extends java.util.LinkedList<BrailleSequence>
                          implements BrailleSequence {
   BrailleList() { super(); }
 
@@ -18,7 +17,7 @@ public class BrailleList extends LinkedList<BrailleSequence>
    * required.
    */
   @Override public boolean add(final BrailleSequence item) {
-    if (!isEmpty() && getLast().needsGuideDot(item)) {
+    if (this.needsGuideDot(item)) {
       BrailleSequence dot = new GuideDot();
       dot.setParent(this);
       super.add(dot);
