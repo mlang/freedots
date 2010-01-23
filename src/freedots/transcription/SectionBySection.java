@@ -27,6 +27,16 @@ import java.util.Iterator;
 import java.util.List;
 
 import freedots.Braille;
+import freedots.braille.ArtificialWholeRest;
+import freedots.braille.BrailleList;
+import freedots.braille.BrailleSyllable;
+import freedots.braille.DoubleBarSign;
+import freedots.braille.HarmonyPart;
+import freedots.braille.LeftHandPart;
+import freedots.braille.MusicHyphen;
+import freedots.braille.MusicPart;
+import freedots.braille.RightHandPart;
+import freedots.braille.TextPart;
 import freedots.Options;
 import freedots.music.ClefChange;
 import freedots.music.EndBar;
@@ -92,13 +102,13 @@ class SectionBySection implements Strategy {
 
       int chordDirection = -1;
       if (staffCount == 1 && staff.containsHarmony()) {
-        transcriber.printString(Braille.musicPart);
+        transcriber.printString(new MusicPart());
       } else if (staffCount == 2) {
         if (staffIndex == 0) {
-          transcriber.printString(Braille.rightHandPart);
+          transcriber.printString(new RightHandPart());
           chordDirection = -1;
         } else if (staffIndex == 1) {
-          transcriber.printString(Braille.leftHandPart);
+          transcriber.printString(new LeftHandPart());
           chordDirection = 1;
         }
       }
@@ -191,7 +201,7 @@ class SectionBySection implements Strategy {
   }
   private void transcribeLyrics(Staff staff) {
     if (transcriber.getCurrentColumn() > 0) transcriber.newLine();
-    transcriber.printString(Braille.textPart);
+    transcriber.printString(new TextPart());
     Syllabic lastSyllabic = null;
     for (Event event: staff) {
       if (event instanceof Note) {
@@ -199,14 +209,14 @@ class SectionBySection implements Strategy {
         if (lyric != null) {
           String text = lyric.getText();
           if (text.length() <= transcriber.getRemainingColumns()) {
-            transcriber.printString(new BrailleString(text, event));
+            transcriber.printString(new BrailleSyllable(text, (Note)event));
           } else {
             if (lastSyllabic != Syllabic.SINGLE
              && lastSyllabic != Syllabic.END) {
               transcriber.printString("-");
             }
             transcriber.newLine();
-            transcriber.printString(new BrailleString(text, event));
+            transcriber.printString(new BrailleSyllable(text, (Note)event));
           }
           if (lyric.getSyllabic() == Syllabic.SINGLE
            || lyric.getSyllabic() == Syllabic.END) {
@@ -219,7 +229,7 @@ class SectionBySection implements Strategy {
   }
 
   private void transcribeHarmony(Staff staff) {
-    transcriber.printString(Braille.harmonyPart);
+    transcriber.printString(new HarmonyPart());
     MeasureOfHarmonies measure = new MeasureOfHarmonies();
     Iterator<Event> staffIterator = staff.iterator();
     while (staffIterator.hasNext()) {
@@ -241,18 +251,18 @@ class SectionBySection implements Strategy {
             if (chord.length() <= transcriber.getRemainingColumns())
               transcriber.printString(chord);
             else {
-              if (!first) transcriber.printString(Braille.hyphen);
+              if (!first) transcriber.printString(new MusicHyphen());
               transcriber.newLine();
               transcriber.printString(chord);
             }
             first = false;
           }
         } else {
-          transcriber.printString(Braille.artificialWholeRest);
+          transcriber.printString(new ArtificialWholeRest());
         }
         measure.clear();
         if (staffIterator.hasNext()) transcriber.spaceOrNewLine();
-        else transcriber.printString(Braille.doubleBar);
+        else transcriber.printString(new DoubleBarSign());
       }
     }
   }

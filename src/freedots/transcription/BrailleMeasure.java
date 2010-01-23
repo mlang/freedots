@@ -28,6 +28,13 @@ import java.util.List;
 import java.util.Set;
 
 import freedots.Braille;
+import freedots.braille.BrailleChord;
+import freedots.braille.BrailleDynamics;
+import freedots.braille.BrailleList;
+import freedots.braille.BrailleNote;
+import freedots.braille.BrailleSequence;
+import freedots.braille.BrailleWords;
+import freedots.braille.Text;
 import freedots.logging.Logger;
 import freedots.Options;
 import freedots.music.AbstractPitch;
@@ -148,9 +155,9 @@ class BrailleMeasure {
       this.lastPitch = lastPitch;
     }
     void append(String braille) {
-      append(new BrailleString(braille));
+      append(new Text(braille));
     }
-    void append(BrailleString braille) {
+    void append(BrailleSequence braille) {
       if (head.length() + braille.length() <= width && !hyphenated) {
         head.add(braille);
       } else {
@@ -272,7 +279,13 @@ class BrailleMeasure {
         }
         state.append(brailleNote);
       } else if (element instanceof VoiceChord) {
-        printChord((VoiceChord)element, state);
+        BrailleChord brailleChord = new BrailleChord((VoiceChord)element,
+                                                     state.getLastPitch());
+        AbstractPitch pitch = (AbstractPitch)brailleChord.getNotePitch();
+        if (pitch != null) {
+          state.setLastPitch(pitch);
+        }
+        state.append(brailleChord);
       } else if (element instanceof Direction) {
         Direction direction = (Direction)element;
 
@@ -280,16 +293,14 @@ class BrailleMeasure {
           List<String> dynamics = direction.getDynamics();
           if (dynamics != null) {
             for (String dyn: dynamics) {
-              state.append(new BrailleString(Braille.wordSign, direction));
-              state.append(dyn);
+              state.append(new BrailleDynamics(dyn, direction));
               state.setLastPitch(null);
             }
           }
 
           String words = direction.getWords();
           if (words != null && !words.isEmpty()) {
-            state.append(new BrailleString(Braille.wordSign, direction));
-            state.append(words);
+            state.append(new BrailleWords(words, direction));
           }
 
           if (direction.isPedalPress())
@@ -298,69 +309,6 @@ class BrailleMeasure {
             state.append(Braille.pedalRelease.toString());
         }
       }
-    }
-  }
-
-  /** Transcribes a chord with the use of interval signs.
-   */
-  private void printChord(VoiceChord chord, State state) {
-    StringBuilder braille = new StringBuilder();
-    final boolean showFingering = Options.getInstance().getShowFingering();
-
-    final Iterator<RhythmicElement> iterator = chord.getSorted().iterator();
-    assert iterator.hasNext();
-    final Note firstNote = (Note)iterator.next();
-    Accidental accidental = firstNote.getAccidental();
-    if (accidental != null) braille.append(Braille.valueOf(accidental));
-
-    AbstractPitch firstPitch = (AbstractPitch)firstNote.getPitch();
-    if (firstPitch == null)
-      firstPitch = (AbstractPitch)firstNote.getUnpitched();
-    Braille octaveSign = firstPitch.getOctaveSign(state.getLastPitch());
-    if (octaveSign != null) braille.append(octaveSign);
-    state.setLastPitch(firstPitch);
-    braille.append(Braille.toString(firstNote.getAugmentedFraction(),
-                                    firstPitch));
-    if (showFingering)
-      braille.append(Braille.toString(firstNote.getFingering()));
-
-    if (firstNote.isTieStart()) {
-      braille.append(Braille.tie);
-    } else {
-      boolean printSlur = false;
-      for (Slur<Note> slur:firstNote.getSlurs()) {
-        if (!slur.lastNote(firstNote)) {
-          printSlur = true;
-          break;
-        }
-      }
-      if (printSlur) braille.append(Braille.slur);
-    }
-
-    state.append(new BrailleString(braille.toString(), firstNote));
-    braille = new StringBuilder();
-
-    assert iterator.hasNext();
-
-    while (iterator.hasNext()) {
-      final Note currentNote = (Note)iterator.next();
-      accidental = currentNote.getAccidental();
-      if (accidental != null) braille.append(Braille.valueOf(accidental));
-      AbstractPitch currentPitch = (AbstractPitch)currentNote.getPitch();
-      if (currentPitch == null)
-        currentPitch = (AbstractPitch)currentNote.getUnpitched();
-
-      braille.append(Braille.interval(currentPitch, firstPitch));
-
-      if (showFingering)
-        braille.append(Braille.toString(currentNote.getFingering()));
-
-      if (currentNote.isTieStart()) {
-        braille.append(Braille.tie);
-      }
-
-      state.append(new BrailleString(braille.toString(), currentNote));
-      if (iterator.hasNext()) braille = new StringBuilder();
     }
   }
 }

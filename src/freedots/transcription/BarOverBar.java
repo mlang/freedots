@@ -24,6 +24,12 @@ package freedots.transcription;
 
 import java.util.ArrayList;
 import freedots.Braille;
+import freedots.braille.BrailleList;
+import freedots.braille.BrailleSequence;
+import freedots.braille.LeftHandPart;
+import freedots.braille.RightHandPart;
+import freedots.braille.SoloPart;
+import freedots.braille.Space;
 import freedots.logging.Logger;
 import freedots.Options;
 import freedots.music.EndBar;
@@ -76,27 +82,26 @@ class BarOverBar implements Strategy {
           int columnWidth = brailleStaves.maxLengthAt(i);
           BrailleMeasure measure = brailleStaves.get(staffIndex).get(i);
           if (i == startIndex) measure.unlinkPrevious();
-          BrailleList braille = measure.head(1024, false);
+
+          BrailleList measureBraille = measure.head(1024, false);
+          BrailleList braille = new BrailleList();
           if (i == startIndex) {
             if (staffIndex == 0) {
               transcriber.printString(paragraphNumber+" ");
             } else {
-              for (int count = 0; count < paragraphNumber.length(); count++) {
-                transcriber.printString(" ");
-              }
-              transcriber.printString(" ");
+              transcriber.indentTo(paragraphNumber.length() + 1);
             }
-            Braille introSymbol = brailleStaves.get(staffIndex).getIntro();
+            BrailleSequence introSymbol = brailleStaves.get(staffIndex).getIntro();
             if (introSymbol != null) {
-              BrailleString intro = new BrailleString(introSymbol);
-              braille.add(0, intro);
+              braille.add(introSymbol);
             }
           }
+          braille.add(measureBraille);
           transcriber.printString(braille);
 
           int skipColumns = columnWidth - braille.length();
           if (skipColumns > 0) {
-            transcriber.printString(" ");
+            transcriber.printString(new Space());
             skipColumns--;
           }
           if (skipColumns > 2) {
@@ -150,15 +155,15 @@ class BarOverBar implements Strategy {
         int voiceDirection = -1;
 
         if (staffCount == 1) {
-          brailleStaff.setIntro(Braille.soloPart);
+          brailleStaff.setIntro(new SoloPart());
           if (staff.containsChords()) displayClefChange = true;
         } else if (staffCount == 2) {
           if (staffIndex == 0) {
-            brailleStaff.setIntro(Braille.rightHandPart);
+            brailleStaff.setIntro(new RightHandPart());
             voiceDirection = -1;
             measure.setVoiceDirection(voiceDirection);
           } else if (staffIndex == 1) {
-            brailleStaff.setIntro(Braille.leftHandPart);
+            brailleStaff.setIntro(new LeftHandPart());
             voiceDirection = 1;
             measure.setVoiceDirection(voiceDirection);
           }
@@ -189,9 +194,9 @@ class BarOverBar implements Strategy {
   }
 
   private class BrailleStaff extends ArrayList<BrailleMeasure> {
-    private Braille intro = null;
-    void setIntro(Braille intro) { this.intro = intro; }
-    Braille getIntro() { return intro; }
+    private BrailleSequence intro = null;
+    void setIntro(BrailleSequence intro) { this.intro = intro; }
+    BrailleSequence getIntro() { return intro; }
   }
   @SuppressWarnings("serial")
   private class BrailleStaves extends ArrayList<BrailleStaff> {

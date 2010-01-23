@@ -28,6 +28,12 @@ import java.util.List;
 import freedots.Braille;
 import freedots.Options;
 
+import freedots.braille.BrailleList;
+import freedots.braille.BrailleSequence;
+import freedots.braille.NewLine;
+import freedots.braille.Space;
+import freedots.braille.Text;
+import freedots.braille.UpperNumber;
 import freedots.musicxml.Direction;
 import freedots.musicxml.Score;
 
@@ -78,13 +84,7 @@ public final class Transcriber {
    *         if none was found / specified.
    */
   public Object getObjectAtIndex(final int characterIndex) {
-    StringBuilder stringBuilder = new StringBuilder();
-    for (BrailleString brailleString:strings) {
-      if (stringBuilder.length() + brailleString.length() > characterIndex)
-        return brailleString.getModel();
-      stringBuilder.append(brailleString.toString());
-    }
-    return null;
+    return strings.getScoreObjectAtIndex(characterIndex);
   }
   /** Find the starting index of the character sequence for Object.
    *
@@ -95,13 +95,7 @@ public final class Transcriber {
    * @return the index of the first character that was generated due to object
    */
   public int getIndexOfObject(final Object object) {
-    StringBuilder stringBuilder = new StringBuilder();
-    for (BrailleString brailleString : strings) {
-      if (brailleString.getModel() == object)
-        return stringBuilder.length();
-      stringBuilder.append(brailleString.toString());
-    }
-    return -1;
+    return strings.getIndexOfScoreObject(object);
   }
 
   public static final String LINE_SEPARATOR =
@@ -173,21 +167,14 @@ public final class Transcriber {
   }
 
   void printString(final String text) {
-    printString(new BrailleString(text));
+    printString(new Text(text));
   }
-  void printString(final Braille braille) {
-    printString(new BrailleString(braille));
-  }
-  void printString(final BrailleString text) {
-    strings.add(text);
-    characterCount += text.length();
-  }
-  void printString(final BrailleList text) {
-    strings.addAll(text);
-    characterCount += text.length();
+  void printString(final BrailleSequence braille) {
+    strings.add(braille);
+    characterCount += braille.length();
   }
   void printLine(final String text) {
-    strings.add(new BrailleString(text));
+    printString(text);
     newLine();
   }
   void printCenteredLine(final String text) {
@@ -195,24 +182,24 @@ public final class Transcriber {
     if (skip > 0) {
       StringBuilder skipString = new StringBuilder();
       for (int i = 0; i < skip; i++) skipString.append(" ");
-      strings.add(new BrailleString(skipString.toString()));
+      printString(skipString.toString());
     }
-    strings.add(new BrailleString(text));
+    printString(text);
     newLine();
   }
   void spaceOrNewLine() {
-    if (getRemainingColumns() > 1) printString(" ");
+    if (getRemainingColumns() > 1) printString(new Space());
     else newLine();
   }
   void newLine() {
-    strings.add(new BrailleString(LINE_SEPARATOR));
+    strings.add(new NewLine());
     characterCount = 0;
     lineCount += 1;
     if (lineCount == options.getPageHeight()) {
-      String pageIndicator = Braille.numberSign.toString()
-                           + Braille.upperNumber(pageNumber++);
+      BrailleSequence pageIndicator = new UpperNumber(pageNumber++);
       indentTo(options.getPageWidth() - pageIndicator.length());
-      strings.add(new BrailleString(pageIndicator + LINE_SEPARATOR));
+      strings.add(pageIndicator);
+      strings.add(new NewLine());
       characterCount = 0;
       lineCount = 0;
     }
@@ -220,7 +207,7 @@ public final class Transcriber {
   void indentTo(final int column) {
     int difference = column - characterCount;
     while (difference > 0) {
-      strings.add(new BrailleString(" "));
+      strings.add(new Space());
       characterCount += 1;
       difference -= 1;
     }
