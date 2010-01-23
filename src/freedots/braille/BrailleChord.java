@@ -89,11 +89,11 @@ public class BrailleChord extends BrailleList {
 
     private static final String[] INTERVALS = new String[] {
       braille(36), braille(34), braille(346), braille(3456), braille(35),
-      braille(356), braille(25)
+      braille(356), braille(25), braille(36)
     };
     private static final String[] INTERVAL_NAMES = new String[] {
-      "octave/unison", "second", "third", "fourth", "fifth", "sixth",
-      "seventh"
+      "unison", "second", "third", "fourth", "fifth", "sixth",
+      "seventh", "octave"
     };
   }
 }
