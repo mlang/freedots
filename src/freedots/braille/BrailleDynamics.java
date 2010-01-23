@@ -1,11 +1,15 @@
 package freedots.braille;
 
+import freedots.musicxml.Direction;
+
 public class BrailleDynamics extends BrailleList {
   private final String abbrev;
+  private final Direction scoreObject;
 
-  BrailleDynamics(String abbrev) {
+  BrailleDynamics(String abbrev, Direction direction) {
     super();
     this.abbrev = abbrev;
+    this.scoreObject = direction;
 
     add(new WordSign());
     add(new Text(abbrev));
@@ -23,4 +27,5 @@ public class BrailleDynamics extends BrailleList {
 
     return false;
   }
+  @Override public Object getScoreObject() { return scoreObject; }
 }
