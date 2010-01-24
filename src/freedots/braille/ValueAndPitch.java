@@ -47,7 +47,7 @@ public class ValueAndPitch extends Sign {
 
     final int[] stepDots = { 145, 15, 124, 1245, 125, 24, 245 };
     final int[] denomDots = { 36, 3, 6, 0 };
-    return String.valueOf((char)(0X2800
+    return String.valueOf((char)(UNICODE_BRAILLE_MASK
                                  | dotsToBits(stepDots[pitch.getStep()])
                                  | dotsToBits(denomDots[valueType])));
   }

@@ -65,7 +65,7 @@ public abstract class Sign implements BrailleSequence {
     return bits;
   }
   protected static String braille(final int dots) {
-    return String.valueOf((char)(0X2800|dotsToBits(dots)));
+    return String.valueOf((char)(UNICODE_BRAILLE_MASK|dotsToBits(dots)));
   }
   protected static String braille(int dots1, int dots2) {
     return braille(dots1) + braille(dots2);
@@ -73,4 +73,10 @@ public abstract class Sign implements BrailleSequence {
   protected static String braille(int dots1, int dots2, int dots3) {
     return braille(dots1) + braille(dots2) + braille(dots3);
   }
+
+  /** Start of Unicode braille range.
+   * @see <a href="http://www.unicode.org/charts/PDF/U2800.pdf">Unicode range
+   *      U+2800 to U+28FF</a>
+   */
+  protected static final int UNICODE_BRAILLE_MASK = 0X2800;
 }
