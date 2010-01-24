@@ -54,7 +54,7 @@ public class BrailleFingering extends BrailleList {
     return "Fingering: " + fingering.toString();
   }
 
-  public static class Finger extends Atom {
+  public static class Finger extends Sign {
     private final int finger;
 
     Finger(final int finger) {

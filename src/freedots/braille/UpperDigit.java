@@ -22,7 +22,7 @@
  */
 package freedots.braille;
 
-public class UpperDigit extends Atom {
+public class UpperDigit extends Sign {
   private final int digit;
 
   UpperDigit(final int digit) {

@@ -30,7 +30,7 @@ import freedots.music.Accidental;
  * @see <a href="http://brl.org/music/code/bmb/chap05/index.html">Accidentals
  *      and Key signatures</a>
  */
-public class AccidentalSign extends Atom {
+public class AccidentalSign extends Sign {
   private final Accidental accidental;
 
   public AccidentalSign(final Accidental accidental) {

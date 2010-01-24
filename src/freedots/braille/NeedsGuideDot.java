@@ -22,7 +22,7 @@
  */
 package freedots.braille;
 
-public abstract class NeedsGuideDot extends Atom {
+public abstract class NeedsGuideDot extends Sign {
   NeedsGuideDot(final String braille) { super(braille); }
 
   @Override public boolean needsGuideDot(final BrailleSequence next) {

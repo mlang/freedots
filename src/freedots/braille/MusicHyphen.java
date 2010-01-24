@@ -22,7 +22,7 @@
  */
 package freedots.braille;
 
-public class MusicHyphen extends Atom {
+public class MusicHyphen extends Sign {
   public MusicHyphen() { super(braille(5)); }
 
   public String getDescription() {

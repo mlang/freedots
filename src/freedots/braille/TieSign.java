@@ -22,7 +22,7 @@
  */
 package freedots.braille;
 
-public class TieSign extends Atom {
+public class TieSign extends Sign {
   public TieSign() { super(braille(4, 14)); }
 
   public String getDescription() {

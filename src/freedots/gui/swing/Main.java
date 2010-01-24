@@ -52,7 +52,7 @@ import javax.swing.JTextArea;
 import javax.swing.event.CaretEvent;
 
 import freedots.Options;
-import freedots.braille.Atom;
+import freedots.braille.Sign;
 import freedots.logging.Logger;
 import freedots.musicxml.Library;
 import freedots.musicxml.MIDISequence;
@@ -111,10 +111,9 @@ public final class Main
   public void caretUpdate(CaretEvent caretEvent) {
     int index = caretEvent.getDot();
     Object scoreObject = null;
-    Atom brailleSign = null;
     if (transcriber != null) {
       scoreObject = transcriber.getScoreObjectAtIndex(index);
-      brailleSign = transcriber.getSignAtIndex(index);
+      final Sign brailleSign = transcriber.getSignAtIndex(index);
       if (statusBar != null && brailleSign != null) {
         statusBar.setMessage(brailleSign.toString() + ": "
                              + brailleSign.getDescription());

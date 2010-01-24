@@ -27,7 +27,7 @@ package freedots.braille;
  * @see <a href="http://brl.org/music/code/bmb/chap02/index.html">Chapter 2:
  *      Octave Signs</a>
  */
-public class OctaveSign extends Atom {
+public class OctaveSign extends Sign {
   private final int octave;
   public OctaveSign(final int octave) {
     super(OCTAVE_SIGNS[octave]);

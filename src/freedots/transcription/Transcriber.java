@@ -27,7 +27,7 @@ import java.util.List;
 
 import freedots.Options;
 
-import freedots.braille.Atom;
+import freedots.braille.Sign;
 import freedots.braille.BrailleList;
 import freedots.braille.BrailleSequence;
 import freedots.braille.NewLine;
@@ -78,7 +78,7 @@ public final class Transcriber {
 
   /** Find the braille sign at a given character index.
    */
-  public Atom getSignAtIndex(final int index) {
+  public Sign getSignAtIndex(final int index) {
     return strings.getSignAtIndex(index);
   }
 

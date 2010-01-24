@@ -29,7 +29,7 @@ import freedots.music.AugmentedFraction;
  * @see <a href="http://brl.org/music/code/bmb/chap04/index.html">Chapter 4:
  *      Rests</a>
  */
-public class RestSign extends Atom {
+public class RestSign extends Sign {
   private final AugmentedFraction value;
 
   RestSign(final AugmentedFraction value) {

@@ -22,7 +22,7 @@
  */
 package freedots.braille;
 
-public class MusicPart extends Atom {
+public class MusicPart extends Sign {
   public MusicPart() { super(braille(6, 3)); }
 
   public String getDescription() {

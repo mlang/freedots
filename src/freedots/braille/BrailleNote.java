@@ -118,14 +118,14 @@ public class BrailleNote extends BrailleList {
     return true;
   }
 
-  public static class GraceSign extends Atom {
+  public static class GraceSign extends Sign {
     GraceSign() { super(braille(5, 26)); }
     public String getDescription() {
       return "Indicates the this is a grace note";
     }
   }
 
-  private static Atom createOrnamentSign(Ornament ornament) {
+  private static Sign createOrnamentSign(Ornament ornament) {
     switch (ornament) {
     case mordent:         return new MordentSign();
     case invertedMordent: return new InvertedMordentSign();
@@ -134,24 +134,24 @@ public class BrailleNote extends BrailleList {
     default:              throw new AssertionError(ornament);
     }
   }
-  public static class MordentSign extends Atom {
+  public static class MordentSign extends Sign {
     MordentSign() { super(braille(5, 235, 123)); }
     public String getDescription() { return "A mordent sign"; }
   }
-  public static class InvertedMordentSign extends Atom {
+  public static class InvertedMordentSign extends Sign {
     InvertedMordentSign() { super(braille(6, 235, 123)); }
     public String getDescription() { return "A inverted mordent sign"; }
   }
-  public static class TrillSign extends Atom {
+  public static class TrillSign extends Sign {
     TrillSign() { super(braille(235)); }
     public String getDescription() { return "A trill sign"; }
   }
-  public static class TurnSign extends Atom {
+  public static class TurnSign extends Sign {
     TurnSign() { super(braille(6, 256)); }
     public String getDescription() { return "A turn sign"; }
   }
 
-  private static Atom createArticulationSign(Articulation articulation) {
+  private static Sign createArticulationSign(Articulation articulation) {
     switch (articulation) {
     case accent:        return new AccentSign();
     case strongAccent:  return new MartellatoSign();
@@ -163,33 +163,33 @@ public class BrailleNote extends BrailleList {
     default:            throw new AssertionError(articulation);
     }
   }
-  public static class AccentSign extends Atom {
+  public static class AccentSign extends Sign {
     AccentSign() { super(braille(46, 236)); }
     public String getDescription() { return "An accent sign"; }
   }
-  public static class MartellatoSign extends Atom {
+  public static class MartellatoSign extends Sign {
     MartellatoSign() { super(braille(56, 236)); }
     public String getDescription() {
       return "A martellato (strong accent) sign";
     }
   }
-  public static class BreathSign extends Atom {
+  public static class BreathSign extends Sign {
     BreathSign() { super(braille(6, 34)); }
     public String getDescription() { return "A breath mark"; }
   }
-  public static class StaccatoSign extends Atom {
+  public static class StaccatoSign extends Sign {
     StaccatoSign() { super(braille(236)); }
     public String getDescription() { return "A staccato sign"; }
   }
-  public static class MezzoStaccatoSign extends Atom {
+  public static class MezzoStaccatoSign extends Sign {
     MezzoStaccatoSign() { super(braille(5, 236)); }
     public String getDescription() { return "A mezzo staccato sign"; }
   }
-  public static class StaccatissimoSign extends Atom {
+  public static class StaccatissimoSign extends Sign {
     StaccatissimoSign() { super(braille(6, 236)); }
     public String getDescription() { return "A staccatissimo sign"; }
   }
-  public static class TenutoSign extends Atom {
+  public static class TenutoSign extends Sign {
     TenutoSign() { super(braille(456, 236)); }
     public String getDescription() { return "A tenuto sign"; }
   }

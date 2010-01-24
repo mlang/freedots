@@ -17,7 +17,7 @@ public class Test {
     braille.add(new OctaveSign(1));
     System.out.println(braille.toString() + " = " + braille.getDescription());
     for (int i = 0; i < braille.length(); i++) {
-      final Atom sign = braille.getSignAtIndex(i);
+      final Sign sign = braille.getSignAtIndex(i);
       final Object object = braille.getScoreObjectAtIndex(i);
       System.out.println("i = "+i+": '"+sign+"' = "+sign.getDescription());
       System.out.println("  "+object);

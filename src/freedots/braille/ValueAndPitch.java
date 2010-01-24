@@ -25,7 +25,7 @@ package freedots.braille;
 import freedots.music.AbstractPitch;
 import freedots.music.AugmentedFraction;
 
-public class ValueAndPitch extends Atom {
+public class ValueAndPitch extends Sign {
   private final AbstractPitch pitch;
   private final AugmentedFraction value;
 

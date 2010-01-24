@@ -69,9 +69,9 @@ public class BrailleList extends java.util.LinkedList<BrailleSequence>
     return toString().subSequence(start, end);
   }
 
-  /** Retrieves the {@code Atom} at index.
+  /** Retrieves the {@code Sign} at index.
    */
-  public Atom getSignAtIndex(final int index) {
+  public Sign getSignAtIndex(final int index) {
     final Iterator<BrailleSequence> iterator = iterator();
     int pos = 0;
     while (iterator.hasNext()) {
@@ -80,7 +80,7 @@ public class BrailleList extends java.util.LinkedList<BrailleSequence>
       if (pos + length > index)
         return (current instanceof BrailleList)
           ? ((BrailleList)current).getSignAtIndex(index - pos)
-          : (Atom)current;
+          : (Sign)current;
       else pos += length;
     }
     return null;

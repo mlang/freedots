@@ -35,7 +35,7 @@ public class ArtificialWholeRest extends BrailleList {
     return "Indicates that a whole measure is without any chord symbols";
   }
 
-  public static class Dot5 extends Atom {
+  public static class Dot5 extends Sign {
     Dot5() { super(braille(5)); }
     public String getDescription() {
       return "Signifies that the following sign has been added for "

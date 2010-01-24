@@ -98,7 +98,7 @@ public class BrailleChord extends BrailleList {
 
     @Override public Object getScoreObject() { return note; }
   }
-  public static class IntervalSign extends Atom {
+  public static class IntervalSign extends Sign {
     private final int steps;
     IntervalSign(final int steps) {
       super(INTERVALS[steps]);

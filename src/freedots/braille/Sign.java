@@ -24,10 +24,13 @@ package freedots.braille;
 
 /** The smallest possible unit of braille.
  * Usually consists of 1 to 3 cells, not much more.
+ *
+ * @see <a href="http://en.wikipedia.org/wiki/Sign_(semiotics)">Wikipedia:
+ *      Sign (semiotics)</a>
  */
-public abstract class Atom implements BrailleSequence {
+public abstract class Sign implements BrailleSequence {
   protected final String data;
-  protected Atom(final String data) { this.data = data; }
+  protected Sign(final String data) { this.data = data; }
 
   public abstract String getDescription();
   public boolean needsGuideDot(BrailleSequence next) { return false; }
