@@ -22,21 +22,9 @@
  */
 package freedots.music;
 
-import freedots.Braille;
-
 /**
  * @see <a href="http://en.wikipedia.org/wiki/Ornament_(music)">Wikipedia:Ornament_(music)</a>
  */
 public enum Ornament {
   mordent, invertedMordent, trill, turn;
-
-  public Braille toBraille() {
-    switch (this) {
-    case mordent: return Braille.mordent;
-    case invertedMordent: return Braille.invertedMordent;
-    case trill: return Braille.trill;
-    case turn: return Braille.turn;
-    default: throw new AssertionError(this);
-    }
-  }
 }

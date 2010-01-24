@@ -28,8 +28,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import freedots.braille.AccidentalSign;
 import freedots.logging.Logger;
-import freedots.music.AbstractPitch;
 import freedots.music.Accidental;
 import freedots.music.AugmentedFraction;
 import freedots.music.TimeSignature;
@@ -44,32 +44,20 @@ import freedots.musicxml.Harmony;
  * TODO: This class is an enum for purely historical reasons, there is actually
  * no real use of the properties of an enum except for the syntactic sugar
  * it offers for initialising static members.
- * This class should probably be split into an interface/abstract superclass
- * and various specific implementations to increase readability and
- * flexibility.
- * At least a textual description field needs to be added to every
- * defined sign so that online help can use it for on-screen display.
  */
 @Deprecated
 public enum Braille {
   dot(3), wholeRest(134),
-  doubleFlat(126, 126), flat(126),
-  natural(16),
-  sharp(146), doubleSharp(146, 146),
+  flat(126), natural(16), sharp(146),
 
   valueDistinction(126, 2),
 
   numberSign(3456), simileSign(2356),
 
   tie(4, 14), slur(14),
-  accent(46, 236), martellato(56, 236), breathMark(6, 34),
-  staccato(236), mezzoStaccato(5, 236), staccatissimo(6, 236),
-  tenuto(456, 236),
 
   // Piano pedal marks
   pedalPress(126, 14), pedalRelease(16, 14), pedalChange(16, 126, 14),
-
-  mordent(5, 235, 123), invertedMordent(6, 235, 123), trill(235), turn(6, 256),
 
   fullMeasureInAccord(126, 345),
   partMeasureInAccord(46, 13), partMeasureInAccordDivision(5, 2),
@@ -77,10 +65,6 @@ public enum Braille {
   // Octave signs
   octave1(4, 4), octave2(4), octave3(45), octave4(456), octave5(5),
   octave6(46), octave7(56), octave8(6), octave9(6, 6),
-
-  // Interval signs
-  second(34), third(346), fourth(3456), fifth(35), sixth(356), seventh(25),
-  octave(36),
 
   // Signs for announcing the type of "staff"
   rightHandPart(46, 345), soloPart(5, 345), leftHandPart(456, 345),
@@ -207,21 +191,6 @@ public enum Braille {
     }
     return string;
   }
-  /** Calcualtes a braille string representing a musical interval.
-   * @return a Unicode string, optionally with an octave sign prepended if
-   *         the interval exceeds an octave.
-   */
-  public static String interval(final AbstractPitch pitch,
-                                final AbstractPitch relativeTo) {
-    StringBuilder braille = new StringBuilder();
-    int diatonicDifference = Math.abs(pitch.diatonicDifference(relativeTo));
-    if (diatonicDifference == 0 || diatonicDifference > 7) {
-      braille.append(pitch.getOctaveSign(null));
-      while (diatonicDifference > 7) diatonicDifference -= 7;
-    }
-    braille.append(INTERVALS[diatonicDifference]);
-    return braille.toString();
-  }
   public static final Map<Character, Character> BRF_TABLE =
     Collections.unmodifiableMap(new HashMap<Character, Character>() {
       {
@@ -324,27 +293,10 @@ public enum Braille {
     lowerDigit4, lowerDigit5, lowerDigit6,
     lowerDigit7, lowerDigit8, lowerDigit9
   };
-  private static final Braille[] INTERVALS = {
-    octave, second, third, fourth, fifth, sixth, seventh, octave
-  };
   private static final Braille[] ENGLISH_STEPS = {
     letterC, letterD, letterE, letterF, letterG, letterA, letterB
   };
 
-  /** Returns the braille representation of the given accidental mark.
-   * @param accidental is the accidental to convert to braille.
-   * @return the braille sign which corresponds to the given accidental.
-   */
-  public static Braille valueOf(Accidental accidental) {
-    switch (accidental) {
-    case NATURAL: return natural;
-    case DOUBLE_FLAT: return doubleFlat;
-    case FLAT:    return flat;
-    case SHARP:   return sharp;
-    case DOUBLE_SHARP: return doubleSharp;
-    default: throw new AssertionError(accidental);
-    }
-  }
 
   /** Converts the given {@link freedots.music.TimeSignature} to its braille
    *  representation.
@@ -447,11 +399,8 @@ public enum Braille {
     }
     return sb.toString();
   }
-  private static String accidentalFromAlter(float alter) {
-    if (alter == -2) return doubleFlat.toString();
-    else if (alter == -1) return flat.toString();
-    else if (alter == 1) return sharp.toString();
-    else if (alter == 2) return doubleSharp.toString();
-    return "";
+  private static CharSequence accidentalFromAlter(float alter) {
+    if (alter == 0) return new String();
+    return new AccidentalSign(Accidental.fromAlter(alter));
   }
 }

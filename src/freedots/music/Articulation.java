@@ -25,8 +25,6 @@ package freedots.music;
 import java.util.EnumSet;
 import java.util.Set;
 
-import freedots.Braille;
-
 /**
  * Articulation refers to the direction or performance technique which affects
  * the transition or continuity on single note or between multiple notes or
@@ -42,19 +40,6 @@ import freedots.Braille;
 public enum Articulation {
   accent, strongAccent, breathMark,
   staccato, mezzoStaccato, staccatissimo, tenuto;
-
-  public Braille toBraille() {
-    switch (this) {
-    case accent: return Braille.accent;
-    case strongAccent: return Braille.martellato;
-    case breathMark: return Braille.breathMark;
-    case staccato: return Braille.staccato;
-    case mezzoStaccato: return Braille.mezzoStaccato;
-    case staccatissimo: return Braille.staccatissimo;
-    case tenuto: return Braille.tenuto;
-    }
-    return null;
-  }
 
   public static final Set<Articulation> mezzoStaccatoSet =
     EnumSet.of(staccato, tenuto);

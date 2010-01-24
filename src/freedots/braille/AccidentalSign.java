@@ -33,7 +33,7 @@ import freedots.music.Accidental;
 public class AccidentalSign extends Atom {
   private final Accidental accidental;
 
-  AccidentalSign(final Accidental accidental) {
+  public AccidentalSign(final Accidental accidental) {
     super(getSign(accidental));
     this.accidental = accidental;
   }
