@@ -32,7 +32,7 @@ import freedots.music.TimeSignature;
 public class BrailleTimeSignature extends BrailleList {
   private final TimeSignature timeSignature;
 
-  public BrailleTimeSignature(TimeSignature timeSignature) {
+  public BrailleTimeSignature(final TimeSignature timeSignature) {
     super();
     this.timeSignature = timeSignature;
 

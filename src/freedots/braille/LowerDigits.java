@@ -37,6 +37,7 @@ public class LowerDigits extends BrailleList {
   }
 
   @Override public String getDescription() {
-    return "The number " + number + " formatted with digits in the lower part of a braille cell";
+    return "The number " + number
+           + " formatted with digits in the lower part of a braille cell";
   }
 }

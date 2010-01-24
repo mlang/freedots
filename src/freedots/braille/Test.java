@@ -3,6 +3,8 @@ package freedots.braille;
 import freedots.music.TimeSignature;
 
 public class Test {
+  private Test() {}
+
   public static final void main(String[] args) {
     BrailleList braille = new BrailleList();
     braille.add(new BrailleTimeSignature(new TimeSignature(9, 16)));

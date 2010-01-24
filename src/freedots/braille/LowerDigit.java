@@ -25,7 +25,7 @@ package freedots.braille;
 public class LowerDigit extends Atom {
   private final int digit;
 
-  LowerDigit(int digit) {
+  LowerDigit(final int digit) {
     super(getSign(digit));
     this.digit = digit;
   }

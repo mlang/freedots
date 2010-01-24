@@ -125,7 +125,7 @@ final class SingleNoteRenderer extends JPanel {
         if (line.charAt(x) != TRANSPARENT) {
           int col = toLevel(line.charAt(x));
 
-          int ncol = ((0xFF000000|(col<<16)|(col<<8))|col);
+          int ncol = (0xFF000000 | (col<<16) | (col<<8)) | col;
 
           bImage.setRGB(x, i, ncol);
         }
@@ -175,17 +175,32 @@ final class SingleNoteRenderer extends JPanel {
   {
     readNoteIcons();
         
-    noteDefs.put("1/1", new SingleIconSpecification("WHOLE_NOTE", null, false));
-    noteDefs.put("1/2", new SingleIconSpecification("WHOLE_NOTE", null, true));
-    noteDefs.put("1/4", new SingleIconSpecification("NOTEHEAD_BLACK", null, true));
-    noteDefs.put("1/8", new SingleIconSpecification("NOTEHEAD_BLACK", "COMBINING_FLAG_1", true));
-    noteDefs.put("1/16", new SingleIconSpecification("NOTEHEAD_BLACK", "COMBINING_FLAG_2", true));
-    noteDefs.put("1/32", new SingleIconSpecification("NOTEHEAD_BLACK", "COMBINING_FLAG_3", true));
-    noteDefs.put("1/64", new SingleIconSpecification("NOTEHEAD_BLACK", "COMBINING_FLAG_4", true));
-    noteDefs.put("1/128", new SingleIconSpecification("NOTEHEAD_BLACK", "COMBINING_FLAG_5", true));
+    noteDefs.put("1/1",
+                 new SingleIconSpecification("WHOLE_NOTE", null, false));
+    noteDefs.put("1/2",
+                 new SingleIconSpecification("WHOLE_NOTE", null, true));
+    noteDefs.put("1/4",
+                 new SingleIconSpecification("NOTEHEAD_BLACK", null, true));
+    noteDefs.put("1/8",
+                 new SingleIconSpecification("NOTEHEAD_BLACK",
+                                             "COMBINING_FLAG_1", true));
+    noteDefs.put("1/16",
+                 new SingleIconSpecification("NOTEHEAD_BLACK",
+                                             "COMBINING_FLAG_2", true));
+    noteDefs.put("1/32",
+                 new SingleIconSpecification("NOTEHEAD_BLACK",
+                                             "COMBINING_FLAG_3", true));
+    noteDefs.put("1/64",
+                 new SingleIconSpecification("NOTEHEAD_BLACK",
+                                             "COMBINING_FLAG_4", true));
+    noteDefs.put("1/128",
+                 new SingleIconSpecification("NOTEHEAD_BLACK",
+                                             "COMBINING_FLAG_5", true));
 
-    noteDefs.put("G_CLEF", new SingleIconSpecification(null, null, false, 3, 2, 0, 0));
-    noteDefs.put("F_CLEF", new SingleIconSpecification(null, null, false, 3, 14, 0, 0));
+    noteDefs.put("G_CLEF",
+                 new SingleIconSpecification(null, null, false, 3, 2, 0, 0));
+    noteDefs.put("F_CLEF",
+                 new SingleIconSpecification(null, null, false, 3, 14, 0, 0));
   }
 
   public Dimension getPreferredSize() {

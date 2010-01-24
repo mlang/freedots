@@ -25,7 +25,7 @@ package freedots.braille;
 public class UpperNumber extends BrailleList {
   private final int number;
 
-  public UpperNumber(int number) {
+  public UpperNumber(final int number) {
     super();
     this.number = number;
     add(new NumberSign());

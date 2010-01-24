@@ -29,6 +29,7 @@ public class RightHandPart extends NeedsGuideDot {
   public RightHandPart() { super(braille(46, 345)); }
 
   public String getDescription() {
-    return "Indicates music for the right hand (first staff) of a keyboard instrument.";
+    return "Indicates music for the right hand (first staff) of "
+           + "a keyboard instrument";
   }
 }

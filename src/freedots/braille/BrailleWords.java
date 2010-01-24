@@ -28,7 +28,7 @@ public class BrailleWords extends BrailleList {
   private final String text;
   private final Direction scoreObject;
 
-  public BrailleWords(String text, Direction direction) {
+  public BrailleWords(final String text, final Direction direction) {
     super();
     this.text = text;
     this.scoreObject = direction;
