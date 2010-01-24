@@ -349,40 +349,6 @@ public enum Braille {
     default: throw new AssertionError(accidental);
     }
   }
-  /** Generates the main sign used to describe a pitch with a certain musical
-   *  duration.
-   * @param value is the musical duration
-   * @param pitch indicates the pitch to express excluding any possible
-   *        octave signs
-   * @return an Unicode braille string of length 1
-   */
-  public static String toString(AugmentedFraction value, AbstractPitch pitch) {
-    String braille = "";
-    final int log = value.getLog();
-    // FIXME: breve and long notes are not handled at all
-    final int valueType = log > AugmentedFraction.EIGHTH
-      ? log-AugmentedFraction.SIXTEENTH : log-2;
-    if (pitch != null) {
-      final int[] stepDots = {
-        145, 15, 124, 1245, 125, 24, 245
-      };
-      final int[] denomDots = {
-        36, 3, 6, 0
-      };
-      braille += unicodeBraille(
-                   dotsToBits(stepDots[pitch.getStep()])
-                 | dotsToBits(denomDots[valueType]));
-    } else { /* Rest */
-      int[] restDots = {
-        134, 136, 1236, 1346
-      };
-      braille += unicodeBraille(dotsToBits(restDots[valueType]));
-    }
-
-    for (int i = 0; i < value.getDots(); i++) braille += dot;
-
-    return braille;
-  }
 
   /** Converts the given {@link freedots.music.TimeSignature} to its braille
    *  representation.
