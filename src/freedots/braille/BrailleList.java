@@ -39,7 +39,7 @@ public class BrailleList extends java.util.LinkedList<BrailleSequence>
    * required.
    */
   @Override public boolean add(final BrailleSequence item) {
-    if (this.needsGuideDot(item)) {
+    if (!isEmpty() && getLast().needsGuideDot(item)) {
       BrailleSequence dot = new GuideDot();
       dot.setParent(this);
       super.add(dot);
