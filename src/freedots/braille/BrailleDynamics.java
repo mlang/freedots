@@ -39,7 +39,7 @@ public class BrailleDynamics extends BrailleList {
   @Override public String getDescription() {
     return "Dynamic indicator: " + abbrev;
   }
-  @Override public boolean needsGuideDot(BrailleSequence next) {
+  @Override public boolean needsGuideDot(final BrailleSequence next) {
     if (next instanceof BrailleDynamics) return false;
 
     if (next.length() > 0) {

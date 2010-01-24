@@ -39,7 +39,7 @@ public class BrailleWords extends BrailleList {
   @Override public String getDescription() {
     return "A direction that says: " + text;
   }
-  @Override public boolean needsGuideDot(BrailleSequence next) {
+  @Override public boolean needsGuideDot(final BrailleSequence next) {
     if (next.length() > 0) {
       final char ch = next.charAt(0);
       if (((int)ch & 0X2807) > 0X2800) return true;

@@ -93,14 +93,14 @@ public class BrailleChord extends BrailleList {
         add(new OctaveSign(thisPitch.getOctave()));
         while (diatonicDiff > 7) diatonicDiff -= 7;
       }
-      add(new Interval(diatonicDiff));
+      add(new IntervalSign(diatonicDiff));
     }
 
     @Override public Object getScoreObject() { return note; }
   }
-  public static class Interval extends Atom {
+  public static class IntervalSign extends Atom {
     private final int steps;
-    Interval(final int steps) {
+    IntervalSign(final int steps) {
       super(INTERVALS[steps]);
       this.steps = steps;
     }
