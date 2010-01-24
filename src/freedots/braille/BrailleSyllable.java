@@ -24,6 +24,8 @@ package freedots.braille;
 
 import freedots.musicxml.Note;
 
+/** A syllable of lyric text.
+ */
 public class BrailleSyllable extends Text {
   private final Note note;
 
@@ -31,6 +33,7 @@ public class BrailleSyllable extends Text {
     super(text);
     this.note = note;
   }
+
   @Override public String getDescription() {
     return "The syllable \"" + data + "\"";
   }

@@ -23,7 +23,7 @@
 package freedots.braille;
 
 /** The smallest possible unit of braille.
- * Usually consists of 1 or 2 cells, not much more.
+ * Usually consists of 1 to 3 cells, not much more.
  */
 public abstract class Atom implements BrailleSequence {
   protected final String data;

@@ -32,9 +32,21 @@ import freedots.music.Ornament;
 import freedots.music.Slur;
 import freedots.musicxml.Note;
 
+/** The braille representation of a note or rest.
+ * <p>
+ * This includes all signs which must immediately follow or proceed the actual
+ * value or rest sign.
+ *
+ * @see <a href="http://brl.org/music/code/bmb/chap01/index.html">Chapter 1:
+ *      Notes and Values</a>
+ */
 public class BrailleNote extends BrailleList {
   private final Note note;
 
+  /** Construct a braille note and all of its children.
+   * @param note refers to the MusicXML Note object
+   * @param lastPitch is used to decide if an octave sign needs to be inserted
+   */
   public BrailleNote(final Note note, final AbstractPitch lastPitch) {
     super();
     this.note = note;
@@ -131,7 +143,6 @@ public class BrailleNote extends BrailleList {
     TurnSign() { super(braille(6, 256)); }
     public String getDescription() { return "A turn sign"; }
   }
-
 
   private static Atom createArticulationSign(Articulation articulation) {
     switch (articulation) {
