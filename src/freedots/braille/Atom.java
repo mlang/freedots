@@ -45,12 +45,19 @@ public abstract class Atom implements BrailleSequence {
     return data.subSequence(start, end);
   }
 
-  protected final static int dotsToBits(int dots) {
+  /** Converts a braille dot pattern to ISO 11548-1.
+   * <p>
+   * In the source code braille patterns are specified with a decimal encoding
+   * for maximum readability and maintainability.
+   * The integer 123456 represents a 6-dot pattern with all dots set.
+   * Empty cells are represented with 0.
+   *
+   * @return ISO 11548-1 encoding of braille pattern
+   */
+  protected final static int dotsToBits(final int dots) {
     int bits = 0;
-    while (dots > 0) {
-      final int number = dots % 10;
-      dots /= 10;
-      bits |= 1 << (number - 1);
+    for (int decimal = dots; decimal > 0; decimal /= 10) {
+      bits |= 1 << ((decimal % 10) - 1);
     }
     return bits;
   }

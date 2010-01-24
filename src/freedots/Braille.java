@@ -37,10 +37,6 @@ import freedots.musicxml.Harmony;
 
 /** All the braille signs required for music and a few utility methods.
  * <p>
- * Braille patterns are specified with a decimal encoding for maximum
- * readability and maintainability.  The integer 123456 represents a 6-dot
- * pattern with all dots set.  Empty cells are represented with 0.
- * <p>
  * TODO: This class is an enum for purely historical reasons, there is actually
  * no real use of the properties of an enum except for the syntactic sugar
  * it offers for initialising static members.
