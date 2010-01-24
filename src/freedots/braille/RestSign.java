@@ -24,6 +24,11 @@ package freedots.braille;
 
 import freedots.music.AugmentedFraction;
 
+/** Signifies a rest of a certain duration.
+ *
+ * @see <a href="http://brl.org/music/code/bmb/chap04/index.html">Chapter 4:
+ *      Rests</a>
+ */
 public class RestSign extends Atom {
   private final AugmentedFraction value;
 
@@ -35,6 +40,7 @@ public class RestSign extends Atom {
   public String getDescription() {
     return "A rest with duration " + value.toString();
   }
+
   private static String getSign(final AugmentedFraction value) {
     final int log = value.getLog();
     // FIXME: breve and long notes are not handled at all

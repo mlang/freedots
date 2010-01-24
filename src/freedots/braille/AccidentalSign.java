@@ -24,6 +24,12 @@ package freedots.braille;
 
 import freedots.music.Accidental;
 
+/** Accidentals are placed immediately before the note or interval to which they
+ *  belong, and must not be separated from it by anything but octave signs.
+ *
+ * @see <a href="http://brl.org/music/code/bmb/chap05/index.html">Accidentals
+ *      and Key signatures</a>
+ */
 public class AccidentalSign extends Atom {
   private final Accidental accidental;
 

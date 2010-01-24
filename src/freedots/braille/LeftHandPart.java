@@ -22,6 +22,9 @@
  */
 package freedots.braille;
 
+/** Indicates music for the left hand for a keyboard instrument.
+ * @see <a href="http://brl.org/music/code/bmb/chap20/index.html">Hand sings</a>
+ */
 public class LeftHandPart extends NeedsGuideDot {
   public LeftHandPart() { super(braille(456, 345)); }
 
