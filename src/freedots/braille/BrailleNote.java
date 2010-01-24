@@ -118,7 +118,7 @@ public class BrailleNote extends BrailleList {
     return true;
   }
 
-  public class GraceSign extends Atom {
+  public static class GraceSign extends Atom {
     GraceSign() { super(braille(5, 26)); }
     public String getDescription() {
       return "Indicates the this is a grace note";
