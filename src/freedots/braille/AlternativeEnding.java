@@ -22,7 +22,27 @@
  */
 package freedots.braille;
 
-public class Dot extends Atom {
-  public Dot() { super(braille(3)); }
-  public String getDescription() { return "Prolongation dot."; }
+public class AlternativeEnding extends BrailleList {
+  private final int number;
+
+  public AlternativeEnding(final int number) {
+    super();
+    this.number = number;
+
+    add(new NumberSign());
+    add(new LowerDigits(number));
+  }
+
+  @Override public String getDescription() {
+    return "Alternative ending " + number;
+  }
+
+  @Override public boolean needsGuideDot(final BrailleSequence next) {
+    if (next.length() > 0) {
+      final char ch = next.charAt(0);
+      if (((int)ch & 0X2807) > 0X2800) return true;
+    }
+
+    return false;
+  }
 }

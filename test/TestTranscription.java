@@ -24,9 +24,9 @@ public class TestTranscription extends junit.framework.TestCase {
       + score.getParts().get(0).getName() + NL
       + keyAndTimeSignature + NL
       + "  " + Braille.rightHandPart
-      + "⠨⠳⠃⠳⠁⠉⠐⠖⠇⠊⠄⠾ ⠊⠐⠢⠷⠛⠇⠐⠢⠯⠕" + Braille.doubleBar + NL
+      + "⠨⠳⠃⠳⠁⠉⠐⠖⠇⠊⠄⠾ ⠊⠐⠢⠷⠛⠇⠐⠢⠯⠕" + "⠣⠅" + NL
       + "  " + Braille.leftHandPart
-      + "⠸⠗⠄⠇⠣⠜⠧⠨⠅⠸⠞⠐⠂⠧⠐⠱ ⠸⠟⠄⠣⠜⠧⠨⠅⠸⠎⠐⠂⠧⠐⠱" + Braille.doubleBar + NL
+      + "⠸⠗⠄⠇⠣⠜⠧⠨⠅⠸⠞⠐⠂⠧⠐⠱ ⠸⠟⠄⠣⠜⠧⠨⠅⠸⠎⠐⠂⠧⠐⠱" + "⠣⠅" + NL
       + NL;
     assertEquals("pmia-1.xml", transcriber.toString(), expectedResult);
   }
@@ -47,8 +47,7 @@ public class TestTranscription extends junit.framework.TestCase {
       + score.getParts().get(0).getName() + NL
       + keyAndTimeSignature + NL
       + "  "
-      + "⠐⠎⠉⠗⠉⠿⠗⠉⠟⠉⠯⠐⠢⠋⠃" + Braille.valueDistinction + "⠕"
-      + Braille.doubleBar + NL
+      + "⠐⠎⠉⠗⠉⠿⠗⠉⠟⠉⠯⠐⠢⠋⠃" + Braille.valueDistinction + "⠕" + "⠣⠅" + NL
       + NL;
     assertEquals(mxmlFile, transcriber.toString(), expectedResult);
   }
@@ -69,10 +68,9 @@ public class TestTranscription extends junit.framework.TestCase {
       + NL
       + keyAndTimeSignature + NL
       + "  "
-      + Braille.musicPart + "⠨⠋⠗⠑⠑⠙⠕⠞⠎ ⠨⠋⠗⠑⠑⠙⠕⠞⠎ ⠨⠋⠗⠑⠑⠙⠕⠞⠎"
-      + Braille.doubleBar + NL
+      + Braille.musicPart + "⠨⠋⠗⠑⠑⠙⠕⠞⠎ ⠨⠋⠗⠑⠑⠙⠕⠞⠎ ⠨⠋⠗⠑⠑⠙⠕⠞⠎" + "⠣⠅" + NL
       + "⠒⠜⠨⠉maj⠼⠛⠨⠁m⠼⠛⠨⠙m⠼⠛⠨⠑m⠼⠛⠨⠋maj⠼⠛ ⠨nc " + NL
-      + "⠨⠋maj⠼⠛⠨⠑m⠼⠛⠨⠙m⠼⠛⠨⠑m⠼⠛⠨⠁" + Braille.doubleBar + NL
+      + "⠨⠋maj⠼⠛⠨⠑m⠼⠛⠨⠙m⠼⠛⠨⠑m⠼⠛⠨⠁" + "⠣⠅" + NL
       + NL;
     assertEquals(mxmlFile, transcriber.toString(), expectedResult);
   }
@@ -90,8 +88,7 @@ public class TestTranscription extends junit.framework.TestCase {
     final String keyAndTimeSignature = "⠼⠙⠲";
     final String expectedResult = keyAndTimeSignature + NL
       + "  "
-      + "⠐⠳⠌⠪⠼⠺⠴⠳⠌ ⠨⠽⠤ ⠐⠳⠪⠺⠳⠣⠜⠐⠻⠫⠱⠻ ⠨⠽⠣⠜⠐⠽"
-      + Braille.doubleBar + NL
+      + "⠐⠳⠌⠪⠼⠺⠴⠳⠌ ⠨⠽⠤ ⠐⠳⠪⠺⠳⠣⠜⠐⠻⠫⠱⠻ ⠨⠽⠣⠜⠐⠽" + "⠣⠅" + NL
       + NL;
     assertEquals(mxmlFile, transcriber.toString(), expectedResult);
   }

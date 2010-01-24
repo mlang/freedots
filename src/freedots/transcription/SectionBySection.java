@@ -27,16 +27,20 @@ import java.util.Iterator;
 import java.util.List;
 
 import freedots.Braille;
+import freedots.braille.AlternativeEnding;
 import freedots.braille.ArtificialWholeRest;
 import freedots.braille.BrailleList;
 import freedots.braille.BrailleSyllable;
 import freedots.braille.BrailleTimeSignature;
+import freedots.braille.DottedDoubleBarSign;
 import freedots.braille.DoubleBarSign;
 import freedots.braille.HarmonyPart;
 import freedots.braille.LeftHandPart;
 import freedots.braille.MusicHyphen;
 import freedots.braille.MusicPart;
+import freedots.braille.PostDottedDoubleBarSign;
 import freedots.braille.RightHandPart;
+import freedots.braille.Text;
 import freedots.braille.TextPart;
 import freedots.Options;
 import freedots.music.ClefChange;
@@ -83,8 +87,13 @@ class SectionBySection implements Strategy {
       }
       BrailleTimeSignature bTimeSig =
         new BrailleTimeSignature(part.getTimeSignature());
-      transcriber.printString(directiveText);
-      transcriber.printString(part.getKeySignature().toBraille());
+      transcriber.printString(new Text(directiveText) {
+                                @Override public String getDescription() {
+                                  return "A directive at the beginning";
+                                }
+                              });
+      // TODO: FIXME
+      transcriber.printString(new Text(part.getKeySignature().toBraille()));
       transcriber.printString(bTimeSig);
       transcriber.newLine();
       for (Section section:getSections(part)) transcribeSection(part, section);
@@ -147,7 +156,8 @@ class SectionBySection implements Strategy {
         KeyChange kc = (KeyChange)event;
         if (!kc.getKeySignature().equals(currentSignature)) {
           currentSignature = kc.getKeySignature();
-          transcriber.printString(currentSignature.toBraille());
+          // TODO: FIXME
+          transcriber.printString(new Text(currentSignature.toBraille()));
           transcriber.spaceOrNewLine();
         }
       } else if (event instanceof EndBar) {
@@ -156,6 +166,15 @@ class SectionBySection implements Strategy {
         if (charactersLeft <= 2) {
           transcriber.newLine();
           charactersLeft = transcriber.getRemainingColumns();
+        }
+
+        if (startBar != null) {
+          if (startBar.getRepeatForward()) {
+            transcriber.printString(new PostDottedDoubleBarSign());
+          }
+          if (startBar.getEndingStart() > 0) {
+            transcriber.printString(new AlternativeEnding(startBar.getEndingStart()));
+          }
         }
 
         boolean lastLine = transcriber.isLastLine();
@@ -168,30 +187,17 @@ class SectionBySection implements Strategy {
           head = measure.head(charactersLeft, lastLine);
           tail = measure.tail();
         }
-        if (startBar != null) {
-          if (startBar.getRepeatForward()) {
-            String braille = Braille.postDottedDoubleBar.toString();
-            braille += Braille.unicodeBraille(Braille.dotsToBits(3));
-            transcriber.printString(braille);
-          }
-          if (startBar.getEndingStart() > 0) {
-            String braille = Braille.numberSign.toString();
-            braille += Braille.lowerNumber(startBar.getEndingStart());
-            braille += Braille.dot.toString();
-            transcriber.printString(braille);
-          }
-        }
         transcriber.printString(head);
         if (tail.length() > 0) {
-          transcriber.printString(Braille.hyphen.toString());
+          transcriber.printString(new MusicHyphen());
           transcriber.newLine();
           transcriber.printString(tail);
         }
 
         if (rightBar.getRepeat())
-          transcriber.printString(Braille.dottedDoubleBar.toString());
+          transcriber.printString(new DottedDoubleBarSign());
         else if (rightBar.getEndOfMusic())
-          transcriber.printString(Braille.doubleBar.toString());
+          transcriber.printString(new DoubleBarSign());
 
         if (!rightBar.getEndOfMusic()) transcriber.spaceOrNewLine();
 
@@ -217,7 +223,7 @@ class SectionBySection implements Strategy {
           } else {
             if (lastSyllabic != Syllabic.SINGLE
              && lastSyllabic != Syllabic.END) {
-              transcriber.printString("-");
+              transcriber.printString(new Text("-"));
             }
             transcriber.newLine();
             transcriber.printString(new BrailleSyllable(text, (Note)event));
@@ -255,11 +261,12 @@ class SectionBySection implements Strategy {
               chord += Braille.toString(current.getDuration().decompose());
 
             if (chord.length() <= transcriber.getRemainingColumns())
-              transcriber.printString(chord);
+              // TODO: FIXME
+              transcriber.printString(new Text(chord));
             else {
               if (!first) transcriber.printString(new MusicHyphen());
               transcriber.newLine();
-              transcriber.printString(chord);
+              transcriber.printString(new Text(chord));
             }
             first = false;
           }

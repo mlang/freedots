@@ -26,10 +26,12 @@ import java.util.ArrayList;
 import freedots.Braille;
 import freedots.braille.BrailleList;
 import freedots.braille.BrailleSequence;
+import freedots.braille.Dot;
 import freedots.braille.LeftHandPart;
 import freedots.braille.RightHandPart;
 import freedots.braille.SoloPart;
 import freedots.braille.Space;
+import freedots.braille.UpperDigits;
 import freedots.logging.Logger;
 import freedots.Options;
 import freedots.music.EndBar;
@@ -65,8 +67,8 @@ class BarOverBar implements Strategy {
     int paragraph = 1;
     int startIndex = 0;
     while (startIndex < brailleStaves.getMeasureCount()) {
-      String paragraphNumber = Braille.upperNumber(paragraph);
-      int indent = paragraphNumber.length() + 1;
+      BrailleSequence paragraphNumber = new UpperDigits(paragraph);
+      final int indent = paragraphNumber.length() + 1;
 
       int endIndex = startIndex + 1;
       while (endIndex <= brailleStaves.getMeasureCount()
@@ -87,9 +89,10 @@ class BarOverBar implements Strategy {
           BrailleList braille = new BrailleList();
           if (i == startIndex) {
             if (staffIndex == 0) {
-              transcriber.printString(paragraphNumber+" ");
+              transcriber.printString(paragraphNumber);
+              transcriber.printString(new Space());
             } else {
-              transcriber.indentTo(paragraphNumber.length() + 1);
+              transcriber.indentTo(indent);
             }
             BrailleSequence introSymbol = brailleStaves.get(staffIndex).getIntro();
             if (introSymbol != null) {
@@ -106,15 +109,19 @@ class BarOverBar implements Strategy {
           }
           if (skipColumns > 2) {
             while (skipColumns > 0) {
-              transcriber.printString(Braille.dot.toString());
+              transcriber.printString(new Dot() {
+                                        @Override public String getDescription() {
+                                          return "Alignment dot";
+                                        }
+                                      });
               skipColumns--;
             }
           }
           while (skipColumns > 0) {
-            transcriber.printString(" ");
+            transcriber.printString(new Space());
             skipColumns--;
           }
-          transcriber.printString(" ");
+          transcriber.printString(new Space());
         }
         transcriber.newLine();
       }

@@ -22,7 +22,10 @@
  */
 package freedots.braille;
 
-public class Dot extends Atom {
-  public Dot() { super(braille(3)); }
-  public String getDescription() { return "Prolongation dot."; }
+public class PostDottedDoubleBarSign extends NeedsGuideDot {
+  public PostDottedDoubleBarSign() { super(braille(126, 2356)); }
+
+  public String getDescription() {
+    return "Indicates the beginning of a repeated section";
+  }
 }

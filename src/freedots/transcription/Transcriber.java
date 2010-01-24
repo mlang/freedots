@@ -136,23 +136,47 @@ public final class Transcriber {
     boolean headerAvailable = false;
 
     if (isNonEmpty(workNumber)) {
-      printCenteredLine(workNumber);
+      printCenteredLine(new Text(workNumber) {
+                          @Override public String getDescription() {
+                            return "Work number";
+                          }
+                        });
       headerAvailable = true;
     }
     if (isNonEmpty(workTitle)) {
-      printCenteredLine(workTitle);
+      printCenteredLine(new Text(workTitle) {
+                          @Override public String getDescription() {
+                            return "The work title";
+                          }
+                        });
       headerAvailable = true;
     }
     if (isNonEmpty(movementTitle)) {
-      printCenteredLine(movementTitle);
+      printCenteredLine(new Text(movementTitle) {
+                          @Override public String getDescription() {
+                            return "The movement title";
+                          }
+                        });
       headerAvailable = true;
     }
     if (isNonEmpty(composer) && isNonEmpty(lyricist)) {
-      printCenteredLine("Music by "+composer);
-      printCenteredLine("Lyrics by "+lyricist);
+      BrailleList line = new BrailleList();
+      line.add(new Text("Music by"));
+      line.add(new Space());
+      line.add(new ComposerName(composer));
+      printCenteredLine(line);
+      line = new BrailleList();
+      line.add(new Text("Lyrics by"));
+      line.add(new Space());
+      line.add(new Text(lyricist) {
+                 @Override public String getDescription() {
+                   return "The name of the lyricist";
+                 }
+               });
+      printCenteredLine(line);
       headerAvailable = true;
     } else if (isNonEmpty(composer)) {
-      printCenteredLine(composer);
+      printCenteredLine(new ComposerName(composer));
       headerAvailable = true;
     }
     if (headerAvailable) newLine();
@@ -174,23 +198,24 @@ public final class Transcriber {
     return string != null && string.length() > 0;
   }
 
-  void printString(final String text) {
-    printString(new Text(text));
-  }
   void printString(final BrailleSequence braille) {
     strings.add(braille);
     characterCount += braille.length();
   }
   void printLine(final String text) {
-    printString(text);
+    printString(new Text(text));
     newLine();
   }
-  void printCenteredLine(final String text) {
+  void printCenteredLine(final BrailleSequence text) {
     int skip = (getRemainingColumns() - text.length()) / 2;
     if (skip > 0) {
       StringBuilder skipString = new StringBuilder();
       for (int i = 0; i < skip; i++) skipString.append(" ");
-      printString(skipString.toString());
+      printString(new Text(skipString.toString()) {
+                    public String getDescription() {
+                      return "Padding for centered line";
+                    }
+                  });
     }
     printString(text);
     newLine();
@@ -230,4 +255,11 @@ public final class Transcriber {
   }
 
   List<Direction> alreadyPrintedDirections;
+
+  public static class ComposerName extends Text {
+    ComposerName(final String name) { super(name); }
+    @Override public String getDescription() {
+      return "The name of the composer of this piece";
+    }
+  }
 }

@@ -96,10 +96,6 @@ public enum Braille {
   quarterStem(456, 1), eighthStem(456, 12), sixteenthStem(456, 123),
   thirtysecondthStem(456, 2),
 
-  // Linebreak within a measure
-  hyphen(5),
-
-  postDottedDoubleBar(126, 2356), dottedDoubleBar(126, 23), doubleBar(126, 13),
   fermata(126, 123), fermataSquare(56, 126, 123), fermataTent(45, 126, 123),
 
   firstString(146, 1), secondString(146, 12), thirdString(146, 123),
