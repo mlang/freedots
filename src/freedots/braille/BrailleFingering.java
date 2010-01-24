@@ -26,6 +26,11 @@ import java.util.Iterator;
 
 import freedots.music.Fingering;
 
+/** The braille representation of a fingering indicator.
+ *
+ * @see <a href="http://brl.org/music/code/bmb/chap14/index.html">Chapter 14:
+ *      Fingering</a>
+ */
 public class BrailleFingering extends BrailleList {
   private final Fingering fingering;
 

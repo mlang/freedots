@@ -24,6 +24,11 @@ package freedots.braille;
 
 import freedots.music.TimeSignature;
 
+/** The braille representation of a time signature.
+ *
+ * @see <a href="http://brl.org/music/code/bmb/chap06/index.html">Chapter 6:
+ *      Meter and Time</a>
+ */
 public class BrailleTimeSignature extends BrailleList {
   private final TimeSignature timeSignature;
 

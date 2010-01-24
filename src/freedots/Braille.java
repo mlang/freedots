@@ -32,7 +32,6 @@ import freedots.logging.Logger;
 import freedots.music.AbstractPitch;
 import freedots.music.Accidental;
 import freedots.music.AugmentedFraction;
-import freedots.music.Fingering;
 import freedots.music.TimeSignature;
 import freedots.musicxml.Harmony;
 
@@ -102,8 +101,6 @@ public enum Braille {
 
   postDottedDoubleBar(126, 2356), dottedDoubleBar(126, 23), doubleBar(126, 13),
   fermata(126, 123), fermataSquare(56, 126, 123), fermataTent(45, 126, 123),
-
-  finger1(1), finger2(12), finger3(123), finger4(2), finger5(13),
 
   firstString(146, 1), secondString(146, 12), thirdString(146, 123),
   fourthString(146, 2), fifthString(146, 13), sixthString(146, 23),
@@ -229,12 +226,6 @@ public enum Braille {
     braille.append(INTERVALS[diatonicDifference]);
     return braille.toString();
   }
-  /** Retrieve a finger indicator.
-   * @param finger is the finger number from 1 to 5
-   * @return the Braille representation
-   */
-  public static Braille finger(int finger) { return FINGERS[finger - 1]; }
-
   public static final Map<Character, Character> BRF_TABLE =
     Collections.unmodifiableMap(new HashMap<Character, Character>() {
       {
@@ -340,9 +331,6 @@ public enum Braille {
   private static final Braille[] INTERVALS = {
     octave, second, third, fourth, fifth, sixth, seventh, octave
   };
-  private static final Braille[] FINGERS = {
-    finger1, finger2, finger3, finger4, finger5
-  };
   private static final Braille[] ENGLISH_STEPS = {
     letterC, letterD, letterE, letterF, letterG, letterA, letterB
   };
@@ -394,21 +382,6 @@ public enum Braille {
     for (int i = 0; i < value.getDots(); i++) braille += dot;
 
     return braille;
-  }
-
-  /** Convert the given fingering to its braille representation.
-   * @param fingering is the fingering indicator to convert.
-   * @return the Unicode braille representation of fingering.
-   */
-  public static String toString(Fingering fingering) {
-    StringBuilder stringBuilder = new StringBuilder();
-    Iterator<Integer> iter = fingering.getFingers().iterator();
-    while (iter.hasNext()) {
-      stringBuilder.append(finger(iter.next()));
-      if (iter.hasNext()) stringBuilder.append(slur);
-    }
-
-    return stringBuilder.toString();
   }
 
   /** Converts the given {@link freedots.music.TimeSignature} to its braille
