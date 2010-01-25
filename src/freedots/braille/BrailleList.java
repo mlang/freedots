@@ -31,18 +31,25 @@ public class BrailleList extends java.util.LinkedList<BrailleSequence>
   public BrailleList() { super(); }
 
   private BrailleList parent = null;
-  public BrailleList getParent() { return parent; }
-  public void setParent(final BrailleList parent) { this.parent = parent; }
+  public final BrailleList getParent() { return parent; }
+  public final void setParent(final BrailleList parent) {
+    if (parent == null) throw new NullPointerException();
+    if (this.parent != null)
+      throw new IllegalStateException("Parent already set");
+
+    this.parent = parent;
+  }
 
   /** Append a sign.
    * This method takes care of inserting {@link GuideDot} objects if
    * required.
+   * @see BrailleSequence#needsGuideDot
    */
   @Override public boolean add(final BrailleSequence item) {
     if (!isEmpty() && getLast().needsGuideDot(item)) {
-      BrailleSequence dot = new GuideDot();
+      final BrailleSequence dot = new GuideDot();
       dot.setParent(this);
-      super.add(dot);
+      if (!super.add(dot)) return false;
     }
 
     item.setParent(this);
@@ -53,15 +60,20 @@ public class BrailleList extends java.util.LinkedList<BrailleSequence>
   public String getDescription() {
     return "Groups several signs as a logical unit.";
   }
+
+  /** Checks if the last element of this list needs a guide dot after it.
+   */
   public boolean needsGuideDot(BrailleSequence next) {
     return !isEmpty() && getLast().needsGuideDot(next);
   }
   public Object getScoreObject() { return null; }
 
   @Override public String toString() {
-    StringBuilder sb = new StringBuilder();
-    for (BrailleSequence item: this) sb.append(item.toString());
-    return sb.toString();
+    return this.appendTo(new StringBuilder()).toString();
+  }
+  public StringBuilder appendTo(StringBuilder sb) {
+    for (BrailleSequence seq: this) seq.appendTo(sb);
+    return sb;
   }
   public int length() { return toString().length(); }
   public char charAt(int index) { return toString().charAt(index); }

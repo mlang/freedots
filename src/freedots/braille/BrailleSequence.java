@@ -25,12 +25,16 @@ package freedots.braille;
 /** Identifies a sequence of Unicode braille characters.
  */
 public interface BrailleSequence extends CharSequence {
-  /** Gets a human readable description of the characters making up a sign.
+  /** Appends the content of this sequence to a StringBuilder.
+   */
+  StringBuilder appendTo(StringBuilder stringBuilder);
+
+  /** Gets a human readable description of this sequence.
    */
   String getDescription();
 
   /** Checks if a {@link freedots.braille.GuideDot} needs to be
-   *  inserted between this and the next sign.
+   *  inserted between this and the next sequence.
    */
   boolean needsGuideDot(BrailleSequence next);
 
@@ -41,6 +45,9 @@ public interface BrailleSequence extends CharSequence {
   BrailleList getParent();
 
   /** Sets the {@link freedots.braille.BrailleList} which contains this sign.
+   * <p>
+   * Note that this method can only be called once to avoid accidentally
+   * trying to add a sequence to several parents.
    */
   void setParent(BrailleList parent);
 

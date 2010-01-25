@@ -36,12 +36,21 @@ public abstract class Sign implements BrailleSequence {
   public boolean needsGuideDot(BrailleSequence next) { return false; }
 
   private BrailleList parent = null;
-  public BrailleList getParent() { return parent; }
-  public void setParent(final BrailleList parent) { this.parent = parent; }
+  public final BrailleList getParent() { return parent; }
+  public final void setParent(final BrailleList parent) {
+    if (parent == null) throw new NullPointerException();
+    if (this.parent != null)
+      throw new IllegalStateException("Parent already set");
+
+    this.parent = parent;
+  }
 
   public Object getScoreObject() { return null; }
 
   public final String toString() { return data; }
+  public final StringBuilder appendTo(StringBuilder sb) {
+    return sb.append(data);
+  }
   public final int length() { return data.length(); }
   public final char charAt(int index) { return data.charAt(index); }
   public final CharSequence subSequence(final int start, final int end) {
