@@ -71,7 +71,7 @@ public class BrailleNote extends BrailleList {
       if (isOctaveSignRequired(pitch, lastPitch))
         add(new OctaveSign(pitch.getOctave()));
 
-      add(new ValueAndPitch(value, pitch));
+      add(new PitchAndValueSign(pitch, value));
     } else {
       add(new RestSign(value));
     }

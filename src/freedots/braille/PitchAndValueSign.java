@@ -25,30 +25,38 @@ package freedots.braille;
 import freedots.music.AbstractPitch;
 import freedots.music.AugmentedFraction;
 
-public class ValueAndPitch extends Sign {
+/** Shows both the pitch and the rhythmic length of a note.
+ */
+public class PitchAndValueSign extends Sign {
   private final AbstractPitch pitch;
   private final AugmentedFraction value;
 
-  ValueAndPitch(final AugmentedFraction value, final AbstractPitch pitch) {
-    super(getSign(value, pitch));
-    this.value = value;
+  PitchAndValueSign(final AbstractPitch pitch, final AugmentedFraction value) {
+    super(getSign(pitch, value));
     this.pitch = pitch;
+    this.value = value;
   }
 
   public String getDescription() {
     return "A " + pitch.toString() + " with duration " + value.toString();
   }
-  private static String getSign(final AugmentedFraction value,
-                                final AbstractPitch pitch) {
+
+  private static String getSign(final AbstractPitch pitch,
+                                final AugmentedFraction value) {
     final int log = value.getLog();
     // FIXME: breve and long notes are not handled at all
     final int valueType = log > AugmentedFraction.EIGHTH
       ? log-AugmentedFraction.SIXTEENTH : log-2;
 
-    final int[] stepDots = { 145, 15, 124, 1245, 125, 24, 245 };
-    final int[] denomDots = { 36, 3, 6, 0 };
     return String.valueOf((char)(UNICODE_BRAILLE_MASK
-                                 | dotsToBits(stepDots[pitch.getStep()])
-                                 | dotsToBits(denomDots[valueType])));
+                                 | STEP_BITS[pitch.getStep()]
+                                 | DENOMINATOR_BITS[valueType]));
   }
+  private static final int[] STEP_BITS = {
+    dotsToBits(145), dotsToBits(15), dotsToBits(124), dotsToBits(1245),
+    dotsToBits(125), dotsToBits(24), dotsToBits(245)
+  };
+  private static final int[] DENOMINATOR_BITS = {
+    dotsToBits(36), dotsToBits(3), dotsToBits(6), 0
+  };
 }
