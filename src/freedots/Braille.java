@@ -380,6 +380,8 @@ public enum Braille {
           sb.append("maj").append(numberSign).append(upperNumber(11));
         else if ("minor-11th".equals(kind))
           sb.append(letterM).append(numberSign).append(upperNumber(11));
+        else if ("dominant-11th".equals(kind))
+          sb.append(numberSign).append(upperNumber(11));
         else if ("dominant-13th".equals(kind))
           sb.append(numberSign).append(upperNumber(13));
         else LOG.warning("Unhandled harmony-chord kind '"+kind+"'");
