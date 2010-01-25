@@ -245,8 +245,19 @@ public final class Transcriber {
       difference -= 1;
     }
   }
-  /**
-   * Convert transcription result to a plain string.
+
+  /** Gets the transcription result as a hierarchy of objects.
+   * <p>
+   * This could be used to extract metadata about the signs used during
+   * construction of a presentation.
+   *
+   * @return the hierarchial transcription result as an object structure
+   */
+  public BrailleList getSigns() {
+    return strings;
+  }
+
+  /** Converts transcription result to a plain string.
    *
    * @return result string of last transcription
    */
