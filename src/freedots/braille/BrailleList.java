@@ -75,7 +75,11 @@ public class BrailleList extends java.util.LinkedList<BrailleSequence>
     for (BrailleSequence seq: this) seq.appendTo(sb);
     return sb;
   }
-  public int length() { return toString().length(); }
+  public int length() {
+    int chars = 0;
+    for (BrailleSequence seq: this) chars += seq.length();
+    return chars;
+  }
   public char charAt(int index) { return toString().charAt(index); }
   public CharSequence subSequence(int start, int end) {
     return toString().subSequence(start, end);
