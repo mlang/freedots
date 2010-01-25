@@ -77,7 +77,7 @@ public final class Main
   private Score score;
   public Score getScore() { return score; }
 
-  private Transcriber transcriber;
+  private final Transcriber transcriber;
   public Transcriber getTranscriber() { return transcriber; }
 
   private Options options = Options.getInstance();
@@ -219,7 +219,12 @@ public final class Main
     Font font = new Font("DejaVu Serif", Font.PLAIN, 14);
     textArea.setFont(font);
     textArea.setText(WELCOME_MESSAGE);
-    setTranscriber(transcriber);
+
+    this.score = transcriber.getScore();
+    final boolean scoreAvailable = score != null;
+    if (scoreAvailable) textArea.setText(transcriber.toString());
+    fileSaveAsAction.setEnabled(scoreAvailable);
+    playScoreAction.setEnabled(scoreAvailable);
 
     textArea.setEditable(false);
     textArea.addCaretListener(this);
@@ -266,16 +271,6 @@ public final class Main
     }
   }
 
-  public void setTranscriber(Transcriber transcriber) {
-    if (transcriber != null) {
-      this.transcriber = transcriber;
-      this.score = transcriber.getScore();
-      final boolean scoreAvailable = score != null;
-      if (scoreAvailable) textArea.setText(transcriber.toString());
-      fileSaveAsAction.setEnabled(scoreAvailable);
-      playScoreAction.setEnabled(scoreAvailable);
-    }
-  }
   public void quit() {
     if (midiPlayer != null) midiPlayer.close();
     System.exit(0);
@@ -515,17 +510,31 @@ public final class Main
     return libraryMenu;
   }
 
-  Object getCurrentScoreObject() {
-    int position = textArea.getCaretPosition();
-    return transcriber.getScoreObjectAtIndex(position);
+  Object getScoreObjectAtCaretPosition() {
+    return transcriber.getScoreObjectAtIndex(textArea.getCaretPosition());
   }
+  Sign getSignAtCaretPosition() {
+    if (score != null)
+      return transcriber.getSignAtIndex(textArea.getCaretPosition());
+    return null;
+  }
+
+  /** Retranscribes the score to braille and preserves logical caret position.
+   * <p>
+   * In the event that transcription options are changed (for example switching
+   * to a different format or changing line width) or score objects are changed
+   * or removed (fingering editing) this method needs to be called to update
+   * the braille representation.  It will try to preserve the logical score
+   * position so that upon switching of formats the caret will end up on
+   * the same note it used to be in the previous format used.
+   */
   void triggerTranscription() {
     int position = textArea.getCaretPosition();
-    Object object = getCurrentScoreObject();
+    final Object object = getScoreObjectAtCaretPosition();
     transcriber.setScore(score);
     textArea.setText(transcriber.toString());
     if (object != null) {
-      int objectPosition = transcriber.getIndexOfScoreObject(object);
+      final int objectPosition = transcriber.getIndexOfScoreObject(object);
       if (objectPosition != -1) position = objectPosition;
     }
     textArea.setCaretPosition(position);

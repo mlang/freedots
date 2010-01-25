@@ -68,7 +68,7 @@ public final class EditFingeringAction extends AbstractAction {
              KeyStroke.getKeyStroke(KeyEvent.VK_F, ActionEvent.CTRL_MASK));
   }
   public void actionPerformed(ActionEvent event) {
-    Object scoreObject = gui.getCurrentScoreObject();
+    Object scoreObject = gui.getScoreObjectAtCaretPosition();
     if (scoreObject != null && scoreObject instanceof Note) {
       if (fingeringEditor == null) fingeringEditor = new FingeringEditor(gui);
       if (!dialogShowing) {
