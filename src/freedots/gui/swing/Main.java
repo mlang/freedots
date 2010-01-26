@@ -357,31 +357,7 @@ public final class Main
 
     menuBar.add(transcriptionMenu);
 
-    JMenu playbackMenu = new JMenu("Playback");
-    playbackMenu.setMnemonic(KeyEvent.VK_P);
-
-    playbackMenu.add(playScoreAction);
-    playbackMenu.add(new StopPlaybackAction(this));
-
-    JCheckBoxMenuItem autoPlayItem = new JCheckBoxMenuItem("Play on caret move");
-    autoPlayItem.addItemListener(new ItemListener() {
-      public void itemStateChanged(ItemEvent e) {
-        autoPlay = e.getStateChange() == ItemEvent.SELECTED;
-      }
-    });
-    autoPlayItem.setSelected(autoPlay);
-    playbackMenu.add(autoPlayItem);
-
-    JCheckBoxMenuItem caretFollowsPlaybackItem =
-      new JCheckBoxMenuItem("Caret follows playback");
-    caretFollowsPlaybackItem.addItemListener(new ItemListener() {
-      public void itemStateChanged(ItemEvent e) {
-        caretFollowsPlayback = e.getStateChange() == ItemEvent.SELECTED;
-      }
-    });
-    caretFollowsPlaybackItem.setSelected(caretFollowsPlayback);
-    playbackMenu.add(caretFollowsPlaybackItem);
-    menuBar.add(playbackMenu);
+    menuBar.add(createPlaybackMenu());
 
     menuBar.add(createLibraryMenu());
 
@@ -393,6 +369,35 @@ public final class Main
     menuBar.add(helpMenu);
 
     return menuBar;
+  }
+
+  private JMenu createPlaybackMenu() {
+    JMenu menu = new JMenu("Playback");
+    menu.setMnemonic(KeyEvent.VK_P);
+
+    menu.add(playScoreAction);
+    menu.add(new StopPlaybackAction(this));
+
+    JCheckBoxMenuItem autoPlayItem = new JCheckBoxMenuItem("Play on caret move");
+    autoPlayItem.addItemListener(new ItemListener() {
+      public void itemStateChanged(ItemEvent e) {
+        autoPlay = e.getStateChange() == ItemEvent.SELECTED;
+      }
+    });
+    autoPlayItem.setSelected(autoPlay);
+    menu.add(autoPlayItem);
+
+    JCheckBoxMenuItem caretFollowsPlaybackItem =
+      new JCheckBoxMenuItem("Caret follows playback");
+    caretFollowsPlaybackItem.addItemListener(new ItemListener() {
+      public void itemStateChanged(ItemEvent e) {
+        caretFollowsPlayback = e.getStateChange() == ItemEvent.SELECTED;
+      }
+    });
+    caretFollowsPlaybackItem.setSelected(caretFollowsPlayback);
+    menu.add(caretFollowsPlaybackItem);
+
+    return menu;
   }
 
   private JMenu createLibraryMenu() {
