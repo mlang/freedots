@@ -135,4 +135,18 @@ public class BrailleList extends java.util.LinkedList<BrailleSequence>
 
     return -1;
   }
+  public final int lengthSince(Class<? extends BrailleSequence> seqClass) {
+    int length = 0;
+    java.util.ListIterator<BrailleSequence> iterator = listIterator(size());
+    while (iterator.hasPrevious()) {
+      BrailleSequence seq = iterator.previous();
+      if (seq.getClass() == seqClass) return length;
+      if (seq instanceof BrailleList) {
+        final int subLength = ((BrailleList)seq).lengthSince(seqClass);
+        if (subLength != -1) return length + subLength;
+      }
+      length += seq.length();
+    }
+    return -1;
+  }
 }

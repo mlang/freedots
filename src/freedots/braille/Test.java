@@ -15,6 +15,7 @@ public class Test {
     braille.add(new RightHandPart());
     braille.add(new Space());
     braille.add(new OctaveSign(1));
+    System.out.println("Length since NewLine: " + braille.lengthSince(NewLine.class));
     System.out.println(braille.toString() + " = " + braille.getDescription());
     for (int i = 0; i < braille.length(); i++) {
       final Sign sign = braille.getSignAtIndex(i);

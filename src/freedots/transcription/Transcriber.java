@@ -70,10 +70,10 @@ public final class Transcriber {
   }
   int getCurrentColumn() { return characterCount; }
   int getRemainingColumns() {
-    String text = toString();
-    final int index = text.lastIndexOf(LINE_SEPARATOR);
-    if (index == -1) return options.getPageWidth() - text.length();
-    else return options.getPageWidth() - (text.length() - index);
+    final int charsUsed = strings.lengthSince(NewLine.class);
+    if (charsUsed != -1)
+      return options.getPageWidth() - charsUsed;
+    return options.getPageWidth() - strings.length();
   }
 
   /** Find the braille sign at a given character index.
