@@ -474,14 +474,11 @@ The class freedots.logging.Logger currently implements a simple miltiplex
 of log messages to the console and to a queue.
 The GUI needs some usability work.
 
-** TODO Colors for categories of braille signs and online help
+** TODO Colors for categories of braille signs
 
 It might be helpful for sighted users if the different types
 of braille signs that can occur in a score would use different
-colours on-screen.  Also, and probably more important, it would be useful
-to have online-help for all braille signs.  So if a reader doesn't know
-a specific sign, they could move the caret to it and invoke the online
-help to get a description of its purpose.
+colours on-screen.
 
 ** TODO Look into functionality for blind users who do not use braille
 
