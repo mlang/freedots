@@ -22,8 +22,6 @@
  */
 package freedots.music;
 
-import freedots.Braille;
-
 public class KeySignature {
   private final int type; // number of sharps (+) or flats (-)
   private final int[] modifiers;
@@ -50,12 +48,6 @@ public class KeySignature {
 
   private static final int[] SHARPS = {3, 0, 4, 1, 5, 2, 6};
   private static final int[] FLATS  = {6, 2, 5, 1, 4, 0, 3};
-
-  public String toBraille() {
-    if (type == 0) return "";
-    else if (type < 0) return Braille.flat.repeat(Math.abs(type));
-    else return Braille.sharp.repeat(type);
-  }
 
   @Override public boolean equals(Object object) {
     if (object instanceof KeySignature) {

@@ -23,12 +23,14 @@
 package freedots.transcription;
 
 import java.util.ArrayList;
-import freedots.Braille;
+import freedots.braille.BrailleKeySignature;
 import freedots.braille.BrailleList;
 import freedots.braille.BrailleSequence;
+import freedots.braille.BrailleTimeSignature;
 import freedots.braille.Dot;
 import freedots.braille.LeftHandPart;
 import freedots.braille.RightHandPart;
+import freedots.braille.Sign;
 import freedots.braille.SoloPart;
 import freedots.braille.Space;
 import freedots.braille.UpperDigits;
@@ -61,8 +63,9 @@ class BarOverBar implements Strategy {
     createMeasuresInBrailleStaves(transcriber.getScore());
 
     if (initialKeySignature != null && initialTimeSignature != null) {
-      transcriber.printLine(initialKeySignature.toBraille()
-                            + Braille.toString(initialTimeSignature));
+      transcriber.printString(new BrailleKeySignature(initialKeySignature));
+      transcriber.printString(new BrailleTimeSignature(initialTimeSignature));
+      transcriber.newLine();
     }
     int paragraph = 1;
     int startIndex = 0;
@@ -94,9 +97,13 @@ class BarOverBar implements Strategy {
             } else {
               transcriber.indentTo(indent);
             }
-            BrailleSequence introSymbol = brailleStaves.get(staffIndex).getIntro();
+            Sign introSymbol = brailleStaves.get(staffIndex).getIntro();
             if (introSymbol != null) {
-              braille.add(introSymbol);
+              try {
+                braille.add((Sign)introSymbol.clone());
+              } catch (CloneNotSupportedException e) {
+                e.printStackTrace();
+              }
             }
           }
           braille.add(measureBraille);
@@ -201,9 +208,9 @@ class BarOverBar implements Strategy {
   }
 
   private class BrailleStaff extends ArrayList<BrailleMeasure> {
-    private BrailleSequence intro = null;
-    void setIntro(BrailleSequence intro) { this.intro = intro; }
-    BrailleSequence getIntro() { return intro; }
+    private Sign intro = null;
+    void setIntro(Sign intro) { this.intro = intro; }
+    Sign getIntro() { return intro; }
   }
   @SuppressWarnings("serial")
   private class BrailleStaves extends ArrayList<BrailleStaff> {

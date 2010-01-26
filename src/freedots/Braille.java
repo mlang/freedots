@@ -32,7 +32,6 @@ import freedots.braille.AccidentalSign;
 import freedots.logging.Logger;
 import freedots.music.Accidental;
 import freedots.music.AugmentedFraction;
-import freedots.music.TimeSignature;
 import freedots.musicxml.Harmony;
 
 /** All the braille signs required for music and a few utility methods.
@@ -293,17 +292,6 @@ public enum Braille {
     letterC, letterD, letterE, letterF, letterG, letterA, letterB
   };
 
-
-  /** Converts the given {@link freedots.music.TimeSignature} to its braille
-   *  representation.
-   * @param signature is the {@link freedots.music.TimeSignature} to convert.
-   * @return the Unicode braille representation.
-   */
-  public static String toString(TimeSignature signature) {
-    return numberSign.toString()
-           + upperNumber(signature.getNumerator())
-           + lowerNumber(signature.getDenominator());
-  }
 
   /** Formats a list of augmented musical fractions using stem and slur signs.
    * This method is typically used together with
