@@ -28,6 +28,7 @@ import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
@@ -50,6 +51,7 @@ import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.event.CaretEvent;
+import javax.swing.text.DefaultCaret;
 
 import freedots.Options;
 import freedots.braille.Sign;
@@ -227,6 +229,19 @@ public final class Main
     playScoreAction.setEnabled(scoreAvailable);
 
     textArea.setEditable(false);
+    textArea.setCaret(new DefaultCaret() {
+                        /** Called when the component containing the caret gains
+                         *  focus.
+                         * This is implemented to set the caret to visible
+                         * independant from the components editable state.
+                         */
+                        @Override public void focusGained(FocusEvent e) {
+                          if (getComponent().isEnabled()) {
+                            setVisible(true);
+                            setSelectionVisible(true);
+                          }
+                        }
+                      });
     textArea.addCaretListener(this);
     JScrollPane scrollPane = new JScrollPane(textArea);
 
