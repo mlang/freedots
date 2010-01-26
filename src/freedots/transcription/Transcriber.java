@@ -77,6 +77,7 @@ public final class Transcriber {
   }
 
   /** Find the braille sign at a given character index.
+   * @return null if index is out of range
    */
   public Sign getSignAtIndex(final int index) {
     return strings.getSignAtIndex(index);
@@ -103,11 +104,9 @@ public final class Transcriber {
   public int getIndexOfScoreObject(final Object object) {
     return strings.getIndexOfScoreObject(object);
   }
+  /** Returns the <code>char</code> value at the specified index.
+   */
   public char charAt(final int index) { return strings.charAt(index); }
-  public Object getScoreObject() { return score; }
-
-  public static final String LINE_SEPARATOR =
-    System.getProperty("line.separator");
 
   private Strategy strategy;
 
@@ -265,8 +264,13 @@ public final class Transcriber {
     return strings.toString();
   }
 
-  List<Direction> alreadyPrintedDirections;
+  private List<Direction> alreadyPrintedDirections;
+  List<Direction> getAlreadyPrintedDirections() {
+    return alreadyPrintedDirections;
+  }
 
+  /** Contains the name of the composer.
+   */
   public static class ComposerName extends Text {
     ComposerName(final String name) { super(name); }
     @Override public String getDescription() {

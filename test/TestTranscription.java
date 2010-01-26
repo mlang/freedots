@@ -6,7 +6,7 @@ import freedots.musicxml.Score;
 import freedots.transcription.Transcriber;
 
 public class TestTranscription extends junit.framework.TestCase {
-  private static final String NL = Transcriber.LINE_SEPARATOR;
+  private static final String NL = System.getProperty("line.separator");
 
   public void testPartMeasureInAccord()
     throws javax.xml.parsers.ParserConfigurationException,

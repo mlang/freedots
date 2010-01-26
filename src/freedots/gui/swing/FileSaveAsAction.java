@@ -32,7 +32,6 @@ import java.io.Writer;
 import java.text.CharacterIterator;
 import java.text.StringCharacterIterator;
 import javax.sound.midi.MidiSystem;
-import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.JOptionPane;
@@ -47,7 +46,7 @@ import freedots.transcription.Transcriber;
  * The dialog allows for export to MIDI and Unicode as well as NABCC braille.
  */
 @SuppressWarnings("serial")
-public final class FileSaveAsAction extends AbstractAction {
+public final class FileSaveAsAction extends javax.swing.AbstractAction {
   private Main gui;
 
   /** Constructs a new action object for saving files.

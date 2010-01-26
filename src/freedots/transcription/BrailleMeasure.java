@@ -284,7 +284,7 @@ class BrailleMeasure {
       } else if (element instanceof Direction) {
         Direction direction = (Direction)element;
 
-        if (!transcriber.alreadyPrintedDirections.contains(direction)) {
+        if (!transcriber.getAlreadyPrintedDirections().contains(direction)) {
           List<String> dynamics = direction.getDynamics();
           if (dynamics != null) {
             for (String dyn: dynamics) {

@@ -22,37 +22,18 @@
  */
 package freedots.gui.swing;
 
-import java.awt.BorderLayout;
-import java.awt.Container;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
-import javax.swing.AbstractAction;
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.InputVerifier;
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JDialog;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
 import javax.swing.KeyStroke;
-import javax.swing.UIManager;
-import javax.swing.text.JTextComponent;
 
 import freedots.braille.Sign;
-import freedots.music.Fingering;
-import freedots.musicxml.Note;
 
 /** Pops up a dialog to describe the sign at the caret position.
  */
 @SuppressWarnings("serial")
-public final class DescribeSignAction extends AbstractAction {
+public final class DescribeSignAction extends javax.swing.AbstractAction {
   private final Main gui;
   /** Flag to avoid firing up several message dialogs.
    */

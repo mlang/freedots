@@ -25,11 +25,10 @@ package freedots.gui.swing;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
-import javax.swing.AbstractAction;
 import javax.swing.KeyStroke;
 
 @SuppressWarnings("serial")
-final class PlayScoreAction extends AbstractAction {
+final class PlayScoreAction extends javax.swing.AbstractAction {
   private Main gui;
   public PlayScoreAction(final Main gui) {
     super("Play score");

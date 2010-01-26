@@ -25,11 +25,10 @@ package freedots.gui.swing;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
-import javax.swing.AbstractAction;
 import javax.swing.KeyStroke;
 
 @SuppressWarnings("serial")
-public final class StopPlaybackAction extends AbstractAction {
+public final class StopPlaybackAction extends javax.swing.AbstractAction {
   private Main gui;
   public StopPlaybackAction(final Main gui) {
     super("Stop");

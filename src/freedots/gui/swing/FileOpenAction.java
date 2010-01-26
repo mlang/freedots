@@ -26,7 +26,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
 
-import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
 import javax.swing.KeyStroke;
 import javax.swing.filechooser.FileFilter;
@@ -37,7 +36,7 @@ import freedots.musicxml.Score;
  * An action for selecting and loading MusicXML documents.
  */
 @SuppressWarnings("serial")
-public final class FileOpenAction extends AbstractAction {
+public final class FileOpenAction extends javax.swing.AbstractAction {
   private Main gui;
   /**
    * Construct a File->Open action.

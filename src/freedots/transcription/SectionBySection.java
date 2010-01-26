@@ -83,7 +83,7 @@ class SectionBySection implements Strategy {
       if (directives.size() == 1) {
         final Direction directive = directives.get(0);
         directiveText = directives.get(0).getWords().trim() + " ";
-        transcriber.alreadyPrintedDirections.add(directive);
+        transcriber.getAlreadyPrintedDirections().add(directive);
       }
       BrailleTimeSignature bTimeSig =
         new BrailleTimeSignature(part.getTimeSignature());

@@ -29,7 +29,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
-import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -52,7 +51,7 @@ import freedots.musicxml.Note;
  *  Note object.
  */
 @SuppressWarnings("serial")
-public final class EditFingeringAction extends AbstractAction {
+public final class EditFingeringAction extends javax.swing.AbstractAction {
   private Main gui;
   private FingeringEditor fingeringEditor = null;
   private boolean dialogShowing = false;
