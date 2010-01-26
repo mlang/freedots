@@ -370,6 +370,13 @@ public final class Main
 
     menuBar.add(createLibraryMenu());
 
+    JMenu helpMenu = new JMenu("Help");
+    helpMenu.setMnemonic(KeyEvent.VK_H);
+
+    helpMenu.add(new DescribeSignAction(this));
+
+    menuBar.add(helpMenu);
+
     return menuBar;
   }
 

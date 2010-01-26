@@ -135,6 +135,12 @@ public class BrailleList extends java.util.LinkedList<BrailleSequence>
 
     return -1;
   }
+
+  /** Determines the string length from the last occurence of a class.
+   * <p>
+   * This method does a deep search.
+   * @return -1 if class was not found in this list or its children
+   */
   public final int lengthSince(Class<? extends BrailleSequence> seqClass) {
     int length = 0;
     java.util.ListIterator<BrailleSequence> iterator = listIterator(size());
