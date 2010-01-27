@@ -49,17 +49,13 @@ public enum Braille {
 
   numberSign(3456), simileSign(2356),
 
-  tie(4, 14), slur(14),
+  slur(14),
 
   // Piano pedal marks
   pedalPress(126, 14), pedalRelease(16, 14), pedalChange(16, 126, 14),
 
   fullMeasureInAccord(126, 345),
   partMeasureInAccord(46, 13), partMeasureInAccordDivision(5, 2),
-
-  // Octave signs
-  octave1(4, 4), octave2(4), octave3(45), octave4(456), octave5(5),
-  octave6(46), octave7(56), octave8(6), octave9(6, 6),
 
   // Signs for announcing the type of "staff"
   rightHandPart(46, 345), soloPart(5, 345), leftHandPart(456, 345),
@@ -83,12 +79,7 @@ public enum Braille {
 
   // Digits written in the upper part of a cell
   digit0(245), digit1(1), digit2(12), digit3(14), digit4(145),
-  digit5(15), digit6(124), digit7(1245), digit8(125), digit9(24),
-
-  // Digits written in the lower part of a cell
-  lowerDigit0(356), lowerDigit1(2), lowerDigit2(23), lowerDigit3(25),
-  lowerDigit4(256), lowerDigit5(26), lowerDigit6(235), lowerDigit7(2356),
-  lowerDigit8(236), lowerDigit9(35);
+  digit5(15), digit6(124), digit7(1245), digit8(125), digit9(24);
 
   private static final Logger LOG = Logger.getLogger(Braille.class);
   private int[] dots;
@@ -148,15 +139,6 @@ public enum Braille {
     // TODO: There are probabbly more, figure out the complete list
   }
 
-  /** Gets an octave sign for a particular octave.
-   * @param number indicates the octave
-   * @return braille music octave sign
-   */
-  public static Braille octave(final int number) {
-    if (number >= 0) return OCTAVES[number];
-    else return OCTAVES[0];
-  }
-
   /** Format a number using the upper dots 1, 2, 4 and 5.
    * @param number is the number to translate to braille
    * @return the unicode braille representation of the number
@@ -166,22 +148,6 @@ public enum Braille {
     while (number > 0) {
       int digit = number % 10;
       string = DIGITS[digit] + string;
-      number = number / 10;
-    }
-    return string;
-  }
-  private static Braille lowerDigit(final int digit) {
-    return LOWER_DIGITS[digit];
-  }
-  /** Format a number using the lower dots 2, 3, 5, 6.
-   * @param number is the number to translate to braille
-   * @return the unicode braille representation of the number
-   */
-  public static String lowerNumber(int number) {
-    String string = "";
-    while (number > 0) {
-      int digit = number % 10;
-      string = lowerDigit(digit) + string;
       number = number / 10;
     }
     return string;
@@ -272,21 +238,11 @@ public enum Braille {
     return bits;
   }
 
-  private static final Braille[] OCTAVES = new Braille[] {
-    octave1, octave2, octave3, octave4, octave5, octave6, octave7,
-    octave8, octave9
-  };
   private static final Braille[] DIGITS = {
     digit0,
     digit1, digit2, digit3,
     digit4, digit5, digit6,
     digit7, digit8, digit9
-  };
-  private static final Braille[] LOWER_DIGITS = {
-    lowerDigit0,
-    lowerDigit1, lowerDigit2, lowerDigit3,
-    lowerDigit4, lowerDigit5, lowerDigit6,
-    lowerDigit7, lowerDigit8, lowerDigit9
   };
   private static final Braille[] ENGLISH_STEPS = {
     letterC, letterD, letterE, letterF, letterG, letterA, letterB
