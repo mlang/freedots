@@ -99,11 +99,7 @@ class BarOverBar implements Strategy {
             }
             Sign introSymbol = brailleStaves.get(staffIndex).getIntro();
             if (introSymbol != null) {
-              try {
-                braille.add((Sign)introSymbol.clone());
-              } catch (CloneNotSupportedException e) {
-                e.printStackTrace();
-              }
+              braille.add((Sign)introSymbol.clone());
             }
           }
           braille.add(measureBraille);

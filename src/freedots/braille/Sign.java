@@ -57,10 +57,15 @@ public abstract class Sign implements BrailleSequence, Cloneable {
     return data.subSequence(start, end);
   }
 
-  @Override public Object clone() throws CloneNotSupportedException {
-    Sign newSign = (Sign)super.clone();
-    newSign.parent = null;
-    return newSign;
+  @Override public Sign clone() {
+    try {
+      Sign newSign = (Sign)super.clone();
+      newSign.parent = null;
+
+      return newSign;
+    } catch(CloneNotSupportedException e) {
+      throw new InternalError();
+    }
   }
 
   /** Converts a braille dot pattern to ISO 11548-1.

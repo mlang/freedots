@@ -1,4 +1,3 @@
-
 /* -*- c-basic-offset: 2; indent-tabs-mode: nil; -*- */
 /*
  * FreeDots -- MusicXML to braille music transcription
@@ -32,22 +31,18 @@ public class RepeatASign extends BrailleList {
     this.sign = sign;
     this.repetitions = repetitions;
 
-    try {
-      if (repetitions > 3) {
-        add(new UpperNumber(repetitions));
-        add(sign);
-      } else if (repetitions == 3) {
-        add(sign);
-        add((Sign)sign.clone());
-        add((Sign)sign.clone());
-      } else if (repetitions == 2) {
-        add(sign);
-        add((Sign)sign.clone());
-      } else if (repetitions == 1) {
-        add(sign);
-      }
-    } catch (CloneNotSupportedException e) {
-      e.printStackTrace();
+    if (repetitions > 3) {
+      add(new UpperNumber(repetitions));
+      add(sign);
+    } else if (repetitions == 3) {
+      add(sign);
+      add((Sign)sign.clone());
+      add((Sign)sign.clone());
+    } else if (repetitions == 2) {
+      add(sign);
+      add((Sign)sign.clone());
+    } else if (repetitions == 1) {
+      add(sign);
     }
   }
 }
