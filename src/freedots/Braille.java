@@ -80,7 +80,6 @@ public enum Braille {
   private static final Logger LOG = Logger.getLogger(Braille.class);
   private int[] dots;
   private String cachedString;
-  private boolean needsAdditionalDot3IfOneOfDot123Follows = false;
 
   Braille(final int dots) { this(new int[] {dots}); }
   Braille(final int dots1, final int dots2) { this(new int[] {dots1, dots2}); }
@@ -114,18 +113,6 @@ public enum Braille {
     else {
       return numberSign.toString() + upperNumber(amount) + atom;
     }
-  }
-
-  /**
-   * @return true if this braille music symbol needs an additional dot 3
-   * if one of dots 1, 2 or 3 is following.
-   */
-  // TODO: Method name should be changed to something better!
-  public boolean needsAdditionalDot3IfOneOfDot123Follows() {
-    return needsAdditionalDot3IfOneOfDot123Follows;
-  }
-  private void needsAdditionalDot3IfOneOfDot123Follows(boolean newValue) {
-    needsAdditionalDot3IfOneOfDot123Follows = newValue;
   }
 
   /** Format a number using the upper dots 1, 2, 4 and 5.
