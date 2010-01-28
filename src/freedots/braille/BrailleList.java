@@ -51,7 +51,6 @@ public class BrailleList extends java.util.LinkedList<BrailleSequence>
       dot.setParent(this);
       if (!super.add(dot)) return false;
     }
-
     item.setParent(this);
     return super.add(item);
   }
