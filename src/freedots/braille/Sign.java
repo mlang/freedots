@@ -28,7 +28,7 @@ package freedots.braille;
  * @see <a href="http://en.wikipedia.org/wiki/Sign_(semiotics)">Wikipedia:
  *      Sign (semiotics)</a>
  */
-public abstract class Sign implements BrailleSequence {
+public abstract class Sign implements BrailleSequence, Cloneable {
   protected final String data;
   protected Sign(final String data) { this.data = data; }
 
@@ -55,6 +55,17 @@ public abstract class Sign implements BrailleSequence {
   public final char charAt(int index) { return data.charAt(index); }
   public final CharSequence subSequence(final int start, final int end) {
     return data.subSequence(start, end);
+  }
+
+  @Override public Sign clone() {
+    try {
+      Sign newSign = (Sign)super.clone();
+      newSign.parent = null;
+
+      return newSign;
+    } catch(CloneNotSupportedException e) {
+      throw new InternalError();
+    }
   }
 
   /** Converts a braille dot pattern to ISO 11548-1.

@@ -29,6 +29,7 @@ import java.util.List;
 import freedots.Braille;
 import freedots.braille.AlternativeEnding;
 import freedots.braille.ArtificialWholeRest;
+import freedots.braille.BrailleKeySignature;
 import freedots.braille.BrailleList;
 import freedots.braille.BrailleSyllable;
 import freedots.braille.BrailleTimeSignature;
@@ -93,7 +94,7 @@ class SectionBySection implements Strategy {
                                 }
                               });
       // TODO: FIXME
-      transcriber.printString(new Text(part.getKeySignature().toBraille()));
+      transcriber.printString(new BrailleKeySignature(part.getKeySignature()));
       transcriber.printString(bTimeSig);
       transcriber.newLine();
       for (Section section:getSections(part)) transcribeSection(part, section);
@@ -157,7 +158,7 @@ class SectionBySection implements Strategy {
         if (!kc.getKeySignature().equals(currentSignature)) {
           currentSignature = kc.getKeySignature();
           // TODO: FIXME
-          transcriber.printString(new Text(currentSignature.toBraille()));
+          transcriber.printString(new BrailleKeySignature(currentSignature));
           transcriber.spaceOrNewLine();
         }
       } else if (event instanceof EndBar) {

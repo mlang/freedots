@@ -22,8 +22,6 @@
  */
 package freedots.music;
 
-import freedots.Braille;
-
 /**
  * An abstract representation of pitch with step, alter and octave values.
  */
@@ -58,17 +56,6 @@ public abstract class AbstractPitch implements Comparable<AbstractPitch> {
       }
     }
     return false;
-  }
-  public final Braille getOctaveSign(AbstractPitch lastPitch) {
-    if (lastPitch != null) {
-      int halfSteps = Math.abs(getMIDIPitch() - lastPitch.getMIDIPitch());
-
-      if ((halfSteps < 5)
-          || (halfSteps >= 5 && halfSteps <= 7
-              && getOctave() == lastPitch.getOctave()))
-        return null;
-    }
-    return Braille.octave(getOctave());
   }
   public final int diatonicDifference(AbstractPitch other) {
     return ((this.getOctave()*STEPS) + this.getStep())
