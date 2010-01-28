@@ -23,10 +23,8 @@ public class TestTranscription extends junit.framework.TestCase {
       + NL
       + score.getParts().get(0).getName() + NL
       + keyAndTimeSignature + NL
-      + "  " + Braille.rightHandPart
-      + "⠨⠳⠃⠳⠁⠉⠐⠖⠇⠊⠄⠾ ⠊⠐⠢⠷⠛⠇⠐⠢⠯⠕" + "⠣⠅" + NL
-      + "  " + Braille.leftHandPart
-      + "⠸⠗⠄⠇⠣⠜⠧⠨⠅⠸⠞⠐⠂⠧⠐⠱ ⠸⠟⠄⠣⠜⠧⠨⠅⠸⠎⠐⠂⠧⠐⠱" + "⠣⠅" + NL
+      + "  " + "⠨⠜" + "⠨⠳⠃⠳⠁⠉⠐⠖⠇⠊⠄⠾ ⠊⠐⠢⠷⠛⠇⠐⠢⠯⠕" + "⠣⠅" + NL
+      + "  " + "⠸⠜" + "⠸⠗⠄⠇⠣⠜⠧⠨⠅⠸⠞⠐⠂⠧⠐⠱ ⠸⠟⠄⠣⠜⠧⠨⠅⠸⠎⠐⠂⠧⠐⠱" + "⠣⠅" + NL
       + NL;
     assertEquals("pmia-1.xml", transcriber.toString(), expectedResult);
   }
@@ -68,7 +66,7 @@ public class TestTranscription extends junit.framework.TestCase {
       + NL
       + keyAndTimeSignature + NL
       + "  "
-      + Braille.musicPart + "⠨⠋⠗⠑⠑⠙⠕⠞⠎ ⠨⠋⠗⠑⠑⠙⠕⠞⠎ ⠨⠋⠗⠑⠑⠙⠕⠞⠎" + "⠣⠅" + NL
+      + "⠠⠄" + "⠨⠋⠗⠑⠑⠙⠕⠞⠎ ⠨⠋⠗⠑⠑⠙⠕⠞⠎ ⠨⠋⠗⠑⠑⠙⠕⠞⠎" + "⠣⠅" + NL
       + "⠒⠜⠨⠉maj⠼⠛⠨⠁m⠼⠛⠨⠙m⠼⠛⠨⠑m⠼⠛⠨⠋maj⠼⠛ ⠨nc " + NL
       + "⠨⠋maj⠼⠛⠨⠑m⠼⠛⠨⠙m⠼⠛⠨⠑m⠼⠛⠨⠁" + "⠣⠅" + NL
       + NL;

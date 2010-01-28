@@ -57,10 +57,6 @@ public enum Braille {
   fullMeasureInAccord(126, 345),
   partMeasureInAccord(46, 13), partMeasureInAccordDivision(5, 2),
 
-  // Signs for announcing the type of "staff"
-  rightHandPart(46, 345), soloPart(5, 345), leftHandPart(456, 345),
-  harmonyPart(25, 345), musicPart(6, 3), textPart(56, 23),
-
   upcase(46),
   letterA(1), letterB(12), letterC(14), letterD(145), letterE(15), letterF(124),
   letterG(1245), slash(5, 2), letterM(134),
@@ -130,13 +126,6 @@ public enum Braille {
   }
   private void needsAdditionalDot3IfOneOfDot123Follows(boolean newValue) {
     needsAdditionalDot3IfOneOfDot123Follows = newValue;
-  }
-  static {
-    leftHandPart.needsAdditionalDot3IfOneOfDot123Follows(true);
-    soloPart.needsAdditionalDot3IfOneOfDot123Follows(true);
-    rightHandPart.needsAdditionalDot3IfOneOfDot123Follows(true);
-    harmonyPart.needsAdditionalDot3IfOneOfDot123Follows(true);
-    // TODO: There are probabbly more, figure out the complete list
   }
 
   /** Format a number using the upper dots 1, 2, 4 and 5.
