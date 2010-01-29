@@ -153,7 +153,7 @@ class BrailleMeasure {
       append(new Text(braille));
     }
     void append(BrailleSequence braille) {
-      if (head.length() + braille.length() <= width && !hyphenated) {
+      if (head.length() + braille.length() < width && !hyphenated) {
         head.add(braille);
       } else {
         hyphenated = true;
