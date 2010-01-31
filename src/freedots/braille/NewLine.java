@@ -22,17 +22,10 @@
  */
 package freedots.braille;
 
-import java.awt.Color;
-
 public class NewLine extends Sign {
   public NewLine() { super(LINE_SEPARATOR); }
   public String getDescription() { return "Starts a new line."; }
 
   private static final String LINE_SEPARATOR =
     System.getProperty("line.separator");
-  
-  @Override
-	public Color getSignColor() {
-		return Color.black;
-	}
 }

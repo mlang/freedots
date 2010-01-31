@@ -22,8 +22,6 @@
  */
 package freedots.braille;
 
-import java.awt.Color;
-
 /** Identifies a sequence of Unicode braille characters.
  */
 public interface BrailleSequence extends CharSequence {
@@ -56,6 +54,4 @@ public interface BrailleSequence extends CharSequence {
   /** Gets the visual score object responsible for the creation of this sign.
    */
   Object getScoreObject();
-  
-  Color getSignColor();
 }

@@ -22,17 +22,10 @@
  */
 package freedots.braille;
 
-import java.awt.Color;
-
 public class TextPart extends Sign {
   public TextPart() { super(braille(56, 23)); }
 
   public String getDescription() {
     return "Indicates that text (lyrics) is going to follow.";
   }
-  
-  @Override
-	public Color getSignColor() {
-		return new Color(160, 82, 45);
-	}
 }

@@ -22,17 +22,10 @@
  */
 package freedots.braille;
 
-import java.awt.Color;
-
 public class DoubleBarSign extends Sign {
   public DoubleBarSign() { super(braille(126, 13)); }
 
   public String getDescription() {
     return "Signifies the end of the music";
-  }  
-  
-  @Override
-	public Color getSignColor() {
-		return Color.red;
-	}
+  }
 }

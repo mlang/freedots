@@ -50,17 +50,10 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.JTextPane;
 import javax.swing.event.CaretEvent;
-import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultCaret;
-import javax.swing.text.Style;
-import javax.swing.text.StyleConstants;
-import javax.swing.text.StyledDocument;
 
 import freedots.Options;
-import freedots.braille.BrailleList;
-import freedots.braille.BrailleSequence;
 import freedots.braille.Sign;
 import freedots.logging.Logger;
 import freedots.musicxml.Library;
@@ -94,39 +87,12 @@ public final class Main
   protected StatusBar statusBar = null;
   protected SingleNoteRenderer noteRenderer = null;
 
-  private void displayBrailleList (BrailleList strings, Style defaut, StyledDocument sDoc) {
-	  int i = 0;
-      for (BrailleSequence seq: strings) {
-    	  if (seq instanceof Sign) {
-    	  	Style styleSign = textPane.addStyle("styleSign"+i, defaut);
-    	    StyleConstants.setForeground(styleSign, seq.getSignColor());
-    	    
-    	    try {
-    	    	String s = seq.toString();
-    	        sDoc.insertString(pos, s, styleSign);
-    	        pos+=s.length();
-    	  } catch (BadLocationException e) { }
-    	  	i++;
-    	  }
-    	  else displayBrailleList((BrailleList) seq, defaut, sDoc);
-      	}
-	  
-  }
-  
   public void setScore(Score score) {
     this.score = score;
-    //textPane.setText(null);
-    textPane.setText("");
     try {
       transcriber.setScore(score);
-
-      /* Print signs one by one */
-      Style defaut = textPane.getStyle("default");
-      StyledDocument sDoc = (StyledDocument) textPane.getDocument();
-      strings = transcriber.getSigns();
-      displayBrailleList(strings, defaut, sDoc);
-      
-      textPane.setCaretPosition(0);
+      textArea.setText(transcriber.toString());
+      textArea.setCaretPosition(0);
       boolean scoreAvailable = score != null;
       fileSaveAsAction.setEnabled(scoreAvailable);
       
@@ -138,9 +104,7 @@ public final class Main
     }
   }
 
-  private JTextArea logArea;
-  private JTextPane textPane;
-  
+  private JTextArea textArea, logArea;
   private Object lastObject = null;
 
   private boolean autoPlay = false;
@@ -193,7 +157,7 @@ public final class Main
       if (pos >= 0) {
         boolean old = autoPlay;
         autoPlay = false;
-        textPane.setCaretPosition(pos);
+        textArea.setCaretPosition(pos);
         autoPlay = old;
       }
     }
@@ -219,8 +183,6 @@ public final class Main
   private Action fileSaveAsAction = new FileSaveAsAction(this);
   private Action editFingeringAction = new EditFingeringAction(this);
 
-  private BrailleList strings; /* store signs from the transcriber */
-  private int pos = 0;
   public Main(final Transcriber transcriber) {
     super("FreeDots " + freedots.Main.VERSION);
     this.transcriber = transcriber;
@@ -255,34 +217,19 @@ public final class Main
     setJMenuBar(createMenuBar());
 
     // Create the text area
-    textPane = new JTextPane();
-    textPane.setSize(options.getPageWidth(), options.getPageHeight());
-    //textPane.setPreferredSize(new Dimension (options.getPageWidth(), options.getPageHeight()));
+    textArea = new JTextArea(options.getPageHeight(), options.getPageWidth());
     Font font = new Font("DejaVu Serif", Font.PLAIN, 14);
-    textPane.setFont(font);
-    textPane.setText(WELCOME_MESSAGE);
-    Style defaut = textPane.getStyle("default");
-    StyledDocument sDoc = (StyledDocument) textPane.getDocument();
-    /*try {
-    	sDoc.insertString(pos, WELCOME_MESSAGE, defaut);
-    	pos+=WELCOME_MESSAGE.length();
-    }
-    catch (BadLocationException e) { }*/
-    
+    textArea.setFont(font);
+    textArea.setText(WELCOME_MESSAGE);
+
     this.score = transcriber.getScore();
-    final boolean scoreAvailable = score != null;    
-    
-    if (scoreAvailable) {
-    	/* Print signs one by one */
-    	strings = transcriber.getSigns();
-    	displayBrailleList(strings, defaut, sDoc);	
-    }
-    
+    final boolean scoreAvailable = score != null;
+    if (scoreAvailable) textArea.setText(transcriber.toString());
     fileSaveAsAction.setEnabled(scoreAvailable);
     playScoreAction.setEnabled(scoreAvailable);
 
-    textPane.setEditable(false);
-    textPane.setCaret(new DefaultCaret() {
+    textArea.setEditable(false);
+    textArea.setCaret(new DefaultCaret() {
                         /** Called when the component containing the caret gains
                          *  focus.
                          * This is implemented to set the caret to visible
@@ -295,8 +242,8 @@ public final class Main
                           }
                         }
                       });
-    textPane.addCaretListener(this);
-    JScrollPane scrollPane = new JScrollPane(textPane);
+    textArea.addCaretListener(this);
+    JScrollPane scrollPane = new JScrollPane(textArea);
 
     logArea = new JTextArea(5, 60);
     logArea.setEditable(false);
@@ -591,11 +538,11 @@ public final class Main
   }
 
   Object getScoreObjectAtCaretPosition() {
-    return transcriber.getScoreObjectAtIndex(textPane.getCaretPosition());
+    return transcriber.getScoreObjectAtIndex(textArea.getCaretPosition());
   }
   Sign getSignAtCaretPosition() {
     if (score != null)
-      return transcriber.getSignAtIndex(textPane.getCaretPosition());
+      return transcriber.getSignAtIndex(textArea.getCaretPosition());
     return null;
   }
 
@@ -609,23 +556,15 @@ public final class Main
    * the same note it used to be in the previous format used.
    */
   void triggerTranscription() {
-    int position = textPane.getCaretPosition();
+    int position = textArea.getCaretPosition();
     final Object object = getScoreObjectAtCaretPosition();
     transcriber.setScore(score);
-    /* textPane.setText(transcriber.toString());*/
-    
-    /* Print signs one by one */
-    Style defaut = textPane.getStyle("default");
-    StyledDocument sDoc = (StyledDocument) textPane.getDocument();
-    strings = transcriber.getSigns();
-    displayBrailleList(strings, defaut, sDoc);
-    
-    
+    textArea.setText(transcriber.toString());
     if (object != null) {
       final int objectPosition = transcriber.getIndexOfScoreObject(object);
       if (objectPosition != -1) position = objectPosition;
     }
-    textPane.setCaretPosition(position);
+    textArea.setCaretPosition(position);
   }
 
   public void notifyLog() {

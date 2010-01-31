@@ -22,7 +22,6 @@
  */
 package freedots.braille;
 
-import java.awt.Color;
 import java.util.Iterator;
 
 import freedots.Options;
@@ -118,9 +117,5 @@ public class BrailleChord extends BrailleList {
       "unison", "second", "third", "fourth", "fifth", "sixth",
       "seventh", "octave"
     };
-	@Override
-	public Color getSignColor() {
-		return Color.black;
-	}
   }
 }

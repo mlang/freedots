@@ -22,15 +22,8 @@
  */
 package freedots.braille;
 
-import java.awt.Color;
-
 public class Text extends Sign {
   public Text(final String text) { super(text); }
 
   public String getDescription() { return "A generic text object"; }
-  
-  @Override
-	public Color getSignColor() {
-		return new Color(160, 82, 45);
-	}
 }
