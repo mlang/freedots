@@ -22,6 +22,8 @@
  */
 package freedots.braille;
 
+import java.awt.Color;
+
 /** Signifies octaves.
  *
  * @see <a href="http://brl.org/music/code/bmb/chap02/index.html">Chapter 2:
@@ -49,4 +51,9 @@ public class OctaveSign extends Sign {
     // TODO: There appear to be no braille signs for five and six-lined octaves
     "five-lined", "six-lined"
   };
+  
+  @Override
+	public Color getSignColor() {
+		return Color.pink;
+	}
 }

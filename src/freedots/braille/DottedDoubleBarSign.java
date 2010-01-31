@@ -22,10 +22,17 @@
  */
 package freedots.braille;
 
+import java.awt.Color;
+
 public class DottedDoubleBarSign extends Sign {
   public DottedDoubleBarSign() { super(braille(126, 23)); }
 
   public String getDescription() {
     return "Indicates the end of a repeated section";
   }
+  
+  @Override
+	public Color getSignColor() {
+		return Color.red;
+	}
 }

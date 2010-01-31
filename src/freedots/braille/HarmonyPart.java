@@ -22,10 +22,17 @@
  */
 package freedots.braille;
 
+import java.awt.Color;
+
 public class HarmonyPart extends NeedsGuideDot {
   public HarmonyPart() { super(braille(25, 345)); }
 
   public String getDescription() {
     return "Indicates that harmony (chordsymbols) are going to follow.";
   }
+  
+  @Override
+	public Color getSignColor() {
+		return Color.black;
+	}
 }

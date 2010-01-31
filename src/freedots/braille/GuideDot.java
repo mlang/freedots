@@ -22,9 +22,17 @@
  */
 package freedots.braille;
 
+import java.awt.Color;
+
 public class GuideDot extends Sign {
   GuideDot() { super(braille(3)); }
   public String getDescription() {
     return "Separates the previous from the following sign.";
   }
+  
+ 
+  @Override
+	public Color getSignColor() {
+		return Color.black;
+	}
 }
