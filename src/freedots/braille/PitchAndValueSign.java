@@ -22,6 +22,8 @@
  */
 package freedots.braille;
 
+import java.awt.Color;
+
 import freedots.music.AbstractPitch;
 import freedots.music.AugmentedFraction;
 
@@ -59,4 +61,9 @@ public class PitchAndValueSign extends Sign {
   private static final int[] DENOMINATOR_BITS = {
     dotsToBits(36), dotsToBits(3), dotsToBits(6), 0
   };
+
+@Override
+  public Color getSignColor() {
+    return Color.blue;
+  }
 }

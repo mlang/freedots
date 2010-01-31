@@ -22,6 +22,8 @@
  */
 package freedots.braille;
 
+import java.awt.Color;
+
 import freedots.music.AugmentedFraction;
 
 public class ArtificialWholeRest extends BrailleList {
@@ -41,5 +43,9 @@ public class ArtificialWholeRest extends BrailleList {
       return "Signifies that the following sign has been added for "
              + "clarity but does not exist in the original print";
     }
+	@Override
+	public Color getSignColor() {
+		return Color.black;
+	}
   }
 }

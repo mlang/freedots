@@ -22,6 +22,7 @@
  */
 package freedots.braille;
 
+import java.awt.Color;
 import java.util.Iterator;
 
 /** Represents a logical unit composed of several smaller objects.
@@ -155,4 +156,8 @@ public class BrailleList extends java.util.LinkedList<BrailleSequence>
     }
     return -1;
   }
+@Override
+public Color getSignColor() {
+	return Color.black;
+}
 }

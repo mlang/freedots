@@ -22,6 +22,8 @@
  */
 package freedots.braille;
 
+import java.awt.Color;
+
 /** Indicates music for the left hand for a keyboard instrument.
  * @see <a href="http://brl.org/music/code/bmb/chap20/index.html">Hand sings</a>
  */
@@ -32,4 +34,9 @@ public class LeftHandPart extends NeedsGuideDot {
     return "Indicates music for the left hand (second staff) of "
            + "a keyboard instrument";
   }
+  
+  @Override
+	public Color getSignColor() {
+		return Color.black;
+	}
 }

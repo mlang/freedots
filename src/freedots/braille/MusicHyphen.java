@@ -1,4 +1,4 @@
-/* -*- c-basic-offset: 2; indent-tabs-mode: nil; -*- */
+	/* -*- c-basic-offset: 2; indent-tabs-mode: nil; -*- */
 /*
  * FreeDots -- MusicXML to braille music transcription
  *
@@ -22,10 +22,17 @@
  */
 package freedots.braille;
 
+import java.awt.Color;
+
 public class MusicHyphen extends Sign {
   public MusicHyphen() { super(braille(5)); }
 
   public String getDescription() {
     return "Indicates that this measure is continued on the next line or page.";
   }
+  
+  @Override
+	public Color getSignColor() {
+		return Color.black;
+	}
 }

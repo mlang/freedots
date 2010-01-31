@@ -22,6 +22,7 @@
  */
 package freedots.braille;
 
+import java.awt.Color;
 import java.util.Iterator;
 
 import freedots.music.Fingering;
@@ -70,5 +71,10 @@ public class BrailleFingering extends BrailleList {
     private static final String[] FINGERS = new String[] {
       braille(1), braille(12), braille(123), braille(4), braille(13)
     };
+
+	@Override
+	public Color getSignColor() {
+		return Color.yellow;
+	}
   }
 }

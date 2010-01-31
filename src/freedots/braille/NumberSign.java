@@ -22,10 +22,17 @@
  */
 package freedots.braille;
 
+import java.awt.Color;
+
 public class NumberSign extends Sign {
   NumberSign() { super(braille(3456)); }
 
   public String getDescription() {
     return "Indicates the beginning of a number.";
   }
+  
+  @Override
+	public Color getSignColor() {
+		return Color.black;
+	}
 }

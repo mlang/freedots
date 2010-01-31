@@ -22,6 +22,8 @@
  */
 package freedots.braille;
 
+import java.awt.Color;
+
 /** The smallest possible unit of braille.
  * Usually consists of 1 to 3 cells, not much more.
  *
@@ -46,6 +48,8 @@ public abstract class Sign implements BrailleSequence, Cloneable {
   }
 
   public Object getScoreObject() { return null; }
+
+  public abstract Color getSignColor();
 
   public final String toString() { return data; }
   public final StringBuilder appendTo(StringBuilder sb) {
