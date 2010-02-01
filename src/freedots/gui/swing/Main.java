@@ -255,7 +255,16 @@ public final class Main
     setJMenuBar(createMenuBar());
 
     // Create the text area
-    textPane = new JTextPane();
+    textPane = new JTextPane() {
+      /** Returns true if a viewport should always force the width of this
+       *  <code>Scrollable</code> to match the width of the viewport.
+       * <p>
+       * This is implemented to disable automatic line wrapping.
+       */
+      @Override public boolean getScrollableTracksViewportWidth() {
+        return false;
+      }
+    };
     textPane.setSize(options.getPageWidth(), options.getPageHeight());
     //textPane.setPreferredSize(new Dimension (options.getPageWidth(), options.getPageHeight()));
     Font font = new Font("DejaVu Serif", Font.PLAIN, 14);
