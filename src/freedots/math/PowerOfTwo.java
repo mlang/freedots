@@ -37,6 +37,11 @@ public class PowerOfTwo extends AbstractFraction {
   public int numerator() { return (power < 0)? 1: pow2(power); }
   public int denominator() { return (power >= 0)? 1: pow2(-power); }
 
+  public PowerOfTwo multiply(final PowerOfTwo other) {
+    if (other == null) throw new NullPointerException();
+    return new PowerOfTwo(power + other.getPower());
+  }
+
   protected final static int pow2(int power) {
     return (int)Math.pow(2, power);
   }

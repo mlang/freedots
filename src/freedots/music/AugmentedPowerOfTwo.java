@@ -144,7 +144,7 @@ public class AugmentedPowerOfTwo extends PowerOfTwo {
       int m = firstOneBit(y);
       /* x is always odd, so n is always at least 1 */
       AugmentedPowerOfTwo af =
-        new AugmentedPowerOfTwo(new PowerOfTwo(((n-1)-m) + largest.getPower()),
+        new AugmentedPowerOfTwo(new PowerOfTwo((n-1)-m).multiply(largest),
                                 n-1);
       list.add(af);
       f = f.subtract(new Fraction((1<<n)-1, y));
