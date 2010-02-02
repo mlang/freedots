@@ -22,8 +22,6 @@
  */
 package freedots.math;
 
-import freedots.music.AugmentedPowerOfTwo;
-
 public abstract class AbstractFraction
   extends Number implements Comparable<Number> {
   public abstract int numerator();

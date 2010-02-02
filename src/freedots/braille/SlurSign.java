@@ -22,10 +22,17 @@
  */
 package freedots.braille;
 
+import java.awt.Color;
+
 public class SlurSign extends Sign {
   public SlurSign() { super(braille(14)); }
 
   public String getDescription() {
     return "Indicates that the previous and next note are slurred";
   }
+  
+  @Override
+	public Color getSignColor() {
+		return Color.lightGray;
+	}
 }

@@ -22,6 +22,8 @@
  */
 package freedots.braille;
 
+import java.awt.Color;
+
 public class LowerDigit extends Sign {
   private final int digit;
 
@@ -44,4 +46,9 @@ public class LowerDigit extends Sign {
     braille(256), braille(26), braille(235),
     braille(2356), braille(236), braille(35)
   };
+
+@Override
+public Color getSignColor() {
+	return Color.black;
+}
 }

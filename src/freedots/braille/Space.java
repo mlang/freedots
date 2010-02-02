@@ -22,8 +22,15 @@
  */
 package freedots.braille;
 
+import java.awt.Color;
+
 public class Space extends Sign {
   public Space() { super(" "); }
 
   public String getDescription () { return "A blank cell."; }
+  
+  @Override
+	public Color getSignColor() {
+		return Color.black;
+	}
 }
