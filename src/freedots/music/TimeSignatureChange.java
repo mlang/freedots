@@ -22,6 +22,8 @@
  */
 package freedots.music;
 
+import freedots.math.Fraction;
+
 public class TimeSignatureChange extends VerticalEvent {
   private TimeSignature timeSignature;
 

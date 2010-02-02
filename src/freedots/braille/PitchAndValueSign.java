@@ -23,15 +23,16 @@
 package freedots.braille;
 
 import freedots.music.AbstractPitch;
-import freedots.music.AugmentedFraction;
+import freedots.music.AugmentedPowerOfTwo;
 
 /** Shows both the pitch and the rhythmic length of a note.
  */
 public class PitchAndValueSign extends Sign {
   private final AbstractPitch pitch;
-  private final AugmentedFraction value;
+  private final AugmentedPowerOfTwo value;
 
-  PitchAndValueSign(final AbstractPitch pitch, final AugmentedFraction value) {
+  PitchAndValueSign(final AbstractPitch pitch,
+                    final AugmentedPowerOfTwo value) {
     super(getSign(pitch, value));
     this.pitch = pitch;
     this.value = value;
@@ -42,11 +43,12 @@ public class PitchAndValueSign extends Sign {
   }
 
   private static String getSign(final AbstractPitch pitch,
-                                final AugmentedFraction value) {
-    final int log = value.getLog();
+                                final AugmentedPowerOfTwo value) {
+    final int power = value.getPower();
     // FIXME: breve and long notes are not handled at all
-    final int valueType = log > AugmentedFraction.EIGHTH
-      ? log-AugmentedFraction.SIXTEENTH : log-2;
+    final int log = Math.abs(power);
+    final int valueType = log > Math.abs(AugmentedPowerOfTwo.QUAVER.getPower())
+      ? log+AugmentedPowerOfTwo.SEMIQUAVER.getPower() : log;
 
     return String.valueOf((char)(UNICODE_BRAILLE_MASK
                                  | STEP_BITS[pitch.getStep()]

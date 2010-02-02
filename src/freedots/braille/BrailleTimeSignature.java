@@ -37,8 +37,8 @@ public class BrailleTimeSignature extends BrailleList {
     this.timeSignature = timeSignature;
 
     add(new NumberSign());
-    add(new UpperDigits(timeSignature.getNumerator()));
-    add(new LowerDigits(timeSignature.getDenominator()));
+    add(new UpperDigits(timeSignature.numerator()));
+    add(new LowerDigits(timeSignature.denominator()));
   }
 
   @Override public String getDescription() {

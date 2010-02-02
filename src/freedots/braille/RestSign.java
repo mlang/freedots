@@ -22,7 +22,7 @@
  */
 package freedots.braille;
 
-import freedots.music.AugmentedFraction;
+import freedots.music.AugmentedPowerOfTwo;
 
 /** Signifies a rest of a certain duration.
  *
@@ -30,9 +30,9 @@ import freedots.music.AugmentedFraction;
  *      Rests</a>
  */
 public class RestSign extends Sign {
-  private final AugmentedFraction value;
+  private final AugmentedPowerOfTwo value;
 
-  RestSign(final AugmentedFraction value) {
+  RestSign(final AugmentedPowerOfTwo value) {
     super(getSign(value));
     this.value = value;
   }
@@ -41,11 +41,12 @@ public class RestSign extends Sign {
     return "A rest with duration " + value.toString();
   }
 
-  private static String getSign(final AugmentedFraction value) {
-    final int log = value.getLog();
+  private static String getSign(final AugmentedPowerOfTwo value) {
+    final int power = value.getPower();
     // FIXME: breve and long notes are not handled at all
-    final int valueType = log > AugmentedFraction.EIGHTH
-      ? log-AugmentedFraction.SIXTEENTH : log-2;
+    final int log = Math.abs(power);
+    final int valueType = log > Math.abs(AugmentedPowerOfTwo.QUAVER.getPower())
+      ? log+AugmentedPowerOfTwo.SEMIQUAVER.getPower() : log;
 
     final int[] restDots = { 134, 136, 1236, 1346 };
     return braille(restDots[valueType]);

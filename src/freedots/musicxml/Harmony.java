@@ -29,7 +29,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 import freedots.logging.Logger;
-import freedots.music.Fraction;
+import freedots.math.Fraction;
 
 public final class Harmony extends AbstractDirection {
   private static final Logger LOG = Logger.getLogger(Harmony.class);

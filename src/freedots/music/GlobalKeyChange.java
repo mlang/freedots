@@ -22,6 +22,8 @@
  */
 package freedots.music;
 
+import freedots.math.Fraction;
+
 public final class GlobalKeyChange implements Event {
   private Fraction offset;
   private KeySignature keySignature;

@@ -28,8 +28,8 @@ import java.util.List;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
+import freedots.math.Fraction;
 import freedots.music.Event;
-import freedots.music.Fraction;
 
 public final class Direction extends AbstractDirection {
   private final List<Element> directionTypes = new ArrayList<Element>();

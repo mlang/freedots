@@ -22,6 +22,8 @@
  */
 package freedots.music;
 
+import freedots.math.Fraction;
+
 public abstract class VerticalEvent implements Event {
   private Fraction offset;
 

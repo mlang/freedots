@@ -25,8 +25,8 @@ package freedots.musicxml;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
+import freedots.math.Fraction;
 import freedots.music.Event;
-import freedots.music.Fraction;
 import freedots.music.Staff;
 import freedots.music.StaffElement;
 
@@ -37,7 +37,8 @@ public abstract class AbstractDirection implements StaffElement {
 
   private Element offset = null, staffNumber = null;
 
-  AbstractDirection(final Element element, final int durationMultiplier, final int divisions,
+  AbstractDirection(final Element element,
+                    final int durationMultiplier, final int divisions,
                     final Fraction offset) {
     this.element = element;
     this.durationMultiplier = durationMultiplier;

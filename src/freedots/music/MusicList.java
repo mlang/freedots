@@ -35,6 +35,7 @@ import java.util.ListIterator;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import freedots.math.Fraction;
 import freedots.musicxml.Chord; // FIXME
 import freedots.musicxml.Direction;
 
@@ -209,7 +210,7 @@ public class MusicList extends java.util.ArrayList<Event> {
   public boolean noteGroupingIsLegal() {
     if (size() > 1 && get(0) instanceof RhythmicElement) {
       RhythmicElement start = (RhythmicElement)get(0);
-      AugmentedFraction firstAugmentedFraction = start.getAugmentedFraction();
+      AugmentedPowerOfTwo firstAugmentedFraction = start.getAugmentedFraction();
       for (int index = 1; index < size(); index++) {
         if (get(index) instanceof RhythmicElement) {
           RhythmicElement element = (RhythmicElement)get(index);

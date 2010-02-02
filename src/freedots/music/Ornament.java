@@ -23,7 +23,8 @@
 package freedots.music;
 
 /**
- * @see <a href="http://en.wikipedia.org/wiki/Ornament_(music)">Wikipedia:Ornament_(music)</a>
+ * @see <a href="http://en.wikipedia.org/wiki/Ornament_(music)">Wikipedia:
+ *      Ornament (music)</a>
  */
 public enum Ornament {
   mordent, invertedMordent, trill, turn;

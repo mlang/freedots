@@ -22,26 +22,18 @@
  */
 package freedots.music;
 
+import freedots.math.Fraction;
+
 /**
  * The time signature is a notational convention used in Western musical
  * notation to specify how many beats are in each measure and what note value
  * constitutes one beat.
  *
- * @see <a href="http://en.wikipedia.org/wiki/Time_signature">Wikipedia:Time_signature</a>
+ * @see <a href="http://en.wikipedia.org/wiki/Time_signature">Wikipedia:
+ *      Time signature</a>
  */
 public class TimeSignature extends Fraction {
   public TimeSignature(final int numerator, final int denominator) {
     super(numerator, denominator);
-  }
-
-  /** 3/4 is not equal to 6/8 when it comes to time signatures.
-   * @param object is the time signature to compare to
-   * @return true if the two time signatures are truly equal
-   */
-  @Override public boolean equals(Object object) {
-    if (!(object instanceof TimeSignature)) return false;
-    TimeSignature other = (TimeSignature)object;
-    return this.getNumerator() == other.getNumerator() &&
-           this.getDenominator() == other.getDenominator();
   }
 }

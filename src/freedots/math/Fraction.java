@@ -20,26 +20,29 @@
  *
  * This file is maintained by Mario Lang <mlang@delysid.org>.
  */
-package freedots.braille;
+package freedots.math;
 
-import freedots.music.AugmentedPowerOfTwo;
+/** Represents an arbitrary fractional value.
+ */
+public class Fraction extends AbstractFraction {
+  private int numerator, denominator;
 
-public class ArtificialWholeRest extends BrailleList {
-  public ArtificialWholeRest() {
-    super();
-    add(new Dot5());
-    add(new RestSign(new AugmentedPowerOfTwo(AugmentedPowerOfTwo.SEMIBREVE, 0)));
+  public Fraction(final int numerator, final int denominator) {
+    this.numerator = numerator;
+    this.denominator = denominator;
   }
 
-  @Override public String getDescription() {
-    return "Indicates that a whole measure is without any chord symbols";
+  public int numerator() { return numerator; }
+  public int denominator() { return denominator; }
+
+  public Fraction simplify() {
+    final int n = numerator();
+    final int d = denominator();
+    final int gcd = gcd(n, d);
+    numerator = n / gcd;
+    denominator = d / gcd;
+    return this;
   }
 
-  public static class Dot5 extends Sign {
-    Dot5() { super(braille(5)); }
-    public String getDescription() {
-      return "Signifies that the following sign has been added for "
-             + "clarity but does not exist in the original print";
-    }
-  }
+  public final static Fraction ZERO = new Fraction(0, 1);
 }

@@ -22,6 +22,8 @@
  */
 package freedots.music;
 
+import freedots.math.Fraction;
+
 public interface Event {
   Fraction getOffset();
   boolean equalsIgnoreOffset(Event other);

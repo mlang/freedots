@@ -23,7 +23,10 @@
 package freedots.music;
 
 import freedots.Braille;
+import freedots.math.Fraction;
 
+/** Indicates a change of a clef at a certain musical duration and staff.
+ */
 public final class ClefChange implements StaffElement {
   private Fraction offset;
   private Clef clef;
@@ -47,6 +50,7 @@ public final class ClefChange implements StaffElement {
   public void setStaff(Staff staff) { this.staff = staff; }
   public boolean isRest() { return false; }
 
+  @Deprecated
   public String toBrailleString() {
     if (offset.compareTo(Fraction.ZERO) > 0) {
       Clef initialClef = staff.getClef();

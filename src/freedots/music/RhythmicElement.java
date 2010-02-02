@@ -23,7 +23,7 @@
 package freedots.music;
 
 public interface RhythmicElement extends VoiceElement {
-  AugmentedFraction getAugmentedFraction();
+  AugmentedPowerOfTwo getAugmentedFraction();
   AbstractPitch getPitch();
   AbstractPitch getUnpitched();
 }

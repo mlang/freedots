@@ -31,7 +31,7 @@ import java.util.Map;
 import freedots.braille.AccidentalSign;
 import freedots.logging.Logger;
 import freedots.music.Accidental;
-import freedots.music.AugmentedFraction;
+import freedots.music.AugmentedPowerOfTwo;
 import freedots.musicxml.Harmony;
 
 /** All the braille signs required for music and a few utility methods.
@@ -232,23 +232,22 @@ public enum Braille {
    * @see #toString(Harmony)
    * @return a Unicode braille string
    */
-  public static String toString(List<AugmentedFraction> afList) {
+  public static String toString(List<AugmentedPowerOfTwo> values) {
     StringBuilder sb = new StringBuilder();
-    Iterator<AugmentedFraction> iterator = afList.iterator();
+    Iterator<AugmentedPowerOfTwo> iterator = values.iterator();
     while (iterator.hasNext()) {
-      AugmentedFraction af = iterator.next();
-      if (af.getNumerator() == 1) {
-        if (af.getDenominator() == 1) sb.append(wholeStem);
-        else if (af.getDenominator() == 2) sb.append(halfStem);
-        else if (af.getDenominator() == 4) sb.append(quarterStem);
-        else if (af.getDenominator() == 8) sb.append(eighthStem);
-        else if (af.getDenominator() == 16) sb.append(sixteenthStem);
-        else if (af.getDenominator() == 32) sb.append(thirtysecondthStem);
-        else LOG.warning("Unmapped denominator: "+af);
-      } else LOG.warning("Unmapped numerator: "+af.getNumerator());
-      if (af.getDots() > 0) {
-        for (int i = 0; i < af.getDots(); i++) sb.append(dot);
+      AugmentedPowerOfTwo v = iterator.next();
+      switch (v.getPower()) {
+      case 0: sb.append(wholeStem); break;
+      case -1: sb.append(halfStem); break;
+      case -2: sb.append(quarterStem); break;
+      case -3: sb.append(eighthStem); break;
+      case -4: sb.append(sixteenthStem); break;
+      case -5: sb.append(thirtysecondthStem); break;
+      default: LOG.warning("Unmapped power of two: " + v);
       }
+      for (int i = 0; i < v.dots(); i++) sb.append(dot);
+
       if (iterator.hasNext()) sb.append(slur);
     }
     return sb.toString();

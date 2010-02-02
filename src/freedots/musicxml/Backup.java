@@ -26,7 +26,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import freedots.music.Fraction;
+import freedots.math.Fraction;
 
 /** A wrapper around the backup element.
  */
@@ -45,8 +45,7 @@ final class Backup {
     if (nodeList.getLength() == 1) {
       Node textNode = nodeList.item(0).getChildNodes().item(0);
       int duration = Math.round(Float.parseFloat(textNode.getNodeValue()));
-      Fraction fraction = new Fraction(duration * durationMultiplier, 4 * divisions);
-      return fraction;
+      return new Fraction(duration * durationMultiplier, 4 * divisions);
     }
     throw new MusicXMLParseException("Missing <duration> element");
   }

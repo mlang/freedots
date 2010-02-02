@@ -22,6 +22,8 @@
  */
 package freedots.music;
 
+import freedots.math.Fraction;
+
 public final class EndBar extends VerticalEvent {
   public EndBar(final Fraction offset) { super(offset); }
   private boolean repeat = false;

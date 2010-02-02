@@ -24,6 +24,8 @@ package freedots.music;
 
 import java.util.Map;
 
+import freedots.math.Fraction;
+
 /** A container for keeping track of the current value of a certain quantity
  *  which changes over time.
  */

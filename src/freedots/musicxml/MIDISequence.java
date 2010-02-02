@@ -31,11 +31,11 @@ import javax.sound.midi.MidiEvent;
 import javax.sound.midi.ShortMessage;
 import javax.sound.midi.Track;
 
+import freedots.math.Fraction;
 import freedots.music.AccidentalContext;
 import freedots.music.Articulation;
 import freedots.music.EndBar;
 import freedots.music.Event;
-import freedots.music.Fraction;
 import freedots.music.GlobalKeyChange;
 import freedots.music.KeyChange;
 import freedots.music.KeySignature;

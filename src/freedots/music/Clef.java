@@ -22,7 +22,16 @@
  */
 package freedots.music;
 
+/** Represents a clef.
+ * <p>
+ * While a clef in braille music is not necessary to determine the pitch
+ * of notes it is necessary to indicate clef changes to stay true to the
+ * original print.
+ * @see <a href="http://en.wikipedia.org/wiki/Clef">Wikipedia: Clef</a>
+ */
 public class Clef {
+  /** The types of clefs.
+   */
   public enum Sign { G, F, C, TAB, percussion, none; };
 
   public Sign sign;
@@ -34,7 +43,11 @@ public class Clef {
     this(sign);
     this.line = line;
   }
+  /** Returns true if this is a treble clef (G clef on line 2).
+   */
   public boolean isTreble() { return sign == Sign.G && line == 2; }
+  /** Returns true if this is a bass clef (F clef on line 4).
+   */
   public boolean isBass() { return sign == Sign.F && line == 4; }
 
   public int getChordDirection() {

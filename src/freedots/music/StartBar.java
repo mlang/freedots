@@ -22,6 +22,8 @@
  */
 package freedots.music;
 
+import freedots.math.Fraction;
+
 public class StartBar extends VerticalEvent {
   int measureNumber;
   public StartBar(final Fraction offset, final int measureNumber) {

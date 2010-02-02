@@ -31,14 +31,15 @@ import java.util.Map;
 import java.util.Set;
 
 import freedots.logging.Logger;
+import freedots.math.Fraction;
+import freedots.math.PowerOfTwo;
 import freedots.music.Accidental;
 import freedots.music.Articulation;
-import freedots.music.AugmentedFraction;
+import freedots.music.AugmentedPowerOfTwo;
 import freedots.music.Clef;
 import freedots.music.Event;
 import freedots.music.Fermata;
 import freedots.music.Fingering;
-import freedots.music.Fraction;
 import freedots.music.KeySignature;
 import freedots.music.Ornament;
 import freedots.music.Staff;
@@ -79,20 +80,20 @@ public final class Note implements RhythmicElement {
   private Text staffNumber, voiceName;
 
   private Element type;
-  private static final Map<String, Fraction> TYPE_MAP =
-    Collections.unmodifiableMap(new HashMap<String, Fraction>() {
+  private static final Map<String, PowerOfTwo> TYPE_MAP =
+    Collections.unmodifiableMap(new HashMap<String, PowerOfTwo>() {
       {
-        put("long", new Fraction(4, 1));
-        put("breve", new Fraction(2, 1));
-        put("whole", new Fraction(1, 1));
-        put("half", new Fraction(1, 2));
-        put("quarter", new Fraction(1, 4));
-        put("eighth", new Fraction(1, 8));
-        put("16th", new Fraction(1, 16));
-        put("32nd", new Fraction(1, 32));
-        put("64th", new Fraction(1, 64));
-        put("128th", new Fraction(1, 128));
-        put("256th", new Fraction(1, 256));
+        put("long", AugmentedPowerOfTwo.LONGA);
+        put("breve", AugmentedPowerOfTwo.BREVE);
+        put("whole", AugmentedPowerOfTwo.SEMIBREVE);
+        put("half", AugmentedPowerOfTwo.MINIM);
+        put("quarter", AugmentedPowerOfTwo.CROTCHET);
+        put("eighth", AugmentedPowerOfTwo.QUAVER);
+        put("16th", AugmentedPowerOfTwo.SEMIQUAVER);
+        put("32nd", AugmentedPowerOfTwo.DEMISEMIQUAVER);
+        put("64th", AugmentedPowerOfTwo.HEMIDEMISEMIQUAVER);
+        put("128th", AugmentedPowerOfTwo.SEMIHEMIDEMISEMIQUAVER);
+        put("256th", new PowerOfTwo(-8));
       }
     });
   private List<Element> dot = new ArrayList<Element>(3);
@@ -216,8 +217,8 @@ public final class Note implements RhythmicElement {
    * @return the numerator, denominator, the amount of dots and the time
    *         modification involved in the actual duration represented.
    */
-  public AugmentedFraction getAugmentedFraction() {
-    Fraction base = null;
+  public AugmentedPowerOfTwo getAugmentedFraction() {
+    PowerOfTwo base = null;
     if (type != null) {
       String typeName = type.getTextContent();
       if (typeName != null) {
@@ -236,10 +237,10 @@ public final class Note implements RhythmicElement {
         normalNotes = Integer.parseInt(Score.getTextNode(timeModification, "normal-notes").getWholeText());
         actualNotes = Integer.parseInt(Score.getTextNode(timeModification, "actual-notes").getWholeText());
       }
-      return new AugmentedFraction(base.getNumerator(), base.getDenominator(),
-                                   dot.size(), normalNotes, actualNotes);
+      return new AugmentedPowerOfTwo(base, dot.size(),
+                                     normalNotes, actualNotes);
     } else {
-      return new AugmentedFraction(getDuration());
+      return AugmentedPowerOfTwo.valueOf(getDuration());
     }
   }
 
@@ -367,7 +368,8 @@ public final class Note implements RhythmicElement {
                                        4 * divisions);
       return fraction;
     }
-    return getAugmentedFraction().basicFraction(); 
+    return new Fraction(getAugmentedFraction().numerator(),
+                        getAugmentedFraction().denominator()); 
   }
 
   public Notations getNotations() { return notations; }

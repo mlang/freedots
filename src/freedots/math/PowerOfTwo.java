@@ -20,26 +20,24 @@
  *
  * This file is maintained by Mario Lang <mlang@delysid.org>.
  */
-package freedots.braille;
+package freedots.math;
 
-import freedots.music.AugmentedPowerOfTwo;
-
-public class ArtificialWholeRest extends BrailleList {
-  public ArtificialWholeRest() {
-    super();
-    add(new Dot5());
-    add(new RestSign(new AugmentedPowerOfTwo(AugmentedPowerOfTwo.SEMIBREVE, 0)));
+/** Represents two to the power of a certain integer.
+ */
+public class PowerOfTwo extends AbstractFraction {
+  private int power;
+  protected void setPower(final int power) {
+    this.power = power;
   }
-
-  @Override public String getDescription() {
-    return "Indicates that a whole measure is without any chord symbols";
+  public PowerOfTwo(final int power) {
+    setPower(power);
   }
+  public int getPower() { return power; }
 
-  public static class Dot5 extends Sign {
-    Dot5() { super(braille(5)); }
-    public String getDescription() {
-      return "Signifies that the following sign has been added for "
-             + "clarity but does not exist in the original print";
-    }
+  public int numerator() { return (power < 0)? 1: pow2(power); }
+  public int denominator() { return (power >= 0)? 1: pow2(-power); }
+
+  protected final static int pow2(int power) {
+    return (int)Math.pow(2, power);
   }
 }

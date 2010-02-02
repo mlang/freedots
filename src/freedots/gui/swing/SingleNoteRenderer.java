@@ -334,9 +334,8 @@ final class SingleNoteRenderer extends JPanel {
    // System.out.println("Modifier count:"+currentNote.getActiveKeySignature().getModifierCount());
     
     SingleIconSpecification iconSpec =
-      noteDefs.get(currentNote.getAugmentedFraction().getNumerator()
-                   +"/"+currentNote.getAugmentedFraction().getDenominator());
-  
+      noteDefs.get(currentNote.getAugmentedFraction().numerator()
+                   +"/"+currentNote.getAugmentedFraction().denominator());
 
     // First draw note head
 

@@ -26,7 +26,7 @@ import freedots.Options;
 import freedots.music.AbstractPitch;
 import freedots.music.Accidental;
 import freedots.music.Articulation;
-import freedots.music.AugmentedFraction;
+import freedots.music.AugmentedPowerOfTwo;
 import freedots.music.Fingering;
 import freedots.music.Ornament;
 import freedots.music.Slur;
@@ -65,7 +65,7 @@ public class BrailleNote extends BrailleList {
     if (pitch == null) /* A hack to support unpitched notes */
       pitch = (AbstractPitch)note.getUnpitched();
 
-    final AugmentedFraction value = note.getAugmentedFraction();
+    final AugmentedPowerOfTwo value = note.getAugmentedFraction();
 
     if (pitch != null) { /* A sounding note */
       if (isOctaveSignRequired(pitch, lastPitch))
@@ -75,7 +75,7 @@ public class BrailleNote extends BrailleList {
     } else {
       add(new RestSign(value));
     }
-    for (int i = 0; i < value.getDots(); i++) add(new Dot());
+    for (int i = 0; i < value.dots(); i++) add(new Dot());
 
     if (Options.getInstance().getShowFingering()) {
       final Fingering fingering = note.getFingering();

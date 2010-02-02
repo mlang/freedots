@@ -31,11 +31,11 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
 import freedots.logging.Logger;
+import freedots.math.Fraction;
 import freedots.music.Accidental;
 import freedots.music.AccidentalContext;
 import freedots.music.ClefChange;
 import freedots.music.Event;
-import freedots.music.Fraction;
 import freedots.music.GlobalKeyChange;
 import freedots.music.KeyChange;
 import freedots.music.KeySignature;

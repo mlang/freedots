@@ -24,6 +24,7 @@ package freedots.music;
 
 import java.util.ArrayList;
 
+import freedots.math.Fraction;
 
 public abstract class
 AbstractChord<E extends Event> extends ArrayList<E> implements Event {

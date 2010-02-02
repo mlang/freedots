@@ -28,9 +28,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import freedots.music.AugmentedFraction;
+import freedots.math.Fraction;
+import freedots.music.AugmentedPowerOfTwo;
 import freedots.music.Event;
-import freedots.music.Fraction;
 import freedots.music.MusicList;
 import freedots.music.TimeSignature;
 import freedots.musicxml.Note;
@@ -140,7 +140,8 @@ class ValueInterpreter {
   }
 
   private static boolean isWholeToEighth(RhythmicPossibility item) {
-    return item.getLog() < AugmentedFraction.SIXTEENTH;
+    return item.getPower() <= 0
+        && item.getPower() >= AugmentedPowerOfTwo.QUAVER.getPower();
   }
 
   @SuppressWarnings("serial")
@@ -162,11 +163,13 @@ class ValueInterpreter {
       return sb.toString();
     }
   }
-  abstract class RhythmicPossibility extends AugmentedFraction {
+  abstract class RhythmicPossibility extends AugmentedPowerOfTwo {
     private Note note;
 
     RhythmicPossibility(final Note note) {
-      super(note.getAugmentedFraction());
+      super(note.getAugmentedFraction(), note.getAugmentedFraction().dots(),
+            note.getAugmentedFraction().normalNotes(),
+            note.getAugmentedFraction().actualNotes());
       this.note = note;
     }
     boolean isAltered() {
@@ -177,17 +180,13 @@ class ValueInterpreter {
   class Large extends RhythmicPossibility {
     Large(final Note note) {
       super(note);
-      int log = note.getAugmentedFraction().getLog();
-      if (log > EIGHTH) log = log - 4;
-      setFromLog(log);
+      if (getPower() < QUAVER.getPower()) setPower(getPower()+4);
     }
   }
   class Small extends RhythmicPossibility {
     Small(final Note note) {
       super(note);
-      int log = note.getAugmentedFraction().getLog();
-      if (log < SIXTEENTH) log = log + 4;
-      setFromLog(log);
+      if (getPower() > SEMIQUAVER.getPower()) setPower(getPower()-4);
     }
   }
 }

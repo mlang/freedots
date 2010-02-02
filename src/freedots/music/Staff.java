@@ -22,6 +22,8 @@
  */
 package freedots.music;
 
+import freedots.math.Fraction;
+
 @SuppressWarnings("serial")
 public class Staff extends MusicList {
   public Timeline<KeySignature>

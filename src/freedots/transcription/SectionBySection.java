@@ -43,11 +43,11 @@ import freedots.braille.PostDottedDoubleBarSign;
 import freedots.braille.RightHandPart;
 import freedots.braille.Text;
 import freedots.braille.TextPart;
-import freedots.Options;
+import freedots.math.Fraction;
+import freedots.music.AugmentedPowerOfTwo;
 import freedots.music.ClefChange;
 import freedots.music.EndBar;
 import freedots.music.Event;
-import freedots.music.Fraction;
 import freedots.music.GlobalKeyChange;
 import freedots.music.KeyChange;
 import freedots.music.KeySignature;
@@ -61,6 +61,7 @@ import freedots.musicxml.Harmony;
 import freedots.musicxml.Note;
 import freedots.musicxml.Part;
 import freedots.musicxml.Score;
+import freedots.Options;
 
 class SectionBySection implements Strategy {
   private Options options = null;
@@ -259,7 +260,7 @@ class SectionBySection implements Strategy {
             HarmonyInfo current = iterator.next();
             String chord = Braille.toString(current.getHarmony());
             if (includeStems && iterator.hasNext())
-              chord += Braille.toString(current.getDuration().decompose());
+              chord += Braille.toString(AugmentedPowerOfTwo.decompose(current.getDuration(), AugmentedPowerOfTwo.SEMIBREVE));
 
             if (chord.length() <= transcriber.getRemainingColumns())
               // TODO: FIXME

@@ -22,6 +22,8 @@
  */
 package freedots.music;
 
+import freedots.math.Fraction;
+
 public class KeyChange implements StaffElement {
   private Fraction offset;
   private KeySignature keySignature;
