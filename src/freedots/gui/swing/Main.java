@@ -51,6 +51,7 @@ import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextPane;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.event.CaretEvent;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultCaret;
@@ -116,13 +117,17 @@ public final class Main
   public void setScore(Score score) {
     this.score = score;
     //textPane.setText(null);
-    textPane.setText("");
+    //textPane.setText("");
     try {
       transcriber.setScore(score);
 
       /* Print signs one by one */
       Style defaut = textPane.getStyle("default");
       StyledDocument sDoc = (StyledDocument) textPane.getDocument();
+      sDoc.remove(0, sDoc.getLength());
+      pos = 0;
+      sDoc.insertString(pos, "", defaut);
+      
       strings = transcriber.getSigns();
       displayBrailleList(strings, defaut, sDoc);
       
@@ -266,7 +271,6 @@ public final class Main
       }
     };
     textPane.setSize(options.getPageWidth(), options.getPageHeight());
-    //textPane.setPreferredSize(new Dimension (options.getPageWidth(), options.getPageHeight()));
     Font font = new Font("DejaVu Serif", Font.PLAIN, 14);
     textPane.setFont(font);
     textPane.setText(WELCOME_MESSAGE);
@@ -283,6 +287,14 @@ public final class Main
     
     if (scoreAvailable) {
     	/* Print signs one by one */
+    	try {
+    		sDoc.remove(0, sDoc.getLength());
+    		pos = 0;
+            sDoc.insertString(pos, "", defaut);
+    	}
+        catch (BadLocationException e) {
+        	e.printStackTrace();
+        }
     	strings = transcriber.getSigns();
     	displayBrailleList(strings, defaut, sDoc);	
     }
@@ -306,6 +318,9 @@ public final class Main
                       });
     textPane.addCaretListener(this);
     JScrollPane scrollPane = new JScrollPane(textPane);
+    scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+    scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+
 
     logArea = new JTextArea(5, 60);
     logArea.setEditable(false);
@@ -626,6 +641,14 @@ public final class Main
     /* Print signs one by one */
     Style defaut = textPane.getStyle("default");
     StyledDocument sDoc = (StyledDocument) textPane.getDocument();
+    try {
+		sDoc.remove(0, sDoc.getLength());
+		pos = 0;
+        sDoc.insertString(pos, "", defaut);
+	}
+    catch (BadLocationException e) {
+    	e.printStackTrace();
+    }
     strings = transcriber.getSigns();
     displayBrailleList(strings, defaut, sDoc);
     
