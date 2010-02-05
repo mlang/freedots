@@ -33,6 +33,11 @@ public class TextPart extends Sign {
   
   @Override
 	public Color getSignColor() {
-		return new Color(160, 82, 45);
+		return this.signColor;
 	}
+
+@Override
+public void setSignColor() {
+	this.signColor = new Color(160, 82, 45);
+}
 }

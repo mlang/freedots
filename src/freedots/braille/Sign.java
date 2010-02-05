@@ -32,7 +32,7 @@ import java.awt.Color;
  */
 public abstract class Sign implements BrailleSequence, Cloneable {
   protected final String data;
-  protected Sign(final String data) { this.data = data; }
+  protected Sign(final String data) { this.data = data; this.setSignColor();}
 
   public abstract String getDescription();
   public boolean needsGuideDot(BrailleSequence next) { return false; }
@@ -49,7 +49,10 @@ public abstract class Sign implements BrailleSequence, Cloneable {
 
   public Object getScoreObject() { return null; }
 
+  
+  protected Color signColor;
   public abstract Color getSignColor();
+  public abstract void setSignColor();
 
   public final String toString() { return data; }
   public final StringBuilder appendTo(StringBuilder sb) {

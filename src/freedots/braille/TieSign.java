@@ -33,6 +33,11 @@ public class TieSign extends Sign {
   
   @Override
 	public Color getSignColor() {
-		return Color.lightGray;
+		return this.signColor;
 	}
+
+@Override
+public void setSignColor() {
+	this.signColor = Color.lightGray;
+}
 }

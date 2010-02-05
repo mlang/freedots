@@ -33,6 +33,11 @@ public class PostDottedDoubleBarSign extends NeedsGuideDot {
   
   @Override
 	public Color getSignColor() {
-		return Color.red;
+		return this.signColor;
 	}
+
+@Override
+public void setSignColor() {
+	this.signColor = Color.red;
+}
 }

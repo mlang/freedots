@@ -64,6 +64,11 @@ public class PitchAndValueSign extends Sign {
 
 @Override
   public Color getSignColor() {
-    return Color.blue;
+    return this.signColor;
   }
+
+@Override
+public void setSignColor() {
+	this.signColor = Color.blue;
+}
 }

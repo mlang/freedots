@@ -74,7 +74,11 @@ public class BrailleFingering extends BrailleList {
 
 	@Override
 	public Color getSignColor() {
-		return Color.yellow;
+		return this.signColor;
+	}
+	@Override
+	public void setSignColor() {
+		this.signColor = Color.yellow;
 	}
   }
 }

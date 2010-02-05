@@ -31,6 +31,11 @@ public class Space extends Sign {
   
   @Override
 	public Color getSignColor() {
-		return Color.black;
+		return this.signColor;
 	}
+
+@Override
+public void setSignColor() {
+	this.signColor = Color.black;
+}
 }

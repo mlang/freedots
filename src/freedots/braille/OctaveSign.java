@@ -54,6 +54,10 @@ public class OctaveSign extends Sign {
   
   @Override
 	public Color getSignColor() {
-		return Color.pink;
+		return this.signColor;
 	}
+@Override
+public void setSignColor() {
+	this.signColor = Color.pink;
+}
 }

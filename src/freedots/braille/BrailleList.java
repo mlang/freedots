@@ -160,4 +160,7 @@ public class BrailleList extends java.util.LinkedList<BrailleSequence>
 public Color getSignColor() {
 	return Color.black;
 }
+@Override
+public void setSignColor() {
+}
 }

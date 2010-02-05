@@ -57,6 +57,12 @@ public class AccidentalSign extends Sign {
 
 @Override
 public Color getSignColor() {
-	return Color.orange;
+	return this.signColor;
+}
+
+@Override
+public void setSignColor() {
+	this.signColor = Color.orange;
+	
 }
 }

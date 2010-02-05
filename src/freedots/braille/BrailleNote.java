@@ -127,7 +127,12 @@ public class BrailleNote extends BrailleList {
     }
 	@Override
 	public Color getSignColor() {
-		return Color.green;
+		return this.signColor;
+	}
+	@Override
+	public void setSignColor() {
+		this.signColor = Color.green;
+		
 	}
   }
 
@@ -146,7 +151,11 @@ public class BrailleNote extends BrailleList {
     
     @Override
 	public Color getSignColor() {
-		return Color.green;
+		return this.signColor;
+	}
+	@Override
+	public void setSignColor() {
+		this.signColor = Color.green;
 	}
   }
   public static class InvertedMordentSign extends Sign {
@@ -155,7 +164,11 @@ public class BrailleNote extends BrailleList {
     
     @Override
 	public Color getSignColor() {
-		return Color.green;
+		return this.signColor;
+	}
+	@Override
+	public void setSignColor() {
+		this.signColor = Color.green;
 	}
   }
   public static class TrillSign extends Sign {
@@ -164,7 +177,11 @@ public class BrailleNote extends BrailleList {
     
     @Override
 	public Color getSignColor() {
-		return Color.green;
+		return this.signColor;
+	}
+	@Override
+	public void setSignColor() {
+		this.signColor = Color.green;
 	}
   }
   public static class TurnSign extends Sign {
@@ -173,7 +190,11 @@ public class BrailleNote extends BrailleList {
     
     @Override
 	public Color getSignColor() {
-		return Color.green;
+		return this.signColor;
+	}
+	@Override
+	public void setSignColor() {
+		this.signColor = Color.green;
 	}
   }
 
@@ -195,7 +216,11 @@ public class BrailleNote extends BrailleList {
     
     @Override
 	public Color getSignColor() {
-		return new Color(0, 250, 154);
+		return this.signColor;
+	}
+	@Override
+	public void setSignColor() {
+		this.signColor = new Color(0, 250, 154);
 	}
   }
   public static class MartellatoSign extends Sign {
@@ -206,7 +231,11 @@ public class BrailleNote extends BrailleList {
     
     @Override
 	public Color getSignColor() {
-		return new Color(0, 250, 154);
+		return this.signColor;
+	}
+	@Override
+	public void setSignColor() {
+		this.signColor = new Color(0, 250, 154);
 	}
   }
   public static class BreathSign extends Sign {
@@ -215,7 +244,11 @@ public class BrailleNote extends BrailleList {
     
     @Override
 	public Color getSignColor() {
-		return new Color(0, 250, 154);
+		return this.signColor;
+	}
+	@Override
+	public void setSignColor() {
+		this.signColor = new Color(0, 250, 154);
 	}
   }
   public static class StaccatoSign extends Sign {
@@ -224,7 +257,11 @@ public class BrailleNote extends BrailleList {
     
     @Override
 	public Color getSignColor() {
-		return new Color(0, 250, 154);
+		return this.signColor;
+	}
+	@Override
+	public void setSignColor() {
+		this.signColor = new Color(0, 250, 154);
 	}
   }
   public static class MezzoStaccatoSign extends Sign {
@@ -233,7 +270,11 @@ public class BrailleNote extends BrailleList {
     
     @Override
 	public Color getSignColor() {
-		return new Color(0, 250, 154);
+		return this.signColor;
+	}
+	@Override
+	public void setSignColor() {
+		this.signColor = new Color(0, 250, 154);
 	}
   }
   public static class StaccatissimoSign extends Sign {
@@ -242,7 +283,11 @@ public class BrailleNote extends BrailleList {
     
     @Override
 	public Color getSignColor() {
-		return new Color(0, 250, 154);
+		return this.signColor;
+	}
+	@Override
+	public void setSignColor() {
+		this.signColor = new Color(0, 250, 154);
 	}
   }
   public static class TenutoSign extends Sign {
@@ -251,7 +296,11 @@ public class BrailleNote extends BrailleList {
     
     @Override
 	public Color getSignColor() {
-		return new Color(0, 250, 154);
+		return this.signColor;
+	}
+	@Override
+	public void setSignColor() {
+		this.signColor = new Color(0, 250, 154);
 	}
   }
 }

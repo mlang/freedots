@@ -37,6 +37,11 @@ public class RightHandPart extends NeedsGuideDot {
   
   @Override
 	public Color getSignColor() {
-		return Color.black;
+		return this.signColor;
 	}
+
+@Override
+public void setSignColor() {
+	this.signColor = Color.black;
+}
 }

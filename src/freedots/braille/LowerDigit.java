@@ -47,8 +47,13 @@ public class LowerDigit extends Sign {
     braille(2356), braille(236), braille(35)
   };
 
+  @Override
+	public Color getSignColor() {
+		return this.signColor;
+	}
+
 @Override
-public Color getSignColor() {
-	return Color.black;
+public void setSignColor() {
+	this.signColor = Color.black;
 }
 }
