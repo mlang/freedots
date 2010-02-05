@@ -124,8 +124,7 @@ public class BrailleChord extends BrailleList {
 	}
 
 	@Override
-	public void setSignColor() {
-		this.signColor = Color.black;		
+	public void setSignColor() {	
 	}
   }
 }

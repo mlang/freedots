@@ -38,6 +38,5 @@ public class HarmonyPart extends NeedsGuideDot {
 
 @Override
 public void setSignColor() {
-	this.signColor = Color.black;
 }
 }

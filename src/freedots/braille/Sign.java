@@ -50,7 +50,7 @@ public abstract class Sign implements BrailleSequence, Cloneable {
   public Object getScoreObject() { return null; }
 
   
-  protected Color signColor;
+  protected Color signColor = Color.black;
   public abstract Color getSignColor();
   public abstract void setSignColor();
 

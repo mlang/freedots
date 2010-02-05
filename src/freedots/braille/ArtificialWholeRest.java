@@ -49,7 +49,6 @@ public class ArtificialWholeRest extends BrailleList {
 	}
 	@Override
 	public void setSignColor() {
-		this.signColor = Color.black;
 	}
   }
 }

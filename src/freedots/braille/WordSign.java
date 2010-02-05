@@ -38,6 +38,5 @@ public class WordSign extends Sign {
 
 @Override
 public void setSignColor() {
-	this.signColor = Color.black;
 }
 }

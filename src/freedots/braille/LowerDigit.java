@@ -54,6 +54,5 @@ public class LowerDigit extends Sign {
 
 @Override
 public void setSignColor() {
-	this.signColor = Color.black;
 }
 }
