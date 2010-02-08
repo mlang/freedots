@@ -20,25 +20,20 @@
  *
  * This file is maintained by Mario Lang <mlang@delysid.org>.
  */
-package freedots.braille;
+/**
+ * 
+ * <p>
+ * 
+ * 
+ * 
+ * 
+ * <p>
+ * 
+ * <pre>
+ * 
+ * 
+ * </pre>
+ */
+package freedots.compression;
 
-import java.awt.Color;
-import freedots.compression.*;
 
-public class SlurSign extends Sign implements Doublable {
-  public SlurSign() { super(braille(14)); }
-
-  public String getDescription() {
-    return "Indicates that the previous and next note are slurred";
-  }
-  
-  @Override
-	public Color getSignColor() {
-		return this.signColor;
-	}
-
-@Override
-public void setSignColor() {
-	this.signColor = Color.LIGHT_GRAY;
-}
-}
