@@ -96,6 +96,9 @@ public final class Main
   protected StatusBar statusBar = null;
   protected SingleNoteRenderer noteRenderer = null;
 
+  /** Insert braille signs of the transcription in the document, with different colors
+   * corresponding to each braille sign.
+   */
   private void displayBrailleList (BrailleList strings, Style defaut, DefaultStyledDocument sDoc) {
 	  int i = 0;
       for (BrailleSequence seq: strings) {
@@ -117,8 +120,6 @@ public final class Main
   
   public void setScore(Score score) {
     this.score = score;
-    //textPane.setText(null);
-    //textPane.setText("");
     try {
       transcriber.setScore(score);
 
@@ -130,13 +131,11 @@ public final class Main
       Style defaut = textPane.getStyle("default");
       DefaultStyledDocument sDoc = new DefaultStyledDocument();
       sDoc = (DefaultStyledDocument) textPane.getDocument();
+      // Erase the document
       sDoc.remove(0, sDoc.getLength());
       pos = 0;
-      sDoc.insertString(pos, "", defaut);
       
-      strings = transcriber.getSigns();
-      
-      
+      strings = transcriber.getSigns(); 
       displayBrailleList(strings, defaut, sDoc);
       
       textPane.setCaretPosition(0);
@@ -298,11 +297,10 @@ public final class Main
     
     if (scoreAvailable) {
     	/* Print signs one by one */
-
     	try {
+    		// Erase the document
     		sDoc.remove(0, sDoc.getLength());
     		pos = 0;
-            sDoc.insertString(pos, "", defaut);
     	}
         catch (BadLocationException e) {
         	e.printStackTrace();
@@ -331,9 +329,6 @@ public final class Main
                       });
     textPane.addCaretListener(this);
     JScrollPane scrollPane = new JScrollPane(textPane);
-    scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-    scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-
 
     logArea = new JTextArea(5, 60);
     logArea.setEditable(false);
@@ -652,7 +647,6 @@ public final class Main
     int position = textPane.getCaretPosition();
     final Object object = getScoreObjectAtCaretPosition();
     transcriber.setScore(score);
-    /* textPane.setText(transcriber.toString());*/
     
     /* Print signs one by one */
     Font font = new Font("DejaVu Serif", Font.PLAIN, 14);
@@ -663,9 +657,9 @@ public final class Main
     sDoc = (DefaultStyledDocument) textPane.getDocument();
     
     try {
+    	// Erase the document
 		sDoc.remove(0, sDoc.getLength());
 		pos = 0;
-        sDoc.insertString(pos, "", defaut);
 	}
     catch (BadLocationException e) {
     	e.printStackTrace();
