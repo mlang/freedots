@@ -61,9 +61,9 @@ public interface BrailleSequence extends CharSequence {
   /**
    * @return the color
    */
-  Color getSignColor();
+  //Color getSignColor();
   
   /** Set the color of the sign
    */
-  void setSignColor();
+  //void setSignColor();
 }

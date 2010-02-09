@@ -103,8 +103,9 @@ public final class Main
 	  int i = 0;
       for (BrailleSequence seq: strings) {
     	  if (seq instanceof Sign) {
+    		Sign sign = (Sign) seq;
     	  	Style styleSign = textPane.addStyle("styleSign"+i, defaut);
-    	    StyleConstants.setForeground(styleSign, seq.getSignColor());
+    	    StyleConstants.setForeground(styleSign, sign.getSignColor());
     	    
     	    try {
     	    	String s = seq.toString();

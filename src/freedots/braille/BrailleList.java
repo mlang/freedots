@@ -156,11 +156,11 @@ public class BrailleList extends java.util.LinkedList<BrailleSequence>
     }
     return -1;
   }
-@Override
+/*@Override
 public Color getSignColor() {
 	return Color.black;
 }
 @Override
 public void setSignColor() {
-}
+}*/
 }
