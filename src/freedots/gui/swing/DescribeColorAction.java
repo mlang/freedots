@@ -46,10 +46,10 @@ public final class DescribeColorAction extends javax.swing.AbstractAction {
   public void actionPerformed(ActionEvent event) {
 	  
       final String title = "Description of the colors used";
-	  if (colorLegend == null) colorLegend = new ColorLegend(null, title, true);
+	  if (colorLegend == null) colorLegend = new ColorLegend(null, title, false);
 	  if (!dialogShowing) {
         dialogShowing = true;
-        colorLegend.setVisible(true);        
+        colorLegend.setVisible(true);   
         dialogShowing = false;
       }
   }
@@ -64,7 +64,7 @@ class ColorLegend extends JDialog {
 		super(parent, title, modal);
 		this.setSize(550, 270);
 		this.setLocationRelativeTo(null);
-		this.setResizable(false);
+		this.setResizable(true);
 		this.initComponent();
 	}
 	
