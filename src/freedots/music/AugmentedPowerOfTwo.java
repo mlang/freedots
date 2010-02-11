@@ -116,6 +116,7 @@ public class AugmentedPowerOfTwo extends PowerOfTwo {
    */
   // TODO: Handle time modification somehow, perhaps a big table?
   public static AugmentedPowerOfTwo valueOf(Fraction fraction) {
+    fraction.simplify();
     if (Integer.bitCount(fraction.denominator()) != 1)
       throw new IllegalArgumentException(fraction.toString());
     List<AugmentedPowerOfTwo> parts = decompose(fraction, LONGA);
