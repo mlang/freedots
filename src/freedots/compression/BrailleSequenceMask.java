@@ -20,9 +20,26 @@
  *
  * This file is maintained by Mario Lang <mlang@delysid.org>.
  */
- 
+import freedots.braille.BrailleSequence;
+
 package freedots.compression;
 
-public interface Doublable {
-
+public interface BrailleSequenceMask {
+    private int mask;
+    
+    private BrailleSequence sequence;
+    private BrailleListMask parent;
+    
+    public int getMask();
+    public void setMask(int mask);
+    
+    public BrailleSequence getSequence();
+    public void setSequence(BrailleSequence sequence);
+    
+    public BrailleListMask getParent();
+    public BrailleListMask setParent(BrailleListMask parent);
+    
+    public String maskResult(int mask, String data);
+    public String maskedData();
+    public final StringBuilder appendTo(StringBuilder sb);
 }
