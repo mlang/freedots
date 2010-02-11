@@ -33,6 +33,7 @@ import freedots.braille.BrailleList;
 import freedots.braille.BrailleNote;
 import freedots.braille.BrailleSequence;
 import freedots.braille.BrailleWords;
+import freedots.braille.SimileSign;
 import freedots.braille.Text;
 import freedots.logging.Logger;
 import freedots.music.AbstractPitch;
@@ -171,7 +172,7 @@ class BrailleMeasure {
                             previous != null? previous.getFinalPitch(): null);
 
     if (fullSimile) {
-      state.append(Braille.simileSign.toString());
+      state.append(new SimileSign());
     } else {
       for (int i = 0; i < brailleVoices.size(); i++) {
         if (brailleVoices.get(i) instanceof PartMeasureInAccord) {
