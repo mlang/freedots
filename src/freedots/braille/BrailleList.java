@@ -29,7 +29,7 @@ import java.util.Iterator;
  */
 public class BrailleList extends java.util.LinkedList<BrailleSequence>
                          implements BrailleSequence {
-  public BrailleList() { super(); }
+  public BrailleList() { super();}
 
   private BrailleList parent = null;
   public final BrailleList getParent() { return parent; }
@@ -69,9 +69,20 @@ public class BrailleList extends java.util.LinkedList<BrailleSequence>
   }
   public Object getScoreObject() { return null; }
 
+  /** Returns the string associated to the BrailleList,
+   *  only if the mask attribute is set to 1
+   */
   @Override public String toString() {
-    return this.appendTo(new StringBuilder()).toString();
+    switch(this.mask){
+        case 1 :
+            return this.appendTo(new StringBuilder()).toString();
+        case 0 :
+            return new String("[...]");
+        default :
+            return this.appendTo(new StringBuilder()).toString();
+    }
   }
+  
   public StringBuilder appendTo(StringBuilder sb) {
     for (BrailleSequence seq: this) seq.appendTo(sb);
     return sb;
@@ -163,4 +174,11 @@ public Color getSignColor() {
 @Override
 public void setSignColor() {
 }*/
+
+  int mask = 1;
+  boolean isRepeated(){
+    if (this.mask == 1) return false;
+    else return true;
+  } 
+    
 }

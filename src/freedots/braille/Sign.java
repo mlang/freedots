@@ -32,6 +32,8 @@ import java.awt.Color;
  */
 public abstract class Sign implements BrailleSequence, Cloneable {
   protected final String data;
+  
+  public int mask = 1;
   protected Sign(final String data) { this.data = data; this.setSignColor();}
 
   public abstract String getDescription();
@@ -56,7 +58,16 @@ public abstract class Sign implements BrailleSequence, Cloneable {
   }
   public abstract void setSignColor();
 
-  public final String toString() { return data; }
+  public final String toString() { 
+   switch(this.mask){
+        case 1 :
+           return data;
+        case 0 :
+            return new String("[...]");
+        default :
+            return data;
+    } 
+  }
   public final StringBuilder appendTo(StringBuilder sb) {
     return sb.append(data);
   }
