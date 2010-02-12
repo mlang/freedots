@@ -116,26 +116,26 @@ public final class Main
     	  	i++;
     	  }
     	  else {
-    		  
-    		  if(isRepeated(seq)){
-    			  Style styleSign = textPane.addStyle("styleSign"+i, defaut);
-    
-    			  try {
-    	    	    	String s = seq.toString();
-    	    	        sDoc.insertString(pos, s, styleSign);
-    	    	        pos+=s.length();
-    	    	  } catch (BadLocationException e) { }
-    	    	  	i++;
-    		  }
-    		  else {
-    			  displayBrailleList((BrailleList) seq, defaut, sDoc);
-    		  }
+            BrailleList br=(BrailleList)seq;
+            if(br.isRepeated()){
+              Style styleSign = textPane.addStyle("styleSign"+i, defaut);
+              
+              try {
+                String s = br.toString();
+                sDoc.insertString(pos, s, styleSign);
+                pos+=s.length();
+              } catch (BadLocationException e) { }
+              i++;
+            }
+            else {
+              displayBrailleList(br, defaut, sDoc);
+            }
     	  }
       }
-
-      	}
-	  
+      
   }
+  
+
   
   public void setScore(Score score) {
     this.score = score;

@@ -176,7 +176,7 @@ public void setSignColor() {
 }*/
 
   int mask = 1;
-  boolean isRepeated(){
+  public boolean isRepeated(){
     if (this.mask == 1) return false;
     else return true;
   } 
