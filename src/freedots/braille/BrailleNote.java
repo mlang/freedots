@@ -51,7 +51,7 @@ public class BrailleNote extends BrailleList {
    */
   public BrailleNote(final Note note, final AbstractPitch lastPitch) {
     super();
-    this.mask = 0;
+    this.mask = 1;
     this.note = note;
 
     if (note.isGrace()) add(new GraceSign());

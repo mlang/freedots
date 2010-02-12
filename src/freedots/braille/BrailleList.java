@@ -77,7 +77,7 @@ public class BrailleList extends java.util.LinkedList<BrailleSequence>
         case 1 :
             return this.appendTo(new StringBuilder()).toString();
         case 0 :
-            return new String("[...]");
+            return new String("::");
         default :
             return this.appendTo(new StringBuilder()).toString();
     }

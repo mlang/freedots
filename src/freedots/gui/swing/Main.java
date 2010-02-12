@@ -119,7 +119,6 @@ public final class Main
             BrailleList br=(BrailleList)seq;
             if(br.isRepeated()){
               Style styleSign = textPane.addStyle("styleSign"+i, defaut);
-              
               try {
                 String s = br.toString();
                 sDoc.insertString(pos, s, styleSign);
