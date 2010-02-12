@@ -102,6 +102,7 @@ public final class Main
   private void displayBrailleList (BrailleList strings, Style defaut, DefaultStyledDocument sDoc) {
 	  int i = 0;
       for (BrailleSequence seq: strings) {
+    	  
     	  if (seq instanceof Sign) {
     		Sign sign = (Sign) seq;
     	  	Style styleSign = textPane.addStyle("styleSign"+i, defaut);
@@ -114,7 +115,24 @@ public final class Main
     	  } catch (BadLocationException e) { }
     	  	i++;
     	  }
-    	  else displayBrailleList((BrailleList) seq, defaut, sDoc);
+    	  else {
+    		  
+    		  if(isRepeated(seq)){
+    			  Style styleSign = textPane.addStyle("styleSign"+i, defaut);
+    
+    			  try {
+    	    	    	String s = seq.toString();
+    	    	        sDoc.insertString(pos, s, styleSign);
+    	    	        pos+=s.length();
+    	    	  } catch (BadLocationException e) { }
+    	    	  	i++;
+    		  }
+    		  else {
+    			  displayBrailleList((BrailleList) seq, defaut, sDoc);
+    		  }
+    	  }
+      }
+
       	}
 	  
   }
