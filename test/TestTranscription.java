@@ -26,7 +26,7 @@ public class TestTranscription extends junit.framework.TestCase {
       + "  " + "⠨⠜" + "⠨⠳⠃⠳⠁⠉⠐⠖⠇⠊⠄⠾ ⠊⠐⠢⠷⠛⠇⠐⠢⠯⠕" + "⠣⠅" + NL
       + "  " + "⠸⠜" + "⠸⠗⠄⠇⠣⠜⠧⠨⠅⠸⠞⠐⠂⠧⠐⠱ ⠸⠟⠄⠣⠜⠧⠨⠅⠸⠎⠐⠂⠧⠐⠱" + "⠣⠅" + NL
       + NL;
-    assertEquals("pmia-1.xml", transcriber.toString(), expectedResult);
+    assertEquals("pmia-1.xml", expectedResult, transcriber.toString());
   }
   public void testValueAmbiguity()
     throws javax.xml.parsers.ParserConfigurationException,
@@ -47,7 +47,7 @@ public class TestTranscription extends junit.framework.TestCase {
       + "  "
       + "⠐⠎⠉⠗⠉⠿⠗⠉⠟⠉⠯⠐⠢⠋⠃" + Braille.valueDistinction + "⠕" + "⠣⠅" + NL
       + NL;
-    assertEquals(mxmlFile, transcriber.toString(), expectedResult);
+    assertEquals(mxmlFile, expectedResult, transcriber.toString());
   }
 
   public void testHarmonyNoChord()
@@ -70,7 +70,7 @@ public class TestTranscription extends junit.framework.TestCase {
       + "⠒⠜⠨⠉maj⠼⠛⠨⠁m⠼⠛⠨⠙m⠼⠛⠨⠑m⠼⠛⠨⠋maj⠼⠛ ⠨nc " + NL
       + "⠨⠋maj⠼⠛⠨⠑m⠼⠛⠨⠙m⠼⠛⠨⠑m⠼⠛⠨⠁" + "⠣⠅" + NL
       + NL;
-    assertEquals(mxmlFile, transcriber.toString(), expectedResult);
+    assertEquals(mxmlFile, expectedResult, transcriber.toString());
   }
   public void testIntervals()
     throws javax.xml.parsers.ParserConfigurationException,
@@ -88,6 +88,6 @@ public class TestTranscription extends junit.framework.TestCase {
       + "  "
       + "⠐⠳⠌⠪⠼⠺⠴⠳⠌ ⠨⠽⠤ ⠐⠳⠪⠺⠳⠣⠜⠐⠻⠫⠱⠻ ⠨⠽⠣⠜⠐⠽" + "⠣⠅" + NL
       + NL;
-    assertEquals(mxmlFile, transcriber.toString(), expectedResult);
+    assertEquals(mxmlFile, expectedResult, transcriber.toString());
   }
 }
