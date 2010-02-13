@@ -25,8 +25,7 @@ package freedots.compression;
 
 /**
  * An enum class for the mask type, 
- *
- *
+ * 
  */
 public enum BrailleMask {
     // don't display the BrailleSequence

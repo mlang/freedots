@@ -72,13 +72,17 @@ public class BrailleList extends java.util.LinkedList<BrailleSequence>
   public Object getScoreObject() { return null; }
 
   /** Returns the string associated to the BrailleList,
-   *  only if the mask attribute is set to 1
+   *  only if the mask attribute is set to 1.
+   * FIXME : proper way to handle all the cases ?
+   * + how to improve modularity on this mask element ? 
+   * + A not-Repeatable BrailleList should not be able to access 
+   *   the REPEATED mask state, for instance.
    */
   @Override public String toString() {
-    switch(this.mask.intValue){
-        case 1 :
+    switch(this.mask){
+        case NORMAL :
             return this.appendTo(new StringBuilder()).toString();
-        case 0 :
+        case REPEATED :
             return new String("[...]");
         default :
             return this.appendTo(new StringBuilder()).toString();
@@ -178,7 +182,7 @@ public void setSignColor() {
 }*/
 
   BrailleMask mask = BrailleMask.NORMAL;
-  public boolean isRepeated(){
+  public boolean isMasked(){
     if (this.mask == BrailleMask.NORMAL) return false;
     else return true;
   } 

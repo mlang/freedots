@@ -60,12 +60,19 @@ public abstract class Sign implements BrailleSequence, Cloneable {
 	  return this.signColor;
   }
   public abstract void setSignColor();
-
+  
+  /** Returns the string associated to the BrailleList,
+   *  only if the mask attribute is set to 1.
+   * FIXME : proper way to handle all the cases ?
+   * + how to improve modularity on this mask element ? 
+   * + A not-Doublable Sign should not be able to access 
+   *   the DOUBLED mask state, for instance.
+   */
   public final String toString() { 
-   switch(this.mask.intValue){
-        case 1 :
+   switch(this.mask){
+        case NORMAL :
            return data;
-        case 0 :
+        case REPEATED :
             return new String("[...]");
         default :
             return data;

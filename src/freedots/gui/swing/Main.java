@@ -117,7 +117,7 @@ public final class Main
     	  }
     	  else {
             BrailleList br=(BrailleList)seq;
-            if(br.isRepeated()){
+            if(br.isMasked()){
               Style styleSign = textPane.addStyle("styleSign"+i, defaut);
               try {
                 String s = br.toString();
