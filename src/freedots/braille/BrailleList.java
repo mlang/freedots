@@ -21,9 +21,11 @@
  * This file is maintained by Mario Lang <mlang@delysid.org>.
  */
 package freedots.braille;
+import freedots.compression.BrailleMask;
 
 import java.awt.Color;
 import java.util.Iterator;
+
 
 /** Represents a logical unit composed of several smaller objects.
  */
@@ -73,11 +75,11 @@ public class BrailleList extends java.util.LinkedList<BrailleSequence>
    *  only if the mask attribute is set to 1
    */
   @Override public String toString() {
-    switch(this.mask){
+    switch(this.mask.intValue){
         case 1 :
             return this.appendTo(new StringBuilder()).toString();
         case 0 :
-            return new String("::");
+            return new String("[...]");
         default :
             return this.appendTo(new StringBuilder()).toString();
     }
@@ -175,9 +177,9 @@ public Color getSignColor() {
 public void setSignColor() {
 }*/
 
-  int mask = 1;
+  BrailleMask mask = BrailleMask.NORMAL;
   public boolean isRepeated(){
-    if (this.mask == 1) return false;
+    if (this.mask == BrailleMask.NORMAL) return false;
     else return true;
   } 
     

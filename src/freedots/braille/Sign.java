@@ -22,6 +22,8 @@
  */
 package freedots.braille;
 
+import freedots.compression.BrailleMask;
+
 import java.awt.Color;
 
 /** The smallest possible unit of braille.
@@ -32,8 +34,9 @@ import java.awt.Color;
  */
 public abstract class Sign implements BrailleSequence, Cloneable {
   protected final String data;
+
+  public BrailleMask mask = BrailleMask.NORMAL;
   
-  public int mask = 1;
   protected Sign(final String data) { this.data = data; this.setSignColor();}
 
   public abstract String getDescription();
@@ -59,7 +62,7 @@ public abstract class Sign implements BrailleSequence, Cloneable {
   public abstract void setSignColor();
 
   public final String toString() { 
-   switch(this.mask){
+   switch(this.mask.intValue){
         case 1 :
            return data;
         case 0 :
