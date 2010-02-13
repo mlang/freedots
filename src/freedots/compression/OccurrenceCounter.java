@@ -23,29 +23,31 @@
 package freedots.compression;
 
 import freedots.braille.BrailleSequence;
-
 import java.util.LinkedList;
 
-public final class CompressionManager{
 
-	public void ApplyDoubling(BrailleSequence seq, LinkedList<Class<Doublable>> classList){
-	    for(Class doublableClass : classList){
-	        String name = doublableClass.getName();
-	        OccurrenceCounter<doublableClass> counter = new  OccurrenceCounter<doublableClass>();
-	    }
-	    /** TODO : must apply doubling to every class present in the classList.
-	     */	
-	}
-	
-	public void ApplyRepetitions(BrailleSequence seq, LinkedList<Class<Repeatable>> classList){
-	    /** TODO : must apply repetition algorithm to every class present in the classList.
-	     * FIXME : should tackle the classes repetition in a bottom-up order to improve speed.
-	     */	
-	}
-	
-	
+public class OccurrenceCounter<T extends BrailleSequence> {
+    public int count;
+    public LinkedList<T> list;
 
+    public OccurrenceCounter(){
+	this.list = new LinkedList<T>();
+	this.count = 0;
+    }
 
-
-
-}
+    public OccurrenceCounter(T element){
+	this.list = new LinkedList<T>();
+	this.list.add(element);
+	this.count = 1;
+    }  
+      
+    public void addElement(T element){
+	this.list.add(element);
+	this.count++;
+    } 
+    
+    public void empty(){
+	this.list = new LinkedList<T>();
+	this.count = 0;
+    }
+} 
