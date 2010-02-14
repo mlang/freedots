@@ -39,10 +39,10 @@ public class PowerOfTwo extends AbstractFraction {
 
   public PowerOfTwo multiply(final PowerOfTwo other) {
     if (other == null) throw new NullPointerException();
-    return new PowerOfTwo(power + other.getPower());
+    return new PowerOfTwo(power + other.power);
   }
 
-  protected final static int pow2(int power) {
-    return (int)Math.pow(2, power);
+  protected final static int pow2(final int power) {
+    return (int)StrictMath.pow(2, power);
   }
 }
