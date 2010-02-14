@@ -131,7 +131,7 @@ public class BrailleNote extends BrailleList {
 	}
   }
 
-  private static Sign createOrnamentSign(Ornament ornament) {
+  private static OrnamentSign createOrnamentSign(Ornament ornament) {
     switch (ornament) {
     case mordent:         return new MordentSign();
     case invertedMordent: return new InvertedMordentSign();
@@ -140,44 +140,28 @@ public class BrailleNote extends BrailleList {
     default:              throw new AssertionError(ornament);
     }
   }
-  public static class MordentSign extends Sign {
+  public abstract static class OrnamentSign extends Sign {
+    OrnamentSign(String data) { super(data); }
+    @Override public Color getSignColor() { return Color.green; }
+  }
+  public static class MordentSign extends OrnamentSign {
     MordentSign() { super(braille(5, 235, 123)); }
     public String getDescription() { return "A mordent sign"; }
-    
-    @Override
-	public Color getSignColor() {
-		return Color.green;
-	}
   }
-  public static class InvertedMordentSign extends Sign {
+  public static class InvertedMordentSign extends OrnamentSign {
     InvertedMordentSign() { super(braille(6, 235, 123)); }
     public String getDescription() { return "A inverted mordent sign"; }
-    
-    @Override
-	public Color getSignColor() {
-		return Color.green;
-	}
   }
-  public static class TrillSign extends Sign {
+  public static class TrillSign extends OrnamentSign {
     TrillSign() { super(braille(235)); }
     public String getDescription() { return "A trill sign"; }
-    
-    @Override
-	public Color getSignColor() {
-		return Color.green;
-	}
   }
-  public static class TurnSign extends Sign {
+  public static class TurnSign extends OrnamentSign {
     TurnSign() { super(braille(6, 256)); }
     public String getDescription() { return "A turn sign"; }
-    
-    @Override
-	public Color getSignColor() {
-		return Color.green;
-	}
   }
 
-  private static Sign createArticulationSign(Articulation articulation) {
+  private static ArticulationSign createArticulationSign(Articulation articulation) {
     switch (articulation) {
     case accent:        return new AccentSign();
     case strongAccent:  return new MartellatoSign();
@@ -189,69 +173,38 @@ public class BrailleNote extends BrailleList {
     default:            throw new AssertionError(articulation);
     }
   }
-  public static class AccentSign extends Sign {
+  public abstract static class ArticulationSign extends Sign {
+    ArticulationSign(String data) { super(data); }
+    @Override public Color getSignColor() { return new Color(0, 250, 154); }
+  }
+  public static class AccentSign extends ArticulationSign {
     AccentSign() { super(braille(46, 236)); }
     public String getDescription() { return "An accent sign"; }
-    
-    @Override
-	public Color getSignColor() {
-		return new Color(0, 250, 154);
-	}
   }
-  public static class MartellatoSign extends Sign {
+  public static class MartellatoSign extends ArticulationSign {
     MartellatoSign() { super(braille(56, 236)); }
     public String getDescription() {
       return "A martellato (strong accent) sign";
     }
-    
-    @Override
-	public Color getSignColor() {
-		return new Color(0, 250, 154);
-	}
   }
-  public static class BreathSign extends Sign {
+  public static class BreathSign extends ArticulationSign {
     BreathSign() { super(braille(6, 34)); }
     public String getDescription() { return "A breath mark"; }
-    
-    @Override
-	public Color getSignColor() {
-		return new Color(0, 250, 154);
-	}
   }
-  public static class StaccatoSign extends Sign {
+  public static class StaccatoSign extends ArticulationSign {
     StaccatoSign() { super(braille(236)); }
     public String getDescription() { return "A staccato sign"; }
-    
-    @Override
-	public Color getSignColor() {
-		return new Color(0, 250, 154);
-	}
   }
-  public static class MezzoStaccatoSign extends Sign {
+  public static class MezzoStaccatoSign extends ArticulationSign {
     MezzoStaccatoSign() { super(braille(5, 236)); }
     public String getDescription() { return "A mezzo staccato sign"; }
-    
-    @Override
-	public Color getSignColor() {
-		return new Color(0, 250, 154);
-	}
   }
-  public static class StaccatissimoSign extends Sign {
+  public static class StaccatissimoSign extends ArticulationSign {
     StaccatissimoSign() { super(braille(6, 236)); }
     public String getDescription() { return "A staccatissimo sign"; }
-    
-    @Override
-	public Color getSignColor() {
-		return new Color(0, 250, 154);
-	}
   }
-  public static class TenutoSign extends Sign {
+  public static class TenutoSign extends ArticulationSign {
     TenutoSign() { super(braille(456, 236)); }
     public String getDescription() { return "A tenuto sign"; }
-    
-    @Override
-	public Color getSignColor() {
-		return new Color(0, 250, 154);
-	}
   }
 }
