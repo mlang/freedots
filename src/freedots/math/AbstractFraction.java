@@ -36,7 +36,7 @@ public abstract class AbstractFraction
     return Double.compare(doubleValue(), number.doubleValue());
   }
 
-  @Override public boolean equals(Object other) {
+  @Override public boolean equals(final Object other) {
     if (this == other) return true;
 
     if (other instanceof AbstractFraction) {
@@ -51,7 +51,7 @@ public abstract class AbstractFraction
     return false;
   }
 
-  public Fraction add(AbstractFraction other) {
+  public Fraction add(final AbstractFraction other) {
     final int an = this.numerator();
     final int ad = this.denominator();
     final int bn = other.numerator();
@@ -61,7 +61,7 @@ public abstract class AbstractFraction
   public Fraction negate() {
     return new Fraction(-numerator(), denominator());
   }
-  public Fraction subtract(AbstractFraction other) {
+  public Fraction subtract(final AbstractFraction other) {
     return add(other.negate());
   }
   public Fraction multiply(final AbstractFraction other) {
@@ -69,14 +69,14 @@ public abstract class AbstractFraction
                         this.denominator() * other.denominator()).simplify();
   }
   public Fraction multiply(final Integer other) {
-    return new Fraction(this.numerator() * other, this.denominator());
+    return new Fraction(this.numerator()*other, this.denominator()).simplify();
   }
   public Fraction divide(final AbstractFraction other) {
     return new Fraction(this.numerator() * other.denominator(),
                         this.denominator() * other.numerator()).simplify();
   }
   public Fraction divide(final Integer other) {
-    return new Fraction(numerator(), denominator() * other).simplify();
+    return new Fraction(numerator(), denominator()*other).simplify();
   }
   @Override public String toString() {
     if (denominator() == 1) return String.valueOf(numerator());
@@ -87,12 +87,10 @@ public abstract class AbstractFraction
     return divide(new Fraction(1, 4 * ticksPerQuarter)).numerator();
   }
 
-  protected static int gcd(final int numerator, final int denominator) {
-    return (numerator > denominator)
-         ? calcGcd(numerator, denominator)
-         : calcGcd(denominator, numerator);
+  protected static int gcd(final int a, final int b) {
+    return (a > b)? calcGcd(a, b): calcGcd(b, a);
   }
-  private static int calcGcd(int larger, int smaller) {
+  private static int calcGcd(final int larger, final int smaller) {
     return smaller == 0? larger: calcGcd(smaller, larger%smaller);
   }
 }
