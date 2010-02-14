@@ -28,6 +28,8 @@ public class Fraction extends AbstractFraction {
   private int numerator, denominator;
 
   public Fraction(final int numerator, final int denominator) {
+    if (denominator == 0)
+      throw new ArithmeticException("denominator is zero");
     this.numerator = numerator;
     this.denominator = denominator;
   }
