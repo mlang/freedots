@@ -227,8 +227,8 @@ public enum Braille {
 
   /** Formats a list of augmented musical fractions using stem and slur signs.
    * This method is typically used together with
-   * {@link freedots.music.Fraction#decompose} for annotating chord symbols
-   * with their duration.
+   * {@link freedots.music.AugmentedPowerOfTwo#decompose} for annotating chord
+   * symbols with their duration.
    * @see #toString(Harmony)
    * @return a Unicode braille string
    */

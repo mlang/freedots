@@ -65,9 +65,11 @@ public class SignColorMap extends HashMap<Class<? extends Sign>, Color> {
   /** Returns the color to which the specified sign is mapped,
    *  or {@link #DEFAULT_COLOR} if this map contains no mapping for the sign
    *  or any of its superclasses.
-   * @param key a subclass of {@link freedots.braille.Sign} whose associated
-   *        color is to be returned
-   * @throw NullPointerException if key is null
+   * @param key a {@code Class<? extends Sign>} or an instance of a subclass
+   *        of {@link freedots.braille.Sign}
+   * @throws NullPointerException if key is null
+   * @throws IllegalArgumentException if key is not a valid Sign class or
+   *         instance
    * @return the color to which the specified sign is mapped, or
    *         {@link #DEFAULT_COLOR} if this map contains no mapping for the
    *         class of the sign specified by [@code key} or any of its
@@ -82,8 +84,8 @@ public class SignColorMap extends HashMap<Class<? extends Sign>, Color> {
 
     for (Class<?> klazz = (Class<?>)key; klazz != null && klazz != Sign.class;
          klazz = klazz.getSuperclass()) {
-      final Color result = super.get(klazz);
-      if (result != null) return result;
+      final Color color = super.get(klazz);
+      if (color != null) return color;
     }
     return DEFAULT_COLOR;
   }
