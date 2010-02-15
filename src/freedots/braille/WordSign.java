@@ -22,8 +22,6 @@
  */
 package freedots.braille;
 
-import java.awt.Color;
-
 public class WordSign extends Sign {
   public WordSign() { super(braille(345)); }
 

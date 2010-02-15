@@ -22,8 +22,6 @@
  */
 package freedots.braille;
 
-import java.awt.Color;
-
 public class HarmonyPart extends NeedsGuideDot {
   public HarmonyPart() { super(braille(25, 345)); }
 

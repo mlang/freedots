@@ -22,8 +22,6 @@
  */
 package freedots.braille;
 
-import java.awt.Color;
-
 public class MusicPart extends Sign {
   public MusicPart() { super(braille(6, 3)); }
 

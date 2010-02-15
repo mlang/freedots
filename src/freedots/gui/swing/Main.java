@@ -51,14 +51,12 @@ import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextPane;
-import javax.swing.ScrollPaneConstants;
 import javax.swing.event.CaretEvent;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultCaret;
 import javax.swing.text.DefaultStyledDocument;
 import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
-import javax.swing.text.StyledDocument;
 
 import freedots.Options;
 import freedots.braille.BrailleList;
@@ -100,23 +98,21 @@ public final class Main
    * corresponding to each braille sign.
    */
   private void displayBrailleList (BrailleList strings, Style defaut, DefaultStyledDocument sDoc) {
-	  int i = 0;
-      for (BrailleSequence seq: strings) {
-    	  if (seq instanceof Sign) {
-    		Sign sign = (Sign) seq;
-    	  	Style styleSign = textPane.addStyle("styleSign"+i, defaut);
-    	    StyleConstants.setForeground(styleSign, sign.getSignColor());
-    	    
-    	    try {
-              String s = seq.toString();
-              sDoc.insertString(pos, s, styleSign);
-              pos+=s.length();
-            } catch (BadLocationException e) { }
-    	  	i++;
-    	  }
-    	  else displayBrailleList((BrailleList) seq, defaut, sDoc);
-      	}
-	  
+    int i = 0;
+    for (BrailleSequence seq: strings) {
+      if (seq instanceof Sign) {
+        Sign sign = (Sign)seq;
+        Style styleSign = textPane.addStyle("styleSign"+i, defaut);
+        StyleConstants.setForeground(styleSign, sign.getSignColor());
+
+        try {
+          String s = seq.toString();
+          sDoc.insertString(pos, s, styleSign);
+          pos += s.length();
+        } catch (BadLocationException e) { }
+        i++;
+      } else displayBrailleList((BrailleList) seq, defaut, sDoc);
+    }
   }
   
   public void setScore(Score score) {
@@ -282,35 +278,28 @@ public final class Main
     Font font = new Font("DejaVu Serif", Font.PLAIN, 14);
     textPane.setFont(font);
     textPane.setText(WELCOME_MESSAGE);
-    
-    
+
     Style defaut = textPane.getStyle("default");
     DefaultStyledDocument sDoc = new DefaultStyledDocument();
     sDoc = (DefaultStyledDocument) textPane.getDocument();
-    /*try {
-    	sDoc.insertString(pos, WELCOME_MESSAGE, defaut);
-    	pos+=WELCOME_MESSAGE.length();
-    }
-    catch (BadLocationException e) { }*/
-    
+
     this.score = transcriber.getScore();
     final boolean scoreAvailable = score != null;    
     
     if (scoreAvailable) {
-    	/* Print signs one by one */
-    	try {
-    		// Erase the document
-    		sDoc.remove(0, sDoc.getLength());
-    		pos = 0;
-    	}
-        catch (BadLocationException e) {
-        	e.printStackTrace();
-        }
-        
-    	strings = transcriber.getSigns();
-    	displayBrailleList(strings, defaut, sDoc);	
+      /* Print signs one by one */
+      try {
+        // Erase the document
+        sDoc.remove(0, sDoc.getLength());
+        pos = 0;
+      } catch (BadLocationException e) {
+        e.printStackTrace();
+      }
+
+      strings = transcriber.getSigns();
+      displayBrailleList(strings, defaut, sDoc);	
     }
-    
+
     fileSaveAsAction.setEnabled(scoreAvailable);
     playScoreAction.setEnabled(scoreAvailable);
 

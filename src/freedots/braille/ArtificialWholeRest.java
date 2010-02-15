@@ -22,8 +22,6 @@
  */
 package freedots.braille;
 
-import java.awt.Color;
-
 import freedots.music.AugmentedPowerOfTwo;
 
 public class ArtificialWholeRest extends BrailleList {

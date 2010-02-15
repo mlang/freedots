@@ -22,7 +22,6 @@
  */
 package freedots.braille;
 
-import java.awt.Color;
 import java.util.Iterator;
 
 import freedots.Options;

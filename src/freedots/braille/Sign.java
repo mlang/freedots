@@ -81,7 +81,7 @@ public abstract class Sign implements BrailleSequence, Cloneable {
    *
    * @return ISO 11548-1 encoding of braille pattern
    */
-  protected final static int dotsToBits(final int dots) {
+  protected static final int dotsToBits(final int dots) {
     int bits = 0;
     for (int decimal = dots; decimal > 0; decimal /= 10) {
       bits |= 1 << ((decimal % 10) - 1);

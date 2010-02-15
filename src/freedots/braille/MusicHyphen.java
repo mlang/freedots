@@ -22,8 +22,6 @@
  */
 package freedots.braille;
 
-import java.awt.Color;
-
 public class MusicHyphen extends Sign {
   public MusicHyphen() { super(braille(5)); }
 

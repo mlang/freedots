@@ -22,8 +22,6 @@
  */
 package freedots.braille;
 
-import java.awt.Color;
-
 public class GuideDot extends Sign {
   GuideDot() { super(braille(3)); }
   public String getDescription() {

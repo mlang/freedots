@@ -22,8 +22,6 @@
  */
 package freedots.braille;
 
-import java.awt.Color;
-
 public class UpperDigit extends Sign {
   private final int digit;
 

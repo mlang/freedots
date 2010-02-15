@@ -22,8 +22,6 @@
  */
 package freedots.braille;
 
-import java.awt.Color;
-
 /** Indicates music for the right hand for a keyboard instrument.
  * @see <a href="http://brl.org/music/code/bmb/chap20/index.html">Hand sings</a>
  */

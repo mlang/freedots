@@ -22,8 +22,6 @@
  */
 package freedots.braille;
 
-import java.awt.Color;
-
 public class SoloPart extends NeedsGuideDot {
   public SoloPart() { super(braille(5, 345)); }
 

@@ -22,8 +22,6 @@
  */
 package freedots.braille;
 
-import java.awt.Color;
-
 public class NumberSign extends Sign {
   NumberSign() { super(braille(3456)); }
 

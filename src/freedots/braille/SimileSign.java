@@ -22,8 +22,6 @@
  */
 package freedots.braille;
 
-import java.awt.Color;
-
 public class SimileSign extends Sign {
   public SimileSign() { super(braille(2356)); }
 
