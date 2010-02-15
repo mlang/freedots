@@ -43,6 +43,5 @@ public class ArtificialWholeRest extends BrailleList {
       return "Signifies that the following sign has been added for "
              + "clarity but does not exist in the original print";
     }
-    @Override public Color getSignColor() { return Color.black; }
   }
 }

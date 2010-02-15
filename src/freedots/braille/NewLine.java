@@ -30,9 +30,4 @@ public class NewLine extends Sign {
 
   private static final String LINE_SEPARATOR =
     System.getProperty("line.separator");
-  
-  @Override
-	public Color getSignColor() {
-		return Color.black;
-	}
 }

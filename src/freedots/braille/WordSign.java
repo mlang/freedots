@@ -30,9 +30,4 @@ public class WordSign extends Sign {
   public String getDescription() {
     return "Indicates that text is following, for dynamics or directions.";
   }
-  
-  @Override
-	public Color getSignColor() {
-		return Color.black;
-	}
 }

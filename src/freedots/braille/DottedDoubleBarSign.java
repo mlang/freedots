@@ -31,8 +31,5 @@ public class DottedDoubleBarSign extends Sign {
     return "Indicates the end of a repeated section";
   }
   
-  @Override
-	public Color getSignColor() {
-		return Color.red;
-	}
+  @Override public Color getSignColor() { return Color.red; }
 }

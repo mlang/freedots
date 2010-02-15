@@ -125,10 +125,7 @@ public class BrailleNote extends BrailleList {
     public String getDescription() {
       return "Indicates the this is a grace note";
     }
-	@Override
-	public Color getSignColor() {
-		return Color.green;
-	}
+    @Override public Color getSignColor() { return Color.green; }
   }
 
   private static OrnamentSign createOrnamentSign(Ornament ornament) {

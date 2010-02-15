@@ -30,9 +30,4 @@ public class NumberSign extends Sign {
   public String getDescription() {
     return "Indicates the beginning of a number.";
   }
-  
-  @Override
-	public Color getSignColor() {
-		return Color.black;
-	}
 }

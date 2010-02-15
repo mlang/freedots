@@ -31,8 +31,5 @@ public class DoubleBarSign extends Sign {
     return "Signifies the end of the music";
   }  
   
-  @Override
-	public Color getSignColor() {
-		return Color.red;
-	}
+  @Override public Color getSignColor() { return Color.red; }
 }

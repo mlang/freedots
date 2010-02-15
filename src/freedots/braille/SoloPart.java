@@ -30,9 +30,4 @@ public class SoloPart extends NeedsGuideDot {
   public String getDescription() {
     return "Indicates music written on one staff.";
   }  
-  
-  @Override
-	public Color getSignColor() {
-		return Color.black;
-	}
 }

@@ -64,8 +64,5 @@ public class PitchAndValueSign extends Sign {
     dotsToBits(36), dotsToBits(3), dotsToBits(6), 0
   };
 
-@Override
-  public Color getSignColor() {
-    return Color.blue;
-  }
+  @Override public Color getSignColor() { return Color.blue; }
 }

@@ -31,8 +31,5 @@ public class PostDottedDoubleBarSign extends NeedsGuideDot {
     return "Indicates the beginning of a repeated section";
   }
   
-  @Override
-	public Color getSignColor() {
-		return Color.red;
-	}
+  @Override public Color getSignColor() { return Color.red; }
 }

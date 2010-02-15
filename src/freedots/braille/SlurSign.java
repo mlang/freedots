@@ -31,8 +31,5 @@ public class SlurSign extends Sign {
     return "Indicates that the previous and next note are slurred";
   }
   
-  @Override
-	public Color getSignColor() {
-		return Color.lightGray;
-	}
+  @Override public Color getSignColor() { return Color.lightGray; }
 }

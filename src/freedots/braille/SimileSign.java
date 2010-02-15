@@ -30,6 +30,4 @@ public class SimileSign extends Sign {
   public String getDescription() {
     return "Indicates a repeated section of notes or rests";
   }
-
-  public Color getSignColor() { return Color.black; }
 }

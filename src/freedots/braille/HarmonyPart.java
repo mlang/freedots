@@ -30,9 +30,4 @@ public class HarmonyPart extends NeedsGuideDot {
   public String getDescription() {
     return "Indicates that harmony (chordsymbols) are going to follow.";
   }
-  
-  @Override
-	public Color getSignColor() {
-		return Color.black;
-	}
 }

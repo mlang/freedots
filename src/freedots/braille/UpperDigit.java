@@ -46,9 +46,4 @@ public class UpperDigit extends Sign {
     braille(145), braille(15), braille(124),
     braille(1245), braille(125), braille(24)
   };
-  
-  @Override
-	public Color getSignColor() {
-		return Color.black;
-	}
 }

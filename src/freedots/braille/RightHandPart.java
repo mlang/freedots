@@ -34,6 +34,4 @@ public class RightHandPart extends NeedsGuideDot {
     return "Indicates music for the right hand (first staff) of "
            + "a keyboard instrument";
   }
- 
-  @Override public Color getSignColor() { return Color.black; }
 }

@@ -27,9 +27,6 @@ import java.awt.Color;
 public class Dot extends Sign {
   public Dot() { super(braille(3)); }
   public String getDescription() { return "Prolongation dot."; }
-  
-@Override
-public Color getSignColor() {
-	return Color.cyan;
-}
+
+  @Override public Color getSignColor() { return Color.cyan; }
 }

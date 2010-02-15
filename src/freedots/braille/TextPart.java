@@ -31,8 +31,5 @@ public class TextPart extends Sign {
     return "Indicates that text (lyrics) is going to follow.";
   }
   
-  @Override
-	public Color getSignColor() {
-		return new Color(160, 82, 45);
-	}
+  @Override public Color getSignColor() { return new Color(160, 82, 45); }
 }

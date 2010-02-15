@@ -29,8 +29,5 @@ public class Text extends Sign {
 
   public String getDescription() { return "A generic text object"; }
   
-  @Override
-	public Color getSignColor() {
-		return new Color(160, 82, 45);
-	}
+  @Override public Color getSignColor() { return new Color(160, 82, 45); }
 }

@@ -30,9 +30,4 @@ public class MusicPart extends Sign {
   public String getDescription() {
     return "Indicates that music is going to follow.";
   }
-  
-  @Override
-	public Color getSignColor() {
-		return Color.black;
-	}
 }

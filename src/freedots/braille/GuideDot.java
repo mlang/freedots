@@ -29,10 +29,4 @@ public class GuideDot extends Sign {
   public String getDescription() {
     return "Separates the previous from the following sign.";
   }
-  
- 
-  @Override
-	public Color getSignColor() {
-		return Color.black;
-	}
 }

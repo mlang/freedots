@@ -55,8 +55,5 @@ public class AccidentalSign extends Sign {
     }
   }
 
-@Override
-public Color getSignColor() {
-	return Color.orange;
-}
+  @Override public Color getSignColor() { return Color.orange; }
 }

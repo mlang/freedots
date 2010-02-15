@@ -72,9 +72,6 @@ public class BrailleFingering extends BrailleList {
       braille(1), braille(12), braille(123), braille(4), braille(13)
     };
 
-	@Override
-	public Color getSignColor() {
-		return Color.yellow;
-	}
+    @Override public Color getSignColor() { return Color.yellow; }
   }
 }
