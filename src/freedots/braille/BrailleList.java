@@ -180,7 +180,9 @@ public Color getSignColor() {
 @Override
 public void setSignColor() {
 }*/
+    
 
+      
   BrailleMask mask = BrailleMask.NORMAL;
   public boolean isMasked(){
     if (this.mask == BrailleMask.NORMAL) return false;

@@ -22,30 +22,47 @@
  */
 package freedots.compression;
 
-import freedots.braille.BrailleSequence;
+import freedots.braille.*;
 
 import java.util.LinkedList;
 
 public final class CompressionManager{
 
-	public void ApplyDoubling(BrailleSequence seq, LinkedList<Class<Doublable>> classList){
-	    for(Class doublableClass : classList){
-	        String name = doublableClass.getName();
-	        OccurrenceCounter<doublableClass> counter = new  OccurrenceCounter<doublableClass>();
+	public void ApplyDoubling(BrailleSequence seq, LinkedList<SubClassName> classList){
+	    LinkedList<OccurrenceCounter<?>> counterList = new LinkedList<OccurrenceCounter<?>>();
+	    for(SubClassName scn : classList){
+	        //FIXME : shall conserve the link between position in the list and the class represented.
+	        counterList.add(generateCounterFromClass(scn));
 	    }
 	    /** TODO : must apply doubling to every class present in the classList.
 	     */	
 	}
 	
-	public void ApplyRepetitions(BrailleSequence seq, LinkedList<Class<Repeatable>> classList){
+	public void ApplyRepetitions(BrailleSequence seq, LinkedList<SubClassName> classList){
 	    /** TODO : must apply repetition algorithm to every class present in the classList.
 	     * FIXME : should tackle the classes repetition in a bottom-up order to improve speed.
 	     */	
 	}
 	
 	
+	public static OccurrenceCounter<?> generateCounterFromClass(SubClassName className){
+	    switch(className){
+	        case SLUR :
+	            return new OccurrenceCounter<SlurSign>();
+	        case CHORD :
+	            return new OccurrenceCounter<BrailleChord.IntervalSign>();
+	        case BRAILLENOTE :
+	            return new OccurrenceCounter<BrailleNote>();
+	        default :
+	            return new OccurrenceCounter<BrailleSequence>();
+	    }
+	}
 
-
+    public static enum SubClassName{
+        SLUR,
+        CHORD,
+        BRAILLENOTE
+    }
 
 
 }

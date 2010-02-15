@@ -23,6 +23,11 @@
  
 package freedots.compression;
 
-public interface Doublable {
+public interface Doublable extends Maskable {
+    /**
+     * FIXME : add some methods to deal with the counterElements, 
+     * like maskCounterElement(int position, BrailleMask newState)
+     * or whatsoever.
+     */
 
 }

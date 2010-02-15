@@ -34,6 +34,9 @@ import freedots.music.Ornament;
 import freedots.music.Slur;
 import freedots.musicxml.Note;
 
+import freedots.compression.Repeatable;
+import freedots.compression.OccurrenceCounter;
+
 /** The braille representation of a note or rest.
  * <p>
  * This includes all signs which must immediately follow or proceed the actual
@@ -42,7 +45,7 @@ import freedots.musicxml.Note;
  * @see <a href="http://brl.org/music/code/bmb/chap01/index.html">Chapter 1:
  *      Notes and Values</a>
  */
-public class BrailleNote extends BrailleList {
+public class BrailleNote extends BrailleList implements Repeatable{
   private final Note note;
 
   /** Construct a braille note and all of its children.
@@ -302,5 +305,22 @@ public class BrailleNote extends BrailleList {
 	public void setSignColor() {
 		this.signColor = new Color(0, 250, 154);
 	}
+  }
+
+  /**
+   * Methods inherited from the interface Repeatable (itself from Maskable)
+   *
+   */
+  public static OccurrenceCounter<BrailleNote> occurrenceCounter = new OccurrenceCounter<BrailleNote>();
+  public OccurrenceCounter<BrailleNote> getCounter(){ 
+    return this.occurrenceCounter;
+  }
+ 
+  public void addToCounter(){ 
+     this.occurrenceCounter.addElement(this);
+  }  
+  
+  public void emptyCounter(){
+    this.occurrenceCounter.empty();
   }
 }
