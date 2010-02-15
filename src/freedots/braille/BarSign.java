@@ -22,10 +22,7 @@
  */
 package freedots.braille;
 
-public class DottedDoubleBarSign extends BarSign {
-  public DottedDoubleBarSign() { super(braille(126, 23)); }
-
-  public String getDescription() {
-    return "Indicates the end of a repeated section";
-  }
+public abstract class BarSign extends Sign {
+  BarSign(String data) { super(data); }
 }
+

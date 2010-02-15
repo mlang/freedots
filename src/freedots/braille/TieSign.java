@@ -22,14 +22,10 @@
  */
 package freedots.braille;
 
-import java.awt.Color;
-
 public class TieSign extends Sign {
   public TieSign() { super(braille(4, 14)); }
 
   public String getDescription() {
     return "Indicates that the previous and next note are tied";
   }
-  
-  @Override public Color getSignColor() { return Color.lightGray; }
 }

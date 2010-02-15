@@ -22,8 +22,6 @@
  */
 package freedots.braille;
 
-import java.awt.Color;
-
 import freedots.Options;
 import freedots.music.AbstractPitch;
 import freedots.music.Accidental;
@@ -125,7 +123,6 @@ public class BrailleNote extends BrailleList {
     public String getDescription() {
       return "Indicates the this is a grace note";
     }
-    @Override public Color getSignColor() { return Color.green; }
   }
 
   private static OrnamentSign createOrnamentSign(Ornament ornament) {
@@ -139,7 +136,6 @@ public class BrailleNote extends BrailleList {
   }
   public abstract static class OrnamentSign extends Sign {
     OrnamentSign(String data) { super(data); }
-    @Override public Color getSignColor() { return Color.green; }
   }
   public static class MordentSign extends OrnamentSign {
     MordentSign() { super(braille(5, 235, 123)); }
@@ -172,7 +168,6 @@ public class BrailleNote extends BrailleList {
   }
   public abstract static class ArticulationSign extends Sign {
     ArticulationSign(String data) { super(data); }
-    @Override public Color getSignColor() { return new Color(0, 250, 154); }
   }
   public static class AccentSign extends ArticulationSign {
     AccentSign() { super(braille(46, 236)); }

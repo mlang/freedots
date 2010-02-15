@@ -62,6 +62,7 @@ import freedots.Options;
 import freedots.braille.BrailleList;
 import freedots.braille.BrailleSequence;
 import freedots.braille.Sign;
+import freedots.gui.SignColorMap;
 import freedots.logging.Logger;
 import freedots.musicxml.Library;
 import freedots.musicxml.MIDISequence;
@@ -103,7 +104,7 @@ public final class Main
       if (seq instanceof Sign) {
         Sign sign = (Sign)seq;
         Style styleSign = textPane.addStyle("styleSign"+i, defaut);
-        StyleConstants.setForeground(styleSign, sign.getSignColor());
+        StyleConstants.setForeground(styleSign, SignColorMap.DEFAULT.get(sign));
 
         try {
           String s = seq.toString();

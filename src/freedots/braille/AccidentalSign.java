@@ -22,8 +22,6 @@
  */
 package freedots.braille;
 
-import java.awt.Color;
-
 import freedots.music.Accidental;
 
 /** Accidentals are placed immediately before the note or interval to which they
@@ -54,6 +52,4 @@ public class AccidentalSign extends Sign {
     default: throw new AssertionError(accidental);
     }
   }
-
-  @Override public Color getSignColor() { return Color.orange; }
 }

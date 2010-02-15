@@ -32,6 +32,18 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import freedots.braille.AccidentalSign;
+import freedots.braille.BarSign;
+import freedots.braille.BrailleFingering;
+import freedots.braille.BrailleNote;
+import freedots.braille.Dot;
+import freedots.braille.OctaveSign;
+import freedots.braille.PitchAndValueSign;
+import freedots.braille.RestSign;
+import freedots.braille.SlurSign;
+import freedots.braille.Text;
+import freedots.gui.SignColorMap;
+
 /** Pops up a dialog to describe the different colors used for the various
  *  signs.
  */
@@ -72,53 +84,55 @@ class ColorLegend extends JDialog {
   }
 
   private void initComponent() {
+    final SignColorMap colorMap = SignColorMap.DEFAULT;
+
     JPanel panAccidental = new JPanel();
-    panAccidental.setBackground(Color.orange);
+    panAccidental.setBackground(colorMap.get(AccidentalSign.class));
     panAccidental.setPreferredSize(new Dimension(100, 50));
     panAccidental.setBorder(BorderFactory.createTitledBorder("Accidental"));
 
     JPanel panFinger = new JPanel();
-    panFinger.setBackground(Color.yellow);
+    panFinger.setBackground(colorMap.get(BrailleFingering.Finger.class));
     panFinger.setPreferredSize(new Dimension(100, 50));
     panFinger.setBorder(BorderFactory.createTitledBorder("Fingering"));
 
     JPanel panAccents = new JPanel();
-    panAccents.setBackground(new Color(0, 250, 154));
+    panAccents.setBackground(colorMap.get(BrailleNote.ArticulationSign.class));
     panAccents.setPreferredSize(new Dimension(100, 50));
     panAccents.setBorder(BorderFactory.createTitledBorder("Accents"));
 
     JPanel panDot = new JPanel();
-    panDot.setBackground(Color.cyan);
+    panDot.setBackground(colorMap.get(Dot.class));
     panDot.setPreferredSize(new Dimension(100, 50));
     panDot.setBorder(BorderFactory.createTitledBorder("Dot"));
 
     JPanel panBarSigns = new JPanel();
-    panBarSigns.setBackground(Color.red);
+    panBarSigns.setBackground(colorMap.get(BarSign.class));
     panBarSigns.setPreferredSize(new Dimension(100, 50));
     panBarSigns.setBorder(BorderFactory.createTitledBorder("Bar Signs"));
 
     JPanel panOctave = new JPanel();
-    panOctave.setBackground(Color.pink);
+    panOctave.setBackground(colorMap.get(OctaveSign.class));
     panOctave.setPreferredSize(new Dimension(100, 50));
     panOctave.setBorder(BorderFactory.createTitledBorder("Octave sign"));
 
     JPanel panPitch = new JPanel();
-    panPitch.setBackground(Color.blue);
+    panPitch.setBackground(colorMap.get(PitchAndValueSign.class));
     panPitch.setPreferredSize(new Dimension(100, 50));
     panPitch.setBorder(BorderFactory.createTitledBorder("Pitch and value"));
 
     JPanel panRest = new JPanel();
-    panRest.setBackground(Color.cyan);
+    panRest.setBackground(colorMap.get(RestSign.class));
     panRest.setPreferredSize(new Dimension(100, 50));
     panRest.setBorder(BorderFactory.createTitledBorder("Rest signs"));
 
     JPanel panSlur = new JPanel();
-    panSlur.setBackground(Color.LIGHT_GRAY);
+    panSlur.setBackground(colorMap.get(SlurSign.class));
     panSlur.setPreferredSize(new Dimension(100, 50));
     panSlur.setBorder(BorderFactory.createTitledBorder("Slur and tie"));
 
     JPanel panText = new JPanel();
-    panText.setBackground(new Color(160, 82, 45));
+    panText.setBackground(colorMap.get(Text.class));
     panText.setPreferredSize(new Dimension(100, 50));
     panText.setBorder(BorderFactory.createTitledBorder("Text"));
 

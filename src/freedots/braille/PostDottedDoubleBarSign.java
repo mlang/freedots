@@ -22,14 +22,10 @@
  */
 package freedots.braille;
 
-import java.awt.Color;
-
 public class PostDottedDoubleBarSign extends NeedsGuideDot {
   public PostDottedDoubleBarSign() { super(braille(126, 2356)); }
 
   public String getDescription() {
     return "Indicates the beginning of a repeated section";
   }
-  
-  @Override public Color getSignColor() { return Color.red; }
 }

@@ -22,8 +22,6 @@
  */
 package freedots.braille;
 
-import java.awt.Color;
-
 import freedots.music.AugmentedPowerOfTwo;
 
 /** Signifies a rest of a certain duration.
@@ -53,6 +51,4 @@ public class RestSign extends Sign {
     final int[] restDots = { 134, 136, 1236, 1346 };
     return braille(restDots[valueType]);
   }
-  
-  @Override public Color getSignColor() { return Color.cyan; }
 }
