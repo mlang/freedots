@@ -22,6 +22,10 @@
  */
 package freedots.math;
 
+/**
+ * @see <a href="http://en.wikipedia.org/wiki/Fraction_(mathematics)">Wikipedia:
+ *      Fraction (mathematics)</a>
+ */
 public abstract class AbstractFraction
   extends Number implements Comparable<Number> {
   public abstract int numerator();
@@ -50,6 +54,13 @@ public abstract class AbstractFraction
 
     return false;
   }
+
+  /** Returns {@code true} if the denominator of this fraction is a power of
+   *  two.
+   * @see <a href="http://en.wikipedia.org/wiki/Dyadic_fraction">Wikipedia:
+   *      Dyadic fraction</a>
+   */
+  public boolean isDyadic() { return Integer.bitCount(denominator()) == 1; }
 
   public Fraction add(final AbstractFraction other) {
     final int an = this.numerator();
