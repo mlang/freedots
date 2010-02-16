@@ -95,10 +95,11 @@ public final class Main
   protected StatusBar statusBar = null;
   protected SingleNoteRenderer noteRenderer = null;
 
-  /** Insert braille signs of the transcription in the document, with different colors
-   * corresponding to each braille sign.
+  /** Insert braille signs of the transcription in the document, with
+   *  different colors corresponding to each braille sign.
    */
-  private void displayBrailleList (BrailleList strings, Style defaut, DefaultStyledDocument sDoc) {
+  private void displayBrailleList(BrailleList strings, Style defaut,
+                                  DefaultStyledDocument sDoc) {
     int i = 0;
     for (BrailleSequence seq: strings) {
       if (seq instanceof Sign) {
@@ -298,7 +299,7 @@ public final class Main
       }
 
       strings = transcriber.getSigns();
-      displayBrailleList(strings, defaut, sDoc);	
+      displayBrailleList(strings, defaut, sDoc);
     }
 
     fileSaveAsAction.setEnabled(scoreAvailable);
@@ -457,7 +458,8 @@ public final class Main
     menu.add(playScoreAction);
     menu.add(new StopPlaybackAction(this));
 
-    JCheckBoxMenuItem autoPlayItem = new JCheckBoxMenuItem("Play on caret move");
+    JCheckBoxMenuItem autoPlayItem =
+      new JCheckBoxMenuItem("Play on caret move");
     autoPlayItem.addItemListener(new ItemListener() {
       public void itemStateChanged(ItemEvent e) {
         autoPlay = e.getStateChange() == ItemEvent.SELECTED;
@@ -648,12 +650,11 @@ public final class Main
     sDoc = (DefaultStyledDocument) textPane.getDocument();
     
     try {
-    	// Erase the document
-		sDoc.remove(0, sDoc.getLength());
-		pos = 0;
-	}
-    catch (BadLocationException e) {
-    	e.printStackTrace();
+      // Erase the document
+      sDoc.remove(0, sDoc.getLength());
+      pos = 0;
+    } catch (BadLocationException e) {
+      e.printStackTrace();
     }
     strings = transcriber.getSigns();
     displayBrailleList(strings, defaut, sDoc);

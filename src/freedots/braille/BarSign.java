@@ -22,7 +22,14 @@
  */
 package freedots.braille;
 
+/** Abstract class to group all signs which represent bar lines.
+ * <p>
+ * Typically, a bar line in braille music is simply represented with a space
+ * or line feed character.  At the beginning or end of repeated sections
+ * however, special signs are required which this class groups in the
+ * class hierarchy.
+ */
 public abstract class BarSign extends Sign {
-  BarSign(String data) { super(data); }
+  BarSign(final String data) { super(data); }
 }
 

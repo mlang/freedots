@@ -24,6 +24,8 @@ package freedots.braille;
 
 import freedots.musicxml.Direction;
 
+/** Represents dynamics indicators like forte or piano.
+ */
 public class BrailleDynamics extends BrailleList {
   private final String abbrev;
   private final Direction scoreObject;

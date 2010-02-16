@@ -33,6 +33,9 @@ import freedots.music.Accidental;
 public class AccidentalSign extends Sign {
   private final Accidental accidental;
 
+  /** Constructs a braille accidental sign.
+   * @param accidental specifies the type of accidental (sharp, flat, ...)
+   */
   public AccidentalSign(final Accidental accidental) {
     super(getSign(accidental));
     this.accidental = accidental;

@@ -160,7 +160,9 @@ public final class Note implements RhythmicElement {
               if (accidentalMap.containsKey(santizedName))
                 accidental = accidentalMap.get(santizedName);
               else
-                throw new MusicXMLParseException("Illegal <accidental>"+accidentalName+"</accidental>");
+                throw new MusicXMLParseException("Illegal <accidental>"
+                                                 + accidentalName
+                                                 + "</accidental>");
             }
           }
         } else if (child.getTagName().equals(TIME_MODIFICATION_ELEMENT)) {
@@ -315,7 +317,8 @@ public final class Note implements RhythmicElement {
     public Syllabic getSyllabic() {
       Text textNode = Score.getTextNode(element, "syllabic");
       if (textNode != null) {      
-        return Enum.valueOf(Syllabic.class, textNode.getWholeText().toUpperCase());
+        return Enum.valueOf(Syllabic.class,
+                            textNode.getWholeText().toUpperCase());
       }
       return null;
     }

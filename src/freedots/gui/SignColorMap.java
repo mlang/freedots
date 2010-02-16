@@ -37,7 +37,7 @@ import freedots.braille.*;
  * is found, the default color (black) is return.
  */
 public class SignColorMap extends HashMap<Class<? extends Sign>, Color> {
-  private final static Color DEFAULT_COLOR = Color.black;
+  private static final Color DEFAULT_COLOR = Color.black;
 
   public SignColorMap() {
     super();
@@ -90,5 +90,5 @@ public class SignColorMap extends HashMap<Class<? extends Sign>, Color> {
     return DEFAULT_COLOR;
   }
 
-  public final static SignColorMap DEFAULT = new SignColorMap();
+  public static final SignColorMap DEFAULT = new SignColorMap();
 }

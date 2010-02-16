@@ -48,7 +48,8 @@ final class Barline {
     NodeList nodeList = element.getElementsByTagName("repeat");
     if (nodeList.getLength() >= 1) {
       Element repeat = (Element)nodeList.item(nodeList.getLength()-1);
-      return Enum.valueOf(Repeat.class, repeat.getAttribute("direction").toUpperCase());
+      return Enum.valueOf(Repeat.class,
+                          repeat.getAttribute("direction").toUpperCase());
     }
     return null;
   }
@@ -60,7 +61,8 @@ final class Barline {
   }
   public EndingType getEndingType() {
     if (ending != null) {
-      return Enum.valueOf(EndingType.class, ending.getAttribute("type").toUpperCase());
+      return Enum.valueOf(EndingType.class,
+                          ending.getAttribute("type").toUpperCase());
     }
     return null;
   }

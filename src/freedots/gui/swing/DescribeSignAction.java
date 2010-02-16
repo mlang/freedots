@@ -53,7 +53,8 @@ public final class DescribeSignAction extends javax.swing.AbstractAction {
         final String title = "Description of " + sign;
         final String message = sign.getDescription();
         dialogShowing = true;
-        JOptionPane.showMessageDialog(gui, message, title, JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(gui, message, title,
+                                      JOptionPane.INFORMATION_MESSAGE);
         dialogShowing = false;
       }
     }

@@ -35,7 +35,8 @@ import java.util.Set;
  * different symbol placed above or below the note (depending on its position
  * on the staff).
  *
- * @see <a href="http://en.wikipedia.org/wiki/Articulation_(music)">Wikipedia:Articulation_(music)</a>
+ * @see <a href="http://en.wikipedia.org/wiki/Articulation_(music)">Wikipedia:
+ *      Articulation (music)</a>
  */
 public enum Articulation {
   accent, strongAccent, breathMark,

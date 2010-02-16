@@ -46,5 +46,5 @@ public class Fraction extends AbstractFraction {
     return this;
   }
 
-  public final static Fraction ZERO = new Fraction(0, 1);
+  public static final Fraction ZERO = new Fraction(0, 1);
 }

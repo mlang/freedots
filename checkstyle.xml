@@ -92,7 +92,7 @@
     <module name="MethodParamPad"/>
     <module name="NoWhitespaceAfter"/>
     <module name="NoWhitespaceBefore"/>
-    <module name="OperatorWrap"/>
+    <!--module name="OperatorWrap"/-->
     <module name="ParenPad"/>
     <module name="TypecastParenPad"/>
     <!--module name="TabCharacter"/-->
@@ -114,11 +114,11 @@
     <!-- See http://checkstyle.sf.net/config_blocks.html -->
     <module name="AvoidNestedBlocks"/>
     <module name="EmptyBlock"/>
-    <module name="LeftCurly"/>
+    <!--module name="LeftCurly"/-->
     <module name="NeedBraces">
       <property name="tokens" value="LITERAL_DO"/>
     </module>
-    <module name="RightCurly"/>
+    <!--module name="RightCurly"/-->
 
 
     <!-- Checks for common coding problems               -->
@@ -153,12 +153,6 @@
     </module>
     <module name="TodoComment"/>
     <module name="UpperEll"/>
-
-    <module name="Indentation">
-      <property name="basicOffset" value="2"/>
-      <property name="braceAdjustment" value="0"/>
-      <property name="caseIndent" value="0"/>
-    </module>
 
     <!--module name="ExplicitInitialization"/-->
     <module name="UnnecessaryParentheses"/>

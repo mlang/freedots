@@ -42,7 +42,7 @@ public class PowerOfTwo extends AbstractFraction {
     return new PowerOfTwo(power + other.power);
   }
 
-  protected final static int pow2(final int power) {
+  protected static final int pow2(final int power) {
     return (int)StrictMath.pow(2, power);
   }
 }

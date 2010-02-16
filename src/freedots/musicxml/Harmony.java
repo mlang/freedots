@@ -36,8 +36,9 @@ public final class Harmony extends AbstractDirection {
 
   private final List<HarmonyChord> chords = new ArrayList<HarmonyChord>();
 
-  Harmony(final Element element, final int durationMultiplier, final int divisions,
-                 final Fraction offset) {
+  Harmony(final Element element,
+          final int durationMultiplier, final int divisions,
+          final Fraction offset) {
     super(element, durationMultiplier, divisions, offset);
 
     HarmonyChord currentChord = null;

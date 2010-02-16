@@ -35,7 +35,9 @@ public final class Direction extends AbstractDirection {
   private final List<Element> directionTypes = new ArrayList<Element>();
   private Sound sound;
 
-  Direction(final Element element, final int durationMultiplier, final int divisions, final Fraction offset) {
+  Direction(final Element element,
+            final int durationMultiplier, final int divisions,
+            final Fraction offset) {
     super(element, durationMultiplier, divisions, offset);
 
     for (Node node = element.getFirstChild(); node != null;

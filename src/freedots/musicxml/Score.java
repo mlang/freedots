@@ -194,7 +194,8 @@ public final class Score {
           Element part = scoreElement;
           String idValue = part.getAttribute("id");
           Element scorePart = null;
-          for (Node partlistNode = partList.getFirstChild(); partlistNode != null;
+          for (Node partlistNode = partList.getFirstChild();
+               partlistNode != null;
                partlistNode = partlistNode.getNextSibling()) {
             if (partlistNode.getNodeType() == Node.ELEMENT_NODE
              && "score-part".equals(partlistNode.getNodeName())) {

@@ -209,17 +209,22 @@ public final class Part {
                 offset = offset.add(note.getDuration());
               }
             } else if ("direction".equals(tagName)) {
-              Direction direction = new Direction(musicdata, durationMultiplier, divisions, measureOffset.add(offset));
+              Direction direction = new Direction(musicdata,
+                                                  durationMultiplier, divisions,
+                                                  measureOffset.add(offset));
               eventList.add(direction);
             } else if ("harmony".equals(tagName)) {
-              Harmony harmony = new Harmony(musicdata, durationMultiplier, divisions, measureOffset.add(offset));
+              final Harmony harmony =
+                new Harmony(musicdata, durationMultiplier, divisions,
+                            measureOffset.add(offset));
               eventList.add(harmony);
             } else if ("backup".equals(tagName)) { 
               if (currentChord != null) {
                 offset = offset.add(currentChord.get(0).getDuration());
                 currentChord = null;
               }
-              Backup backup = new Backup(musicdata, divisions, durationMultiplier);
+              final Backup backup =
+                new Backup(musicdata, divisions, durationMultiplier);
               offset = offset.subtract(backup.getDuration());
             } else if ("forward".equals(tagName)) {
               if (currentChord != null) {

@@ -32,10 +32,18 @@ import freedots.music.RhythmicElement;
 import freedots.music.VoiceChord;
 import freedots.musicxml.Note;
 
+/** Represents several notes with same duration and start time, i.e., a chord.
+ */
 public class BrailleChord extends BrailleList {
   private final VoiceChord chord;
   private final BrailleNote topNote;
 
+  /** Constructs the braille representation of the given chord.
+   * @param chord is essentially a list of notes
+   * @param lastPitch is used to decide if an {@link OctaveSign octave sign}
+   *        should be printed.  It should be {@code null} if an octave sign
+   *        should be printed regardless of the previous pitch.
+   */
   public BrailleChord(final VoiceChord chord, final AbstractPitch lastPitch) {
     super();
     this.chord = chord;
@@ -74,8 +82,16 @@ public class BrailleChord extends BrailleList {
   }
   @Override public Object getScoreObject() { return chord; }
 
+  /** Returns the pitch of the first note of this chord.
+   * <p>
+   * The first note is chord direction dependant, if the chord is written
+   * from bottom to top note, this method returns the lowest pitch of the
+   * chord.
+   */
   public AbstractPitch getNotePitch() { return topNote.getPitch(); }
 
+  /** Represents an interval in the braille chord.
+   */
   public static class ChordStep extends BrailleList {
     private final Note note;
 
@@ -96,8 +112,12 @@ public class BrailleChord extends BrailleList {
       add(new IntervalSign(diatonicDiff));
     }
 
+    /** Returns the target note indicated by this interval.
+     */
     @Override public Object getScoreObject() { return note; }
   }
+  /** Represents an interval.
+   */
   public static class IntervalSign extends Sign {
     private final int steps;
     IntervalSign(final int steps) {

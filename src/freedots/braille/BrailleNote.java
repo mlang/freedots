@@ -135,7 +135,7 @@ public class BrailleNote extends BrailleList {
     }
   }
   public abstract static class OrnamentSign extends Sign {
-    OrnamentSign(String data) { super(data); }
+    OrnamentSign(final String data) { super(data); }
   }
   public static class MordentSign extends OrnamentSign {
     MordentSign() { super(braille(5, 235, 123)); }
@@ -167,7 +167,7 @@ public class BrailleNote extends BrailleList {
     }
   }
   public abstract static class ArticulationSign extends Sign {
-    ArticulationSign(String data) { super(data); }
+    ArticulationSign(final String data) { super(data); }
   }
   public static class AccentSign extends ArticulationSign {
     AccentSign() { super(braille(46, 236)); }
