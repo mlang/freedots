@@ -104,7 +104,7 @@ public final class Main
     for (BrailleSequence seq: strings) {
       if (seq instanceof Sign) {
         Sign sign = (Sign)seq;
-        Style styleSign = textPane.addStyle("styleSign"+i, defaut);
+        Style styleSign = sDoc.addStyle("styleSign"+i, defaut);
         StyleConstants.setForeground(styleSign, SignColorMap.DEFAULT.get(sign));
 
         try {
@@ -119,28 +119,31 @@ public final class Main
   
   public void setScore(final Score score) {
     this.score = score;
-    try {
-      transcriber.setScore(score);
 
-      /* Print signs one by one */
-      Font font = new Font("DejaVu Serif", Font.PLAIN, 14);
-      textPane.setFont(font);
-      DefaultStyledDocument sDoc = new DefaultStyledDocument();
-      Style defaultStyle = sDoc.getStyle("default");
-      pos = 0;
- 
-      strings = transcriber.getSigns(); 
-      displayBrailleList(strings, defaultStyle, sDoc);
- 
-      textPane.setDocument(sDoc);
-      textPane.setCaretPosition(0);
+    transcriber.setScore(score);
 
-      boolean scoreAvailable = score != null;
-      fileSaveAsAction.setEnabled(scoreAvailable);
-      playScoreAction.setEnabled(scoreAvailable);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+    updateTextPane();
+
+    final boolean scoreAvailable = score != null;
+    fileSaveAsAction.setEnabled(scoreAvailable);
+    playScoreAction.setEnabled(scoreAvailable);
+  }
+
+  private void updateTextPane() {
+    Font font = new Font("DejaVu Serif", Font.PLAIN, 14);
+    textPane.setFont(font);
+
+    // Create a new document (by do not attach it to JTextPane yet)
+    // to avoid excessive update events slowing things down
+    DefaultStyledDocument sDoc = new DefaultStyledDocument();
+    Style defaultStyle = sDoc.getStyle("default");
+    pos = 0;
+ 
+    strings = transcriber.getSigns(); 
+    displayBrailleList(strings, defaultStyle, sDoc);
+ 
+    textPane.setDocument(sDoc);
+    textPane.setCaretPosition(0);
   }
 
   private JTextArea logArea;
@@ -278,7 +281,8 @@ public final class Main
     final boolean scoreAvailable = transcriber.getScore() != null;    
     
     if (scoreAvailable) {
-      setScore(transcriber.getScore());
+      this.score = transcriber.getScore();
+      updateTextPane();
     }
 
     fileSaveAsAction.setEnabled(scoreAvailable);
