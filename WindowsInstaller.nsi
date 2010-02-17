@@ -165,9 +165,9 @@ Section "install"
 
 		;Create shortcuts
 		CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
-		CreateShortCut "$SMPROGRAMS\$StartMenuFolder\FreeDots.lnk" "$INSTDIR\${JARFILE}" -r
-		CreateShortCut "$SMPROGRAMS\$StartMenuFolder\README.JAWS.lnk" "$INSTDIR\${READMEFILENAME}" -r
-		CreateShortCut "$SMPROGRAMS\$StartMenuFolder\User Manual.lnk" "$INSTDIR\manual.html" -r
+		CreateShortCut "$SMPROGRAMS\$StartMenuFolder\FreeDots.lnk" "$INSTDIR\${JARFILE}"
+		CreateShortCut "$SMPROGRAMS\$StartMenuFolder\README.JAWS.lnk" "$INSTDIR\${READMEFILENAME}"
+		CreateShortCut "$SMPROGRAMS\$StartMenuFolder\User Manual.lnk" "$INSTDIR\manual.html"
 
 	!insertmacro MUI_STARTMENU_WRITE_END
 
