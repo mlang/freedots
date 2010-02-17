@@ -117,7 +117,7 @@ public final class Main
     }
   }
   
-  public void setScore(Score score) {
+  public void setScore(final Score score) {
     this.score = score;
     try {
       transcriber.setScore(score);
@@ -125,24 +125,18 @@ public final class Main
       /* Print signs one by one */
       Font font = new Font("DejaVu Serif", Font.PLAIN, 14);
       textPane.setFont(font);
-      textPane.setText(WELCOME_MESSAGE);
-      
-      Style defaut = textPane.getStyle("default");
       DefaultStyledDocument sDoc = new DefaultStyledDocument();
-      sDoc = (DefaultStyledDocument) textPane.getDocument();
-      // Erase the document
-      sDoc.remove(0, sDoc.getLength());
+      Style defaultStyle = sDoc.getStyle("default");
       pos = 0;
-      
+ 
       strings = transcriber.getSigns(); 
-      displayBrailleList(strings, defaut, sDoc);
-      
+      displayBrailleList(strings, defaultStyle, sDoc);
+ 
+      textPane.setDocument(sDoc);
       textPane.setCaretPosition(0);
+
       boolean scoreAvailable = score != null;
       fileSaveAsAction.setEnabled(scoreAvailable);
-      
-      //this.midiPlayer
-      
       playScoreAction.setEnabled(scoreAvailable);
     } catch (Exception e) {
       e.printStackTrace();
@@ -281,25 +275,10 @@ public final class Main
     textPane.setFont(font);
     textPane.setText(WELCOME_MESSAGE);
 
-    Style defaut = textPane.getStyle("default");
-    DefaultStyledDocument sDoc = new DefaultStyledDocument();
-    sDoc = (DefaultStyledDocument) textPane.getDocument();
-
-    this.score = transcriber.getScore();
-    final boolean scoreAvailable = score != null;    
+    final boolean scoreAvailable = transcriber.getScore() != null;    
     
     if (scoreAvailable) {
-      /* Print signs one by one */
-      try {
-        // Erase the document
-        sDoc.remove(0, sDoc.getLength());
-        pos = 0;
-      } catch (BadLocationException e) {
-        e.printStackTrace();
-      }
-
-      strings = transcriber.getSigns();
-      displayBrailleList(strings, defaut, sDoc);
+      setScore(transcriber.getScore());
     }
 
     fileSaveAsAction.setEnabled(scoreAvailable);
@@ -320,7 +299,6 @@ public final class Main
                         }
                       });
     textPane.addCaretListener(this);
-    JScrollPane scrollPane = new JScrollPane(textPane);
 
     logArea = new JTextArea(5, 60);
     logArea.setEditable(false);
@@ -329,10 +307,9 @@ public final class Main
     JPanel contentPane = new JPanel();
     contentPane.setLayout(new BorderLayout());
     //contentPane.setPreferredSize(new Dimension(400, 100));
-    contentPane.add(scrollPane, BorderLayout.CENTER);
+    contentPane.add(new JScrollPane(textPane), BorderLayout.CENTER);
 
-    scrollPane = new JScrollPane(logArea);
-    contentPane.add(scrollPane, BorderLayout.SOUTH);
+    contentPane.add(new JScrollPane(logArea), BorderLayout.SOUTH);
 
     statusBar = new StatusBar();
     contentPane.add(statusBar, BorderLayout.SOUTH);
@@ -639,27 +616,9 @@ public final class Main
   void triggerTranscription() {
     int position = textPane.getCaretPosition();
     final Object object = getScoreObjectAtCaretPosition();
-    transcriber.setScore(score);
-    
-    /* Print signs one by one */
-    Font font = new Font("DejaVu Serif", Font.PLAIN, 14);
-    textPane.setFont(font);
-    
-    Style defaut = textPane.getStyle("default");
-    DefaultStyledDocument sDoc = new DefaultStyledDocument();
-    sDoc = (DefaultStyledDocument) textPane.getDocument();
-    
-    try {
-      // Erase the document
-      sDoc.remove(0, sDoc.getLength());
-      pos = 0;
-    } catch (BadLocationException e) {
-      e.printStackTrace();
-    }
-    strings = transcriber.getSigns();
-    displayBrailleList(strings, defaut, sDoc);
-    
-    
+
+    setScore(score);
+
     if (object != null) {
       final int objectPosition = transcriber.getIndexOfScoreObject(object);
       if (objectPosition != -1) position = objectPosition;
