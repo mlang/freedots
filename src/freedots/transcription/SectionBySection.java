@@ -145,7 +145,8 @@ class SectionBySection implements Strategy {
     measure.setVoiceDirection(chordDirection);
 
     StartBar startBar = null;
-    KeySignature currentSignature = staff.getKeySignature(staff.get(0).getOffset());
+    KeySignature currentSignature =
+      staff.getKeySignature(staff.get(0).getOffset());
 
     for (int staffElementIndex = 0; staffElementIndex < staff.size();
          staffElementIndex++) {
@@ -298,7 +299,7 @@ class SectionBySection implements Strategy {
      *  in this measure.
      * This should probably be done in the core MusicXML library instead.
      */
-    void calculateDurations (final Fraction measureEnd) {
+    void calculateDurations(final Fraction measureEnd) {
       if (size() > 0) {
         Iterator<HarmonyInfo> iterator = iterator();
         HarmonyInfo last = iterator.next();

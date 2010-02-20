@@ -94,17 +94,17 @@ public final class Transcriber {
     return strings.getScoreObjectAtIndex(characterIndex);
   }
   /** Find the starting index of the character sequence for Object.
-   *
-   * This is the reverse of getObjectAtIndex()
-   *
-   * @param object is a score object to search in the transcribed text
-   *
+   * <p>
+   * This is the reverse of {@link #getObjectAtIndex}.
+   * @param object the score object to search in the transcribed text.
    * @return the index of the first character that was generated due to object
    */
   public int getIndexOfScoreObject(final Object object) {
     return strings.getIndexOfScoreObject(object);
   }
   /** Returns the <code>char</code> value at the specified index.
+   * @param index the index of the <code>char</code> value to be returned.
+   * @return the <code>char</code> value at the specified index.
    */
   public char charAt(final int index) { return strings.charAt(index); }
 

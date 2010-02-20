@@ -57,7 +57,7 @@ class BarOverBar implements Strategy {
   private TimeSignature initialTimeSignature = null;
 
   public void transcribe(Transcriber transcriber) {
-    this.transcriber= transcriber;
+    this.transcriber = transcriber;
     options = transcriber.getOptions();
 
     createMeasuresInBrailleStaves(transcriber.getScore());

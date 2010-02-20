@@ -55,7 +55,9 @@ class BrailleMeasure {
   private TimeSignature timeSignature = null;
   private int voiceDirection = -1; /* By default, top to bottom */
   private final Transcriber transcriber;
-  BrailleMeasure(Transcriber transcriber) { this.transcriber = transcriber; }
+  BrailleMeasure(final Transcriber transcriber) {
+    this.transcriber = transcriber;
+  }
   BrailleMeasure(final Transcriber transcriber, final BrailleMeasure previous) {
     this(transcriber);
     this.previous = previous;

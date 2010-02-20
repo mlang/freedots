@@ -66,8 +66,11 @@ public final class MetaEventRelay
 
   /**
    * Create a new MetaMessage which wraps a reference to the specified object.
-   * @param object  the object to return when the MetaMessage fires
+   * @param object the object to return when the MetaMessage fires
    * @return the MetaMessage
+   * @throws InvalidMidiDataException if the required MIDI message could not be
+   *         created.
+   * @throws NullPointerException if parameter object is {@code null}.
    */
   public MetaMessage createMetaMessage(Object object)
   throws InvalidMidiDataException {
