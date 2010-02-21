@@ -125,7 +125,7 @@ public final class Part {
                 lastTimeSignature = newTimeSignature;
                 eventList.add(new TimeSignatureChange(measureOffset.add(offset),
                                                       lastTimeSignature));
-                if (offset.compareTo(Fraction.ZERO) == 0) {
+                if (offset.equals(0)) {
                   startBar.setTimeSignature(newTimeSignature);
                 }
               }

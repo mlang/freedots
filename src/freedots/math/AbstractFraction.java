@@ -62,6 +62,18 @@ public abstract class AbstractFraction
    */
   public boolean isDyadic() { return Integer.bitCount(denominator()) == 1; }
 
+  /** Returns the multiplicative inverse of a fraction.
+   * @see <a href="http://en.wikipedia.org/wiki/Multiplicative_inverse">
+   *      Wikipedia: Multiplicative inverse</a>
+  public Fraction reciprocal() {
+    return new Fraction(denominator(), numerator());
+  }
+  /** Inverts the sign of a fraction.
+   */
+  public Fraction negate() {
+    return new Fraction(-numerator(), denominator());
+  }
+
   public Fraction add(final AbstractFraction other) {
     final int an = this.numerator();
     final int ad = this.denominator();
@@ -69,12 +81,11 @@ public abstract class AbstractFraction
     final int bd = other.denominator();
     return new Fraction(an*bd + bn*ad, ad*bd).simplify();
   }      
-  public Fraction negate() {
-    return new Fraction(-numerator(), denominator());
-  }
+  public Fraction add(final Integer other) { return add(new Fraction(other)); }
   public Fraction subtract(final AbstractFraction other) {
     return add(other.negate());
   }
+  public Fraction subtract(final Integer other) { return add(-other); }
   public Fraction multiply(final AbstractFraction other) {
     return new Fraction(this.numerator() * other.numerator(),
                         this.denominator() * other.denominator()).simplify();
@@ -89,6 +100,7 @@ public abstract class AbstractFraction
   public Fraction divide(final Integer other) {
     return new Fraction(numerator(), denominator()*other).simplify();
   }
+
   @Override public String toString() {
     if (denominator() == 1) return String.valueOf(numerator());
     return String.valueOf(numerator()) + "/" + denominator();

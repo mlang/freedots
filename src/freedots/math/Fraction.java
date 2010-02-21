@@ -27,6 +27,7 @@ package freedots.math;
 public class Fraction extends AbstractFraction {
   private int numerator, denominator;
 
+  public Fraction(final int numerator) { this(numerator, 1); }
   public Fraction(final int numerator, final int denominator) {
     if (denominator == 0)
       throw new ArithmeticException("denominator is zero");
@@ -46,5 +47,5 @@ public class Fraction extends AbstractFraction {
     return this;
   }
 
-  public static final Fraction ZERO = new Fraction(0, 1);
+  public static final Fraction ZERO = new Fraction(0);
 }
