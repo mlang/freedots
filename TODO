@@ -40,6 +40,10 @@ FreeDots is deliberately designed to be very liberal with what it accepts
 it), other more visually oriented notation programs might have problems with
 scores in such a "raw" encoding.
 
+UPDATE: This turns out to be harder then initially thought since autobeaming
+and stem direction calculation apparently is not as sophisticated
+as hoped.
+
 ** TODO Portable exception reporting to a central place
 
 For better quality of MusicXML parsing, a fascility should be developed
@@ -432,14 +436,6 @@ more and more preferences should be added.
 
 ** TODO Editing of fingering
 
-freedots.musicxml almost supports setting fingering already.
-
-*** STARTED keyboard fingering
-
-This is the simplest case.  Most of the time only a single
-finger needs to be specified, sometimes fingers need to change
-on one note (silent finger change).
-
 *** TODO Fingering string instruments
 
 For string instruments, the UI would need to ask for left and right hand
@@ -456,19 +452,19 @@ A note can have a set of articulation marks attached to it.
 Editing of those is a non-structural change, i.e. it
 does work with the current musicxml handling.
 
-Write a dialog which allows the user to change the articulation marks attached to a certain note.
+Write a dialog which allows the user to change the articulation marks attached
+to a certain note.
+
+** TODO Goto
+
+We need some global bindings to jump to certain places in a score.
+Good candidates are measure + part/staff or page/line/column.
 
 ** TODO Create log view widget
 
 The class freedots.logging.Logger currently implements a simple miltiplex
 of log messages to the console and to a queue.
 The GUI needs some usability work.
-
-** TODO Colors for categories of braille signs
-
-It might be helpful for sighted users if the different types
-of braille signs that can occur in a score would use different
-colours on-screen.
 
 ** TODO Look into functionality for blind users who do not use braille
 
