@@ -24,28 +24,26 @@ package freedots.music;
 
 import java.util.Map;
 
-import freedots.math.Fraction;
-
 /** A container for keeping track of the current value of a certain quantity
  *  which changes over time.
  */
 @SuppressWarnings("serial")
-public class Timeline<E> extends java.util.TreeMap<Fraction, E> {
+public class Timeline<E> extends java.util.TreeMap<Number, E> {
   /** Construct a new (empty) Timeline.
    */
   public Timeline() { super(); }
   /** Construct a Timeline initialised with the given value.
    * @param initial is the value at offset 0.
    */
-  public Timeline(final E initial) { super(); put(Fraction.ZERO, initial); }
+  public Timeline(final E initial) { super(); put(0, initial); }
 
   /** Retrieves the active value at a certain offset.
    * @see #floorEntry
    */
   @Override public E get(Object key) {
-    if (key instanceof Fraction) {
-      Fraction offset = (Fraction)key;
-      Map.Entry<Fraction, E> entry = floorEntry(offset);
+    if (key instanceof Number) {
+      Number offset = (Number)key;
+      Map.Entry<Number, E> entry = floorEntry(offset);
       if (entry != null) return entry.getValue();
       return null;
     }
