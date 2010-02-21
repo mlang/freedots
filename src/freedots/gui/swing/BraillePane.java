@@ -24,8 +24,6 @@ package freedots.gui.swing;
 
 import java.awt.Font;
 import javax.swing.text.BadLocationException;
-import javax.swing.text.DefaultCaret;
-import javax.swing.text.DefaultStyledDocument;
 import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
@@ -48,23 +46,10 @@ final class BraillePane extends javax.swing.JTextPane {
   BraillePane() {
     super();
 
-    Font font = new Font("DejaVu Serif", Font.PLAIN, 14);
-    setFont(font);
+    setFont(new Font("DejaVu Serif", Font.PLAIN, 14));
 
     setEditable(false);
-    setCaret(new DefaultCaret() {
-        /** Called when the component containing the caret gains
-         *  focus.
-         * This is implemented to set the caret to visible
-         * independant from the components editable state.
-         */
-        @Override public void focusGained(java.awt.event.FocusEvent event) {
-          if (getComponent().isEnabled()) {
-            setVisible(true);
-            setSelectionVisible(true);
-          }
-        }
-      });
+    setCaret(new ReadonlyVisibleCaret());
   }
 
   /** Returns {@code true} if a viewport should always force the width of this
@@ -74,8 +59,16 @@ final class BraillePane extends javax.swing.JTextPane {
    */
   @Override public boolean getScrollableTracksViewportWidth() { return false; }
 
-  public void setText(BrailleList text) {
-    StyledDocument document = new DefaultStyledDocument();
+  /** Sets the text of this {@code BraillePane} to the specified content.
+   * <p>
+   * This creates a model of type {@code StyledDocument}
+   * and initializes the model from the given list of braille signs.
+   * @param text specifies the content for the new model.
+   * @see #getText
+   */
+  public void setText(final BrailleList text) {
+    StyledDocument document =
+      (StyledDocument)getEditorKit().createDefaultDocument();
 
     insertBrailleList(text, document.getStyle(StyleContext.DEFAULT_STYLE),
                       document);
@@ -99,6 +92,22 @@ final class BraillePane extends javax.swing.JTextPane {
           document.insertString(document.getLength(), sign.toString(), style);
         } catch (BadLocationException e) { }
       } else insertBrailleList((BrailleList)seq, defaut, document);
+    }
+  }
+
+  static class ReadonlyVisibleCaret extends javax.swing.text.DefaultCaret {
+    ReadonlyVisibleCaret() { super(); }
+    /** Called when the component containing the caret gains
+     *  focus.
+     * This is overridden to set the caret to visible
+     * regardless of the components editable state.
+     * @see java.awt.event.FocusListener#focusGained
+     */
+    @Override public void focusGained(java.awt.event.FocusEvent event) {
+      if (getComponent().isEnabled()) {
+        setVisible(true);
+        setSelectionVisible(true);
+      }
     }
   }
 }
