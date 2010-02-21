@@ -96,9 +96,6 @@ public final class Main
     playScoreAction.setEnabled(scoreAvailable);
   }
 
-  private void updateTextPane() {
-  }
-
   private JTextArea logArea;
   private BraillePane textPane;
   
@@ -216,14 +213,13 @@ public final class Main
     // Create the text area
     textPane = new BraillePane();
     textPane.setSize(options.getPageWidth(), options.getPageHeight());
-    textPane.setText(WELCOME_MESSAGE);
 
     final boolean scoreAvailable = transcriber.getScore() != null;    
 
     if (scoreAvailable) {
       this.score = transcriber.getScore();
       textPane.setText(transcriber.getSigns()); 
-    }
+    } else textPane.setText(WELCOME_MESSAGE);
 
     fileSaveAsAction.setEnabled(scoreAvailable);
     playScoreAction.setEnabled(scoreAvailable);
@@ -236,7 +232,6 @@ public final class Main
     // Lay out the content pane.
     JPanel contentPane = new JPanel();
     contentPane.setLayout(new BorderLayout());
-    //contentPane.setPreferredSize(new Dimension(400, 100));
     contentPane.add(new JScrollPane(textPane), BorderLayout.CENTER);
 
     contentPane.add(new JScrollPane(logArea), BorderLayout.SOUTH);

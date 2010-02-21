@@ -23,12 +23,12 @@
 package freedots.gui.swing;
 
 import java.awt.Font;
-import java.awt.event.FocusEvent;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultCaret;
 import javax.swing.text.DefaultStyledDocument;
 import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
+import javax.swing.text.StyleContext;
 import javax.swing.text.StyledDocument;
 
 import freedots.braille.BrailleList;
@@ -58,7 +58,7 @@ final class BraillePane extends javax.swing.JTextPane {
          * This is implemented to set the caret to visible
          * independant from the components editable state.
          */
-        @Override public void focusGained(FocusEvent e) {
+        @Override public void focusGained(java.awt.event.FocusEvent event) {
           if (getComponent().isEnabled()) {
             setVisible(true);
             setSelectionVisible(true);
@@ -75,11 +75,10 @@ final class BraillePane extends javax.swing.JTextPane {
   @Override public boolean getScrollableTracksViewportWidth() { return false; }
 
   public void setText(BrailleList text) {
-    // Create a new document (but do not attach it to JTextPane yet)
-    // to avoid excessive update events slowing things down
     StyledDocument document = new DefaultStyledDocument();
 
-    insertBrailleList(text, document.getStyle("default"), document);
+    insertBrailleList(text, document.getStyle(StyleContext.DEFAULT_STYLE),
+                      document);
  
     setStyledDocument(document);
     setCaretPosition(0);
@@ -93,11 +92,11 @@ final class BraillePane extends javax.swing.JTextPane {
     for (BrailleSequence seq: strings) {
       if (seq instanceof Sign) {
         Sign sign = (Sign)seq;
-        Style style = document.addStyle(sign.getClass().getName(), defaut);
+        Style style = document.addStyle(null, defaut);
         StyleConstants.setForeground(style, SignColorMap.DEFAULT.get(sign));
 
         try {
-          document.insertString(document.getLength(), seq.toString(), style);
+          document.insertString(document.getLength(), sign.toString(), style);
         } catch (BadLocationException e) { }
       } else insertBrailleList((BrailleList)seq, defaut, document);
     }
