@@ -28,7 +28,6 @@ import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
@@ -50,19 +49,10 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.JTextPane;
 import javax.swing.event.CaretEvent;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.DefaultCaret;
-import javax.swing.text.DefaultStyledDocument;
-import javax.swing.text.Style;
-import javax.swing.text.StyleConstants;
 
 import freedots.Options;
-import freedots.braille.BrailleList;
-import freedots.braille.BrailleSequence;
 import freedots.braille.Sign;
-import freedots.gui.SignColorMap;
 import freedots.logging.Logger;
 import freedots.musicxml.Library;
 import freedots.musicxml.MIDISequence;
@@ -95,34 +85,11 @@ public final class Main
   protected StatusBar statusBar = null;
   protected SingleNoteRenderer noteRenderer = null;
 
-  /** Insert braille signs of the transcription in the document, with
-   *  different colors corresponding to each braille sign.
-   */
-  private void displayBrailleList(BrailleList strings, Style defaut,
-                                  DefaultStyledDocument sDoc) {
-    int i = 0;
-    for (BrailleSequence seq: strings) {
-      if (seq instanceof Sign) {
-        Sign sign = (Sign)seq;
-        Style styleSign = sDoc.addStyle("styleSign"+i, defaut);
-        StyleConstants.setForeground(styleSign, SignColorMap.DEFAULT.get(sign));
-
-        try {
-          String s = seq.toString();
-          sDoc.insertString(pos, s, styleSign);
-          pos += s.length();
-        } catch (BadLocationException e) { }
-        i++;
-      } else displayBrailleList((BrailleList) seq, defaut, sDoc);
-    }
-  }
-  
   public void setScore(final Score score) {
     this.score = score;
 
     transcriber.setScore(score);
-
-    updateTextPane();
+    textPane.setText(transcriber.getSigns()); 
 
     final boolean scoreAvailable = score != null;
     fileSaveAsAction.setEnabled(scoreAvailable);
@@ -130,24 +97,10 @@ public final class Main
   }
 
   private void updateTextPane() {
-    Font font = new Font("DejaVu Serif", Font.PLAIN, 14);
-    textPane.setFont(font);
-
-    // Create a new document (by do not attach it to JTextPane yet)
-    // to avoid excessive update events slowing things down
-    DefaultStyledDocument sDoc = new DefaultStyledDocument();
-    Style defaultStyle = sDoc.getStyle("default");
-    pos = 0;
- 
-    strings = transcriber.getSigns(); 
-    displayBrailleList(strings, defaultStyle, sDoc);
- 
-    textPane.setDocument(sDoc);
-    textPane.setCaretPosition(0);
   }
 
   private JTextArea logArea;
-  private JTextPane textPane;
+  private BraillePane textPane;
   
   private Object lastObject = null;
 
@@ -227,8 +180,6 @@ public final class Main
   private Action fileSaveAsAction = new FileSaveAsAction(this);
   private Action editFingeringAction = new EditFingeringAction(this);
 
-  private BrailleList strings; /* store signs from the transcriber */
-  private int pos = 0;
   public Main(final Transcriber transcriber) {
     super("FreeDots " + freedots.Main.VERSION);
     this.transcriber = transcriber;
@@ -263,45 +214,20 @@ public final class Main
     setJMenuBar(createMenuBar());
 
     // Create the text area
-    textPane = new JTextPane() {
-      /** Returns true if a viewport should always force the width of this
-       *  <code>Scrollable</code> to match the width of the viewport.
-       * <p>
-       * This is implemented to disable automatic line wrapping.
-       */
-      @Override public boolean getScrollableTracksViewportWidth() {
-        return false;
-      }
-    };
+    textPane = new BraillePane();
     textPane.setSize(options.getPageWidth(), options.getPageHeight());
-    Font font = new Font("DejaVu Serif", Font.PLAIN, 14);
-    textPane.setFont(font);
     textPane.setText(WELCOME_MESSAGE);
 
     final boolean scoreAvailable = transcriber.getScore() != null;    
-    
+
     if (scoreAvailable) {
       this.score = transcriber.getScore();
-      updateTextPane();
+      textPane.setText(transcriber.getSigns()); 
     }
 
     fileSaveAsAction.setEnabled(scoreAvailable);
     playScoreAction.setEnabled(scoreAvailable);
 
-    textPane.setEditable(false);
-    textPane.setCaret(new DefaultCaret() {
-                        /** Called when the component containing the caret gains
-                         *  focus.
-                         * This is implemented to set the caret to visible
-                         * independant from the components editable state.
-                         */
-                        @Override public void focusGained(FocusEvent e) {
-                          if (getComponent().isEnabled()) {
-                            setVisible(true);
-                            setSelectionVisible(true);
-                          }
-                        }
-                      });
     textPane.addCaretListener(this);
 
     logArea = new JTextArea(5, 60);
