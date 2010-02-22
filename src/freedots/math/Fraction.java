@@ -25,7 +25,7 @@ package freedots.math;
 /** Represents an arbitrary fractional value.
  */
 public class Fraction extends AbstractFraction {
-  private int numerator, denominator;
+  private final int numerator, denominator;
 
   public Fraction(final AbstractFraction fraction) {
     this(fraction.numerator(), fraction.denominator());
@@ -45,10 +45,9 @@ public class Fraction extends AbstractFraction {
     final int n = numerator();
     final int d = denominator();
     final int gcd = gcd(n, d);
-    numerator = n / gcd;
-    denominator = d / gcd;
-    return this;
+    return (gcd == 1)? this: new Fraction(n / gcd, d / gcd);
   }
 
   public static final Fraction ZERO = new Fraction(0);
 }
+

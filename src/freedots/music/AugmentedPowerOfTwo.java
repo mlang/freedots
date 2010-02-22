@@ -117,7 +117,7 @@ public class AugmentedPowerOfTwo extends PowerOfTwo {
    */
   // TODO: Handle time modification somehow, perhaps a big table?
   public static AugmentedPowerOfTwo valueOf(final AbstractFraction value) {
-    if (value instanceof AugmentedPowerOfTwo) return value;
+    if (value instanceof AugmentedPowerOfTwo) return (AugmentedPowerOfTwo)value;
     Fraction fraction = new Fraction(value).simplify();
     if (!fraction.isDyadic())
       throw new IllegalArgumentException(value.toString());
