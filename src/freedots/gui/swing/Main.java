@@ -81,8 +81,8 @@ public final class Main extends JFrame
 
   private Options options = Options.getInstance();
 
-  protected StatusBar statusBar = null;
-  protected SingleNoteRenderer noteRenderer = null;
+  private StatusBar statusBar = null;
+  private SingleNoteRenderer noteRenderer = null;
 
   public void setScore(final Score score) {
     this.score = score;
@@ -205,10 +205,37 @@ public final class Main extends JFrame
       ffe.printStackTrace();
     }
 
-    // Create the menubar.
     setJMenuBar(createMenuBar());
+    setContentPane(createContentPane());
 
-    // Create the text area
+    addWindowListener(new WindowAdapter() {
+      @Override
+      public void windowClosing(WindowEvent e) {
+        quit();
+      }
+    });
+
+    pack();
+  }
+  public void run() {
+    setVisible(true);
+
+    if (options.getSoundfont() != null) {
+      if (!midiPlayer.loadSoundbank(options.getSoundfont())) {
+        String message = "Requested Soundfont '"+options.getSoundfont()
+                         +" could not be loaded";
+        JOptionPane.showMessageDialog(this, message, "Alert",
+                                      JOptionPane.ERROR_MESSAGE);
+      }
+    }
+  }
+
+  public void quit() {
+    if (midiPlayer != null) midiPlayer.close();
+    System.exit(0);
+  }
+
+  private JPanel createContentPane() {
     textPane = new BraillePane();
     textPane.setSize(options.getPageWidth(), options.getPageHeight());
 
@@ -239,35 +266,9 @@ public final class Main extends JFrame
 
     noteRenderer = new SingleNoteRenderer();
     contentPane.add(noteRenderer, BorderLayout.AFTER_LAST_LINE);
-    setContentPane(contentPane);
 
-    addWindowListener(new WindowAdapter() {
-      @Override
-      public void windowClosing(WindowEvent e) {
-        quit();
-      }
-    });
-
-    pack();
+    return contentPane;
   }
-  public void run() {
-    setVisible(true);
-
-    if (options.getSoundfont() != null) {
-      if (!midiPlayer.loadSoundbank(options.getSoundfont())) {
-        String message = "Requested Soundfont '"+options.getSoundfont()
-                         +" could not be loaded";
-        JOptionPane.showMessageDialog(this, message, "Alert",
-                                      JOptionPane.ERROR_MESSAGE);
-      }
-    }
-  }
-
-  public void quit() {
-    if (midiPlayer != null) midiPlayer.close();
-    System.exit(0);
-  }
-
   private JMenuBar createMenuBar() {
     JMenuBar menuBar = new JMenuBar();
     JMenu fileMenu = new JMenu("File");
