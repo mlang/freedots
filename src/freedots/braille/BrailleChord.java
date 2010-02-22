@@ -58,23 +58,7 @@ public class BrailleChord extends BrailleList {
     assert iterator.hasNext();
 
     while (iterator.hasNext()) {
-      final Note currentNote = (Note)iterator.next();
-      final Accidental accidental = currentNote.getAccidental();
-      if (accidental != null) add(new AccidentalSign(accidental));
-      AbstractPitch currentPitch = (AbstractPitch)currentNote.getPitch();
-      if (currentPitch == null)
-        currentPitch = (AbstractPitch)currentNote.getUnpitched();
-      add(new ChordStep(currentNote, firstNote));
-
-      if (Options.getInstance().getShowFingering()) {
-        final Fingering fingering = currentNote.getFingering();
-        if (!fingering.getFingers().isEmpty())
-          add(new BrailleFingering(fingering));
-      }
-
-      if (currentNote.isTieStart()) {
-        add(new TieSign());
-      }
+      add(new ChordStep((Note)iterator.next(), firstNote));
     }
   }
   @Override public String getDescription() {
@@ -99,6 +83,9 @@ public class BrailleChord extends BrailleList {
       super();
       this.note = note;
 
+      final Accidental accidental = note.getAccidental();
+      if (accidental != null) add(new AccidentalSign(accidental));
+
       AbstractPitch thisPitch = note.getPitch();
       if (thisPitch == null) thisPitch = note.getUnpitched();
       AbstractPitch otherPitch = relativeTo.getPitch();
@@ -110,12 +97,21 @@ public class BrailleChord extends BrailleList {
         while (diatonicDiff > 7) diatonicDiff -= 7;
       }
       add(new IntervalSign(diatonicDiff));
+
+      if (Options.getInstance().getShowFingering()) {
+        final Fingering fingering = note.getFingering();
+        if (!fingering.getFingers().isEmpty())
+          add(new BrailleFingering(fingering));
+      }
+
+      if (note.isTieStart()) { add(new TieSign()); }
     }
 
     /** Returns the target note indicated by this interval.
      */
     @Override public Object getScoreObject() { return note; }
   }
+
   /** Represents an interval.
    */
   public static class IntervalSign extends Sign {
@@ -139,3 +135,4 @@ public class BrailleChord extends BrailleList {
     };
   }
 }
+
