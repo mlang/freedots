@@ -73,18 +73,12 @@ public final class FileOpenAction extends javax.swing.AbstractAction {
     });
     fileChooser.showOpenDialog(gui);
     try {
-      // Update status bar display
-      if (gui.statusBar!=null) {
-        gui.statusBar.setText("Loading "
-                              + fileChooser.getSelectedFile().toString()
-                              + "...");
-        gui.update(gui.getGraphics());
-      }      
-
+      gui.setStatusMessage("Loading "
+                           + fileChooser.getSelectedFile().toString() + "...");
       Score newScore = new Score(fileChooser.getSelectedFile().toString());
+      gui.setStatusMessage("Transcribing to braille...");
       gui.setScore(newScore);
-    
-      if (gui.statusBar!=null) gui.statusBar.setText("Ready.");
+      gui.setStatusMessage("Ready");
     } 
     catch (javax.xml.parsers.ParserConfigurationException exception) {
       exception.printStackTrace();

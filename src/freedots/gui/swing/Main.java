@@ -77,14 +77,19 @@ public final class Main extends JFrame
   public Score getScore() { return score; }
 
   private final Transcriber transcriber;
-  public Transcriber getTranscriber() { return transcriber; }
+  Transcriber getTranscriber() { return transcriber; }
 
   private Options options = Options.getInstance();
 
-  private StatusBar statusBar = null;
+  private StatusBar statusBar = new StatusBar();
+  void setStatusMessage(String text) {
+    statusBar.setMessage(text);
+    update(getGraphics());
+  }
+
   private SingleNoteRenderer noteRenderer = null;
 
-  public void setScore(final Score score) {
+  void setScore(final Score score) {
     this.score = score;
 
     transcriber.setScore(score);
@@ -110,7 +115,7 @@ public final class Main extends JFrame
       scoreObject = transcriber.getScoreObjectAtIndex(index);
       final Sign brailleSign = transcriber.getSignAtIndex(index);
       if (statusBar != null && brailleSign != null) {
-        statusBar.setMessage(brailleSign.toString() + ": "
+        setStatusMessage(brailleSign.toString() + ": "
                              + brailleSign.getDescription());
       }
     }
@@ -155,7 +160,7 @@ public final class Main extends JFrame
     }
   }
 
-  public boolean startPlayback() {
+  boolean startPlayback() {
     if (score != null)
       try {
         midiPlayer.setSequence(new MIDISequence(score, true, metaEventRelay));
@@ -167,7 +172,7 @@ public final class Main extends JFrame
 
     return false;
   }
-  public void stopPlayback() {
+  void stopPlayback() {
     if (midiPlayer != null) midiPlayer.stop();
   }
 
@@ -261,7 +266,6 @@ public final class Main extends JFrame
 
     contentPane.add(new JScrollPane(logArea), BorderLayout.SOUTH);
 
-    statusBar = new StatusBar();
     contentPane.add(statusBar, BorderLayout.SOUTH);
 
     noteRenderer = new SingleNoteRenderer();
