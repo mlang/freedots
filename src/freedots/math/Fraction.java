@@ -42,10 +42,8 @@ public class Fraction extends AbstractFraction {
   public int denominator() { return denominator; }
 
   public Fraction simplify() {
-    final int n = numerator();
-    final int d = denominator();
-    final int gcd = gcd(n, d);
-    return (gcd == 1)? this: new Fraction(n / gcd, d / gcd);
+    final int gcd = greatestCommonDivisor();
+    return (gcd == 1)? this: new Fraction(numerator / gcd, denominator / gcd);
   }
 
   public static final Fraction ZERO = new Fraction(0);

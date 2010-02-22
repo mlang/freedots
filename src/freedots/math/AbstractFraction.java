@@ -62,6 +62,15 @@ public abstract class AbstractFraction
    */
   public boolean isDyadic() { return Integer.bitCount(denominator()) == 1; }
 
+  /** Computes the largest positive integer that divides
+   *  the numerator and denominator without a remainder.
+   * @see <a href="http://en.wikipedia.org/wiki/Greatest_common_divisor">
+   *      Wikipedia: Greatest common divisor</a>
+   */
+  public int greatestCommonDivisor() {
+    final int n = numerator(), d = denominator();
+    return (n > d)? gcd(n, d): gcd(d, n);
+  }
   /** Returns the multiplicative inverse of a fraction.
    * @see <a href="http://en.wikipedia.org/wiki/Multiplicative_inverse">
    *      Wikipedia: Multiplicative inverse</a>
@@ -110,10 +119,7 @@ public abstract class AbstractFraction
     return divide(new Fraction(1, 4 * ticksPerQuarter)).numerator();
   }
 
-  protected static int gcd(final int a, final int b) {
-    return (a > b)? calcGcd(a, b): calcGcd(b, a);
-  }
-  private static int calcGcd(final int larger, final int smaller) {
-    return smaller == 0? larger: calcGcd(smaller, larger%smaller);
+  private static int gcd(final int larger, final int smaller) {
+    return smaller == 0? larger: gcd(smaller, larger%smaller);
   }
 }
