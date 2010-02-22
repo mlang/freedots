@@ -31,6 +31,7 @@ import java.util.Map;
 import java.util.Set;
 
 import freedots.logging.Logger;
+import freedots.math.AbstractFraction;
 import freedots.math.Fraction;
 import freedots.math.PowerOfTwo;
 import freedots.music.Accidental;
@@ -303,7 +304,7 @@ public final class Note implements RhythmicElement {
   public Staff getStaff() { return staff; }
   public void setStaff(Staff staff) { this.staff = staff; }
 
-  class Lyric implements freedots.music.Lyric {
+  static class Lyric implements freedots.music.Lyric {
     Element element;
 
     Lyric(Element element) {
@@ -364,15 +365,12 @@ public final class Note implements RhythmicElement {
     if (instrument != null) return instrument.getMidiProgram();
     return 0;
   }
-  public Fraction getDuration() throws MusicXMLParseException {
+  public AbstractFraction getDuration() throws MusicXMLParseException {
     if (duration != null) {
       int value = Math.round(Float.parseFloat(duration.getNodeValue()));
-      Fraction fraction = new Fraction(value * durationMultiplier,
-                                       4 * divisions);
-      return fraction;
+      return new Fraction(value * durationMultiplier, 4 * divisions);
     }
-    return new Fraction(getAugmentedFraction().numerator(),
-                        getAugmentedFraction().denominator()); 
+    return getAugmentedFraction();
   }
 
   public Notations getNotations() { return notations; }

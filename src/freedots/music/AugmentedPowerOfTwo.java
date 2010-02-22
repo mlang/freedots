@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import freedots.math.Fraction;
+import freedots.math.AbstractFraction;
 import freedots.math.PowerOfTwo;
 
 /** Represents a musical duration with augmentation dots and
@@ -112,16 +113,17 @@ public class AugmentedPowerOfTwo extends PowerOfTwo {
   public static final PowerOfTwo SEMIHEMIDEMISEMIQUAVER = new PowerOfTwo(-7);
 
   /** Tries to guess power and augmentation dots from a fractional value.
-   * @throws IllegalArgumentException if the fraction could not be converted
+   * @throws IllegalArgumentException if the value could not be converted
    */
   // TODO: Handle time modification somehow, perhaps a big table?
-  public static AugmentedPowerOfTwo valueOf(Fraction fraction) {
-    fraction.simplify();
+  public static AugmentedPowerOfTwo valueOf(final AbstractFraction value) {
+    if (value instanceof AugmentedPowerOfTwo) return value;
+    Fraction fraction = new Fraction(value).simplify();
     if (!fraction.isDyadic())
-      throw new IllegalArgumentException(fraction.toString());
+      throw new IllegalArgumentException(value.toString());
     List<AugmentedPowerOfTwo> parts = decompose(fraction, LONGA);
     if (parts.size() != 1)
-      throw new IllegalArgumentException(fraction.toString() + parts);
+      throw new IllegalArgumentException(value.toString() + parts);
 
     return parts.get(0);
   }

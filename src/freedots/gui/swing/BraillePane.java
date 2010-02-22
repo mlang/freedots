@@ -67,31 +67,30 @@ final class BraillePane extends javax.swing.JTextPane {
    * @see #getText
    */
   public void setText(final BrailleList text) {
-    StyledDocument document =
-      (StyledDocument)getEditorKit().createDefaultDocument();
+    setContentType("text/plain");
+    StyledDocument doc = (StyledDocument)getEditorKit().createDefaultDocument();
 
-    insertBrailleList(text, document.getStyle(StyleContext.DEFAULT_STYLE),
-                      document);
+    insertBrailleList(text, doc.getStyle(StyleContext.DEFAULT_STYLE), doc);
  
-    setStyledDocument(document);
+    setStyledDocument(doc);
     setCaretPosition(0);
   }
 
   /** Inserts braille signs of the transcription in the document, with
    *  different colors corresponding to each braille sign.
    */
-  private void insertBrailleList(BrailleList strings, Style defaut,
-                                 StyledDocument document) {
+  private void insertBrailleList(final BrailleList strings, final Style parent,
+                                 final StyledDocument document) {
     for (BrailleSequence seq: strings) {
       if (seq instanceof Sign) {
         Sign sign = (Sign)seq;
-        Style style = document.addStyle(null, defaut);
+        Style style = document.addStyle(null, parent);
         StyleConstants.setForeground(style, SignColorMap.DEFAULT.get(sign));
 
         try {
           document.insertString(document.getLength(), sign.toString(), style);
         } catch (BadLocationException e) { }
-      } else insertBrailleList((BrailleList)seq, defaut, document);
+      } else insertBrailleList((BrailleList)seq, parent, document);
     }
   }
 

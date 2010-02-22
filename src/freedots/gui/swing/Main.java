@@ -66,8 +66,7 @@ import freedots.transcription.Transcriber;
 /**
  * Main class for Swing based graphical user interface.
  */
-public final class Main
-  extends JFrame
+public final class Main extends JFrame
   implements javax.swing.event.CaretListener,
              freedots.gui.GraphicalUserInterface,
              freedots.playback.PlaybackObserver {
@@ -130,8 +129,7 @@ public final class Main
           if (autoPlay) {
             midiPlayer.stop();
             try {
-              MIDISequence sequence = new MIDISequence(note);
-              midiPlayer.setSequence(sequence);
+              midiPlayer.setSequence(new MIDISequence(note));
               midiPlayer.start();
             } catch (javax.sound.midi.InvalidMidiDataException e) {
               e.printStackTrace();
