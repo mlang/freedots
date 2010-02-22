@@ -26,19 +26,14 @@ package freedots.math;
  */
 public class PowerOfTwo extends AbstractFraction {
   private int power;
-  protected void setPower(final int power) {
-    this.power = power;
-  }
-  public PowerOfTwo(final int power) {
-    setPower(power);
-  }
+  protected void setPower(final int power) { this.power = power; }
+  public PowerOfTwo(final int power) { setPower(power); }
   public int getPower() { return power; }
 
   public int numerator() { return (power < 0)? 1: pow2(power); }
   public int denominator() { return (power >= 0)? 1: pow2(-power); }
 
   public PowerOfTwo multiply(final PowerOfTwo other) {
-    if (other == null) throw new NullPointerException();
     return new PowerOfTwo(power + other.power);
   }
 
