@@ -66,6 +66,10 @@ final class EditFingeringAction extends javax.swing.AbstractAction {
     putValue(ACCELERATOR_KEY,
              KeyStroke.getKeyStroke(KeyEvent.VK_F, ActionEvent.CTRL_MASK));
   }
+  /** Launches a fingering editor dialog if the currently selected sign
+   *  represents a note.
+   * @see java.awt.event.ActionListener#actionPerformed
+   */
   public void actionPerformed(ActionEvent event) {
     Object scoreObject = gui.getScoreObjectAtCaretPosition();
     if (scoreObject != null && scoreObject instanceof Note) {

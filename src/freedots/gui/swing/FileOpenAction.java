@@ -51,12 +51,8 @@ public final class FileOpenAction extends javax.swing.AbstractAction {
     putValue(ACCELERATOR_KEY,
              KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
   }
-  /**
-   * This is called when the action is invoked (through the menu or keystroke).
-   *
-   * A dialog box is created to query the file name from the user.
-   *
-   * @param event is the ActionEvent which triggered this action
+  /** Launches a file open dialog and loads the selected file.
+   * @see java.awt.event.ActionListener#actionPerformed
    */
   public void actionPerformed(final ActionEvent event) {
     JFileChooser fileChooser = new JFileChooser();

@@ -46,6 +46,9 @@ final class DescribeSignAction extends javax.swing.AbstractAction {
     putValue(ACCELERATOR_KEY,
              KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0));
   }
+  /** Launches the sign description dialog.
+   * @see java.awt.event.ActionListener#actionPerformed
+   */
   public void actionPerformed(ActionEvent event) {
     Sign sign = gui.getSignAtCaretPosition();
     if (sign != null) {

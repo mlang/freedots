@@ -58,6 +58,11 @@ public final class FileSaveAsAction extends javax.swing.AbstractAction {
     putValue(SHORT_DESCRIPTION, "Export to braille or standard MIDI file");
     putValue(MNEMONIC_KEY, KeyEvent.VK_A);
   }
+  /** Uses [@link JFileChooser} to prompt the user for a file name to save to.
+   * <p>
+   * The output file format is determined according to the file extension.
+   * @see java.awt.event.ActionListener#actionPerformed
+   */
   public void actionPerformed(ActionEvent event) {
     Score score = gui.getScore();
     if (score != null) {

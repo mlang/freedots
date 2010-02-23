@@ -37,7 +37,11 @@ public final class StopPlaybackAction extends javax.swing.AbstractAction {
     putValue(ACCELERATOR_KEY,
              KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
   }
+  /** Stops playback.
+   * @see java.awt.event.EventListener#actionPerformed
+   */
   public void actionPerformed(ActionEvent event) {
     gui.stopPlayback();
   }
 }
+

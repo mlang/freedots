@@ -62,6 +62,9 @@ final class DescribeColorAction extends javax.swing.AbstractAction {
     //putValue(ACCELERATOR_KEY,
             // KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0));
   }
+  /** Launches the color legend dialog.
+   * @see java.awt.event.ActionListener#actionPerformed
+   */
   public void actionPerformed(ActionEvent event) {
     final String title = "Description of the colors used";
     if (colorLegend == null) colorLegend = new ColorLegend(null, title, false);

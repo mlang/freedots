@@ -37,6 +37,9 @@ final class PlayScoreAction extends javax.swing.AbstractAction {
     putValue(ACCELERATOR_KEY,
              KeyStroke.getKeyStroke(KeyEvent.VK_P, ActionEvent.CTRL_MASK));
   }
+  /** Starts playback of the currently loaded score.
+   * @see java.awt.event.EventListener#actionPerformed
+   */
   public void actionPerformed(ActionEvent event) {
     gui.startPlayback();
   }

@@ -33,6 +33,9 @@ public final class QuitAction extends javax.swing.AbstractAction {
     putValue(MNEMONIC_KEY, KeyEvent.VK_Q);
     this.gui = gui;
   }
+  /** Exits the application.
+   * @see java.awt.event.EventListener#actionPerformed
+   */
   public void actionPerformed(ActionEvent event) {
     gui.quit();
   }
