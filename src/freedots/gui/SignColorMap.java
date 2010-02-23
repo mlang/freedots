@@ -58,6 +58,7 @@ public class SignColorMap extends HashMap<Class<? extends Sign>, Color> {
     put(RestSign.class, Color.cyan);
     put(SlurSign.class, Color.lightGray);
     put(TieSign.class, Color.lightGray);
+    put(BrailleChord.ChordTieSign.class, Color.lightGray);
     put(Text.class, new Color(160, 82, 45));
     put(TextPart.class, new Color(160, 82, 45));
   }

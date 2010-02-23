@@ -89,7 +89,7 @@ final class BraillePane extends javax.swing.JTextPane {
 
         try {
           document.insertString(document.getLength(), sign.toString(), style);
-        } catch (BadLocationException e) { }
+        } catch (BadLocationException e) { e.printStackTrace(); }
       } else insertBrailleList((BrailleList)seq, parent, document);
     }
   }

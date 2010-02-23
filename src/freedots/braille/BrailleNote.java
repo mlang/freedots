@@ -48,6 +48,15 @@ public class BrailleNote extends BrailleList {
    * @param lastPitch is used to decide if an octave sign needs to be inserted
    */
   public BrailleNote(final Note note, final AbstractPitch lastPitch) {
+    this(note, lastPitch, true);
+  }
+  /** Construct a braille note and all of its children.
+   * @param note refers to the MusicXML Note object
+   * @param lastPitch is used to decide if an octave sign needs to be inserted
+   * @param allowTieSign is false if ties should not be printed.
+   */
+  public BrailleNote(final Note note, final AbstractPitch lastPitch,
+                     final boolean allowTieSign) {
     super();
     this.note = note;
 
@@ -84,20 +93,17 @@ public class BrailleNote extends BrailleList {
       }
     }
 
-    if (note.isTieStart()) {
+    if (allowTieSign && note.isTieStart()) {
       add(new TieSign());
-    } else {
-      boolean addSlur = false;
-      for (Slur<Note> slur:note.getSlurs()) {
-        if (!slur.lastNote(note)) {
-          addSlur = true;
-          break;
-        }
-      }
-      if (addSlur) {
-        add(new SlurSign());
+    }
+    boolean addSlur = false;
+    for (Slur<Note> slur:note.getSlurs()) {
+     if (!slur.lastNote(note)) {
+         addSlur = true;
+        break;
       }
     }
+    if (addSlur) add(new SlurSign());
   }
   @Override public String getDescription() {
     return "A note.";

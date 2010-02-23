@@ -51,7 +51,7 @@ import freedots.musicxml.Note;
  *  Note object.
  */
 @SuppressWarnings("serial")
-public final class EditFingeringAction extends javax.swing.AbstractAction {
+final class EditFingeringAction extends javax.swing.AbstractAction {
   private Main gui;
   private FingeringEditor fingeringEditor = null;
   private boolean dialogShowing = false;
@@ -59,7 +59,7 @@ public final class EditFingeringAction extends javax.swing.AbstractAction {
   /** Construct a new fingering editing action object.
    * @param gui is used to retrieve the object underneath the caret
    */
-  public EditFingeringAction(final Main gui) {
+  EditFingeringAction(final Main gui) {
     super("Fingering...");
     this.gui = gui;
     putValue(SHORT_DESCRIPTION, "Edit fingering for this note");
@@ -69,7 +69,7 @@ public final class EditFingeringAction extends javax.swing.AbstractAction {
   public void actionPerformed(ActionEvent event) {
     Object scoreObject = gui.getScoreObjectAtCaretPosition();
     if (scoreObject != null && scoreObject instanceof Note) {
-      if (fingeringEditor == null) fingeringEditor = new FingeringEditor(gui);
+      if (fingeringEditor == null) fingeringEditor = new FingeringEditor();
       if (!dialogShowing) {
         fingeringEditor.setNote((Note)scoreObject);
         dialogShowing = true;
@@ -83,14 +83,12 @@ public final class EditFingeringAction extends javax.swing.AbstractAction {
    */
   class FingeringEditor extends JDialog implements ActionListener {
     private Note note;
-    private Main main;
 
     private JTextField text;
     private JButton okButton, cancelButton;
 
-    FingeringEditor(final Main parent) {
-      super(parent, "Fingering", true);
-      this.main = parent;
+    FingeringEditor() {
+      super(gui, "Fingering", true);
 
       JPanel fingerPanel = new JPanel(new BorderLayout());
       JLabel label = new JLabel("Fingering: ");
@@ -133,7 +131,7 @@ public final class EditFingeringAction extends javax.swing.AbstractAction {
       getRootPane().setDefaultButton(okButton);
 
       pack();
-      setLocationRelativeTo(parent);
+      setLocationRelativeTo(gui);
     }
 
     void setNote(Note note) {
@@ -164,10 +162,11 @@ public final class EditFingeringAction extends javax.swing.AbstractAction {
         }
         note.setFingering(fingering);
         setVisible(false);
-        main.triggerTranscription();
+        gui.triggerTranscription();
       } else if(cancelButton == e.getSource()) {
         setVisible(false);
       }
     }
   }
 }
+

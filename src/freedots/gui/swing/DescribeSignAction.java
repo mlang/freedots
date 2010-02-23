@@ -33,13 +33,13 @@ import freedots.braille.Sign;
 /** Pops up a dialog to describe the sign at the caret position.
  */
 @SuppressWarnings("serial")
-public final class DescribeSignAction extends javax.swing.AbstractAction {
+final class DescribeSignAction extends javax.swing.AbstractAction {
   private final Main gui;
   /** Flag to avoid firing up several message dialogs.
    */
   private boolean dialogShowing = false;
 
-  public DescribeSignAction(final Main gui) {
+  DescribeSignAction(final Main gui) {
     super("Describe sign...");
     this.gui = gui;
     putValue(SHORT_DESCRIPTION, "Describe the sign at caret position");

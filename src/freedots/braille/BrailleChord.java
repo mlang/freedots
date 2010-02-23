@@ -51,15 +51,18 @@ public class BrailleChord extends BrailleList {
     final Iterator<RhythmicElement> iterator = chord.getSorted().iterator();
     assert iterator.hasNext();
 
+    final boolean allNotesTied = hasAllNotesTied();
+
     final Note firstNote = (Note)iterator.next();
-    topNote = new BrailleNote(firstNote, lastPitch);
-    add(topNote);
+    add(topNote = new BrailleNote(firstNote, lastPitch, !allNotesTied));
 
     assert iterator.hasNext();
 
     while (iterator.hasNext()) {
-      add(new ChordStep((Note)iterator.next(), firstNote));
+      add(new ChordStep((Note)iterator.next(), firstNote, !allNotesTied));
     }
+
+    if (allNotesTied) add(new ChordTieSign());
   }
   @Override public String getDescription() {
     return "A chord.";
@@ -74,12 +77,20 @@ public class BrailleChord extends BrailleList {
    */
   public AbstractPitch getNotePitch() { return topNote.getPitch(); }
 
+  private boolean hasAllNotesTied() {
+    final Iterator<RhythmicElement> iterator = chord.iterator();
+    while (iterator.hasNext()) {
+      if (!((Note)iterator.next()).isTieStart()) return false;
+    }
+    return true;
+  }
+
   /** Represents an interval in the braille chord.
    */
   public static class ChordStep extends BrailleList {
     private final Note note;
 
-    ChordStep(final Note note, final Note relativeTo) {
+    ChordStep(final Note note, final Note relativeTo, final boolean allowTieSign) {
       super();
       this.note = note;
 
@@ -104,7 +115,7 @@ public class BrailleChord extends BrailleList {
           add(new BrailleFingering(fingering));
       }
 
-      if (note.isTieStart()) { add(new TieSign()); }
+      if (allowTieSign && note.isTieStart()) { add(new TieSign()); }
     }
 
     /** Returns the target note indicated by this interval.
@@ -133,6 +144,13 @@ public class BrailleChord extends BrailleList {
       "unison", "second", "third", "fourth", "fifth", "sixth",
       "seventh", "octave"
     };
+  }
+
+  public static class ChordTieSign extends Sign {
+    ChordTieSign() { super(braille(46, 14)); }
+    public String getDescription() {
+      return "Indicates that all notes of a chord are tied to the next chord.";
+    }
   }
 }
 

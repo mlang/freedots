@@ -47,7 +47,7 @@ import freedots.gui.SignColorMap;
 /** Pops up a dialog to describe the different colors used for the various
  *  signs.
  */
-public final class DescribeColorAction extends javax.swing.AbstractAction {
+final class DescribeColorAction extends javax.swing.AbstractAction {
   private final Main gui;
   private ColorLegend colorLegend;
  
@@ -55,7 +55,7 @@ public final class DescribeColorAction extends javax.swing.AbstractAction {
    */
   private boolean dialogShowing = false;
 
-  public DescribeColorAction(final Main gui) {
+  DescribeColorAction(final Main gui) {
     super("Describe colors...");
     this.gui = gui;
     //putValue(SHORT_DESCRIPTION, "Describe the sign at caret position");
