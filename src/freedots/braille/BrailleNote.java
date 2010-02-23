@@ -43,20 +43,21 @@ import freedots.musicxml.Note;
 public class BrailleNote extends BrailleList {
   private final Note note;
 
-  /** Construct a braille note and all of its children.
+  /** Constructs a braille note and all of its composing signs.
    * @param note refers to the MusicXML Note object
    * @param lastPitch is used to decide if an octave sign needs to be inserted
    */
   public BrailleNote(final Note note, final AbstractPitch lastPitch) {
     this(note, lastPitch, true);
   }
-  /** Construct a braille note and all of its children.
+  /** Constructs a braille note and all its composing signs.
    * @param note refers to the MusicXML Note object
    * @param lastPitch is used to decide if an octave sign needs to be inserted
-   * @param allowTieSign is false if ties should not be printed.
+   * @param allowTieSign is false if ties should not be inserted.  This is
+   *        used to support {@link BrailleChord.ChordTieSign}.
    */
-  public BrailleNote(final Note note, final AbstractPitch lastPitch,
-                     final boolean allowTieSign) {
+  BrailleNote(final Note note, final AbstractPitch lastPitch,
+              final boolean allowTieSign) {
     super();
     this.note = note;
 
