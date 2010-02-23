@@ -22,6 +22,12 @@
  */
 package freedots.braille;
 
+/** The tie is placed immediately after the first of the two tied notes, or
+ *  after any slur, fingering or tremolo indications connected with this note.
+ *  It also follows the dot in the case of dotted notes.
+ * @see <a href="http://brl.org/music/code/bmb/chap09/index.html">Braille Music
+ *      Code 1997: Ties</a>
+ */
 public class TieSign extends Sign {
   public TieSign() { super(braille(4, 14)); }
 

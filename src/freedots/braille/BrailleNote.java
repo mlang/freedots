@@ -94,17 +94,16 @@ public class BrailleNote extends BrailleList {
       }
     }
 
-    if (allowTieSign && note.isTieStart()) {
-      add(new TieSign());
-    }
     boolean addSlur = false;
     for (Slur<Note> slur:note.getSlurs()) {
-     if (!slur.lastNote(note)) {
-         addSlur = true;
+      if (!slur.lastNote(note)) {
+        addSlur = true;
         break;
       }
     }
     if (addSlur) add(new SlurSign());
+
+    if (allowTieSign && note.isTieStart()) add(new TieSign());
   }
   @Override public String getDescription() {
     return "A note.";
