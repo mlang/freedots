@@ -31,6 +31,7 @@ import javax.sound.midi.MidiEvent;
 import javax.sound.midi.ShortMessage;
 import javax.sound.midi.Track;
 
+import freedots.math.AbstractFraction;
 import freedots.math.Fraction;
 import freedots.music.AccidentalContext;
 import freedots.music.Articulation;
@@ -134,7 +135,7 @@ public final class MIDISequence extends javax.sound.midi.Sequence {
         Direction direction = (Direction)event;
         if (direction.getSound() != null) event = direction.getSound();
 
-        final int tick = direction.getOffset().add(offset).toInteger(resolution);
+        final int tick = toInteger(direction.getOffset().add(offset));
         if (direction.isPedalPress()) {
           track.add(new MidiEvent(createPedalMessage(0, true), tick));
         } else if (direction.isPedalRelease()) {
@@ -156,7 +157,7 @@ public final class MIDISequence extends javax.sound.midi.Sequence {
       } else if (event instanceof Chord) {
         MetaEventRelay temp = null;
         if (metaEventRelay != null) {
-          int midiTick = event.getOffset().add(offset).toInteger(resolution);
+          int midiTick = toInteger(event.getOffset().add(offset));
           metaMessage = metaEventRelay.createMetaMessage((Chord)event);
           track.add(new MidiEvent(metaMessage, midiTick));
           temp = metaEventRelay;
@@ -168,7 +169,7 @@ public final class MIDISequence extends javax.sound.midi.Sequence {
         Sound sound = (Sound)event;
         MetaMessage tempoMessage = sound.getTempoMessage();
         if (tempoMessage != null) {
-          int midiTick = sound.getOffset().add(offset).toInteger(resolution);
+          int midiTick = toInteger(sound.getOffset().add(offset));
           tempoTrack.add(new MidiEvent(tempoMessage, midiTick));
         }
         Integer newVelocity = sound.getMidiVelocity();
@@ -220,8 +221,8 @@ public final class MIDISequence extends javax.sound.midi.Sequence {
     throws InvalidMidiDataException {
     if (!note.isGrace()) {
       Pitch pitch = note.getPitch();
-      int offset = note.getOffset().add(add).toInteger(resolution);
-      int duration = note.getDuration().toInteger(resolution);
+      int offset = toInteger(note.getOffset().add(add));
+      int duration = toInteger(note.getDuration());
       Set<Articulation> articulations = note.getArticulations();
       if (articulations.contains(Articulation.staccatissimo)) {
         duration /= 4;
@@ -322,5 +323,11 @@ public final class MIDISequence extends javax.sound.midi.Sequence {
     ShortMessage msg = new ShortMessage();
     msg.setMessage(ShortMessage.CONTROL_CHANGE, channel, 64, press? 127: 0);
     return msg;
+  }
+
+  protected int toInteger(final AbstractFraction fraction) {
+    AbstractFraction value = fraction.divide(new Fraction(1, 4 * resolution));
+    assert value.denominator() == 1;
+    return value.numerator();
   }
 }

@@ -93,7 +93,6 @@ public class TestAugmentedFraction extends junit.framework.TestCase {
     f = new Fraction(1, 24);
     af = new AugmentedPowerOfTwo(AugmentedPowerOfTwo.SEMIQUAVER, 0, 4, 6);
     assertTrue("1/16 (6 in 4) == 1/24", f.equals(af));
-    assertEquals("1/16 (6 in 4) at 48 divisions", af.toInteger(48), 8);
 
     af = new AugmentedPowerOfTwo(AugmentedPowerOfTwo.QUAVER, 1);
     assertEquals("1/8. log == 5", af.getPower(), -3);

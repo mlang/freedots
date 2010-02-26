@@ -115,10 +115,6 @@ public abstract class AbstractFraction
     return String.valueOf(numerator()) + "/" + denominator();
   }
 
-  public int toInteger(final int ticksPerQuarter) {
-    return divide(new Fraction(1, 4 * ticksPerQuarter)).numerator();
-  }
-
   private static int gcd(final int larger, final int smaller) {
     return smaller == 0? larger: gcd(smaller, larger%smaller);
   }
