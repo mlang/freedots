@@ -82,8 +82,8 @@ public final class CompressionManager{
                     }
                 }
             }
-            else if (subSeq instance of BrailleList){ // then we have to call recursively the algorithm
-                applyDoublingToSlurRec(subSeq, slurCounter);  
+            else if (subSeq instanceof BrailleList){ // then we have to call recursively the algorithm
+                applyDoublingToSlurRec((BrailleList)subSeq, slurCounter);  
             }   
         }
     }
