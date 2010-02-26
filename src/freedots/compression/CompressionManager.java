@@ -57,7 +57,44 @@ public final class CompressionManager{
 	            return new OccurrenceCounter<BrailleSequence>();
 	    }
 	}
-
+    
+    /**
+     * attempt to implement doubling for slurs only
+     * FIXME : to complete, and to generalize as much as possible
+     * Besides, if we implement it this way, we won't be able to do 
+     * all the algorithms in only one cover of the BrailleList.
+     */
+    public void applyDoublingToSlur(BrailleList seq){
+        OccurrenceCounter<SlurSign> slurCounter = new OccurrenceCounter<SlurSign>();
+        applyDoublingToSlurRec(seq, slurCounter);
+    }
+    
+    private void applyDoublingToSlurRec(BrailleList seq, OccurrenceCounter<SlurSign> slurCounter){
+        for(BrailleSequence subSeq : seq){
+            if(subSeq instanceof BrailleNote){// then we look if it is a slurred note
+                for(BrailleSequence subSubSeq : (BrailleList)subSeq){
+                    if(subSubSeq instanceof SlurSign){// then we add the SlurSign to out SlurSign counter.
+                        slurCounter.addElement((SlurSign)subSubSeq);
+                        break;
+                    }
+                    else{// we stop the counter, we apply doubling to its elements and drop them to start a new count later.
+                        doublingOnCounterElements(slurCounter);
+                    }
+                }
+            }
+            else if (subSeq instance of BrailleList){ // then we have to call recursively the algorithm
+                applyDoublingToSlurRec(subSeq, slurCounter);  
+            }   
+        }
+    }
+    
+    public void doublingOnCounterElements(OccurrenceCounter<? extends BrailleSequence> counter){
+        // TODO : disregarding the type of object you're dealing with, 
+        // the object takes an OccurenceCounter and decide whether 
+        // doubling should be applied on its content.
+        // depending on size of the char chain for the type, and number of elements counted.
+    }
+    
     public static enum SubClassName{
         SLUR,
         CHORD,
