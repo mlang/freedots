@@ -88,6 +88,8 @@ public final class CompressionManager{
         }
     }
     
+    
+    
     public void doublingOnCounterElements(OccurrenceCounter<? extends BrailleSequence> counter){
         // TODO : disregarding the type of object you're dealing with, 
         // the object takes an OccurenceCounter and decide whether 
