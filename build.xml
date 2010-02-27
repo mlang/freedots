@@ -220,7 +220,7 @@
              doctitle="freedots"
              package="true">
       <classpath refid="class.path"/>
-      <link href="http://java.sun.com/j2se/1.6.0/docs/api/"/>
+      <link href="http://java.sun.com/javase/6/docs/api/"/>
     </javadoc>
   </target>
 </project>
