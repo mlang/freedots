@@ -53,6 +53,7 @@ import freedots.playback.MetaEventRelay;
  * @see freedots.playback.PlaybackObserver
  */
 public final class MIDISequence extends javax.sound.midi.Sequence {
+  private final Fraction pulseDuration;
   private boolean unroll = true;
   /** Some MIDI reading applications do prefer if all tempo changes are bundled
    *  in the first track of the file.
@@ -81,6 +82,7 @@ public final class MIDISequence extends javax.sound.midi.Sequence {
                       final MetaEventRelay metaEventRelay)
     throws InvalidMidiDataException {
     super(PPQ, calculatePPQ(score.getDivisions()));
+    this.pulseDuration = QUARTER.divide(resolution);
     this.unroll = unroll;
     this.metaEventRelay = metaEventRelay;
 
@@ -93,6 +95,8 @@ public final class MIDISequence extends javax.sound.midi.Sequence {
    */
   public MIDISequence(final Note note) throws InvalidMidiDataException {
     super(PPQ, calculatePPQ(note.getPart().getScore().getDivisions()));
+    this.pulseDuration = QUARTER.divide(resolution);
+
     Track track = createTrack();
 
     initializeMidiPrograms(track, note.getPart());
@@ -325,9 +329,10 @@ public final class MIDISequence extends javax.sound.midi.Sequence {
     return msg;
   }
 
-  protected int toInteger(final AbstractFraction fraction) {
-    AbstractFraction value = fraction.divide(new Fraction(1, 4 * resolution));
+  protected int toInteger(final AbstractFraction duration) {
+    AbstractFraction value = duration.divide(pulseDuration);
     assert value.denominator() == 1;
-    return value.numerator();
+    return value.intValue();
   }
+  protected static final Fraction QUARTER = new Fraction(1, 4);
 }

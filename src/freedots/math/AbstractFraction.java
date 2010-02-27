@@ -55,15 +55,14 @@ public abstract class AbstractFraction
     return false;
   }
 
-  /** Returns {@code true} if the denominator of this fraction is a power of
-   *  two.
+  /** Returns {@code true} if {@link #denominator} is a power of two.
    * @see <a href="http://en.wikipedia.org/wiki/Dyadic_fraction">Wikipedia:
    *      Dyadic fraction</a>
    */
   public boolean isDyadic() { return Integer.bitCount(denominator()) == 1; }
 
   /** Computes the largest positive integer that divides
-   *  the numerator and denominator without a remainder.
+   *  {@link #numerator} and {@link #denominator} without a remainder.
    * @see <a href="http://en.wikipedia.org/wiki/Greatest_common_divisor">
    *      Wikipedia: Greatest common divisor</a>
    */
@@ -74,6 +73,7 @@ public abstract class AbstractFraction
   /** Returns the multiplicative inverse of a fraction.
    * @see <a href="http://en.wikipedia.org/wiki/Multiplicative_inverse">
    *      Wikipedia: Multiplicative inverse</a>
+   */
   public Fraction reciprocal() {
     return new Fraction(denominator(), numerator());
   }
@@ -90,11 +90,9 @@ public abstract class AbstractFraction
     final int bd = other.denominator();
     return new Fraction(an*bd + bn*ad, ad*bd).simplify();
   }      
-  public Fraction add(final Integer other) { return add(new Fraction(other)); }
   public Fraction subtract(final AbstractFraction other) {
     return add(other.negate());
   }
-  public Fraction subtract(final Integer other) { return add(-other); }
   public Fraction multiply(final AbstractFraction other) {
     return new Fraction(this.numerator() * other.numerator(),
                         this.denominator() * other.denominator()).simplify();
@@ -119,3 +117,4 @@ public abstract class AbstractFraction
     return smaller == 0? larger: gcd(smaller, larger%smaller);
   }
 }
+

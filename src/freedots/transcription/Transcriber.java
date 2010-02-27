@@ -95,7 +95,7 @@ public final class Transcriber {
   }
   /** Find the starting index of the character sequence for Object.
    * <p>
-   * This is the reverse of {@link #getObjectAtIndex}.
+   * This is the reverse of {@link #getScoreObjectAtIndex}.
    * @param object the score object to search in the transcribed text.
    * @return the index of the first character that was generated due to object
    */
