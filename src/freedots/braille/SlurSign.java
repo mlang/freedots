@@ -43,6 +43,10 @@ public class SlurSign extends Sign implements Doublable {
   }
 
   //public OccurrenceCounter<?> getCounter(){}
-  public void addToCounter(){}
-  public void emptyCounter(){}
+    public void setMask(BrailleMask newMask){
+        this.mask = newMask;
+    }
+    public BrailleMask getMask(){
+        return this.mask;
+    }
 }

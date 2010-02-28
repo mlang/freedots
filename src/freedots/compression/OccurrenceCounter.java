@@ -50,4 +50,14 @@ public class OccurrenceCounter<T extends BrailleSequence> {
 	this.list = new LinkedList<T>();
 	this.count = 0;
     }
+    
+    public int length(){
+        
+        return this.list.size();
+    }
+    
+    public T getElement(int position){
+        return this.list.get(position);
+            
+    }
 } 

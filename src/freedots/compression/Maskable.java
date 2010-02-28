@@ -24,9 +24,8 @@
 package freedots.compression;
 
 public interface Maskable {
-  //public OccurrenceCounter<?> getCounter();
-    public void addToCounter();
-    public void emptyCounter();
+    public void setMask(BrailleMask mask);
+    public BrailleMask getMask();
 }   
 
 

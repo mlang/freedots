@@ -162,7 +162,7 @@ public final class Main
       
       strings = transcriber.getSigns();
       CompressionManager cm=new CompressionManager();
-      cm.ApplyDoubling(strings);
+      cm.applyDoubling(strings);
       displayBrailleList(strings, defaut, sDoc);
       
       textPane.setCaretPosition(0);

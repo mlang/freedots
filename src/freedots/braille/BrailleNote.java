@@ -308,7 +308,7 @@ public class BrailleNote extends BrailleList implements Repeatable{
   }
 
   /**
-   * Methods inherited from the interface Repeatable (itself from Maskable)
+   * Methods inherited from the interface Repeatable
    *
    */
   public static OccurrenceCounter<BrailleNote> occurrenceCounter = new OccurrenceCounter<BrailleNote>();

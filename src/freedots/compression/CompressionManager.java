@@ -29,7 +29,7 @@ import java.util.LinkedList;
 
 public final class CompressionManager{
   
-  public void ApplyDoubling(BrailleList seq){
+  public void applyDoubling(BrailleList seq){
     /*    
 LinkedList<OccurrenceCounter<?>> counterList = new LinkedList<OccurrenceCounter<?>>();
     for(SubClassName scn : classList){
@@ -40,6 +40,11 @@ LinkedList<OccurrenceCounter<?>> counterList = new LinkedList<OccurrenceCounter<
     /** TODO : must apply doubling to every class present in the classList.
      */
     OccurrenceCounter<SlurSign> occ = new OccurrenceCounter<SlurSign>(); //FIXME : difficult using of counterList
+    applyDoublingToSlurSignBis(seq, occ);
+  }
+  
+  private void applyDoublingToSlurSign(BrailleList seq, OccurrenceCounter<SlurSign> occ){
+    
     //current position in the linkedList (BrailleList seq)
     int fp=0; //first position of the slur counted 
     int bbn=0; //indicates if we've seen a BrailleNote on this level
@@ -94,21 +99,23 @@ LinkedList<OccurrenceCounter<?>> counterList = new LinkedList<OccurrenceCounter<
          
           System.out.println("On double n :"+fp);
           for(int j=fp+1;j<i;j++){
-            bs = (BrailleList) seq.get(j); 
-            if ( bs.getLast() instanceof SlurSign){
-              s=(SlurSign) bs.getLast();
-              s.mask=BrailleMask.HIDDEN;
+            if(seq.get(j) instanceof BrailleList){
+                bs = (BrailleList) seq.get(j); 
+                if ( bs.getLast() instanceof SlurSign){
+                    s=(SlurSign) bs.getLast();
+                    s.mask=BrailleMask.HIDDEN;
              
-              System.out.println("On cache la slur de la BrailleNote n :"+j);
-            }	    			
+                    System.out.println("On cache la slur de la BrailleNote n :"+j);
+                }	    			
             }
+          }
           occ.count=0;
           System.out.println("On remet à zéro car ya plus de BrailleNote");
         }	
         else{
           if((bbn==0) && (se instanceof BrailleList)){
             System.out.println("Pas de BrailleNote vu à ce niveau, appel sur le fils.");
-            ApplyDoubling((BrailleList)se);
+            applyDoublingToSlurSign((BrailleList)se, occ);
           }
         }
       }
@@ -117,9 +124,70 @@ LinkedList<OccurrenceCounter<?>> counterList = new LinkedList<OccurrenceCounter<
     }
   }
   
-
+  private void applyDoublingToSlurSignBis(BrailleList seq, OccurrenceCounter<SlurSign> occ){
+    
+    //current position in the linkedList (BrailleList seq)
+    int fp=0; //first position of the slur counted 
+    for (int i=0;i<seq.size();i++){
+      System.out.println("(Element n: "+i+")");
+      BrailleSequence se=seq.get(i);
+      System.out.println(se.toString());
+      
+      if (se instanceof BrailleNote){
+        System.out.println("Reading a BrailleNote...");
+        BrailleList bl= (BrailleList) se;
+        if (bl.getLast() instanceof SlurSign){
+          System.out.println("the note is slurred.");
+          if (occ.count==0){
+            fp=i;
+            System.out.println("First SlurSign occured on element n°"+fp);
+          }
+          occ.addElement((SlurSign)bl.getLast());
+          System.out.println("New SlurSign occured : slur n°"+occ.count);
+        }
+        else{
+          System.out.println("...the note is not slurred."); 
+          applyDoublingMaskOnSlurCounter(occ);
+        }
+      }
+      if (!(se instanceof BrailleNote)){
+        System.out.println("Not reading a BrailleNote...");	
+        if(se instanceof BrailleList){
+          System.out.println("...but another list.  Recursive call on its elements.");
+          applyDoublingToSlurSignBis((BrailleList)se, occ);
+        }
+      }
+      if (i==seq.size()-1){
+         System.out.println("End of sequence, parsing back to parent.");
+      }
+    }
+  }
   
-  public void ApplyRepetitions(BrailleSequence seq, LinkedList<SubClassName> classList){
+  public void applyDoublingMaskOnSlurCounter(OccurrenceCounter<SlurSign> occ){
+    int length = occ.length();
+    if(length == 0) return;
+    if(length>3){
+        System.out.println("More than 3 occurences, doubling applied on counter content.");
+
+        occ.getElement(0).setMask(BrailleMask.DOUBLED);   
+        occ.getElement(length-1).setMask(BrailleMask.NORMAL);
+        for(int i=1;i < (length-1);i++){
+            occ.getElement(i).setMask(BrailleMask.HIDDEN);
+            
+        }
+    }         
+    else{
+        System.out.println("3 or less occurences, doubling non applied to the counter content. ");
+        for(int i=0;i < length;i++){
+            occ.getElement(i).setMask(BrailleMask.NORMAL);
+        }
+    }
+    System.out.println("Counter emptied, ready for next count.");
+    System.out.println("****");
+    occ.empty();
+  }
+  
+  public void applyRepetitions(BrailleSequence seq, LinkedList<SubClassName> classList){
     /** TODO : must apply repetition algorithm to every class present in the classList.
      * FIXME : should tackle the classes repetition in a bottom-up order to improve speed.
      */	
