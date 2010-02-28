@@ -27,18 +27,22 @@ import freedots.compression.*;
 
 public class SlurSign extends Sign implements Doublable {
   public SlurSign() { super(braille(14)); }
-
+  
   public String getDescription() {
     return "Indicates that the previous and next note are slurred";
   }
   
   @Override
-	public Color getSignColor() {
-		return this.signColor;
-	}
+    public Color getSignColor() {
+    return this.signColor;
+  }
+  
+  @Override
+    public void setSignColor() {
+    this.signColor = Color.LIGHT_GRAY;
+  }
 
-@Override
-public void setSignColor() {
-	this.signColor = Color.LIGHT_GRAY;
-}
+  //public OccurrenceCounter<?> getCounter(){}
+  public void addToCounter(){}
+  public void emptyCounter(){}
 }

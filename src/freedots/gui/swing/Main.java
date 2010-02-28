@@ -73,6 +73,11 @@ import freedots.playback.MIDIPlayer;
 import freedots.playback.MetaEventRelay;
 import freedots.playback.MetaEventListeningUnavailableException;
 import freedots.transcription.Transcriber;
+import freedots.compression.CompressionManager;
+import freedots.compression.CompressionManager;
+import freedots.compression.CompressionManager.SubClassName;
+
+import java.util.*;
 
 /**
  * Main class for Swing based graphical user interface.
@@ -100,41 +105,43 @@ public final class Main
    * corresponding to each braille sign.
    */
   private void displayBrailleList (BrailleList strings, Style defaut, DefaultStyledDocument sDoc) {
-	  int i = 0;
-      for (BrailleSequence seq: strings) {
-    	  
-    	  if (seq instanceof Sign) {
-    		Sign sign = (Sign) seq;
-    	  	Style styleSign = textPane.addStyle("styleSign"+i, defaut);
-    	    StyleConstants.setForeground(styleSign, sign.getSignColor());
-    	    
-    	    try {
-    	    	String s = seq.toString();
-    	        sDoc.insertString(pos, s, styleSign);
-    	        pos+=s.length();
-    	  } catch (BadLocationException e) { }
-    	  	i++;
-    	  }
-    	  else {
-            BrailleList br=(BrailleList)seq;
-            if(br.isMasked()){
-              Style styleSign = textPane.addStyle("styleSign"+i, defaut);
-              try {
-                String s = br.toString();
-                sDoc.insertString(pos, s, styleSign);
-                pos+=s.length();
-              } catch (BadLocationException e) { }
-              i++;
-            }
-            else {
-              displayBrailleList(br, defaut, sDoc);
-            }
-    	  }
-      }
+    int i = 0;
+    
+    
+    for (BrailleSequence seq: strings) {
       
+      if (seq instanceof Sign) {
+        Sign sign = (Sign) seq;
+        Style styleSign = textPane.addStyle("styleSign"+i, defaut);
+        StyleConstants.setForeground(styleSign, sign.getSignColor());
+    	
+        try {
+          String s = seq.toString();
+          sDoc.insertString(pos, s, styleSign);
+          pos+=s.length();
+        } catch (BadLocationException e) { }
+        i++;
+      }
+      else {
+        BrailleList br=(BrailleList)seq;
+        if(br.isMasked()){
+          Style styleSign = textPane.addStyle("styleSign"+i, defaut);
+          try {
+            String s = br.toString();
+            sDoc.insertString(pos, s, styleSign);
+            pos+=s.length();
+          } catch (BadLocationException e) { }
+          i++;
+        }
+        else {
+          displayBrailleList((BrailleList)seq, defaut, sDoc);
+        }
+      }
+    }
+    
   }
   
-
+  
   
   public void setScore(Score score) {
     this.score = score;
@@ -153,7 +160,9 @@ public final class Main
       sDoc.remove(0, sDoc.getLength());
       pos = 0;
       
-      strings = transcriber.getSigns(); 
+      strings = transcriber.getSigns();
+      CompressionManager cm=new CompressionManager();
+      cm.ApplyDoubling(strings);
       displayBrailleList(strings, defaut, sDoc);
       
       textPane.setCaretPosition(0);

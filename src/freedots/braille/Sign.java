@@ -69,13 +69,17 @@ public abstract class Sign implements BrailleSequence, Cloneable {
    *   the DOUBLED mask state, for instance.
    */
   public final String toString() { 
-   switch(this.mask){
-        case NORMAL :
-           return data;
-        case REPEATED :
-            return new String("[...]");
-        default :
-            return data;
+    switch(this.mask){
+    case NORMAL :
+      return data;
+    case REPEATED :
+      return new String("[...]");
+    case HIDDEN : 
+      return new String("");
+    case DOUBLED :
+      return data+data;
+    default :
+      return data;
     } 
   }
   public final StringBuilder appendTo(StringBuilder sb) {
