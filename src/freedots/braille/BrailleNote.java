@@ -34,6 +34,7 @@ import freedots.music.Ornament;
 import freedots.music.Slur;
 import freedots.musicxml.Note;
 
+import freedots.compression.BrailleMask;
 import freedots.compression.Repeatable;
 import freedots.compression.OccurrenceCounter;
 
@@ -323,4 +324,16 @@ public class BrailleNote extends BrailleList implements Repeatable{
   public void emptyCounter(){
     this.occurrenceCounter.empty();
   }
+  
+  @Override
+  public BrailleMask getMask() {
+	  // TODO Auto-generated method stub
+	  return null;
+  }
+  
+  @Override
+  public void setMask(BrailleMask mask) {
+	  // TODO Auto-generated method stub
+	  
+  }	
 }
