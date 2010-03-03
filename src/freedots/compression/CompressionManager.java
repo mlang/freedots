@@ -24,25 +24,27 @@ package freedots.compression;
 
 import java.util.*;
 import freedots.braille.*;
-
+import freedots.braille.BrailleChord.IntervalSign;
+import freedots.braille.BrailleChord.ChordStep;
 import java.util.LinkedList;
 
 public final class CompressionManager{
   
   public void applyDoubling(BrailleList seq){
-    /*    
-LinkedList<OccurrenceCounter<?>> counterList = new LinkedList<OccurrenceCounter<?>>();
-    for(SubClassName scn : classList){
-      //FIXME : shall conserve the link between position in the list counterList and the class represented.
-      //the order is the same in classList and counterList or use indexOf(Object o)
-      counterList.add(generateCounterFromClass(scn));
-    }
-    /** TODO : must apply doubling to every class present in the classList.
-     */
-    OccurrenceCounter<SlurSign> occ = new OccurrenceCounter<SlurSign>(); //FIXME : difficult using of counterList
-    applyDoublingToSlurSignBis(seq, occ);
+
+    OccurrenceCounter<SlurSign> slurOcc = new OccurrenceCounter<SlurSign>(); 
+    OccurrenceCounter<IntervalSign> intervalOcc = new OccurrenceCounter<IntervalSign>(); 
+    
+    applyDoublingToSlurSignBis(seq, slurOcc);
+    
+    // FIXME : doesn't behave as expected.
+    //applyDoublingToIntervalSignBis(seq, intervalOcc);
   }
   
+  
+  /* TODO : remove dead code if it remains unused
+   *
+
   private void applyDoublingToSlurSign(BrailleList seq, OccurrenceCounter<SlurSign> occ){
     
     //current position in the linkedList (BrailleList seq)
@@ -123,24 +125,22 @@ LinkedList<OccurrenceCounter<?>> counterList = new LinkedList<OccurrenceCounter<
          System.out.println("Fin on remonte");
     }
   }
+
+   *
+   */
   
   private void applyDoublingToSlurSignBis(BrailleList seq, OccurrenceCounter<SlurSign> occ){
-    
-    //current position in the linkedList (BrailleList seq)
-    int fp=0; //first position of the slur counted 
     for (int i=0;i<seq.size();i++){
-      System.out.println("(Element n: "+i+")");
+      System.out.println("(Parsing element n: "+i+")");
       BrailleSequence se=seq.get(i);
-      System.out.println(se.toString());
-      
+      System.out.println(se.toString()); 
       if (se instanceof BrailleNote){
         System.out.println("Reading a BrailleNote...");
         BrailleList bl= (BrailleList) se;
         if (bl.getLast() instanceof SlurSign){
           System.out.println("the note is slurred.");
           if (occ.count==0){
-            fp=i;
-            System.out.println("First SlurSign occured on element n°"+fp);
+            System.out.println("First SlurSign occured on element n°"+i);
           }
           occ.addElement((SlurSign)bl.getLast());
           System.out.println("New SlurSign occured : slur n°"+occ.count);
@@ -186,6 +186,77 @@ LinkedList<OccurrenceCounter<?>> counterList = new LinkedList<OccurrenceCounter<
     System.out.println("****");
     occ.empty();
   }
+  
+  private void applyDoublingToIntervalSignBis(BrailleList seq, OccurrenceCounter<IntervalSign> occ){
+    for (int i=0;i<seq.size();i++){
+      System.out.println("(Parsing element n: "+i+")");
+      BrailleSequence se=seq.get(i);
+      System.out.println(se.toString()); 
+      if (se instanceof BrailleChord){
+        System.out.println("Reading a BrailleChord...");
+        BrailleList bl= (BrailleList) se;
+        for(BrailleSequence subSe : bl){
+            if (subSe instanceof ChordStep){
+                IntervalSign itvl = (IntervalSign)(((BrailleList)subSe).getLast());
+                if (((occ.length()==0) || occ.getLast().getSteps() == itvl.getSteps())){
+                     System.out.println("the chord has the same interval as the chord before.");
+                     occ.addElement(itvl);
+                     System.out.println("New IntervalSign occured : interval n°"+occ.count);
+                }
+                else {
+                    System.out.println("...the chord has not the same interval as the chord before."); 
+                    System.out.println("Applying doubling on the counter content.");
+                    applyDoublingMaskOnCounter(occ);
+                }
+                break;
+            }
+            
+            
+        }
+      }
+      if (!(se instanceof BrailleChord)){
+        System.out.println("Not reading a BrailleChord...");	
+        if(se instanceof BrailleList){
+          System.out.println("...but another list.  Recursive call on its elements.");
+          applyDoublingToIntervalSignBis((BrailleList)se, occ);
+        }
+        else if(se instanceof BrailleNote){
+          System.out.println("...but a BrailleNote. End of potential doubling sequence. Applying doubling on the counter content.");
+          applyDoublingMaskOnCounter(occ);
+        }
+      }
+      if (i==seq.size()-1){
+         System.out.println("End of sequence, parsing back to parent.");
+      }
+    }
+  }
+  
+  public void applyDoublingMaskOnCounter(OccurrenceCounter<? extends Doublable> occ){
+    int length = occ.length();
+    if(length == 0) return;
+    if(length>3){
+        System.out.println("More than 3 occurences, doubling applied on counter content.");
+
+        occ.getElement(0).setMask(BrailleMask.DOUBLED);   
+        occ.getElement(length-1).setMask(BrailleMask.NORMAL);
+        for(int i=1;i < (length-1);i++){
+            occ.getElement(i).setMask(BrailleMask.HIDDEN);
+            
+        }
+    }         
+    else{
+        System.out.println("3 or less occurences, doubling non applied to the counter content. ");
+        for(int i=0;i < length;i++){
+            occ.getElement(i).setMask(BrailleMask.NORMAL);
+        }
+    }
+    System.out.println("Counter emptied, ready for next count.");
+    System.out.println("****");
+    occ.empty();
+  }
+  
+  
+  
   
   public void applyRepetitions(BrailleSequence seq, LinkedList<SubClassName> classList){
     /** TODO : must apply repetition algorithm to every class present in the classList.

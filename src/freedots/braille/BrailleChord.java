@@ -33,6 +33,9 @@ import freedots.music.RhythmicElement;
 import freedots.music.VoiceChord;
 import freedots.musicxml.Note;
 
+import freedots.compression.Doublable;
+import freedots.compression.BrailleMask;
+
 public class BrailleChord extends BrailleList {
   private final VoiceChord chord;
   private final BrailleNote topNote;
@@ -99,11 +102,17 @@ public class BrailleChord extends BrailleList {
 
     @Override public Object getScoreObject() { return note; }
   }
-  public static class IntervalSign extends Sign {
+  public static class IntervalSign extends Sign
+                                    implements Doublable {
     private final int steps;
     IntervalSign(final int steps) {
       super(INTERVALS[steps]);
       this.steps = steps;
+    }
+    
+    // Needed for doubling algos to compare IntervalSign with each other.
+    public int getSteps(){
+        return this.steps;
     }
 
     public String getDescription() {
@@ -126,5 +135,13 @@ public class BrailleChord extends BrailleList {
 	@Override
 	public void setSignColor() {	
 	}
+	
+	public void setMask(BrailleMask mask){
+	    this.mask = mask;
+	}
+	
+    public BrailleMask getMask(){
+        return this.mask;
+    }
   }
 }

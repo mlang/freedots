@@ -51,13 +51,23 @@ public class OccurrenceCounter<T extends BrailleSequence> {
 	this.count = 0;
     }
     
-    public int length(){
-        
+    public int length(){ 
         return this.list.size();
     }
     
     public T getElement(int position){
         return this.list.get(position);
             
+    }
+    
+    public T getLast(){
+        int l = this.length();
+        if(l>0)return this.list.getLast();
+        else return null;
+    }
+    
+    public boolean lastEquals(T outsider){
+        if(outsider.equals(this.getLast())) return true;
+        else return false;
     }
 } 
