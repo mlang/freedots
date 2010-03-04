@@ -99,10 +99,15 @@ class ColorLegend extends JDialog {
     panFinger.setPreferredSize(new Dimension(100, 50));
     panFinger.setBorder(BorderFactory.createTitledBorder("Fingering"));
 
-    JPanel panAccents = new JPanel();
-    panAccents.setBackground(colorMap.get(BrailleNote.ArticulationSign.class));
-    panAccents.setPreferredSize(new Dimension(100, 50));
-    panAccents.setBorder(BorderFactory.createTitledBorder("Accents"));
+    JPanel panArticulation = new JPanel();
+    panArticulation.setBackground(colorMap.get(BrailleNote.ArticulationSign.class));
+    panArticulation.setPreferredSize(new Dimension(100, 50));
+    panArticulation.setBorder(BorderFactory.createTitledBorder("Articulations"));
+    
+    JPanel panOrnament = new JPanel();
+    panOrnament.setBackground(colorMap.get(BrailleNote.OrnamentSign.class));
+    panOrnament.setPreferredSize(new Dimension(100, 50));
+    panOrnament.setBorder(BorderFactory.createTitledBorder("Ornaments"));
 
     JPanel panDot = new JPanel();
     panDot.setBackground(colorMap.get(Dot.class));
@@ -143,7 +148,8 @@ class ColorLegend extends JDialog {
     content.setBackground(Color.white);
     content.add(panAccidental);
     content.add(panFinger);
-    content.add(panAccents);
+    content.add(panArticulation);
+    content.add(panOrnament);
     content.add(panDot);
     content.add(panBarSigns);
     content.add(panOctave);
