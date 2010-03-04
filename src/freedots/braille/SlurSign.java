@@ -29,6 +29,7 @@ public class SlurSign extends Sign implements Doublable {
   public SlurSign() { super(braille(14)); }
   
   public String getDescription() {
+    if(mask==BrailleMask.DOUBLED) return "Indictates that the previous and next notes until this sign are slur";
     return "Indicates that the previous and next note are slurred";
   }
   

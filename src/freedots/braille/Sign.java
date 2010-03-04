@@ -82,10 +82,22 @@ public abstract class Sign implements BrailleSequence, Cloneable {
       return data;
     } 
   }
+
   public final StringBuilder appendTo(StringBuilder sb) {
     return sb.append(data);
   }
-  public final int length() { return data.length(); }
+
+  public final int length() {
+    switch(mask){
+    case HIDDEN :
+      return 0;
+    case DOUBLED :
+      return 2*data.length();
+    default : 
+      return data.length();
+    } 
+  }
+
   public final char charAt(int index) { return data.charAt(index); }
   public final CharSequence subSequence(final int start, final int end) {
     return data.subSequence(start, end);

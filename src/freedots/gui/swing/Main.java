@@ -76,6 +76,7 @@ import freedots.transcription.Transcriber;
 import freedots.compression.CompressionManager;
 import freedots.compression.CompressionManager;
 import freedots.compression.CompressionManager.SubClassName;
+import freedots.compression.BrailleMask;
 
 import java.util.*;
 
@@ -104,40 +105,22 @@ public final class Main
   /** Insert braille signs of the transcription in the document, with different colors
    * corresponding to each braille sign.
    */
-  private void displayBrailleList (BrailleList strings, Style defaut, DefaultStyledDocument sDoc) {
-    int i = 0;
-    
+  private void displayBrailleList (BrailleList strings, Style parent, DefaultStyledDocument document) {
     
     for (BrailleSequence seq: strings) {
-      
       if (seq instanceof Sign) {
-        Sign sign = (Sign) seq;
-        Style styleSign = textPane.addStyle("styleSign"+i, defaut);
-        StyleConstants.setForeground(styleSign, sign.getSignColor());
-    	
+        Sign sign = (Sign)seq;
+        Style style = document.addStyle(null, parent);
+        StyleConstants.setForeground(style, sign.getSignColor());
+       
         try {
-          String s = seq.toString();
-          sDoc.insertString(pos, s, styleSign);
-          pos+=s.length();
-        } catch (BadLocationException e) { }
-        i++;
+          document.insertString(document.getLength(), sign.toString(), style);
+        } catch (BadLocationException e) { e.printStackTrace(); }
       }
-      else {
-        BrailleList br=(BrailleList)seq;
-        if(br.isMasked()){
-          Style styleSign = textPane.addStyle("styleSign"+i, defaut);
-          try {
-            String s = br.toString();
-            sDoc.insertString(pos, s, styleSign);
-            pos+=s.length();
-          } catch (BadLocationException e) { }
-          i++;
-        }
-        else {
-          displayBrailleList((BrailleList)seq, defaut, sDoc);
-        }
-      }
+      else displayBrailleList((BrailleList)seq, parent, document);
     }
+    
+    
     
   }
   
