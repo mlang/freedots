@@ -50,7 +50,7 @@ public class SignColorMap extends HashMap<Class<? extends Sign>, Color> {
     put(BrailleNote.GraceSign.class, Color.green);
     put(BrailleNote.OrnamentSign.class, Color.green);
     put(BrailleNote.ArticulationSign.class, new Color(0, 250, 154));
-    put(BarSign.class, Color.red);
+    put(BarSign.class, new Color(255, 126, 0));
     put(PitchAndValueSign.class, Color.blue);
     put(PostDottedDoubleBarSign.class, new Color(255, 126, 0));
     put(Dot.class, new Color(95, 170, 177));
