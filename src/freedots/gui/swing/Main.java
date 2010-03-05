@@ -233,6 +233,21 @@ public final class Main
 
     return false;
   }
+  
+  boolean paused = false;
+  void pausePlayback() {
+	if (score != null) {
+	  if (paused) {
+	    midiPlayer.start();
+	    paused = false;
+	  }
+	  else {
+		midiPlayer.stop();
+		paused = true;
+	  }
+	}
+  }
+  
   public void stopPlayback() {
     if (midiPlayer != null) midiPlayer.stop();
   }
@@ -474,6 +489,8 @@ public final class Main
     menu.setMnemonic(KeyEvent.VK_P);
 
     menu.add(playScoreAction);
+    //Amelie
+    menu.add(new PauseScoreAction(this));
     menu.add(new StopPlaybackAction(this));
 
     JCheckBoxMenuItem autoPlayItem = new JCheckBoxMenuItem("Play on caret move");
