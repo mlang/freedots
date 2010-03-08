@@ -390,9 +390,8 @@ public final class Note implements RhythmicElement {
   }
 
   private List<Slur> slurs = new ArrayList<Slur>(2);
-
   public List<Slur> getSlurs() { return slurs; }
-  public void addSlur(Slur slur) { slurs.add(slur); }
+  void addSlur(Slur slur) { slurs.add(slur); }
 
   public Fingering getFingering() {
     if (notations != null) {

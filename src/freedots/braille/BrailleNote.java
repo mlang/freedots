@@ -94,14 +94,29 @@ public class BrailleNote extends BrailleList {
       }
     }
 
-    boolean addSlur = false;
+    boolean addSingleSlur = false;
+    boolean addDoubledSlur = false;
     for (Slur<Note> slur:note.getSlurs()) {
-      if (!slur.lastNote(note)) {
-        addSlur = true;
-        break;
+      if (slur.countArcs(note) > 3) {
+        if (slur.isFirst(note)) {
+          addDoubledSlur = true; addSingleSlur = false;
+        } else if (slur.isLast(note)) {
+          addDoubledSlur = false; addSingleSlur = true;
+        } else {
+          addDoubledSlur = false; addSingleSlur = false;
+        }
+      } else {
+        if (!slur.lastNote(note)) {
+          addDoubledSlur = false; addSingleSlur = true;
+          break;
+        }
       }
     }
-    if (addSlur) add(new SlurSign());
+    if (addDoubledSlur) {
+      add(new SlurSign()); add(new SlurSign());
+    } else if (addSingleSlur) {
+      add(new SlurSign());
+    }
 
     if (allowTieSign && note.isTieStart()) add(new TieSign());
   }
