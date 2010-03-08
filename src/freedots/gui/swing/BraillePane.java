@@ -66,7 +66,7 @@ final class BraillePane extends javax.swing.JTextPane {
    * @param text specifies the content for the new model.
    * @see #getText
    */
-  public void setText(final BrailleList text) {
+  void setText(final BrailleList text) {
     setContentType("text/plain");
     StyledDocument doc = (StyledDocument)getEditorKit().createDefaultDocument();
 
