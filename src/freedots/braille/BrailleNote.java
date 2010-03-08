@@ -23,6 +23,7 @@
 package freedots.braille;
 
 import freedots.Options;
+import freedots.logging.Logger;
 import freedots.music.AbstractPitch;
 import freedots.music.Accidental;
 import freedots.music.Articulation;
@@ -41,6 +42,8 @@ import freedots.musicxml.Note;
  *      Notes and Values</a>
  */
 public class BrailleNote extends BrailleList {
+  private static final Logger log = Logger.getLogger(BrailleNote.class);
+
   private final Note note;
 
   /** Constructs a braille note and all of its composing signs.
@@ -98,6 +101,7 @@ public class BrailleNote extends BrailleList {
     boolean addDoubledSlur = false;
     for (Slur<Note> slur:note.getSlurs()) {
       if (slur.countArcs(note) > 3) {
+        log.info(slur.toString());
         if (slur.isFirst(note)) {
           addDoubledSlur = true; addSingleSlur = false;
         } else if (slur.isLastArc(note)) {

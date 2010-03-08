@@ -565,7 +565,14 @@ public final class Note implements RhythmicElement {
       return ornaments;
     }
 
-    class Slur {
+    /** Most slurs are represented with two elements: one with a start type,
+     *  and one with a stop type.
+     * <p>
+     * Slurs can add more elements using a continue type.
+     * This is typically used to specify the formatting of cross-system slurs,
+     * or to specify the shape of very complex slurs.
+     */
+    static class Slur {
       Element element;
       Slur(Element element) { this.element = element; }
       public int getNumber() {
@@ -573,7 +580,11 @@ public final class Note implements RhythmicElement {
           return Integer.parseInt(element.getAttribute("number"));
         return 1;
       }
-      public String getType() { return element.getAttribute("type"); }
+      public Type getType() {
+        return Enum.valueOf(Type.class,
+                            element.getAttribute("type").toUpperCase());
+      }
+      enum Type { START, STOP, CONTINUE; }
     }
 
     class Technical {

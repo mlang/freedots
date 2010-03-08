@@ -71,5 +71,11 @@ public class Slur<T extends VoiceElement> extends java.util.LinkedList<T> {
         || (e1.getVoiceName()==null && e2.getVoiceName()==null)
         || (e1.getVoiceName()!=null && e1.getVoiceName().equals(e2.getVoiceName()));
   }
+
+  @Override public String toString() {
+    StringBuilder sb = new StringBuilder("Slur[");
+    for (T e: this) sb.append(e.toString()).append(", ");
+    return sb.toString();
+  }
 }
 

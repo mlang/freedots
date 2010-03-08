@@ -160,7 +160,7 @@ public final class Part {
                   int number = nslur.getNumber() - 1;
                   int slurStaffNumber = note.getStaffNumber();
 
-                  if (nslur.getType().equals("start")) {
+                  if (nslur.getType() == Note.Notations.Slur.Type.START) {
                     Slur slur = new Slur(note);
                     while (slurStaffNumber >= slurs.size()) {
                       slurs.add(new ArrayList<Slur>());
@@ -169,7 +169,7 @@ public final class Part {
                       slurs.get(slurStaffNumber).add(slur);
                     }
                     slurs.get(slurStaffNumber).set(number, slur);
-                  } else if (nslur.getType().equals("stop")) {
+                  } else if (nslur.getType() == Note.Notations.Slur.Type.STOP) {
                     Slur slur = slurs.get(slurStaffNumber).get(number);
                     if (slur != null) {
                       slur.add(note);
