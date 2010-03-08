@@ -100,11 +100,12 @@ public class BrailleNote extends BrailleList {
       if (slur.countArcs(note) > 3) {
         if (slur.isFirst(note)) {
           addDoubledSlur = true; addSingleSlur = false;
-        } else if (slur.isLast(note)) {
+        } else if (slur.isLastArc(note)) {
           addDoubledSlur = false; addSingleSlur = true;
         } else {
           addDoubledSlur = false; addSingleSlur = false;
         }
+        break;
       } else {
         if (!slur.lastNote(note)) {
           addDoubledSlur = false; addSingleSlur = true;

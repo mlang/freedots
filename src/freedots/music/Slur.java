@@ -41,11 +41,11 @@ public class Slur<T extends VoiceElement> extends java.util.LinkedList<T> {
       return false;
     }
   }
-  // TODO: Check for staff and voice, do not use getLast()
-  public boolean isLast(T note) {
+  // TODO: Check for staff and voice
+  public boolean isLastArc(T note) {
     try {
-      return getLast() == note;
-    } catch (java.util.NoSuchElementException e) {
+      return get(size() - 2) == note;
+    } catch (IndexOutOfBoundsException e) {
       return false;
     }
   }
@@ -56,12 +56,12 @@ public class Slur<T extends VoiceElement> extends java.util.LinkedList<T> {
     final int pos = indexOf(note);
     ListIterator<T> iter = listIterator(pos);
     while (iter.hasNext()) {
-      T e = iter.next();
+      final T e = iter.next();
       if (equalsStaffAndVoice(note, e)) count += 1; else break;
     }
     iter = listIterator(pos);
     while (iter.hasPrevious()) {
-      T e = iter.previous();
+      final T e = iter.previous();
       if (equalsStaffAndVoice(note, e)) count += 1; else break;
     }
     return count;
