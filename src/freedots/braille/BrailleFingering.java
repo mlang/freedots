@@ -68,7 +68,8 @@ public class BrailleFingering extends BrailleList {
       return FINGERS[number - 1];
     }
     private static final String[] FINGERS = new String[] {
-      braille(1), braille(12), braille(123), braille(4), braille(13)
+      braille(1), braille(12), braille(123), braille(2), braille(13)
     };
   }
 }
+
