@@ -45,7 +45,7 @@ public class MusicList extends java.util.ArrayList<Event> {
   }
   /** Add a new element, inserting at the last possible position.
    */
-  public boolean add(Event newElement) {
+  @Override public boolean add(Event newElement) {
     Fraction offset = newElement.getOffset();
     int index;
     for (index = 0; index < size(); index++)
@@ -53,6 +53,26 @@ public class MusicList extends java.util.ArrayList<Event> {
 
     add(index, newElement);
     return true;
+  }
+
+  /** Returns a list of events which appear at a given time offset.
+   * @return an empty list of there is no event at the given offset.
+   */
+  public MusicList eventsAt(Fraction offset) {
+    if (offset.compareTo(0) < 0)
+      throw new IllegalArgumentException("Negative offset");
+
+    final MusicList events = new MusicList();
+    final Iterator<Event> iterator = iterator();
+    while (iterator.hasNext()) {
+      final Event event = iterator.next();
+      if (event.getOffset().compareTo(offset) < 0) continue;
+      if (event.getOffset().equals(offset))
+        events.add(event);
+      else
+        break;
+    }
+    return events;
   }
 
   public int getStaffCount() {

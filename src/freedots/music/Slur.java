@@ -24,6 +24,8 @@ package freedots.music;
 
 import java.util.ListIterator;
 
+/** A container to represent a slur.
+ */
 public class Slur<T extends VoiceElement> extends java.util.LinkedList<T> {
   public Slur(final T initialNote) {
     super();
