@@ -29,6 +29,7 @@ import freedots.music.AbstractPitch;
 import freedots.music.Accidental;
 import freedots.music.Fingering;
 import freedots.music.RhythmicElement;
+import freedots.music.Slur;
 import freedots.music.VoiceChord;
 import freedots.musicxml.Note;
 
@@ -113,6 +114,31 @@ public class BrailleChord extends BrailleList {
         final Fingering fingering = note.getFingering();
         if (!fingering.getFingers().isEmpty())
           add(new BrailleFingering(fingering));
+      }
+
+      boolean addSingleSlur = false;
+      boolean addDoubledSlur = false;
+      for (Slur<Note> slur: note.getSlurs()) {
+        if (slur.countArcs(note) >= Options.getInstance().getSlurDoublingThreshold()) {
+          if (slur.isFirst(note)) {
+            addDoubledSlur = true; addSingleSlur = false;
+          } else if (slur.isLastArc(note)) {
+            addDoubledSlur = false; addSingleSlur = true;
+          } else {
+            addDoubledSlur = false; addSingleSlur = false;
+          }
+          break;
+        } else {
+          if (!slur.lastNote(note)) {
+            addDoubledSlur = false; addSingleSlur = true;
+            break;
+          }
+        }
+      }
+      if (addDoubledSlur) {
+        add(new SlurSign()); add(new SlurSign());
+      } else if (addSingleSlur) {
+        add(new SlurSign());
       }
 
       if (allowTieSign && note.isTieStart()) { add(new TieSign()); }

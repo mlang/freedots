@@ -152,6 +152,12 @@ public final class Part {
             } else if ("note".equals(tagName)) {
               Note note = new Note(musicdata, divisions, durationMultiplier,
                                    this);
+
+              if (currentChord != null
+               && !elementHasChild(musicdata, Note.CHORD_ELEMENT)) {
+                offset = offset.add(currentChord.get(0).getDuration());
+                currentChord = null;
+              }
               note.setDate(measureOffset.add(offset));
               boolean advanceTime = !note.isGrace();
               boolean addNoteToEventList = true;
@@ -184,9 +190,6 @@ public final class Part {
                   currentChord.add(note);
                   advanceTime = false;
                   addNoteToEventList = false;
-                } else {
-                  offset = offset.add(currentChord.get(0).getDuration());
-                  currentChord = null;
                 }
               }
               if (currentChord == null && note.isStartOfChord()) {
@@ -335,18 +338,19 @@ public final class Part {
     }
   }
 
-  private void createSlurs(List<SlurBounds> slurs) {
+  private void createSlurs(final List<SlurBounds> slurs) {
     for (SlurBounds bounds: slurs) {
       Note note = bounds.begin();
       final Slur slur = new Slur(note);
       while (note != bounds.end()) {
-        List<Note> notes = notesAt(note.getOffset().add(note.getDuration()));
+        final Fraction offset = note.getOffset().add(note.getDuration());
+        final List<Note> notes = notesAt(offset);
         if (notes.size() == 1) {
           slur.add(note = notes.get(0));
         } else if (notes.contains(bounds.end())) {
           slur.add(note = bounds.end());
         } else if (notes.size() == 0) {
-          LOG.warning("Unhandled amount of slur targets: "+notes.size()+note);
+          LOG.warning("0 slur targets: '"+offset+"','"+note.getOffset()+"','"+note+"'");
           break;
         } else {
           boolean found = false;
@@ -370,7 +374,7 @@ public final class Part {
    * If a chord appears at that offset, all of its notes are returned
    * separately.
    */
-  private List<Note> notesAt(Fraction offset) {
+  private List<Note> notesAt(final Fraction offset) {
     List<Note> notes = new ArrayList<Note>();
     for (Event event: eventList.eventsAt(offset)) {
       if (event instanceof Chord) {

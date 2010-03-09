@@ -30,7 +30,7 @@ public abstract class
 AbstractChord<E extends Event> extends ArrayList<E> implements Event {
   private Fraction offset;
 
-  AbstractChord(final Fraction offset) {
+  private AbstractChord(final Fraction offset) {
     super();
     this.offset = offset;
   }
