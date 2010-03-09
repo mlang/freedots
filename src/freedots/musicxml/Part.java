@@ -23,7 +23,9 @@
 package freedots.musicxml;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
@@ -82,8 +84,8 @@ public final class Part {
     int staffCount = 1;
     EndBar endbar = null;
 
-    List<List<Slur>> slurs = new ArrayList<List<Slur>>();
-
+    List<SlurBounds> slurs = new ArrayList<SlurBounds>();
+    Map<Integer, SlurBounds> slurMap = new HashMap<Integer, SlurBounds>();
     for (Node partNode = part.getFirstChild(); partNode != null;
          partNode = partNode.getNextSibling()) {
       if (partNode.getNodeType() == Node.ELEMENT_NODE
@@ -157,31 +159,18 @@ public final class Part {
               Note.Notations notations = note.getNotations();
               if (notations != null) {
                 for (Note.Notations.Slur nslur:notations.getSlurs()) {
-                  int number = nslur.number() - 1;
-                  int slurStaffNumber = note.getStaffNumber();
+                  Integer number = new Integer(nslur.number() - 1);
 
                   if (nslur.type() == Note.Notations.Slur.Type.START) {
-                    Slur slur = new Slur(note);
-                    while (slurStaffNumber >= slurs.size()) {
-                      slurs.add(new ArrayList<Slur>());
-                    }
-                    while (number >= slurs.get(slurStaffNumber).size()) {
-                      slurs.get(slurStaffNumber).add(slur);
-                    }
-                    slurs.get(slurStaffNumber).set(number, slur);
+                    slurMap.put(number, new SlurBounds(note));
                   } else if (nslur.type() == Note.Notations.Slur.Type.STOP) {
-                    Slur slur = slurs.get(slurStaffNumber).get(number);
-                    if (slur != null) {
-                      slur.add(note);
-                      slurs.get(slurStaffNumber).set(number, null);
+                    if (slurMap.containsKey(number)) {
+                      SlurBounds bounds = slurMap.get(number);
+                      bounds.setEnd(note);
+                      if (slurs.add(bounds)) {
+                        slurMap.remove(number);
+                      }
                     }
-                  }
-                }
-              }
-              if (note.getStaffNumber() < slurs.size()) {
-                for (Slur slur:slurs.get(note.getStaffNumber())) {
-                  if (slur != null) {
-                    if (!slur.contains(note)) slur.add(note); 
                   }
                 }
               }
@@ -298,6 +287,10 @@ public final class Part {
     }
     if (endbar != null) endbar.setEndOfMusic(true);
 
+    // Post processing
+
+    createSlurs(slurs);
+
     if (!score.encodingSupports(Note.ACCIDENTAL_ELEMENT)) {
       int staves = 1;
       KeySignature defaultKeySignature = new KeySignature(0);
@@ -336,6 +329,61 @@ public final class Part {
         }
       }
     }
+  }
+
+  private void createSlurs(List<SlurBounds> slurs) {
+    for (SlurBounds bounds: slurs) {
+      Note note = bounds.begin();
+      final Slur slur = new Slur(note);
+      while (note != bounds.end()) {
+        List<Note> notes = notesAt(note.getOffset().add(note.getDuration()));
+        if (notes.size() == 1) {
+          slur.add(note = notes.get(0));
+        } else if (notes.contains(bounds.end())) {
+          slur.add(note = bounds.end());
+        } else if (notes.size() == 0) {
+          LOG.warning("Unhandled amount of slur targets: "+notes.size()+note);
+          break;
+        } else {
+          boolean found = false;
+          for (Note n: notes) {
+            if (n.getVoiceName().equals(note.getVoiceName())) {
+              slur.add(note = n);
+              found = true;
+              break;
+            }
+          }
+          if (!found) {
+            LOG.warning("Notes:"+notes);
+            slur.add(note = notes.get(0));
+          }
+        }
+      }
+    }
+  }
+
+  /** Returns a list of all Note objects at a given offset.
+   * If a chord appears at that offset, all of its notes are returned
+   * separately.
+   */
+  private List<Note> notesAt(Fraction offset) {
+    List<Note> notes = new ArrayList<Note>();
+    for (Event event: eventList.eventsAt(offset)) {
+      if (event instanceof Chord) {
+        for (Note note: (Chord)event) notes.add(note);
+      } else if (event instanceof Note) {
+        notes.add((Note)event);
+      }
+    }
+    return notes;
+  }
+
+  private static class SlurBounds {
+    private Note begin, end;
+    SlurBounds(Note begin) { this.begin = begin; }
+    void setEnd(Note end) { this.end = end; }
+    Note begin() { return begin; }
+    Note end() { return end; }
   }
 
   private void calculateAccidental (

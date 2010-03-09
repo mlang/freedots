@@ -56,7 +56,7 @@ public class MusicList extends java.util.ArrayList<Event> {
   }
 
   /** Returns a list of events which appear at a given time offset.
-   * @return an empty list of there is no event at the given offset.
+   * @return an empty list if there is no event at the given offset.
    */
   public MusicList eventsAt(Fraction offset) {
     if (offset.compareTo(0) < 0)

@@ -101,7 +101,6 @@ public class BrailleNote extends BrailleList {
     boolean addDoubledSlur = false;
     for (Slur<Note> slur: note.getSlurs()) {
       if (slur.countArcs(note) > 3) {
-        log.info(slur.toString());
         if (slur.isFirst(note)) {
           addDoubledSlur = true; addSingleSlur = false;
         } else if (slur.isLastArc(note)) {
