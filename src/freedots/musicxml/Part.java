@@ -171,6 +171,12 @@ public final class Part {
                   case START:
                     slurMap.put(number, new SlurBounds(note));
                     break;
+                  case CONTINUE:
+                    if (slurMap.containsKey(number)) {
+                      SlurBounds bounds = slurMap.get(number);
+                      bounds.other().add(note);
+                    }
+                    break;
                   case STOP:
                     if (slurMap.containsKey(number)) {
                       SlurBounds bounds = slurMap.get(number);
@@ -338,6 +344,8 @@ public final class Part {
     }
   }
 
+  /** Creates slurs from the collected start and end points.
+   */
   private void createSlurs(final List<SlurBounds> slurs) {
     for (SlurBounds bounds: slurs) {
       Note note = bounds.begin();
@@ -355,7 +363,8 @@ public final class Part {
         } else {
           boolean found = false;
           for (Note n: notes) {
-            if (n.getVoiceName().equals(note.getVoiceName())) {
+            if (bounds.other().contains(n)
+             || n.getVoiceName().equals(note.getVoiceName())) {
               slur.add(note = n);
               found = true;
               break;
@@ -386,12 +395,16 @@ public final class Part {
     return notes;
   }
 
+  /** Temporarily saves curve points of a slur for later resolution.
+   */
   private static class SlurBounds {
     private Note begin, end;
+    private List<Note> other = new ArrayList<Note>();
     SlurBounds(Note begin) { this.begin = begin; }
     void setEnd(Note end) { this.end = end; }
     Note begin() { return begin; }
     Note end() { return end; }
+    List<Note> other() { return other; }
   }
 
   private void calculateAccidental (

@@ -95,6 +95,8 @@ public class BrailleChord extends BrailleList {
       super();
       this.note = note;
 
+      final Options options = Options.getInstance();
+
       final Accidental accidental = note.getAccidental();
       if (accidental != null) add(new AccidentalSign(accidental));
 
@@ -110,7 +112,7 @@ public class BrailleChord extends BrailleList {
       }
       add(new IntervalSign(diatonicDiff));
 
-      if (Options.getInstance().getShowFingering()) {
+      if (options.getShowFingering()) {
         final Fingering fingering = note.getFingering();
         if (!fingering.getFingers().isEmpty())
           add(new BrailleFingering(fingering));
@@ -119,7 +121,7 @@ public class BrailleChord extends BrailleList {
       boolean addSingleSlur = false;
       boolean addDoubledSlur = false;
       for (Slur<Note> slur: note.getSlurs()) {
-        if (slur.countArcs(note) >= Options.getInstance().getSlurDoublingThreshold()) {
+        if (slur.countArcs(note) >= options.getSlurDoublingThreshold()) {
           if (slur.isFirst(note)) {
             addDoubledSlur = true; addSingleSlur = false;
           } else if (slur.isLastArc(note)) {
