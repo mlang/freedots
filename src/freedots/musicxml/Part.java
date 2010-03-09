@@ -161,9 +161,11 @@ public final class Part {
                 for (Note.Notations.Slur nslur:notations.getSlurs()) {
                   Integer number = new Integer(nslur.number() - 1);
 
-                  if (nslur.type() == Note.Notations.Slur.Type.START) {
+                  switch (nslur.type()) {
+                  case START:
                     slurMap.put(number, new SlurBounds(note));
-                  } else if (nslur.type() == Note.Notations.Slur.Type.STOP) {
+                    break;
+                  case STOP:
                     if (slurMap.containsKey(number)) {
                       SlurBounds bounds = slurMap.get(number);
                       bounds.setEnd(note);
@@ -171,6 +173,8 @@ public final class Part {
                         slurMap.remove(number);
                       }
                     }
+                    break;
+                  default: throw new AssertionError(nslur.type());
                   }
                 }
               }

@@ -33,6 +33,7 @@ public final class Options {
 
   private static final int DEFAULT_PAGE_WIDTH = 40;
   private static final int DEFAULT_PAGE_HEIGHT = 20;
+  private static final int DEFAULT_SLUR_DOUBLING_THRESHOLD = 4;
 
   private int pageWidth = DEFAULT_PAGE_WIDTH;
   private int pageHeight = DEFAULT_PAGE_HEIGHT;
@@ -59,6 +60,10 @@ public final class Options {
   private UI ui = UI.Swing;
 
   private boolean showFingering = true;
+
+  private int slurDoublingThreshold = DEFAULT_SLUR_DOUBLING_THRESHOLD;
+  public int getSlurDoublingThreshold() { return slurDoublingThreshold; }
+
   private Method method = Method.SectionBySection;
 
   private File soundfont = null;
@@ -99,6 +104,11 @@ public final class Options {
         }
       } else if ("-nofg".equals(option)) {
         showFingering = false;
+      } else if ("-sdt".equals(option)) {
+        if (index < args.length-1) {
+          slurDoublingThreshold = Integer.valueOf(args[++index]);
+          if (slurDoublingThreshold < 4) slurDoublingThreshold = 4;
+        }
       } else if ("-bob".equals(option)) {
         method = Method.BarOverBar;
       } else if ("-sf".equals(option)) {

@@ -64,6 +64,8 @@ public class BrailleNote extends BrailleList {
     super();
     this.note = note;
 
+    final Options options = Options.getInstance();
+
     if (note.isGrace()) add(new GraceSign());
 
     for (Ornament ornament: note.getOrnaments())
@@ -90,7 +92,7 @@ public class BrailleNote extends BrailleList {
     }
     for (int i = 0; i < value.dots(); i++) add(new Dot());
 
-    if (Options.getInstance().getShowFingering()) {
+    if (options.getShowFingering()) {
       final Fingering fingering = note.getFingering();
       if (!fingering.getFingers().isEmpty()) {
         add(new BrailleFingering(fingering));
@@ -100,7 +102,7 @@ public class BrailleNote extends BrailleList {
     boolean addSingleSlur = false;
     boolean addDoubledSlur = false;
     for (Slur<Note> slur: note.getSlurs()) {
-      if (slur.countArcs(note) > 3) {
+      if (slur.countArcs(note) >= options.getSlurDoublingThreshold()) {
         if (slur.isFirst(note)) {
           addDoubledSlur = true; addSingleSlur = false;
         } else if (slur.isLastArc(note)) {
