@@ -257,26 +257,11 @@ upto the last occurance, where it is reinstatate a single time to indicate
 the end of the passage.
 
 While this sounds simple and is easy to read, designing a data structure
-to detect it seems not so easy since this rule is very generic.  A few
-examples might help:
-
-*** TODO Doubling slurs
-
-The simplest case is a slur spanning a across four notes and more.
-Without doubling, a C scale slurred is
-
-  ⠙⠉⠑⠉⠋⠉⠛⠉⠓⠉⠊⠉⠚⠉⠙
-
-with doubling it becomes:
-
-  ⠙⠉⠉⠑⠋⠛⠓⠊⠚⠉⠙
-
-(note that doubling is not limited to measure boundaries, it applies
-to the whole paragraph at least, if not page or piece)
+to detect it seems not so easy since this rule is very generic.
 
 *** TODO Doubling intervals
 
-However, doubling can also occur with intervals.  The left hand of the
+Doubling can also occur with intervals.  The left hand of the
 first four measures of LV Beethovens Moonshine sonata reads:
 
 ⠼⠙⠩⠼⠃⠆ ⠸⠜⠽⠤ ⠾⠤ ⠎⠤⠟⠤ ⠗⠤⠗⠤
@@ -323,8 +308,8 @@ and allow for fancy alignment.
 
 *** TODO Implement bindings for liblouis for contracting lyrics
 
-Ideally, lyrics should be contracted with the contracted braille
-of course of the user.  Therefore, we'd like to have bindings
+Lyrics could be contracted with the contracted braille
+of choice of the user.  Therefore, we'd like to have bindings
 to liblouis, ideally on Linux *and* Windows.
 
 ** TODO Note groupings
