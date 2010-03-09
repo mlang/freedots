@@ -84,8 +84,7 @@ public final class Part {
     int staffCount = 1;
     EndBar endbar = null;
 
-    List<SlurBounds> slurs = new ArrayList<SlurBounds>();
-    Map<Integer, SlurBounds> slurMap = new HashMap<Integer, SlurBounds>();
+    SlurBuilder slurBuilder = new SlurBuilder();
     for (Node partNode = part.getFirstChild(); partNode != null;
          partNode = partNode.getNextSibling()) {
       if (partNode.getNodeType() == Node.ELEMENT_NODE
@@ -162,34 +161,7 @@ public final class Part {
               boolean advanceTime = !note.isGrace();
               boolean addNoteToEventList = true;
 
-              Note.Notations notations = note.getNotations();
-              if (notations != null) {
-                for (Note.Notations.Slur nslur:notations.getSlurs()) {
-                  Integer number = new Integer(nslur.number() - 1);
-
-                  switch (nslur.type()) {
-                  case START:
-                    slurMap.put(number, new SlurBounds(note));
-                    break;
-                  case CONTINUE:
-                    if (slurMap.containsKey(number)) {
-                      SlurBounds bounds = slurMap.get(number);
-                      bounds.other().add(note);
-                    }
-                    break;
-                  case STOP:
-                    if (slurMap.containsKey(number)) {
-                      SlurBounds bounds = slurMap.get(number);
-                      bounds.setEnd(note);
-                      if (slurs.add(bounds)) {
-                        slurMap.remove(number);
-                      }
-                    }
-                    break;
-                  default: throw new AssertionError(nslur.type());
-                  }
-                }
-              }
+              slurBuilder.visit(note);
 
               if (currentChord != null) {
                 if (elementHasChild(musicdata, Note.CHORD_ELEMENT)) {
@@ -302,7 +274,7 @@ public final class Part {
 
     // Post processing
 
-    createSlurs(slurs);
+    slurBuilder.buildSlurs();
 
     if (!score.encodingSupports(Note.ACCIDENTAL_ELEMENT)) {
       int staves = 1;
@@ -344,38 +316,84 @@ public final class Part {
     }
   }
 
-  /** Creates slurs from the collected start and end points.
-   */
-  private void createSlurs(final List<SlurBounds> slurs) {
-    for (SlurBounds bounds: slurs) {
-      Note note = bounds.begin();
-      final Slur slur = new Slur(note);
-      while (note != bounds.end()) {
-        final Fraction offset = note.getOffset().add(note.getDuration());
-        final List<Note> notes = notesAt(offset);
-        if (notes.size() == 1) {
-          slur.add(note = notes.get(0));
-        } else if (notes.contains(bounds.end())) {
-          slur.add(note = bounds.end());
-        } else if (notes.size() == 0) {
-          LOG.warning("0 slur targets: '"+offset+"','"+note.getOffset()+"','"+note+"'");
-          break;
-        } else {
-          boolean found = false;
-          for (Note n: notes) {
-            if (bounds.other().contains(n)
-             || n.getVoiceName().equals(note.getVoiceName())) {
-              slur.add(note = n);
-              found = true;
-              break;
+  private class SlurBuilder {
+    private final List<SlurBounds> slurs = new ArrayList<SlurBounds>();
+    private final Map<Integer, SlurBounds> slurMap =
+      new HashMap<Integer, SlurBounds>();
+    SlurBuilder() {
+    }
+    void visit(Note note) {
+      Note.Notations notations = note.getNotations();
+      if (notations != null) {
+        for (Note.Notations.Slur nslur:notations.getSlurs()) {
+          Integer number = new Integer(nslur.number() - 1);
+
+          switch (nslur.type()) {
+          case START:
+            slurMap.put(number, new SlurBounds(note));
+            break;
+          case CONTINUE:
+            if (slurMap.containsKey(number)) {
+              slurMap.get(number).other().add(note);
             }
-          }
-          if (!found) {
-            LOG.warning("Notes:"+notes);
-            slur.add(note = notes.get(0));
+            break;
+          case STOP:
+            if (slurMap.containsKey(number)) {
+              SlurBounds bounds = slurMap.get(number);
+              bounds.setEnd(note);
+              if (slurs.add(bounds)) {
+                slurMap.remove(number);
+              }
+            }
+            break;
+          default: throw new AssertionError(nslur.type());
           }
         }
       }
+    }
+    /** Creates slurs from the collected start and end points.
+     */
+    void buildSlurs() {
+      for (SlurBounds bounds: slurs) {
+        Note note = bounds.begin();
+        final Slur slur = new Slur(note);
+        while (note != bounds.end()) {
+          final Fraction offset = note.getOffset().add(note.getDuration());
+          final List<Note> notes = notesAt(offset);
+          if (notes.size() == 1) {
+            slur.add(note = notes.get(0));
+          } else if (notes.contains(bounds.end())) {
+            slur.add(note = bounds.end());
+          } else if (notes.size() == 0) {
+            LOG.warning("0 slur targets: '"+offset+"','"+note.getOffset()+"','"+note+"'");
+            break;
+          } else {
+            boolean found = false;
+            for (Note n: notes) {
+              if (bounds.other().contains(n)
+               || n.getVoiceName().equals(note.getVoiceName())) {
+                slur.add(note = n);
+                found = true;
+                break;
+              }
+            }
+            if (!found) {
+              LOG.warning("Notes:"+notes);
+              slur.add(note = notes.get(0));
+            }
+          }
+        }
+      }
+      slurs.clear();
+    }
+    private class SlurBounds {
+      private Note begin, end;
+      private List<Note> other = new ArrayList<Note>();
+      SlurBounds(Note begin) { this.begin = begin; }
+      void setEnd(Note end) { this.end = end; }
+      Note begin() { return begin; }
+      Note end() { return end; }
+      List<Note> other() { return other; }
     }
   }
 
@@ -393,18 +411,6 @@ public final class Part {
       }
     }
     return notes;
-  }
-
-  /** Temporarily saves curve points of a slur for later resolution.
-   */
-  private static class SlurBounds {
-    private Note begin, end;
-    private List<Note> other = new ArrayList<Note>();
-    SlurBounds(Note begin) { this.begin = begin; }
-    void setEnd(Note end) { this.end = end; }
-    Note begin() { return begin; }
-    Note end() { return end; }
-    List<Note> other() { return other; }
   }
 
   private void calculateAccidental (
