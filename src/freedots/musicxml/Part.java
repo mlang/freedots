@@ -108,6 +108,11 @@ public final class Part {
             Element musicdata = (Element)measureNode;
             String tagName = musicdata.getTagName();
             if ("attributes".equals(tagName)) {
+              if (currentChord != null) {
+                offset = offset.add(currentChord.get(0).getDuration());
+                currentChord = null;
+              }
+
               Attributes attributes = new Attributes(musicdata);
               int newDivisions = attributes.getDivisions();
               Attributes.Time newTimeSignature = attributes.getTime();
@@ -322,13 +327,15 @@ public final class Part {
       new HashMap<Integer, SlurBounds>();
     SlurBuilder() {
     }
+    /** Checks if the given note is a slur curve point and remembers it if so.
+     */
     void visit(Note note) {
-      Note.Notations notations = note.getNotations();
+      final Note.Notations notations = note.getNotations();
       if (notations != null) {
-        for (Note.Notations.Slur nslur:notations.getSlurs()) {
-          Integer number = new Integer(nslur.number() - 1);
+        for (Note.Notations.Slur slur: notations.getSlurs()) {
+          final Integer number = new Integer(slur.number());
 
-          switch (nslur.type()) {
+          switch (slur.type()) {
           case START:
             slurMap.put(number, new SlurBounds(note));
             break;
@@ -346,7 +353,7 @@ public final class Part {
               }
             }
             break;
-          default: throw new AssertionError(nslur.type());
+          default: throw new AssertionError(slur.type());
           }
         }
       }
@@ -397,7 +404,7 @@ public final class Part {
     }
   }
 
-  /** Returns a list of all Note objects at a given offset.
+  /** Returns a list of all Note objects at a given musical offset.
    * If a chord appears at that offset, all of its notes are returned
    * separately.
    */
