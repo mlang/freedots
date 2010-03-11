@@ -155,6 +155,7 @@ public final class Main
       //this.midiPlayer
       
       playScoreAction.setEnabled(scoreAvailable);
+      pauseScoreAction.setEnabled(scoreAvailable);
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -220,12 +221,13 @@ public final class Main
       }
     }
   }
-
+  boolean paused = false;
   public boolean startPlayback() {
     if (score != null)
       try {
         midiPlayer.setSequence(new MIDISequence(score, true, metaEventRelay));
         midiPlayer.start();
+        paused = false;
         return true;
       } catch (javax.sound.midi.InvalidMidiDataException exception) {
         exception.printStackTrace();
@@ -234,7 +236,6 @@ public final class Main
     return false;
   }
   
-  boolean paused = false;
   void pausePlayback() {
 	if (score != null) {
 	  if (paused) {
@@ -242,17 +243,24 @@ public final class Main
 	    paused = false;
 	  }
 	  else {
-		midiPlayer.stop();
-		paused = true;
+		if (midiPlayer != null) {
+			midiPlayer.stop();
+			paused = true;
+		}
 	  }
 	}
   }
   
   public void stopPlayback() {
-    if (midiPlayer != null) midiPlayer.stop();
+    if (midiPlayer != null) {
+    	midiPlayer.stop();
+    	paused = true;
+    }
   }
 
   private Action playScoreAction = new PlayScoreAction(this);
+  //Amelie
+  private Action pauseScoreAction = new PauseScoreAction(this);
   private Action fileSaveAsAction = new FileSaveAsAction(this);
   private Action editFingeringAction = new EditFingeringAction(this);
 
@@ -337,6 +345,7 @@ public final class Main
     
     fileSaveAsAction.setEnabled(scoreAvailable);
     playScoreAction.setEnabled(scoreAvailable);
+    pauseScoreAction.setEnabled(scoreAvailable);
 
     textPane.setEditable(false);
     textPane.setCaret(new DefaultCaret() {
@@ -490,7 +499,7 @@ public final class Main
 
     menu.add(playScoreAction);
     //Amelie
-    menu.add(new PauseScoreAction(this));
+    menu.add(pauseScoreAction);
     menu.add(new StopPlaybackAction(this));
 
     JCheckBoxMenuItem autoPlayItem = new JCheckBoxMenuItem("Play on caret move");
