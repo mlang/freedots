@@ -78,7 +78,8 @@ final class DescribeColorAction extends javax.swing.AbstractAction {
 
 class ColorLegend extends JDialog {
 
-  public ColorLegend(JFrame parent, String title, boolean modal) {
+  public ColorLegend(final JFrame parent, final String title,
+                     final boolean modal) {
     super(parent, title, modal);
     this.setSize(550, 270);
     this.setLocationRelativeTo(null);

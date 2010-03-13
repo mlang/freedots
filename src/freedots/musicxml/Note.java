@@ -572,18 +572,18 @@ public final class Note implements RhythmicElement {
      * This is typically used to specify the formatting of cross-system slurs,
      * or to specify the shape of very complex slurs.
      */
-    static class Slur {
-      private Integer number = 1;
+    static final class Slur {
+      private final Integer number;
       enum Type { START, STOP, CONTINUE; }
-      private Type type;
-      Slur(Element element) {
-        if (element.hasAttribute("number"))
-          number = new Integer(element.getAttribute("number"));
+      private final Type type;
+      Slur(final Element element) {
+        number = element.hasAttribute("number")?
+                 new Integer(element.getAttribute("number")): new Integer(1);
         type = Enum.valueOf(Type.class,
                             element.getAttribute("type").trim().toUpperCase());
       }
-      public Integer number() { return number; }
-      public Type type() { return type; }
+      Integer number() { return number; }
+      Type type() { return type; }
     }
 
     class Technical {

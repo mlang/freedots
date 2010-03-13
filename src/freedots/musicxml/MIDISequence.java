@@ -105,7 +105,7 @@ public final class MIDISequence extends javax.sound.midi.Sequence {
   }
 
   private Track createTrack(Part part) throws InvalidMidiDataException {
-    Track track = createTrack();
+    final Track track = createTrack();
 
     MetaMessage metaMessage;
     velocity = 64;

@@ -81,7 +81,7 @@ public final class Harmony extends AbstractDirection {
     private Element bassStep = null, bassAlter = null;
     private List<Degree> degrees = new ArrayList<Degree>();
 
-    HarmonyChord(Element initial) {
+    HarmonyChord(final Element initial) {
       if ("root".equals(initial.getTagName()))
         for (Node node = initial.getFirstChild(); node != null;
              node = node.getNextSibling()) {
@@ -161,7 +161,7 @@ public final class Harmony extends AbstractDirection {
     }
     public class Degree {
       private Element value, alter, type;
-      Degree(Element degree) {
+      Degree(final Element degree) {
         for (Node node = degree.getFirstChild(); node != null;
              node = node.getNextSibling()) {
           if (node.getNodeType() == Node.ELEMENT_NODE) {
