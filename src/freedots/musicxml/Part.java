@@ -23,7 +23,9 @@
 package freedots.musicxml;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -322,7 +324,7 @@ public final class Part {
   }
 
   private class SlurBuilder {
-    private final List<SlurBounds> slurs = new ArrayList<SlurBounds>();
+    private final Collection<SlurBounds> slurs = new LinkedList<SlurBounds>();
     private final Map<Integer, SlurBounds> slurMap =
       new HashMap<Integer, SlurBounds>();
     SlurBuilder() {
@@ -333,23 +335,21 @@ public final class Part {
       final Note.Notations notations = note.getNotations();
       if (notations != null) {
         for (Note.Notations.Slur slur: notations.getSlurs()) {
-          final Integer number = new Integer(slur.number());
-
           switch (slur.type()) {
           case START:
-            slurMap.put(number, new SlurBounds(note));
+            slurMap.put(slur.number(), new SlurBounds(note));
             break;
           case CONTINUE:
-            if (slurMap.containsKey(number)) {
-              slurMap.get(number).other().add(note);
+            if (slurMap.containsKey(slur.number())) {
+              slurMap.get(slur.number()).other().add(note);
             }
             break;
           case STOP:
-            if (slurMap.containsKey(number)) {
-              SlurBounds bounds = slurMap.get(number);
+            if (slurMap.containsKey(slur.number())) {
+              final SlurBounds bounds = slurMap.get(slur.number());
               bounds.setEnd(note);
               if (slurs.add(bounds)) {
-                slurMap.remove(number);
+                slurMap.remove(slur.number());
               }
             }
             break;
@@ -361,14 +361,17 @@ public final class Part {
     /** Creates slurs from the collected start and end points.
      */
     void buildSlurs() {
+      if (slurMap.size() != 0)
+        LOG.warning("Untermiated slurs: "+slurMap.size());
+
       for (SlurBounds bounds: slurs) {
         Note note = bounds.begin();
         final Slur slur = new Slur(note);
         while (note != bounds.end()) {
           final Fraction offset = note.getOffset().add(note.getDuration());
-          final List<Note> notes = notesAt(offset);
+          final Collection<Note> notes = notesAt(offset);
           if (notes.size() == 1) {
-            slur.add(note = notes.get(0));
+            slur.add(note = notes.iterator().next());
           } else if (notes.contains(bounds.end())) {
             slur.add(note = bounds.end());
           } else if (notes.size() == 0) {
@@ -386,7 +389,7 @@ public final class Part {
             }
             if (!found) {
               LOG.warning("Notes:"+notes);
-              slur.add(note = notes.get(0));
+              slur.add(note = notes.iterator().next());
             }
           }
         }
@@ -395,12 +398,12 @@ public final class Part {
     }
     private class SlurBounds {
       private Note begin, end;
-      private List<Note> other = new ArrayList<Note>();
+      private final Collection<Note> other = new ArrayList<Note>();
       SlurBounds(Note begin) { this.begin = begin; }
       void setEnd(Note end) { this.end = end; }
       Note begin() { return begin; }
       Note end() { return end; }
-      List<Note> other() { return other; }
+      Collection<Note> other() { return other; }
     }
   }
 
@@ -408,11 +411,11 @@ public final class Part {
    * If a chord appears at that offset, all of its notes are returned
    * separately.
    */
-  private List<Note> notesAt(final Fraction offset) {
-    List<Note> notes = new ArrayList<Note>();
+  private Collection<Note> notesAt(final Fraction offset) {
+    Collection<Note> notes = new ArrayList<Note>();
     for (Event event: eventList.eventsAt(offset)) {
       if (event instanceof Chord) {
-        for (Note note: (Chord)event) notes.add(note);
+        notes.addAll((Chord)event);
       } else if (event instanceof Note) {
         notes.add((Note)event);
       }
