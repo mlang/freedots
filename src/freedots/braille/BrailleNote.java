@@ -148,7 +148,7 @@ public class BrailleNote extends BrailleList {
   public static class GraceSign extends Sign {
     GraceSign() { super(braille(5, 26)); }
     public String getDescription() {
-      return "Indicates the this is a grace note";
+      return "Indicates a grace note";
     }
   }
 

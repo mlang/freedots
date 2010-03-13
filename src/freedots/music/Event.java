@@ -25,7 +25,10 @@ package freedots.music;
 import freedots.math.Fraction;
 
 public interface Event {
-  Fraction getOffset();
+  /** Returns the musical time position of this event.
+   */
+  Fraction getMoment();
+
   boolean equalsIgnoreOffset(Event other);
 }
 

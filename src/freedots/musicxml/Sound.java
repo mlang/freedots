@@ -31,20 +31,20 @@ import freedots.music.Event;
 import org.w3c.dom.Element;
 
 public final class Sound implements Event {
-  private Fraction offset;
-  private Element xml;
+  private final Fraction moment;
+  private final Element element;
 
-  public Sound(final Element xml, final Fraction offset) {
-    this.xml = xml;
-    this.offset = offset;
+  public Sound(final Element element, final Fraction moment) {
+    this.element = element;
+    this.moment = moment;
   }
 
   /** Creates a MIDI tempo change event if this Sound element specifies tempo.
    * @return a MetaMessage or null, if no tempo attribute was found
    */
   public MetaMessage getTempoMessage() {
-    if (xml.hasAttribute("tempo")) {
-      final float tempo = Float.parseFloat(xml.getAttribute("tempo"));
+    if (element.hasAttribute("tempo")) {
+      final float tempo = Float.parseFloat(element.getAttribute("tempo"));
       int midiTempo = Math.round((float)60000.0 / tempo * 1000);
       final MetaMessage message = new MetaMessage();
       byte[] bytes = new byte[3];
@@ -66,18 +66,19 @@ public final class Sound implements Event {
    *         specified
    */
   public Integer getMidiVelocity() {
-    if (xml.hasAttribute("dynamics")) {
-      Float dynamics = Float.parseFloat(xml.getAttribute("dynamics"));
+    if (element.hasAttribute("dynamics")) {
+      Float dynamics = Float.parseFloat(element.getAttribute("dynamics"));
       return new Integer(Math.round(((float)90 / (float)100) * dynamics));
     }
     return null;
   }
-  public Fraction getOffset() { return offset; }
+  public Fraction getMoment() { return moment; }
   public boolean equalsIgnoreOffset(Event object) {
     if (object instanceof Sound) {
       Sound other = (Sound)object;
-      if (xml.equals(other.xml)) return true;
+      if (element.equals(other.element)) return true;
     }
     return false;
   }
 }
+

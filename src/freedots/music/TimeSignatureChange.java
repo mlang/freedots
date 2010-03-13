@@ -27,9 +27,9 @@ import freedots.math.Fraction;
 public class TimeSignatureChange extends VerticalEvent {
   private TimeSignature timeSignature;
 
-  public TimeSignatureChange(final Fraction offset,
+  public TimeSignatureChange(final Fraction moment,
                              final TimeSignature timeSignature) {
-    super(offset);
+    super(moment);
     this.timeSignature = timeSignature;
   }
 

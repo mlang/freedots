@@ -146,7 +146,7 @@ class SectionBySection implements Strategy {
 
     StartBar startBar = null;
     KeySignature currentSignature =
-      staff.getKeySignature(staff.get(0).getOffset());
+      staff.getKeySignature(staff.get(0).getMoment());
 
     for (int staffElementIndex = 0; staffElementIndex < staff.size();
          staffElementIndex++) {
@@ -253,7 +253,7 @@ class SectionBySection implements Strategy {
         EndBar endBar = (EndBar)event;
 
         if (measure.size() > 0) {
-          measure.calculateDurations(((EndBar)event).getOffset());
+          measure.calculateDurations(((EndBar)event).getMoment());
           boolean includeStems = !measure.isEvenRhythm();
           Iterator<HarmonyInfo> iterator = measure.iterator();
           boolean first = true;
@@ -288,7 +288,7 @@ class SectionBySection implements Strategy {
     private Harmony harmony;
     HarmonyInfo(final Harmony harmony) { this.harmony = harmony; }
     Harmony getHarmony() { return harmony; }
-    Fraction getOffset() { return harmony.getOffset(); }
+    Fraction getMoment() { return harmony.getMoment(); }
 
     private Fraction duration = null;
     void setDuration(final Fraction duration) { this.duration = duration; }
@@ -305,10 +305,10 @@ class SectionBySection implements Strategy {
         HarmonyInfo last = iterator.next();
         while (iterator.hasNext()) {
           HarmonyInfo current = iterator.next();
-          last.setDuration(current.getOffset().subtract(last.getOffset()));
+          last.setDuration(current.getMoment().subtract(last.getMoment()));
           last = current;
         }
-        last.setDuration(measureEnd.subtract(last.getOffset()));
+        last.setDuration(measureEnd.subtract(last.getMoment()));
       }
     }  
     /** Determines if all harmonies are of the same duration.
@@ -342,23 +342,23 @@ class SectionBySection implements Strategy {
       Staff staff = super.getStaff(index);
       /* We need to populate key/clef/timeList with events from the past */
       if (staff != null && !staff.isEmpty()) {
-        Fraction startOffset = staff.get(0).getOffset();
-        for (Event event : part.getMusicList()) {
-          if (event.getOffset().compareTo(startOffset) < 0) {
+        final Fraction startMoment = staff.get(0).getMoment();
+        for (Event event: part.getMusicList()) {
+          if (event.getMoment().compareTo(startMoment) < 0) {
             if (event instanceof GlobalKeyChange) {
               GlobalKeyChange globalKeyChange = (GlobalKeyChange)event;
-              staff.keyList.put(globalKeyChange.getOffset(),
+              staff.keyList.put(globalKeyChange.getMoment(),
                                 globalKeyChange.getKeySignature());
             } else if (event instanceof KeyChange) {
               KeyChange keyChange = (KeyChange)event;
               if (keyChange.getStaffNumber() == index) {
-                staff.keyList.put(keyChange.getOffset(),
+                staff.keyList.put(keyChange.getMoment(),
                                   keyChange.getKeySignature());
               }
             } else if (event instanceof ClefChange) {
               ClefChange clefChange = (ClefChange)event;
               if (clefChange.getStaffNumber() == index) {
-                staff.clefList.put(clefChange.getOffset(),
+                staff.clefList.put(clefChange.getMoment(),
                                    clefChange.getClef());
               }
             }

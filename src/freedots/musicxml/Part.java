@@ -368,14 +368,15 @@ public final class Part {
         Note note = bounds.begin();
         final Slur slur = new Slur(note);
         while (note != bounds.end()) {
-          final Fraction offset = note.getOffset().add(note.getDuration());
-          final Collection<Note> notes = notesAt(offset);
+          final Fraction nextMoment = note.getMoment().add(note.getDuration());
+          final Collection<Note> notes = notesAt(nextMoment);
           if (notes.size() == 1) {
             slur.add(note = notes.iterator().next());
           } else if (notes.contains(bounds.end())) {
             slur.add(note = bounds.end());
           } else if (notes.size() == 0) {
-            LOG.warning("0 slur targets: '"+offset+"','"+note.getOffset()+"','"+note+"'");
+            LOG.warning("0 slur targets: '"+nextMoment+"','"
+                        +note.getMoment()+"','"+note+"'");
             break;
           } else {
             boolean found = false;

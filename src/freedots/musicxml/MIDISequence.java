@@ -101,7 +101,7 @@ public final class MIDISequence extends javax.sound.midi.Sequence {
 
     initializeMidiPrograms(track, note.getPart());
 
-    addToTrack(track, note, note.getOffset().negate());
+    addToTrack(track, note, note.getMoment().negate());
   }
 
   private Track createTrack(Part part) throws InvalidMidiDataException {
@@ -139,7 +139,7 @@ public final class MIDISequence extends javax.sound.midi.Sequence {
         Direction direction = (Direction)event;
         if (direction.getSound() != null) event = direction.getSound();
 
-        final int tick = toInteger(direction.getOffset().add(offset));
+        final int tick = toInteger(direction.getMoment().add(offset));
         if (direction.isPedalPress()) {
           track.add(new MidiEvent(createPedalMessage(0, true), tick));
         } else if (direction.isPedalRelease()) {
@@ -161,7 +161,7 @@ public final class MIDISequence extends javax.sound.midi.Sequence {
       } else if (event instanceof Chord) {
         MetaEventRelay temp = null;
         if (metaEventRelay != null) {
-          int midiTick = toInteger(event.getOffset().add(offset));
+          int midiTick = toInteger(event.getMoment().add(offset));
           metaMessage = metaEventRelay.createMetaMessage((Chord)event);
           track.add(new MidiEvent(metaMessage, midiTick));
           temp = metaEventRelay;
@@ -173,7 +173,7 @@ public final class MIDISequence extends javax.sound.midi.Sequence {
         Sound sound = (Sound)event;
         MetaMessage tempoMessage = sound.getTempoMessage();
         if (tempoMessage != null) {
-          int midiTick = toInteger(sound.getOffset().add(offset));
+          int midiTick = toInteger(sound.getMoment().add(offset));
           tempoTrack.add(new MidiEvent(tempoMessage, midiTick));
         }
         Integer newVelocity = sound.getMidiVelocity();
@@ -198,7 +198,7 @@ public final class MIDISequence extends javax.sound.midi.Sequence {
               if (events.get(j) instanceof EndBar) {
                 EndBar endBar = (EndBar)events.get(j);
                 if (endBar.getEndingStop() == startBar.getEndingStart()) {
-                  offset = offset.subtract(endBar.getOffset().subtract(startBar.getOffset()));
+                  offset = offset.subtract(endBar.getMoment().subtract(startBar.getMoment()));
                   i = j + 1;
                   break;
                 }
@@ -211,7 +211,7 @@ public final class MIDISequence extends javax.sound.midi.Sequence {
         if (unroll && endbar.getRepeat()) {
           if (round == 1) {
             StartBar repeatStart = (StartBar)events.get(repeatStartIndex);
-            offset = offset.add(endbar.getOffset().subtract(repeatStart.getOffset()));
+            offset = offset.add(endbar.getMoment().subtract(repeatStart.getMoment()));
             i = repeatStartIndex;
             round += 1;
           }
@@ -225,7 +225,7 @@ public final class MIDISequence extends javax.sound.midi.Sequence {
     throws InvalidMidiDataException {
     if (!note.isGrace()) {
       Pitch pitch = note.getPitch();
-      int offset = toInteger(note.getOffset().add(add));
+      int offset = toInteger(note.getMoment().add(add));
       int duration = toInteger(note.getDuration());
       Set<Articulation> articulations = note.getArticulations();
       if (articulations.contains(Articulation.staccatissimo)) {

@@ -25,14 +25,14 @@ package freedots.music;
 import freedots.math.Fraction;
 
 public class KeyChange implements StaffElement {
-  private Fraction offset;
+  private final Fraction moment;
   private KeySignature keySignature;
   private int staffNumber;
   private Staff staff;
 
-  public KeyChange(final Fraction offset,
+  public KeyChange(final Fraction moment,
                    final KeySignature keySignature, final int staffNumber) {
-    this.offset = offset;
+    this.moment = moment;
     this.keySignature = keySignature;
     this.staffNumber = staffNumber;
   }
@@ -41,7 +41,7 @@ public class KeyChange implements StaffElement {
 
   public int getStaffNumber() { return staffNumber; }
 
-  public Fraction getOffset() { return offset; }
+  public Fraction getMoment() { return moment; }
   public boolean equalsIgnoreOffset(Event other) {
     if (other instanceof KeyChange) {
       KeyChange otherKeyChange = (KeyChange)other;

@@ -26,8 +26,8 @@ import freedots.math.Fraction;
 
 public class StartBar extends VerticalEvent {
   int measureNumber;
-  public StartBar(final Fraction offset, final int measureNumber) {
-    super(offset);
+  public StartBar(final Fraction moment, final int measureNumber) {
+    super(moment);
     this.measureNumber = measureNumber;
   }
 

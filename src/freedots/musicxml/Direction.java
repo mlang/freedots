@@ -47,7 +47,7 @@ public final class Direction extends AbstractDirection {
         if ("direction-type".equals(child.getTagName())) {
           directionTypes.add(child);
         } else if ("sound".equals(child.getTagName())) {
-          sound = new Sound(child, getOffset());
+          sound = new Sound(child, getMoment());
         }
       }
     }

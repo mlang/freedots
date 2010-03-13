@@ -71,7 +71,7 @@ public final class Note implements RhythmicElement {
   private Part part;
   public Part getPart() { return part; }
 
-  private Fraction offset;
+  private Fraction moment;
   private Staff staff = null;
 
   private Element grace = null;
@@ -129,7 +129,7 @@ public final class Note implements RhythmicElement {
     parseDOM();
   }
 
-  void setDate(Fraction date) { offset = date; }
+  void setDate(Fraction date) { moment = date; }
 
   private void parseDOM() {
     for (Node node = element.getFirstChild(); node != null;
@@ -300,7 +300,7 @@ public final class Note implements RhythmicElement {
     return false;
   }
 
-  public Fraction getOffset() { return offset; }
+  public Fraction getMoment() { return moment; }
   public Staff getStaff() { return staff; }
   public void setStaff(Staff staff) { this.staff = staff; }
 
@@ -348,7 +348,7 @@ public final class Note implements RhythmicElement {
     if (object instanceof Note) {
       Note other = (Note)object;
 
-      if (getOffset().equals(other.getOffset())) {
+      if (getMoment().equals(other.getMoment())) {
         return equalsIgnoreOffset(other);
       }
     }
@@ -436,13 +436,13 @@ public final class Note implements RhythmicElement {
   }
   public Clef getClef() {
     if (staff != null) {
-      return staff.getClef(offset);
+      return staff.getClef(moment);
     }
     return null;
   }
   public KeySignature getActiveKeySignature() {
     if (staff != null) {
-      return staff.getKeySignature(offset);
+      return staff.getKeySignature(moment);
     }
     return null;
   }

@@ -46,28 +46,31 @@ public class MusicList extends java.util.ArrayList<Event> {
   /** Add a new element, inserting at the last possible position.
    */
   @Override public boolean add(Event newElement) {
-    Fraction offset = newElement.getOffset();
-    int index;
-    for (index = 0; index < size(); index++)
-      if (get(index).getOffset().compareTo(offset) > 0) break;
+    final Fraction moment = newElement.getMoment();
+    ListIterator<Event> iterator = listIterator();
+    while (iterator.hasNext())
+      if (iterator.next().getMoment().compareTo(moment) > 0) {
+        iterator.previous();
+        break;
+      }
 
-    add(index, newElement);
+    iterator.add(newElement);
     return true;
   }
 
   /** Returns a list of events which appear at a given time offset.
    * @return an empty list if there is no event at the given offset.
    */
-  public MusicList eventsAt(Fraction offset) {
-    if (offset.compareTo(0) < 0)
+  public MusicList eventsAt(Fraction moment) {
+    if (moment.compareTo(0) < 0)
       throw new IllegalArgumentException("Negative offset");
 
     final MusicList events = new MusicList();
     final Iterator<Event> iterator = iterator();
     while (iterator.hasNext()) {
       final Event event = iterator.next();
-      if (event.getOffset().compareTo(offset) < 0) continue;
-      if (event.getOffset().equals(offset))
+      if (event.getMoment().compareTo(moment) < 0) continue;
+      if (event.getMoment().equals(moment))
         events.add(event);
       else
         break;
@@ -103,7 +106,7 @@ public class MusicList extends java.util.ArrayList<Event> {
       } else if (event instanceof GlobalKeyChange) {
         GlobalKeyChange globalKeyChange = (GlobalKeyChange)event;
         for (int i = 0; i < staves.size(); i++) {
-          KeyChange keyChange = new KeyChange(globalKeyChange.getOffset(),
+          KeyChange keyChange = new KeyChange(globalKeyChange.getMoment(),
                                               globalKeyChange.getKeySignature(), i);
           staves.get(i).add(keyChange);
         }
@@ -172,12 +175,12 @@ public class MusicList extends java.util.ArrayList<Event> {
     for (Event event: this) {
       if (event instanceof Direction) {
         Direction direction = (Direction)event;
-        Fraction offset = direction.getOffset();
+        final Fraction moment = direction.getMoment();
         SEARCH: for (Voice voice: voices) {
           ListIterator<Event> iterator = voice.listIterator();
           while (iterator.hasNext()) {
             Event next = iterator.next();
-            if (next.getOffset().compareTo(offset) == 0
+            if (next.getMoment().equals(moment)
              && !(next instanceof Direction)) {
               iterator.previous(); iterator.add(direction);
               break SEARCH;

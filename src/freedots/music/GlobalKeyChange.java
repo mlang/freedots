@@ -25,18 +25,18 @@ package freedots.music;
 import freedots.math.Fraction;
 
 public final class GlobalKeyChange implements Event {
-  private Fraction offset;
+  private final Fraction moment;
   private KeySignature keySignature;
 
-  public GlobalKeyChange(final Fraction offset,
+  public GlobalKeyChange(final Fraction moment,
                          final KeySignature keySignature) {
-    this.offset = offset;
+    this.moment = moment;
     this.keySignature = keySignature;
   }
 
   public KeySignature getKeySignature() { return keySignature; }
 
-  public Fraction getOffset() { return offset; }
+  public Fraction getMoment() { return moment; }
   public boolean equalsIgnoreOffset(Event other) {
     if (other instanceof GlobalKeyChange) {
       return keySignature.equals(((GlobalKeyChange)other).getKeySignature());

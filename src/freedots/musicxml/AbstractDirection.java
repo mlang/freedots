@@ -64,7 +64,7 @@ public abstract class AbstractDirection implements StaffElement {
    * This method takes that into account.
    * @return the musical position as a fractional value.
    */
-  public Fraction getOffset() {
+  public Fraction getMoment() {
     if (offset != null) {
       int value = Integer.parseInt(offset.getTextContent());
       return initialDate.add(new Fraction(value * durationMultiplier,

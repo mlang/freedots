@@ -28,14 +28,14 @@ import freedots.math.Fraction;
 /** Indicates a change of a clef at a certain musical duration and staff.
  */
 public final class ClefChange implements StaffElement {
-  private Fraction offset;
+  private final Fraction moment;
   private Clef clef;
   private int staffNumber;
   private Staff staff;
 
-  public ClefChange(final Fraction offset,
+  public ClefChange(final Fraction moment,
                     final Clef clef, final int staffNumber) {
-    this.offset = offset;
+    this.moment = moment;
     this.clef = clef;
     this.staffNumber = staffNumber;
   }
@@ -44,7 +44,7 @@ public final class ClefChange implements StaffElement {
 
   public int getStaffNumber() { return staffNumber; }
 
-  public Fraction getOffset() { return offset; }
+  public Fraction getMoment() { return moment; }
 
   public Staff getStaff() { return staff; }
   public void setStaff(Staff staff) { this.staff = staff; }
@@ -52,7 +52,7 @@ public final class ClefChange implements StaffElement {
 
   @Deprecated
   public String toBrailleString() {
-    if (offset.compareTo(Fraction.ZERO) > 0) {
+    if (moment.compareTo(Fraction.ZERO) > 0) {
       Clef initialClef = staff.getClef();
       if (initialClef.isBass())
         if (clef.isTreble()) {

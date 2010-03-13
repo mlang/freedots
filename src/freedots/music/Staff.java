@@ -43,10 +43,10 @@ public class Staff extends MusicList {
       if (event instanceof StaffElement) ((StaffElement)event).setStaff(this);
       if (event instanceof ClefChange) {
         ClefChange clefChange = (ClefChange)event;
-        clefList.put(clefChange.getOffset(), clefChange.getClef());
+        clefList.put(clefChange.getMoment(), clefChange.getClef());
       } else if (event instanceof KeyChange) {
         KeyChange keyChange = (KeyChange)event;
-        keyList.put(keyChange.getOffset(), keyChange.getKeySignature());
+        keyList.put(keyChange.getMoment(), keyChange.getKeySignature());
       }
       return true;
     }

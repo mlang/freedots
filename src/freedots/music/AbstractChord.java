@@ -28,17 +28,21 @@ import freedots.math.Fraction;
 
 public abstract class
 AbstractChord<E extends Event> extends ArrayList<E> implements Event {
-  private Fraction offset;
+  private Fraction moment;
 
-  private AbstractChord(final Fraction offset) {
+  private AbstractChord(final Fraction moment) {
     super();
-    this.offset = offset;
+    this.moment = moment;
   }
   public AbstractChord(final E initialNote) {
-    this(initialNote.getOffset());
+    this(initialNote.getMoment());
     add(initialNote);
   }
-  public final Fraction getOffset() { return offset; }
+  @Override public boolean add(final E event) {
+    assert event.getMoment().equals(moment);
+    return super.add(event);
+  }
+  public final Fraction getMoment() { return moment; }
   public final boolean equalsIgnoreOffset(Event other) {
     if (other instanceof AbstractChord) {
       AbstractChord otherChord = (AbstractChord)other;
