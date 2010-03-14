@@ -1,13 +1,26 @@
+Java Access Bridge:
+-------------------
+
+FreeDots is written in Java to allow cross-platform accessibility.
+However, given the "no gears included" approach of MS Windows accessibility,
+you will have to install the Java Access Bridge yourself (if you didn't do
+so already in the past) before you can use FreeDots with your
+screen reader.
+
 Unicode Braille with JAWS For Windows:
 --------------------------------------
 
-As of version 8.0, JAWS For Windows still has no standard
+As of version 10.0, JAWS For Windows still has no standard
 definitions for Unicode Braille.  If you are going to
 read FreeDots output files on Windows with JAWS,
 you will need to append the definitions below
 to your .JBT file (JAWS Braille Table).
 Simply copy all text below the separation line till the
 end of this file, and paste it into your .JBT file.
+
+This definition should really be part of JAWS (and any other braille capable
+screen reader) by default.  Ask your redistributor to tell
+Freedom Scientific they should really ship this by default.
 
 -------------------------------------------------------------------------------
 U+2800=
