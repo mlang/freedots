@@ -289,6 +289,8 @@ public enum Braille {
           sb.append("m").append(numberSign).append(upperNumber(7));
         else if ("diminished-seventh".equals(kind))
           sb.append("dim").append(numberSign).append(upperNumber(7));
+        else if ("augmented-seventh".equals(kind))
+          sb.append(sharp).append(numberSign).append(upperNumber(5)).append(numberSign).append(upperNumber(7));
         else if ("major-ninth".equals(kind))
           sb.append("maj").append(numberSign).append(upperNumber(9));
         else if ("minor-ninth".equals(kind))
