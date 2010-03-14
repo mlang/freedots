@@ -38,8 +38,8 @@ public final class Harmony extends AbstractDirection {
 
   Harmony(final Element element,
           final int durationMultiplier, final int divisions,
-          final Fraction offset) {
-    super(element, durationMultiplier, divisions, offset);
+          final Fraction moment) {
+    super(element, durationMultiplier, divisions, moment);
 
     HarmonyChord currentChord = null;
     for (Node node = element.getFirstChild(); node != null;

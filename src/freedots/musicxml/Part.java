@@ -164,7 +164,7 @@ public final class Part {
                 offset = offset.add(currentChord.get(0).getDuration());
                 currentChord = null;
               }
-              note.setDate(measureOffset.add(offset));
+              note.setMoment(measureOffset.add(offset));
               boolean advanceTime = !note.isGrace();
               boolean addNoteToEventList = true;
 
@@ -215,7 +215,7 @@ public final class Part {
               Note invisibleRest = new Note(musicdata,
                                             divisions, durationMultiplier,
                                             this);
-              invisibleRest.setDate(measureOffset.add(offset));
+              invisibleRest.setMoment(measureOffset.add(offset));
               eventList.add(invisibleRest);
               offset = offset.add(invisibleRest.getDuration());
             } else if ("print".equals(tagName)) {

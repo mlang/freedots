@@ -118,9 +118,8 @@ public final class Note implements RhythmicElement {
 
   private Notations notations = null;
 
-  Note(Element element, int divisions, int durationMultiplier, Part part)
-    throws MusicXMLParseException
-  {
+  Note(final Element element, final int divisions, final int durationMultiplier,
+       final Part part) throws MusicXMLParseException {
     this.element = element;
     this.divisions = divisions;
     this.durationMultiplier = durationMultiplier;
@@ -129,7 +128,7 @@ public final class Note implements RhythmicElement {
     parseDOM();
   }
 
-  void setDate(Fraction date) { moment = date; }
+  void setMoment(final Fraction moment) { this.moment = moment; }
 
   private void parseDOM() {
     for (Node node = element.getFirstChild(); node != null;
@@ -154,17 +153,14 @@ public final class Note implements RhythmicElement {
           dot.add(child);
         } else if (child.getTagName().equals(ACCIDENTAL_ELEMENT)) {
           if (part.getScore().encodingSupports(ACCIDENTAL_ELEMENT)) {
-            Text textNode = firstTextNode(child);
-            if (textNode != null) {
-              String accidentalName = textNode.getWholeText();
-              String santizedName = accidentalName.trim().toLowerCase();
-              if (accidentalMap.containsKey(santizedName))
-                accidental = accidentalMap.get(santizedName);
-              else
-                throw new MusicXMLParseException("Illegal <accidental>"
-                                                 + accidentalName
-                                                 + "</accidental>");
-            }
+            final String accidentalName = child.getTextContent();
+            final String santizedName = accidentalName.trim().toLowerCase();
+            if (accidentalMap.containsKey(santizedName))
+              accidental = accidentalMap.get(santizedName);
+            else
+              throw new MusicXMLParseException("Illegal <accidental>"
+                                               + accidentalName
+                                               + "</accidental>");
           }
         } else if (child.getTagName().equals(TIME_MODIFICATION_ELEMENT)) {
           timeModification = child;
@@ -250,7 +246,7 @@ public final class Note implements RhythmicElement {
   public Accidental getAccidental() {
     return accidental;
   }
-  public void setAccidental(Accidental accidental) {
+  void setAccidental(Accidental accidental) {
     this.accidental = accidental;
 
     if (part.getScore().encodingSupports(ACCIDENTAL_ELEMENT)) {
