@@ -142,6 +142,7 @@ class SectionBySection implements Strategy {
 
   private void transcribeMusic(Staff staff, final int chordDirection) {
     BrailleMeasure measure = new BrailleMeasure(transcriber);
+    measure.setChordDirection(chordDirection);
     measure.setVoiceDirection(chordDirection);
 
     StartBar startBar = null;
@@ -205,6 +206,7 @@ class SectionBySection implements Strategy {
         if (!rightBar.getEndOfMusic()) transcriber.spaceOrNewLine();
 
         measure = new BrailleMeasure(transcriber, measure);
+        measure.setChordDirection(chordDirection);
         measure.setVoiceDirection(chordDirection);
       } else {
         measure.add(event);

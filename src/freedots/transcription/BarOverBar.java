@@ -171,13 +171,13 @@ class BarOverBar implements Strategy {
           if (staffIndex == 0) {
             brailleStaff.setIntro(new RightHandPart());
             voiceDirection = -1;
-            measure.setVoiceDirection(voiceDirection);
           } else if (staffIndex == 1) {
             brailleStaff.setIntro(new LeftHandPart());
             voiceDirection = 1;
-            measure.setVoiceDirection(voiceDirection);
           }
         }
+        measure.setChordDirection(voiceDirection);
+        measure.setVoiceDirection(voiceDirection);
 
         StartBar startBar = null;
 
@@ -193,6 +193,7 @@ class BarOverBar implements Strategy {
             measure.process();
             brailleStaff.add(measure);
             measure = new BrailleMeasure(transcriber, measure);
+            measure.setChordDirection(voiceDirection);
             measure.setVoiceDirection(voiceDirection);
           } else {
             measure.add(event);

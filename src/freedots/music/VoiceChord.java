@@ -22,7 +22,6 @@
  */
 package freedots.music;
 
-import java.util.Collections;
 import java.util.Comparator;
 
 /** A chord limited to notes belonging to a particular voice.
@@ -62,15 +61,7 @@ VoiceChord extends AbstractChord<RhythmicElement> implements VoiceElement {
     for (VoiceElement element:this) { element.setVoiceName(voiceName); }
   }
 
-  public VoiceChord getSorted() {
-    VoiceChord newChord = (VoiceChord)this.clone();
-    Collections.sort(newChord,
-                     getStaff().getClef(getMoment()).getChordDirection() > 0?
-                     new AscendingNoteComparator():
-                     new DescendingNoteComparator());
-    return newChord;
-  }
-  private class AscendingNoteComparator implements Comparator<RhythmicElement> {
+  public static class AscendingComparator implements Comparator<RhythmicElement> {
     public int compare(RhythmicElement n1, RhythmicElement n2) {
       AbstractPitch p1 = n1.getPitch();
       if (p1 == null) p1 = n1.getUnpitched();
@@ -79,7 +70,7 @@ VoiceChord extends AbstractChord<RhythmicElement> implements VoiceElement {
       return p1.compareTo(p2);
     }
   }
-  private class DescendingNoteComparator implements Comparator<RhythmicElement> {
+  public static class DescendingComparator implements Comparator<RhythmicElement> {
     public int compare(RhythmicElement n1, RhythmicElement n2) {
       AbstractPitch p1 = n1.getPitch();
       if (p1 == null) p1 = n1.getUnpitched();
@@ -90,3 +81,4 @@ VoiceChord extends AbstractChord<RhythmicElement> implements VoiceElement {
     }
   }
 }
+

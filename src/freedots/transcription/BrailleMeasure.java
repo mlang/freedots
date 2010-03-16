@@ -23,6 +23,7 @@
 package freedots.transcription;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 
@@ -39,6 +40,7 @@ import freedots.logging.Logger;
 import freedots.music.AbstractPitch;
 import freedots.music.Event;
 import freedots.music.MusicList;
+import freedots.music.RhythmicElement;
 import freedots.music.TimeSignature;
 import freedots.music.Voice;
 import freedots.music.VoiceChord;
@@ -54,6 +56,8 @@ class BrailleMeasure {
   private AbstractPitch finalPitch = null;
   private TimeSignature timeSignature = null;
   private int voiceDirection = -1; /* By default, top to bottom */
+  private Comparator<RhythmicElement> chordComparator =
+    new VoiceChord.DescendingComparator();
   private final Transcriber transcriber;
   BrailleMeasure(final Transcriber transcriber) {
     this.transcriber = transcriber;
@@ -67,6 +71,10 @@ class BrailleMeasure {
 
   public void setTimeSignature(TimeSignature timeSignature) {
     this.timeSignature = timeSignature;
+  }
+  public void setChordDirection(final int direction) {
+    if (direction < 0) chordComparator = new VoiceChord.DescendingComparator();
+    else chordComparator = new VoiceChord.AscendingComparator();
   }
   public void setVoiceDirection(int direction) {
     voiceDirection = direction;
@@ -278,6 +286,7 @@ class BrailleMeasure {
         state.append(brailleNote);
       } else if (element instanceof VoiceChord) {
         BrailleChord brailleChord = new BrailleChord((VoiceChord)element,
+                                                     chordComparator,
                                                      state.getLastPitch());
         AbstractPitch pitch = (AbstractPitch)brailleChord.getNotePitch();
         if (pitch != null) {

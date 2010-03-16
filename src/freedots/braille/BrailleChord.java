@@ -22,6 +22,7 @@
  */
 package freedots.braille;
 
+import java.util.Comparator;
 import java.util.Iterator;
 
 import freedots.Options;
@@ -45,11 +46,15 @@ public class BrailleChord extends BrailleList {
    *        should be printed.  It should be {@code null} if an octave sign
    *        should be printed regardless of the previous pitch.
    */
-  public BrailleChord(final VoiceChord chord, final AbstractPitch lastPitch) {
+  public BrailleChord(final VoiceChord chord,
+                      final Comparator<RhythmicElement> comparator,
+                      final AbstractPitch lastPitch) {
     super();
     this.chord = chord;
 
-    final Iterator<RhythmicElement> iterator = chord.getSorted().iterator();
+    final VoiceChord sorted = (VoiceChord)chord.clone();
+    java.util.Collections.sort(sorted, comparator);
+    final Iterator<RhythmicElement> iterator = sorted.iterator();
     assert iterator.hasNext();
 
     final boolean allNotesTied = hasAllNotesTied();
