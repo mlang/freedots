@@ -453,6 +453,7 @@ public final class Note implements RhythmicElement {
           put("staccato", Articulation.staccato);
           put("staccatissimo", Articulation.staccatissimo);
           put("tenuto", Articulation.tenuto);
+          put("detached-legato", Articulation.mezzoStaccato);
         }
       });
 
