@@ -155,7 +155,7 @@ public final class Main
       //this.midiPlayer
       
       playScoreAction.setEnabled(scoreAvailable);
-      pauseScoreAction.setEnabled(scoreAvailable);
+      //pauseScoreAction.setEnabled(scoreAvailable);
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -221,7 +221,56 @@ public final class Main
       }
     }
   }
+  
   boolean paused = false;
+  boolean begin = true;
+  	
+  // Start/pause
+  public boolean startPlayback() {
+	
+	if (score != null) {
+		// Au tout début
+	  if (begin)
+		try {
+		  midiPlayer.setSequence(new MIDISequence(score, true, metaEventRelay));
+		  midiPlayer.start();
+		  paused = false;
+		  begin = false;
+		  return true;
+		} catch (javax.sound.midi.InvalidMidiDataException exception) {
+		    exception.printStackTrace();
+		  }
+		else {
+		  // Si on veut faire resume
+		  if (paused) {
+			midiPlayer.start();
+			paused = false;
+			begin = false;
+			return true;
+		  }
+		  else {
+			// Si on veut faire pause
+			if (midiPlayer != null) {
+				midiPlayer.stop();
+				paused = true;
+				begin = false;
+				return true;
+			}
+		  }
+		}
+	}
+	return false;
+  }
+	  
+  public void stopPlayback() {
+    if (midiPlayer != null) {
+    	midiPlayer.stop();
+    	paused = true;
+    	begin = true;
+    }
+  }
+
+  /*
   public boolean startPlayback() {
     if (score != null)
       try {
@@ -235,7 +284,7 @@ public final class Main
 
     return false;
   }
-  
+  */
   void pausePlayback() {
 	if (score != null) {
 	  if (paused) {
@@ -250,17 +299,18 @@ public final class Main
 	  }
 	}
   }
-  
+  /*
   public void stopPlayback() {
     if (midiPlayer != null) {
     	midiPlayer.stop();
     	paused = true;
     }
   }
-
+  */
+  
   private Action playScoreAction = new PlayScoreAction(this);
   //Amelie
-  private Action pauseScoreAction = new PauseScoreAction(this);
+  //private Action pauseScoreAction = new PauseScoreAction(this);
   private Action fileSaveAsAction = new FileSaveAsAction(this);
   private Action editFingeringAction = new EditFingeringAction(this);
 
@@ -345,7 +395,7 @@ public final class Main
     
     fileSaveAsAction.setEnabled(scoreAvailable);
     playScoreAction.setEnabled(scoreAvailable);
-    pauseScoreAction.setEnabled(scoreAvailable);
+    //pauseScoreAction.setEnabled(scoreAvailable);
 
     textPane.setEditable(false);
     textPane.setCaret(new DefaultCaret() {
@@ -499,7 +549,7 @@ public final class Main
 
     menu.add(playScoreAction);
     //Amelie
-    menu.add(pauseScoreAction);
+    //menu.add(pauseScoreAction);
     menu.add(new StopPlaybackAction(this));
 
     JCheckBoxMenuItem autoPlayItem = new JCheckBoxMenuItem("Play on caret move");

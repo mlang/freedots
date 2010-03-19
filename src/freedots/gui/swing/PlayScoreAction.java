@@ -33,7 +33,7 @@ final class PlayScoreAction extends javax.swing.AbstractAction {
   public PlayScoreAction(final Main gui) {
     super("Play score");
     this.gui = gui;
-    putValue(SHORT_DESCRIPTION, "Play the complete score");
+    putValue(SHORT_DESCRIPTION, "Play/Pause score");
     putValue(ACCELERATOR_KEY,
              KeyStroke.getKeyStroke(KeyEvent.VK_P, ActionEvent.CTRL_MASK));
   }
