@@ -160,20 +160,50 @@ public final class Main extends JFrame
     }
   }
 
+  boolean paused = false;
+  boolean begin = true;
+  	
   boolean startPlayback() {
-    if (score != null)
-      try {
-        midiPlayer.setSequence(new MIDISequence(score, true, metaEventRelay));
-        midiPlayer.start();
-        return true;
-      } catch (javax.sound.midi.InvalidMidiDataException exception) {
-        exception.printStackTrace();
+	if (score != null) {
+	  // Play from the beginning
+	  if (begin)
+		try {
+		  midiPlayer.setSequence(new MIDISequence(score, true, metaEventRelay));
+		  midiPlayer.start();
+		  paused = false;
+		  begin = false;
+		  return true;
+		} catch (javax.sound.midi.InvalidMidiDataException exception) {
+		    exception.printStackTrace();
+		  }
+	  else {
+		// Resume
+		if (paused) {
+		  midiPlayer.start();
+		  paused = false;
+		  begin = false;
+		  return true;
+		}
+		else {
+	   	  // Pause
+		  if (midiPlayer != null) {
+			midiPlayer.stop();
+			paused = true;
+			begin = false;
+			return true;
+		  }
+		}
       }
-
-    return false;
+	}
+	return false;
   }
+  
   void stopPlayback() {
-    if (midiPlayer != null) midiPlayer.stop();
+	if (midiPlayer != null) {
+      midiPlayer.stop();
+	  paused = true;
+	  begin = true;
+    }
   }
 
   private Action playScoreAction = new PlayScoreAction(this);

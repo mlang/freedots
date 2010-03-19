@@ -31,9 +31,9 @@ import javax.swing.KeyStroke;
 final class PlayScoreAction extends javax.swing.AbstractAction {
   private Main gui;
   public PlayScoreAction(final Main gui) {
-    super("Play score");
+    super("Play/Resume score");
     this.gui = gui;
-    putValue(SHORT_DESCRIPTION, "Play the complete score");
+    putValue(SHORT_DESCRIPTION, "Play/Resume score");
     putValue(ACCELERATOR_KEY,
              KeyStroke.getKeyStroke(KeyEvent.VK_P, ActionEvent.CTRL_MASK));
   }
