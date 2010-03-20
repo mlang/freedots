@@ -24,11 +24,20 @@ package freedots.music;
 
 import freedots.math.Fraction;
 
+/** An Event is something that occurs at a particular time.
+ */
 public interface Event {
   /** Returns the musical time position of this event.
    */
   Fraction getMoment();
 
+  /** Compares equality without considering {@link #getMoment}.
+   * <p>
+   * This method is intended for repetition detection algorithms, but it is not
+   * fully clear if it is the proper way to go.
+   */
+   // TODO: Fix classes which implement this, in many cases the current
+   //       implementation is faulty.
   boolean equalsIgnoreOffset(Event other);
 }
 
