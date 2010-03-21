@@ -239,9 +239,12 @@ public final class Main extends JFrame
     if (midiPlayer != null) midiPlayer.close();
     System.exit(0);
   }
-
+public ScorePane scorePane;
   private JPanel createContentPane() {
     textPane = new BraillePane();
+    //Amelie
+    scorePane = new ScorePane();
+    scorePane.setText("Part of the screen for score display");
     textPane.setSize(options.getPageWidth(), options.getPageHeight());
 
     final boolean scoreAvailable = transcriber.getScore() != null;    
@@ -262,7 +265,11 @@ public final class Main extends JFrame
     // Lay out the content pane.
     JPanel contentPane = new JPanel();
     contentPane.setLayout(new BorderLayout());
-    contentPane.add(new JScrollPane(textPane), BorderLayout.CENTER);
+    //contentPane.add(new JScrollPane(textPane), BorderLayout.CENTER);
+    
+    //Amelie
+    contentPane.add(new JScrollPane(textPane), BorderLayout.WEST);
+    contentPane.add(new JScrollPane(scorePane), BorderLayout.EAST);
 
     contentPane.add(new JScrollPane(logArea), BorderLayout.SOUTH);
 
