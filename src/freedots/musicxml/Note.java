@@ -47,6 +47,7 @@ import freedots.music.Staff;
 import freedots.music.RhythmicElement;
 import freedots.music.Syllabic;
 
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -112,12 +113,19 @@ public final class Note implements RhythmicElement {
     });
 
   private Element tie = null;
-  private Element timeModification = null;
+  private TimeModification timeModification = null;
+  
+  public TimeModification getTimeModification(){return timeModification;}
 
   private Lyric lyric = null;
 
   private Notations notations = null;
+  
+  private List<Tuplet> tuplet = new ArrayList<Tuplet>(2);
+  public List<Tuplet> getTuplet() { return tuplet; }
+  void addTuplet(Tuplet tuplet) { this.tuplet.add(tuplet); }
 
+  
   Note(final Element element, final int divisions, final int durationMultiplier,
        final Part part) throws MusicXMLParseException {
     this.element = element;
@@ -163,7 +171,7 @@ public final class Note implements RhythmicElement {
                                                + "</accidental>");
           }
         } else if (child.getTagName().equals(TIME_MODIFICATION_ELEMENT)) {
-          timeModification = child;
+          timeModification = new TimeModification(child);
         } else if (child.getTagName().equals(STAFF_ELEMENT)) {
           staffNumber = firstTextNode(child);
         } else if (child.getTagName().equals(NOTATIONS_ELEMENT)) {
@@ -233,8 +241,8 @@ public final class Note implements RhythmicElement {
       int normalNotes = 1;
       int actualNotes = 1;
       if (timeModification != null) {
-        normalNotes = Integer.parseInt(Score.getTextNode(timeModification, "normal-notes").getWholeText());
-        actualNotes = Integer.parseInt(Score.getTextNode(timeModification, "actual-notes").getWholeText());
+        normalNotes = timeModification.getNormalNotes();
+        actualNotes = timeModification.getActualNotes();
       }
       return new AugmentedPowerOfTwo(base, dot.size(),
                                      normalNotes, actualNotes);

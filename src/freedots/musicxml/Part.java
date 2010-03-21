@@ -362,7 +362,7 @@ public final class Part {
      */
     void buildSlurs() {
       if (slurMap.size() != 0)
-        LOG.warning("Untermiated slurs: "+slurMap.size());
+        LOG.warning("Unterminated slurs: "+slurMap.size());
 
       for (SlurBounds bounds: slurs) {
         Note note = bounds.begin();
