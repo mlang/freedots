@@ -11251,6 +11251,7 @@
 					<words font-weight='bold'>Presto</words>
 				</direction-type>
 				<staff>1</staff>
+				<sound tempo='180'/>
 			</direction>
 			<direction>
 				<direction-type>
@@ -14123,6 +14124,7 @@
 					<words font-weight='bold'>Adagio</words>
 				</direction-type>
 				<staff>1</staff>
+				<sound tempo='64'/>
 			</direction>
 			<note>
 				<pitch>
@@ -15126,6 +15128,7 @@
 					<words font-weight='bold'>Allegro</words>
 				</direction-type>
 				<staff>1</staff>
+				<sound tempo='120'/>
 			</direction>
 			<note>
 				<pitch>
