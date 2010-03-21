@@ -14769,12 +14769,6 @@
 <!--=========================================================-->
 		<measure number='35'>
 			<print new-system='yes'/>
-			<direction>
-				<direction-type>
-					<words default-y='15' relative-x='4'>15</words>
-				</direction-type>
-				<staff>1</staff>
-			</direction>
 			<note>
 				<pitch>
 					<step>B</step>
@@ -14786,6 +14780,11 @@
 				<dot/>
 				<staff>1</staff>
 				<beam number='1'>begin</beam>
+				<notations>
+					<technical>
+						<fingering>1 5</fingering>
+					</technical>
+				</notations>
 			</note>
 			<note>
 				<pitch>
