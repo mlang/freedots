@@ -467,6 +467,20 @@ public final class Main extends JFrame
 
     jsBachMenu.add(bwv1013Menu);
 
+    JMenu wtcMenu = new JMenu("The Well Tempered Clavier");
+    JMenuItem wtc_3Item = new JMenuItem("BWV 847: Praeludium II", KeyEvent.VK_P);
+    wtc_3Item.getAccessibleContext().setAccessibleDescription(
+      "BWV 847 prelude from the well tempered clavier");
+    wtc_3Item.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        Library library = new Library();
+        setScore(library.loadScore("bwv847-p.xml"));
+      }
+    });
+    wtcMenu.add(wtc_3Item);
+
+    jsBachMenu.add(wtcMenu);
+
     baroqueMenu.add(jsBachMenu);
 
     libraryMenu.add(baroqueMenu);
