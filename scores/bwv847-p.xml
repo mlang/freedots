@@ -72,6 +72,7 @@
 				<instrument-abbreviation>Pno.</instrument-abbreviation>
 			</score-instrument>
 			<midi-instrument id='P1-I1'>
+				<midi-program>7</midi-program>
 				<volume>79</volume>
 				<pan>-18</pan>
 			</midi-instrument>
