@@ -13,7 +13,7 @@
 			<encoder>Claudio Sacco</encoder>
 			<software>Sibelius 6.1</software>
 			<software>Dolet 5.1 for Sibelius</software>
-			<encoding-date>2010-03-21</encoding-date>
+			<encoding-date>2010-03-23</encoding-date>
 			<supports element='accidental' type='no'/>
 			<supports element='transpose' type='no'/>
 			<supports attribute='new-page' element='print' type='yes' value='yes'/>
@@ -72,7 +72,6 @@
 				<instrument-abbreviation>Pno.</instrument-abbreviation>
 			</score-instrument>
 			<midi-instrument id='P1-I1'>
-				<midi-program>7</midi-program>
 				<volume>79</volume>
 				<pan>-18</pan>
 			</midi-instrument>
@@ -395,7 +394,7 @@
 				<beam number='2'>continue</beam>
 				<notations>
 					<technical>
-						<fingering default-y='15' relative-x='4'>1</fingering>
+						<fingering default-y='-62' relative-x='4'>1</fingering>
 					</technical>
 				</notations>
 			</note>
@@ -412,7 +411,7 @@
 				<beam number='2'>continue</beam>
 				<notations>
 					<technical>
-						<fingering default-y='15' relative-x='4'>2</fingering>
+						<fingering default-y='-65' relative-x='4'>2</fingering>
 					</technical>
 				</notations>
 			</note>
@@ -442,7 +441,7 @@
 				<beam number='2'>begin</beam>
 				<notations>
 					<technical>
-						<fingering default-y='15' relative-x='4'>3</fingering>
+						<fingering default-y='-70' relative-x='4'>3</fingering>
 					</technical>
 				</notations>
 			</note>
@@ -845,7 +844,7 @@
 				<beam number='2'>continue</beam>
 				<notations>
 					<technical>
-						<fingering default-y='15' relative-x='4'>1</fingering>
+						<fingering default-y='-62' relative-x='4'>1</fingering>
 					</technical>
 				</notations>
 			</note>
@@ -862,7 +861,7 @@
 				<beam number='2'>continue</beam>
 				<notations>
 					<technical>
-						<fingering default-y='15' relative-x='4'>2</fingering>
+						<fingering default-y='-60' relative-x='4'>2</fingering>
 					</technical>
 				</notations>
 			</note>
@@ -880,7 +879,7 @@
 				<beam number='2'>end</beam>
 				<notations>
 					<technical>
-						<fingering default-y='15' relative-x='4'>1</fingering>
+						<fingering default-y='-60' relative-x='4'>1</fingering>
 					</technical>
 				</notations>
 			</note>
@@ -897,7 +896,7 @@
 				<beam number='2'>begin</beam>
 				<notations>
 					<technical>
-						<fingering default-y='15' relative-x='4'>3</fingering>
+						<fingering default-y='-65' relative-x='4'>3</fingering>
 					</technical>
 				</notations>
 			</note>
@@ -1710,7 +1709,7 @@
 				<beam number='2'>begin</beam>
 				<notations>
 					<technical>
-						<fingering default-y='15' relative-x='4'>5</fingering>
+						<fingering default-y='-70' relative-x='4'>5</fingering>
 					</technical>
 				</notations>
 			</note>
@@ -1728,7 +1727,7 @@
 				<beam number='2'>continue</beam>
 				<notations>
 					<technical>
-						<fingering default-y='15' relative-x='4'>3</fingering>
+						<fingering default-y='-70' relative-x='4'>3</fingering>
 					</technical>
 				</notations>
 			</note>
@@ -2190,7 +2189,7 @@
 				<beam number='2'>begin</beam>
 				<notations>
 					<technical>
-						<fingering default-y='15' relative-x='4'>3</fingering>
+						<fingering default-y='-60' relative-x='4'>3</fingering>
 					</technical>
 				</notations>
 			</note>
@@ -4191,7 +4190,7 @@
 				<beam number='2'>begin</beam>
 				<notations>
 					<technical>
-						<fingering default-y='15' relative-x='4'>5</fingering>
+						<fingering default-y='-60' relative-x='4'>5</fingering>
 					</technical>
 				</notations>
 			</note>
@@ -4208,7 +4207,7 @@
 				<beam number='2'>continue</beam>
 				<notations>
 					<technical>
-						<fingering default-y='15' relative-x='4'>2</fingering>
+						<fingering default-y='-75' relative-x='4'>2</fingering>
 					</technical>
 				</notations>
 			</note>
@@ -5014,7 +5013,7 @@
 				<beam number='2'>begin</beam>
 				<notations>
 					<technical>
-						<fingering default-y='15' relative-x='4'>4</fingering>
+						<fingering default-y='-70' relative-x='4'>4</fingering>
 					</technical>
 				</notations>
 			</note>
@@ -5032,7 +5031,7 @@
 				<beam number='2'>continue</beam>
 				<notations>
 					<technical>
-						<fingering default-y='15' relative-x='4'>2</fingering>
+						<fingering default-y='-70' relative-x='4'>2</fingering>
 					</technical>
 				</notations>
 			</note>
@@ -5479,7 +5478,7 @@
 				<beam number='2'>begin</beam>
 				<notations>
 					<technical>
-						<fingering default-y='15' relative-x='4'>4</fingering>
+						<fingering default-y='-75' relative-x='4'>4</fingering>
 					</technical>
 				</notations>
 			</note>
@@ -5496,7 +5495,7 @@
 				<beam number='2'>continue</beam>
 				<notations>
 					<technical>
-						<fingering default-y='15' relative-x='4'>2</fingering>
+						<fingering default-y='-68' relative-x='4'>2</fingering>
 					</technical>
 				</notations>
 			</note>
@@ -5539,7 +5538,7 @@
 				<beam number='2'>begin</beam>
 				<notations>
 					<technical>
-						<fingering default-y='15' relative-x='4'>1</fingering>
+						<fingering default-y='-62' relative-x='4'>1</fingering>
 					</technical>
 				</notations>
 			</note>
@@ -5915,7 +5914,7 @@
 				<beam number='2'>begin</beam>
 				<notations>
 					<technical>
-						<fingering default-y='15' relative-x='4'>4</fingering>
+						<fingering default-y='-70' relative-x='4'>4</fingering>
 					</technical>
 				</notations>
 			</note>
@@ -5932,7 +5931,7 @@
 				<beam number='2'>continue</beam>
 				<notations>
 					<technical>
-						<fingering default-y='15' relative-x='4'>2</fingering>
+						<fingering default-y='-60' relative-x='4'>2</fingering>
 					</technical>
 				</notations>
 			</note>
@@ -6333,7 +6332,7 @@
 				<beam number='2'>begin</beam>
 				<notations>
 					<technical>
-						<fingering default-y='15' relative-x='4'>4</fingering>
+						<fingering default-y='-70' relative-x='4'>4</fingering>
 					</technical>
 				</notations>
 			</note>
@@ -6386,7 +6385,7 @@
 				<beam number='2'>begin</beam>
 				<notations>
 					<technical>
-						<fingering default-y='15' relative-x='4'>3</fingering>
+						<fingering default-y='-65' relative-x='4'>3</fingering>
 					</technical>
 				</notations>
 			</note>
@@ -6735,7 +6734,7 @@
 				<beam number='2'>begin</beam>
 				<notations>
 					<technical>
-						<fingering default-y='15' relative-x='4'>5</fingering>
+						<fingering default-y='-75' relative-x='4'>5</fingering>
 					</technical>
 				</notations>
 			</note>
@@ -6752,7 +6751,7 @@
 				<beam number='2'>continue</beam>
 				<notations>
 					<technical>
-						<fingering default-y='15' relative-x='4'>2</fingering>
+						<fingering default-y='-68' relative-x='4'>2</fingering>
 					</technical>
 				</notations>
 			</note>
@@ -6795,7 +6794,7 @@
 				<beam number='2'>begin</beam>
 				<notations>
 					<technical>
-						<fingering default-y='15' relative-x='4'>1</fingering>
+						<fingering default-y='-62' relative-x='4'>1</fingering>
 					</technical>
 				</notations>
 			</note>
@@ -6849,7 +6848,7 @@
 				<beam number='2'>begin</beam>
 				<notations>
 					<technical>
-						<fingering default-y='15' relative-x='4'>4</fingering>
+						<fingering default-y='-75' relative-x='4'>4</fingering>
 					</technical>
 				</notations>
 			</note>
@@ -6866,7 +6865,7 @@
 				<beam number='2'>continue</beam>
 				<notations>
 					<technical>
-						<fingering default-y='15' relative-x='4'>2</fingering>
+						<fingering default-y='-68' relative-x='4'>2</fingering>
 					</technical>
 				</notations>
 			</note>
@@ -7593,7 +7592,7 @@
 				<beam number='2'>begin</beam>
 				<notations>
 					<technical>
-						<fingering default-y='15' relative-x='4'>5</fingering>
+						<fingering default-y='-70' relative-x='4'>5</fingering>
 					</technical>
 				</notations>
 			</note>
@@ -7611,7 +7610,7 @@
 				<beam number='2'>continue</beam>
 				<notations>
 					<technical>
-						<fingering default-y='15' relative-x='4'>2</fingering>
+						<fingering default-y='-70' relative-x='4'>2</fingering>
 					</technical>
 				</notations>
 			</note>
@@ -8023,7 +8022,7 @@
 				<beam number='2'>begin</beam>
 				<notations>
 					<technical>
-						<fingering default-y='15' relative-x='4'>5</fingering>
+						<fingering default-y='-60' relative-x='4'>5</fingering>
 					</technical>
 				</notations>
 			</note>
@@ -8040,7 +8039,7 @@
 				<beam number='2'>continue</beam>
 				<notations>
 					<technical>
-						<fingering default-y='15' relative-x='4'>2</fingering>
+						<fingering default-y='-60' relative-x='4'>2</fingering>
 					</technical>
 				</notations>
 			</note>
@@ -8130,7 +8129,7 @@
 				<beam number='2'>begin</beam>
 				<notations>
 					<technical>
-						<fingering default-y='15' relative-x='4'>4</fingering>
+						<fingering default-y='-60' relative-x='4'>4</fingering>
 					</technical>
 				</notations>
 			</note>
@@ -8443,7 +8442,7 @@
 				<beam number='2'>begin</beam>
 				<notations>
 					<technical>
-						<fingering default-y='15' relative-x='4'>5</fingering>
+						<fingering default-y='-60' relative-x='4'>5</fingering>
 					</technical>
 				</notations>
 			</note>
@@ -8461,7 +8460,7 @@
 				<beam number='2'>continue</beam>
 				<notations>
 					<technical>
-						<fingering default-y='20' relative-x='4'>2</fingering>
+						<fingering default-y='-70' relative-x='4'>2</fingering>
 					</technical>
 				</notations>
 			</note>
@@ -8478,7 +8477,7 @@
 				<beam number='2'>continue</beam>
 				<notations>
 					<technical>
-						<fingering default-y='20' relative-x='4'>3</fingering>
+						<fingering default-y='-75' relative-x='4'>3</fingering>
 					</technical>
 				</notations>
 			</note>
@@ -8496,7 +8495,7 @@
 				<beam number='2'>end</beam>
 				<notations>
 					<technical>
-						<fingering default-y='20' relative-x='4'>2</fingering>
+						<fingering default-y='-70' relative-x='4'>2</fingering>
 					</technical>
 				</notations>
 			</note>
@@ -8513,7 +8512,7 @@
 				<beam number='2'>begin</beam>
 				<notations>
 					<technical>
-						<fingering default-y='15' relative-x='4'>4</fingering>
+						<fingering default-y='-70' relative-x='4'>4</fingering>
 					</technical>
 				</notations>
 			</note>
@@ -8881,7 +8880,7 @@
 				<beam number='2'>continue</beam>
 				<notations>
 					<technical>
-						<fingering default-y='20' relative-x='4'>2</fingering>
+						<fingering default-y='-70' relative-x='4'>2</fingering>
 					</technical>
 				</notations>
 			</note>
@@ -9312,7 +9311,7 @@
 				<beam number='2'>continue</beam>
 				<notations>
 					<technical>
-						<fingering default-y='20' relative-x='4'>2</fingering>
+						<fingering default-y='-70' relative-x='4'>2</fingering>
 					</technical>
 				</notations>
 			</note>
@@ -9354,7 +9353,7 @@
 				<beam number='2'>begin</beam>
 				<notations>
 					<technical>
-						<fingering default-y='15' relative-x='4'>4</fingering>
+						<fingering default-y='-70' relative-x='4'>4</fingering>
 					</technical>
 				</notations>
 			</note>
@@ -10579,7 +10578,7 @@
 				<beam number='2'>continue</beam>
 				<notations>
 					<technical>
-						<fingering default-y='15' relative-x='4'>3</fingering>
+						<fingering default-y='-60' relative-x='4'>3</fingering>
 					</technical>
 				</notations>
 			</note>
@@ -10596,7 +10595,7 @@
 				<beam number='2'>end</beam>
 				<notations>
 					<technical>
-						<fingering default-y='15' relative-x='4'>1</fingering>
+						<fingering default-y='-75' relative-x='4'>1</fingering>
 					</technical>
 				</notations>
 			</note>
@@ -11252,7 +11251,6 @@
 					<words font-weight='bold'>Presto</words>
 				</direction-type>
 				<staff>1</staff>
-				<sound tempo='180'/>
 			</direction>
 			<direction>
 				<direction-type>
@@ -11860,7 +11858,7 @@
 				<notations>
 					<slur type='start' number='2'/>
 					<technical>
-						<fingering default-y='23' relative-x='3'>2</fingering>
+						<fingering default-y='-47' relative-x='7'>2</fingering>
 					</technical>
 				</notations>
 			</note>
@@ -11902,7 +11900,7 @@
 				<beam number='2'>begin</beam>
 				<notations>
 					<technical>
-						<fingering default-y='23' relative-x='19'>1</fingering>
+						<fingering default-y='-60' relative-x='4'>1</fingering>
 					</technical>
 				</notations>
 			</note>
@@ -11919,7 +11917,7 @@
 				<beam number='2'>continue</beam>
 				<notations>
 					<technical>
-						<fingering default-y='18' relative-x='6'>2</fingering>
+						<fingering default-y='-60' relative-x='4'>2</fingering>
 					</technical>
 				</notations>
 			</note>
@@ -11960,7 +11958,7 @@
 				<beam number='2'>begin</beam>
 				<notations>
 					<technical>
-						<fingering default-y='15' relative-x='4'>4</fingering>
+						<fingering default-y='-60' relative-x='4'>4</fingering>
 					</technical>
 				</notations>
 			</note>
@@ -11977,7 +11975,7 @@
 				<beam number='2'>continue</beam>
 				<notations>
 					<technical>
-						<fingering default-y='18' relative-x='4'>2</fingering>
+						<fingering default-y='-60' relative-x='4'>2</fingering>
 					</technical>
 				</notations>
 			</note>
@@ -12018,7 +12016,7 @@
 				<beam number='2'>begin</beam>
 				<notations>
 					<technical>
-						<fingering default-y='23' relative-x='4'>1</fingering>
+						<fingering default-y='-60' relative-x='4'>1</fingering>
 					</technical>
 				</notations>
 			</note>
@@ -12035,7 +12033,7 @@
 				<beam number='2'>continue</beam>
 				<notations>
 					<technical>
-						<fingering default-y='15' relative-x='4'>2</fingering>
+						<fingering default-y='-60' relative-x='4'>2</fingering>
 					</technical>
 				</notations>
 			</note>
@@ -12369,7 +12367,7 @@
 				<beam number='2'>begin</beam>
 				<notations>
 					<technical>
-						<fingering default-y='15' relative-x='4'>4</fingering>
+						<fingering default-y='-60' relative-x='4'>4</fingering>
 					</technical>
 				</notations>
 			</note>
@@ -12386,7 +12384,7 @@
 				<beam number='2'>continue</beam>
 				<notations>
 					<technical>
-						<fingering default-y='15' relative-x='4'>2</fingering>
+						<fingering default-y='-60' relative-x='4'>2</fingering>
 					</technical>
 				</notations>
 			</note>
@@ -12427,7 +12425,7 @@
 				<beam number='2'>begin</beam>
 				<notations>
 					<technical>
-						<fingering default-y='18' relative-x='4'>1</fingering>
+						<fingering default-y='-60' relative-x='4'>1</fingering>
 					</technical>
 				</notations>
 			</note>
@@ -12445,7 +12443,7 @@
 				<beam number='2'>continue</beam>
 				<notations>
 					<technical>
-						<fingering default-y='15' relative-x='4'>2</fingering>
+						<fingering default-y='-60' relative-x='4'>2</fingering>
 					</technical>
 				</notations>
 			</note>
@@ -12487,7 +12485,7 @@
 				<beam number='2'>begin</beam>
 				<notations>
 					<technical>
-						<fingering default-y='15' relative-x='4'>4</fingering>
+						<fingering default-y='-65' relative-x='4'>4</fingering>
 					</technical>
 				</notations>
 			</note>
@@ -12504,7 +12502,7 @@
 				<beam number='2'>continue</beam>
 				<notations>
 					<technical>
-						<fingering default-y='15' relative-x='4'>2</fingering>
+						<fingering default-y='-60' relative-x='4'>2</fingering>
 					</technical>
 				</notations>
 			</note>
@@ -12545,7 +12543,7 @@
 				<beam number='2'>begin</beam>
 				<notations>
 					<technical>
-						<fingering default-y='28' relative-x='7'>1</fingering>
+						<fingering default-y='-60' relative-x='4'>1</fingering>
 					</technical>
 				</notations>
 			</note>
@@ -12562,7 +12560,7 @@
 				<beam number='2'>continue</beam>
 				<notations>
 					<technical>
-						<fingering default-y='25' relative-x='6'>2</fingering>
+						<fingering default-y='-60' relative-x='4'>2</fingering>
 					</technical>
 				</notations>
 			</note>
@@ -12894,7 +12892,7 @@
 				<notations>
 					<slur type='stop' number='2'/>
 					<technical>
-						<fingering default-y='15' relative-x='4'>4</fingering>
+						<fingering default-y='-70' relative-x='4'>4</fingering>
 					</technical>
 				</notations>
 			</note>
@@ -12912,7 +12910,7 @@
 				<notations>
 					<slur type='start' number='2'/>
 					<technical>
-						<fingering default-y='15' relative-x='-9'>2</fingering>
+						<fingering default-y='-60' relative-x='4'>2</fingering>
 					</technical>
 				</notations>
 			</note>
@@ -12929,7 +12927,7 @@
 				<beam number='2'>continue</beam>
 				<notations>
 					<technical>
-						<fingering default-y='23' relative-x='-5'>3</fingering>
+						<fingering default-y='-60' relative-x='4'>3</fingering>
 					</technical>
 				</notations>
 			</note>
@@ -12946,7 +12944,7 @@
 				<beam number='2'>end</beam>
 				<notations>
 					<technical>
-						<fingering default-y='15' relative-x='-9'>2</fingering>
+						<fingering default-y='-60' relative-x='4'>2</fingering>
 					</technical>
 				</notations>
 			</note>
@@ -12964,7 +12962,7 @@
 				<beam number='2'>begin</beam>
 				<notations>
 					<technical>
-						<fingering default-y='15' relative-x='-9'>1</fingering>
+						<fingering default-y='-60' relative-x='4'>1</fingering>
 					</technical>
 				</notations>
 			</note>
@@ -12981,7 +12979,7 @@
 				<beam number='2'>continue</beam>
 				<notations>
 					<technical>
-						<fingering default-y='23' relative-x='-5'>2</fingering>
+						<fingering default-y='-60' relative-x='4'>2</fingering>
 					</technical>
 				</notations>
 			</note>
@@ -13023,7 +13021,7 @@
 				<beam number='2'>begin</beam>
 				<notations>
 					<technical>
-						<fingering default-y='23' relative-x='4'>4</fingering>
+						<fingering default-y='-60' relative-x='4'>4</fingering>
 					</technical>
 				</notations>
 			</note>
@@ -13077,7 +13075,7 @@
 				<beam number='2'>begin</beam>
 				<notations>
 					<technical>
-						<fingering default-y='15' relative-x='-9'>1</fingering>
+						<fingering default-y='-60' relative-x='4'>1</fingering>
 					</technical>
 				</notations>
 			</note>
@@ -13095,7 +13093,7 @@
 				<beam number='2'>continue</beam>
 				<notations>
 					<technical>
-						<fingering default-y='23' relative-x='-5'>2</fingering>
+						<fingering default-y='-60' relative-x='4'>2</fingering>
 					</technical>
 				</notations>
 			</note>
@@ -13393,7 +13391,7 @@
 				<notations>
 					<slur type='stop' number='2'/>
 					<technical>
-						<fingering default-y='18' relative-x='12'>4</fingering>
+						<fingering default-y='-60' relative-x='4'>4</fingering>
 					</technical>
 				</notations>
 			</note>
@@ -13411,7 +13409,7 @@
 				<beam number='2'>continue</beam>
 				<notations>
 					<technical>
-						<fingering default-y='23' relative-x='-5'>2</fingering>
+						<fingering default-y='-60' relative-x='4'>2</fingering>
 					</technical>
 				</notations>
 			</note>
@@ -13453,7 +13451,7 @@
 				<beam number='2'>begin</beam>
 				<notations>
 					<technical>
-						<fingering default-y='23' relative-x='-5'>1</fingering>
+						<fingering default-y='-60' relative-x='4'>1</fingering>
 					</technical>
 				</notations>
 			</note>
@@ -13470,7 +13468,7 @@
 				<beam number='2'>continue</beam>
 				<notations>
 					<technical>
-						<fingering default-y='23' relative-x='4'>3</fingering>
+						<fingering default-y='-60' relative-x='4'>3</fingering>
 					</technical>
 				</notations>
 			</note>
@@ -13487,7 +13485,7 @@
 				<beam number='2'>continue</beam>
 				<notations>
 					<technical>
-						<fingering default-y='18' relative-x='4'>4</fingering>
+						<fingering default-y='-60' relative-x='4'>4</fingering>
 					</technical>
 				</notations>
 			</note>
@@ -13504,7 +13502,7 @@
 				<beam number='2'>end</beam>
 				<notations>
 					<technical>
-						<fingering default-y='23' relative-x='4'>3</fingering>
+						<fingering default-y='-60' relative-x='4'>3</fingering>
 					</technical>
 				</notations>
 			</note>
@@ -13522,7 +13520,7 @@
 				<beam number='2'>begin</beam>
 				<notations>
 					<technical>
-						<fingering default-y='23' relative-x='-5'>2</fingering>
+						<fingering default-y='-60' relative-x='4'>2</fingering>
 					</technical>
 				</notations>
 			</note>
@@ -13539,7 +13537,7 @@
 				<beam number='2'>continue</beam>
 				<notations>
 					<technical>
-						<fingering default-y='18' relative-x='4'>3</fingering>
+						<fingering default-y='-60' relative-x='4'>3</fingering>
 					</technical>
 				</notations>
 			</note>
@@ -13580,7 +13578,7 @@
 				<beam number='2'>begin</beam>
 				<notations>
 					<technical>
-						<fingering default-y='23' relative-x='4'>1</fingering>
+						<fingering default-y='-60' relative-x='4'>1</fingering>
 					</technical>
 				</notations>
 			</note>
@@ -13597,7 +13595,7 @@
 				<beam number='2'>continue</beam>
 				<notations>
 					<technical>
-						<fingering default-y='15' relative-x='4'>3</fingering>
+						<fingering default-y='-60' relative-x='4'>3</fingering>
 					</technical>
 				</notations>
 			</note>
@@ -13913,7 +13911,7 @@
 				<beam number='2'>begin</beam>
 				<notations>
 					<technical>
-						<fingering default-y='18' relative-x='4'>2</fingering>
+						<fingering default-y='-60' relative-x='4'>2</fingering>
 					</technical>
 				</notations>
 			</note>
@@ -13931,7 +13929,7 @@
 				<beam number='2'>continue</beam>
 				<notations>
 					<technical>
-						<fingering default-y='23' relative-x='-5'>1</fingering>
+						<fingering default-y='-60' relative-x='4'>1</fingering>
 					</technical>
 				</notations>
 			</note>
@@ -13948,7 +13946,7 @@
 				<beam number='2'>continue</beam>
 				<notations>
 					<technical>
-						<fingering default-y='23' relative-x='4'>2</fingering>
+						<fingering default-y='-60' relative-x='4'>2</fingering>
 					</technical>
 				</notations>
 			</note>
@@ -13966,7 +13964,7 @@
 				<beam number='2'>end</beam>
 				<notations>
 					<technical>
-						<fingering default-y='23' relative-x='-5'>1</fingering>
+						<fingering default-y='-60' relative-x='4'>1</fingering>
 					</technical>
 				</notations>
 			</note>
@@ -14125,7 +14123,6 @@
 					<words font-weight='bold'>Adagio</words>
 				</direction-type>
 				<staff>1</staff>
-				<sound tempo='64'/>
 			</direction>
 			<note>
 				<pitch>
@@ -14785,7 +14782,7 @@
 				<beam number='1'>begin</beam>
 				<notations>
 					<technical>
-						<fingering>1 5</fingering>
+						<fingering default-y='15' relative-x='4'>1-5</fingering>
 					</technical>
 				</notations>
 			</note>
@@ -15129,7 +15126,6 @@
 					<words font-weight='bold'>Allegro</words>
 				</direction-type>
 				<staff>1</staff>
-				<sound tempo='120'/>
 			</direction>
 			<note>
 				<pitch>
