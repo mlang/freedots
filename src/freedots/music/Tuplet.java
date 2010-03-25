@@ -2,11 +2,11 @@ package freedots.music;
 
 import freedots.musicxml.Note;
 
-public class Tuplet<T extends VoiceElement> extends java.util.LinkedList<T>{
+public class Tuplet extends java.util.LinkedList<TupletElement> implements TupletElement {
 	
-	public Tuplet(final T initialNote){
+	public Tuplet(final TupletElement initialElement){
 		super();
-		add(initialNote);	
+		add(initialElement);	
 	}
 	
 }

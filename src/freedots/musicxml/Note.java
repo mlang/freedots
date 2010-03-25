@@ -46,6 +46,7 @@ import freedots.music.Ornament;
 import freedots.music.Staff;
 import freedots.music.RhythmicElement;
 import freedots.music.Syllabic;
+import freedots.music.TupletElement;
 
 
 import org.w3c.dom.Document;
@@ -56,7 +57,7 @@ import org.w3c.dom.Text;
 
 /** A wrapper around (the most important) note element.
  */
-public final class Note implements RhythmicElement {
+public final class Note implements RhythmicElement, freedots.music.TupletElement {
   private static final Logger LOG = Logger.getLogger(Note.class);
 
   static final String ACCIDENTAL_ELEMENT = "accidental";

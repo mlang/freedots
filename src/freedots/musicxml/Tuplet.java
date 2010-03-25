@@ -1,16 +1,24 @@
 package freedots.musicxml;
+import freedots.music.TupletElement;
 
-public class Tuplet extends freedots.music.Tuplet<Note> {
+public class Tuplet extends freedots.music.Tuplet {
 		
-	Tuplet(final Note initialNote) { super(initialNote); }
+	public Tuplet(final TupletElement initialNote) { super(initialNote); }
 	
-	@Override
-	public final boolean add(final Note note) {
+	public final boolean addNote(final Note note) {
 	    if (super.add(note)) {
 	      note.addTuplet(this);
 	      return true;
 	    }
 	    return false;
+	}
+	
+	public final boolean addTuplet(Tuplet tuplet){	
+		if (super.add(tuplet)){
+			tuplet.add(this);
+			return true;
+		}
+		return false;
 	}
 }
 
