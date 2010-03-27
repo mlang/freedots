@@ -43,6 +43,7 @@ import freedots.music.KeySignature;
 import freedots.music.MusicList;
 import freedots.music.Ornament;
 import freedots.music.StartBar;
+import freedots.music.Syllabic;
 import freedots.playback.MetaEventRelay;
 
 /** Converts MusicXML objects ({@link Score}, {@link Note}) to a representation
@@ -111,10 +112,7 @@ public final class MIDISequence extends javax.sound.midi.Sequence {
     velocity = 64;
 
     if (part.getName() != null) {
-      String trackName = new String(part.getName());
-      metaMessage = new MetaMessage();
-      metaMessage.setMessage(0x03, trackName.getBytes(), trackName.length());
-      track.add(new MidiEvent(metaMessage, 0));
+      track.add(TextMessage.TrackName.createEvent(part.getName(), 0));
     }
 
     initializeMidiPrograms(track, part);
@@ -223,9 +221,17 @@ public final class MIDISequence extends javax.sound.midi.Sequence {
   }
   private void addToTrack(Track track, Note note, Fraction add)
     throws InvalidMidiDataException {
+    int offset = toInteger(note.getMoment().add(add));
+    if (note.getLyric() != null && !note.getLyric().getText().isEmpty()) {
+      String text = note.getLyric().getText();
+      if (note.getLyric().getSyllabic() == Syllabic.SINGLE ||
+          note.getLyric().getSyllabic() == Syllabic.END) {
+        text += " ";
+      }
+      track.add(TextMessage.Lyric.createEvent(text, offset));
+    }
     if (!note.isGrace()) {
       Pitch pitch = note.getPitch();
-      int offset = toInteger(note.getMoment().add(add));
       int duration = toInteger(note.getDuration());
       Set<Articulation> articulations = note.getArticulations();
       if (articulations.contains(Articulation.staccatissimo)) {
@@ -327,6 +333,18 @@ public final class MIDISequence extends javax.sound.midi.Sequence {
     ShortMessage msg = new ShortMessage();
     msg.setMessage(ShortMessage.CONTROL_CHANGE, channel, 64, press? 127: 0);
     return msg;
+  }
+
+  protected enum TextMessage {
+    General(1), Copyright(2), TrackName(3), Instrument(4), Lyric(5), Marker(6),
+    CuePoint(7), ProgramName(8), DeviceName(9);
+    private final int type;
+    TextMessage(final int type) { this.type = type; }
+    MidiEvent createEvent(final String data, int offset) throws InvalidMidiDataException {
+      final MetaMessage message = new MetaMessage();
+      message.setMessage(type, data.getBytes(), data.length());
+      return new MidiEvent(message, offset);
+    }
   }
 
   protected int toInteger(final AbstractFraction duration) {
