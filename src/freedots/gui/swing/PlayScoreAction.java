@@ -31,7 +31,7 @@ import javax.swing.KeyStroke;
 final class PlayScoreAction extends javax.swing.AbstractAction {
   private Main gui;
   public PlayScoreAction(final Main gui) {
-    super("Play/Resume score");
+    super("Play/Pause score");
     this.gui = gui;
     putValue(SHORT_DESCRIPTION, "Play/Resume score");
     putValue(ACCELERATOR_KEY,
