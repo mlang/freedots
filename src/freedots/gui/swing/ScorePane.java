@@ -25,12 +25,26 @@ package freedots.gui.swing;
 
 import java.awt.Font;
 
+
+import jm.JMC;
+import jm.music.data.*;
+import jm.util.*;
+
 /** Displays the score in a text pane.
  */
-public class ScorePane extends javax.swing.JTextPane {
+public class ScorePane extends javax.swing.JTextPane implements JMC{
+		
 	ScorePane() {
 	    super();
 	    setFont(new Font("DejaVu Serif", Font.PLAIN, 14));
 	    setEditable(false);
-	  }
+	  
+		Note n = new Note(60, 0.25);
+        Phrase phr = new Phrase();
+        phr.addNote(n);
+        
+        View.notate(phr);
+
+	}
 }
+
