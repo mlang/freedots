@@ -66,6 +66,7 @@ public final class Note implements RhythmicElement, freedots.music.TupletElement
   private static final String NOTATIONS_ELEMENT = "notations";
   private static final String STAFF_ELEMENT = "staff";
   private static final String TIME_MODIFICATION_ELEMENT = "time-modification";
+  private static final String TUPLET_ELEMENT = "tuplet";
 
   private final int divisions, durationMultiplier;
   private final Element element;
@@ -115,16 +116,26 @@ public final class Note implements RhythmicElement, freedots.music.TupletElement
 
   private Element tie = null;
   private TimeModification timeModification = null;
+  private List<TupletElementXML> tupletElementsXML=null;
   
   public TimeModification getTimeModification(){return timeModification;}
+  public List<TupletElementXML> getTupletElementsXML() {return tupletElementsXML;}
+  public int tupletElementXMLMaxNumber(){
+	  int max=0;
+	  for(TupletElementXML tupletElementXML: tupletElementsXML){
+		  if(tupletElementXML.tupletElementXMLNumber()>max)
+			  max=tupletElementXML.tupletElementXMLNumber();	  
+	  }
+	  return max;
+  }	
 
   private Lyric lyric = null;
 
   private Notations notations = null;
   
-  private List<Tuplet> tuplet = new ArrayList<Tuplet>(2);
-  public List<Tuplet> getTuplet() { return tuplet; }
-  void addTuplet(Tuplet tuplet) { this.tuplet.add(tuplet); }
+  private Tuplet tuplet = null; //A note is in only one tuplet which can be in others
+  public Tuplet getTuplet() { return tuplet; }
+  void addTuplet(Tuplet tuplet) { this.tuplet=tuplet; }
 
   
   Note(final Element element, final int divisions, final int durationMultiplier,
@@ -177,6 +188,13 @@ public final class Note implements RhythmicElement, freedots.music.TupletElement
           staffNumber = firstTextNode(child);
         } else if (child.getTagName().equals(NOTATIONS_ELEMENT)) {
           notations = new Notations(child);
+        } else if (child.getTagName().equals(TUPLET_ELEMENT)) {
+        	if (tupletElementsXML!=null)
+              tupletElementsXML.add(new TupletElementXML(child));
+        	else{
+        		tupletElementsXML=new ArrayList<TupletElementXML>();
+        		tupletElementsXML.add(new TupletElementXML(child));
+        	}
         } else if (child.getTagName().equals(LYRIC_ELEMENT)) {
           lyric = new Lyric(child);
         }
