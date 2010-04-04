@@ -67,6 +67,14 @@ public class BrailleNote extends BrailleList {
 
     final Options options = Options.getInstance();
 
+    Tuplet tuplet=note.getTuplet();
+    if (tuplet!=null) { // We are part of some tuplet group
+    	if (tuplet.isFirstNoteOfTuplet(note)) {  
+    		add(new TupletSign());
+    		
+    	} // else do nothing since only first note of a tuplet needs prefix
+    }
+    
     if (note.isGrace()) add(new GraceSign());
 
     for (Ornament ornament: note.getOrnaments())
@@ -125,13 +133,7 @@ public class BrailleNote extends BrailleList {
       add(new SlurSign());
     }
     
-    Tuplet tuplet=note.getTuplet();
-    if (tuplet!=null) { // We are part of some tuplet group
-    	if (tuplet.isFirstNoteOfTuplet(note)) {  
-    		add(new TupletSign());
-    		
-    	} // else do nothing since only first note of a tuplet needs prefix
-    }
+    
 
     if (allowTieSign && note.isTieStart()) add(new TieSign());
   }
