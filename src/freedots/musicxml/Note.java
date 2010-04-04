@@ -117,20 +117,9 @@ public final class Note implements RhythmicElement, freedots.music.TupletElement
 
   private Element tie = null;
   private TimeModification timeModification = null;
-  private List<TupletElementXML> tupletElementsXML=null;
-  
   public TimeModification getTimeModification(){return timeModification;}
-  public List<TupletElementXML> getTupletElementsXML() {return tupletElementsXML;}
-  public int tupletElementXMLMaxNumber(){
-    int max=0;
-    if (tupletElementsXML!=null){
-      for(TupletElementXML tupletElementXML: tupletElementsXML){
-        if(tupletElementXML.tupletElementXMLNumber()>max)
-          max=tupletElementXML.tupletElementXMLNumber();	  
-      }
-    }
-    return max;
-  }	
+  
+  
 
   private Lyric lyric = null;
 
@@ -191,13 +180,7 @@ public final class Note implements RhythmicElement, freedots.music.TupletElement
           staffNumber = firstTextNode(child);
         } else if (child.getTagName().equals(NOTATIONS_ELEMENT)) {
           notations = new Notations(child);
-        } else if (child.getTagName().equals(TUPLET_ELEMENT)) {
-              	if (tupletElementsXML!=null)
-              tupletElementsXML.add(new TupletElementXML(child));
-        	else{
-        		tupletElementsXML=new ArrayList<TupletElementXML>();
-        		tupletElementsXML.add(new TupletElementXML(child));
-                        }
+        
         } else if (child.getTagName().equals(LYRIC_ELEMENT)) {
           lyric = new Lyric(child);
         }
@@ -622,6 +605,22 @@ public final class Note implements RhythmicElement, freedots.music.TupletElement
     private Set<Articulation> articulations =
       EnumSet.noneOf(Articulation.class);
 
+    private List<TupletElementXML> tupletElementsXML=null;
+    
+    
+    public List<TupletElementXML> getTupletElementsXML() {return tupletElementsXML;}
+    public int tupletElementXMLMaxNumber(){
+      int max=0;
+      if (tupletElementsXML!=null){
+        for(TupletElementXML tupletElementXML: tupletElementsXML){
+          if(tupletElementXML.tupletElementXMLNumber()>max)
+            max=tupletElementXML.tupletElementXMLNumber();
+          
+        }
+      }
+      return max;
+    }	
+    
     Notations(Element element) {
       this.element = element;
 
@@ -633,6 +632,13 @@ public final class Note implements RhythmicElement, freedots.music.TupletElement
             fermata = child;
           } else if (child.getTagName().equals(TECHNICAL_ELEMENT)) {
             technical = new Technical(child);
+          } else if (child.getTagName().equals(TUPLET_ELEMENT)) {
+        	  if (tupletElementsXML!=null)
+        		  tupletElementsXML.add(new TupletElementXML(child));
+        	  else{	
+        		  tupletElementsXML=new ArrayList<TupletElementXML>();
+        		  tupletElementsXML.add(new TupletElementXML(child));
+        	  }
           } else if (child.getTagName().equals(ARTICULATIONS_ELEMENT)) {
             for (Node articulationNode = child.getFirstChild();
                  articulationNode != null;

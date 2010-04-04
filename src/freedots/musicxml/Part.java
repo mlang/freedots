@@ -433,12 +433,12 @@ public final class Part {
     
     void completeTuplet(Tuplet tuplet, Note note, LinkedList<Note> linkedListNotes){
       if(note!=null){
-        if (note.tupletElementXMLMaxNumber()>1){ //nested tuplet
+        if (note.getNotations().tupletElementXMLMaxNumber()>1){ //nested tuplet
           boolean hasStart = false;
           boolean firstStop=true; 
           boolean hasStop=false;
           Tuplet lastTuplet=tuplet;
-          List<TupletElementXML> tupletElementsXML=note.getTupletElementsXML();
+          List<TupletElementXML> tupletElementsXML=note.getNotations().getTupletElementsXML();
           for (TupletElementXML tupletElementXML: tupletElementsXML){  
             switch(tupletElementXML.tupletElementXMLType()){
             case START:
@@ -470,8 +470,8 @@ public final class Part {
           tuplet.addNote(note); 
           if (tuplet.getNormalType()==null || tuplet.getActualType()==null){ 
             TupletElementXML tupletElementXML=null;
-            if (note.getTupletElementsXML()!=null && note.getTupletElementsXML().size()==1) //1 max
-              note.getTupletElementsXML().get(0); 
+            if (note.getNotations().getTupletElementsXML()!=null && note.getNotations().getTupletElementsXML().size()==1) //1 max
+              note.getNotations().getTupletElementsXML().get(0); 
             if (tuplet.getParent()!=null && tupletElementXML!=null){
               tuplet.setActualType(tupletElementXML.getActualType());
               tuplet.setNormalType(tupletElementXML.getNormalType());
