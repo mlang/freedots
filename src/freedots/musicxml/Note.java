@@ -122,12 +122,14 @@ public final class Note implements RhythmicElement, freedots.music.TupletElement
   public TimeModification getTimeModification(){return timeModification;}
   public List<TupletElementXML> getTupletElementsXML() {return tupletElementsXML;}
   public int tupletElementXMLMaxNumber(){
-	  int max=0;
-	  for(TupletElementXML tupletElementXML: tupletElementsXML){
-		  if(tupletElementXML.tupletElementXMLNumber()>max)
-			  max=tupletElementXML.tupletElementXMLNumber();	  
-	  }
-	  return max;
+    int max=0;
+    if (tupletElementsXML!=null){
+      for(TupletElementXML tupletElementXML: tupletElementsXML){
+        if(tupletElementXML.tupletElementXMLNumber()>max)
+          max=tupletElementXML.tupletElementXMLNumber();	  
+      }
+    }
+    return max;
   }	
 
   private Lyric lyric = null;
@@ -190,12 +192,12 @@ public final class Note implements RhythmicElement, freedots.music.TupletElement
         } else if (child.getTagName().equals(NOTATIONS_ELEMENT)) {
           notations = new Notations(child);
         } else if (child.getTagName().equals(TUPLET_ELEMENT)) {
-          /*    	if (tupletElementsXML!=null)
+              	if (tupletElementsXML!=null)
               tupletElementsXML.add(new TupletElementXML(child));
         	else{
         		tupletElementsXML=new ArrayList<TupletElementXML>();
         		tupletElementsXML.add(new TupletElementXML(child));
-                        }*/
+                        }
         } else if (child.getTagName().equals(LYRIC_ELEMENT)) {
           lyric = new Lyric(child);
         }

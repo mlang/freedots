@@ -174,7 +174,7 @@ public final class Part {
               boolean addNoteToEventList = true;
 
               slurBuilder.visit(note);
-              //tupletBuilder.visitNote(note,newMeasure);
+              tupletBuilder.visitNote(note,newMeasure);
               newMeasure=false;
 
               if (currentChord != null) {
@@ -289,7 +289,7 @@ public final class Part {
     // Post processing
 
     slurBuilder.buildSlurs();
-    //tupletBuilder.buildTuplet();
+    tupletBuilder.buildTuplet();
 
     if (!score.encodingSupports(Note.ACCIDENTAL_ELEMENT)) {
       int staves = 1;
@@ -417,104 +417,106 @@ public final class Part {
   }
   
   private class TupletBuilder{
-	  private final LinkedList<LinkedList<Note>> map = new LinkedList<LinkedList<Note>>();
-	  
-	  public TupletBuilder(){}
-	  
-	  //Group note with TimeModification by measure in map
-	  void visitNote(Note note, boolean newMeasure){
-		  if(note.getTimeModification()!=null){
-			  if (newMeasure)
-				  map.add(new LinkedList<Note>());
-			  map.getLast().add(note);
-		  }
-	  }
-	  
-	  
-	  void completeTuplet(Tuplet tuplet, Note note, LinkedList<Note> linkedListNotes){
-		  if(note!=null){
-			  if (note.tupletElementXMLMaxNumber()>1){ //nested tuplet
-				  boolean hasStart = false;
-				  boolean firstStop=true; 
-				  boolean hasStop=false;
-				  Tuplet lastTuplet=tuplet;
-				  List<TupletElementXML> tupletElementsXML=note.getTupletElementsXML();
-				  for (TupletElementXML tupletElementXML: tupletElementsXML){  
-					  switch(tupletElementXML.tupletElementXMLType()){
-					  case START:
-						  lastTuplet.addTuplet(new Tuplet());
-						  lastTuplet.setActualType(tupletElementXML.getActualType());
-						  lastTuplet.setNormalType(tupletElementXML.getNormalType());
-						  lastTuplet=(Tuplet)lastTuplet.getFirst();
-						  hasStart=true;
-						  break;
-					  case STOP: 
-						  if (firstStop){
-							  tuplet.addNote(note);
-							  firstStop=false;
-							  hasStop=true;
-						  }
-						  lastTuplet=tuplet.getParent();
-						  break;
-					  default: throw new AssertionError(tupletElementXML.tupletElementXMLType());
-					  }
-				  }
-				  if (hasStart && hasStop)
-					  throw new AssertionError("A note can't be at the beginning AND the end of tuplets. MusicXML file is corrupted.");
-				  if(hasStart)	
-					  tuplet.addNote(note);
-				  if (lastTuplet!=null)//tuplet is not yet complete
-					  completeTuplet(lastTuplet, nextNote(linkedListNotes,note),linkedListNotes);
-			  }
-			  else{
-				  tuplet.addNote(note); 
-				  if (tuplet.getNormalType()==null || tuplet.getActualType()==null){ 
-					  TupletElementXML tupletElementXML=null;
-					  if (note.getTupletElementsXML().size()==1) //1 max
-						  note.getTupletElementsXML().get(0); 
-					  if (tuplet.getParent()!=null && tupletElementXML!=null){
-						  tuplet.setActualType(tupletElementXML.getActualType());
-						  tuplet.setNormalType(tupletElementXML.getNormalType());
-					  }
-				  }
-				  if (!tuplet.completed())
-					  completeTuplet(tuplet, nextNote(linkedListNotes,note),linkedListNotes);
-			  }
-		  }
-		  else LOG.warning("Tuplet can't be completed, Notes:"+tuplet);
-	  }
-	  
-	  void buildTuplet(){
-		  for (LinkedList<Note> linkedListNote: map){
-			  Note note;
-			  while	((note=nextNote(linkedListNote,null))!=null){ 
-			  	Tuplet tuplet=new Tuplet();
-			  	completeTuplet(tuplet, note,linkedListNote);
-			  }
-		  }
-		  
-	  }
-	  
-	  //  - return the first note(in the score) of the same voice than note, in linkedListNotes
-	  // which doesn't have a tuplet. 
-	  //  - return the first note of linkedListNotes, if note is null
-	  // 	without looking at the voice or if it owns to a tuplet
-	  //  - return null if there is not next notes without tuplet in linkedListNotes(same measure and timeModification)
-
-	  Note nextNote(LinkedList<Note> linkedListNotes, Note note){
-		  if (note==null) return linkedListNotes.getFirst();
-		  
-		  final Fraction nextMoment = note.getMoment().add(note.getDuration());
-		  final Collection<Note> notes = notesAt(nextMoment);
-		 
-		  for (Note n: notes){
-			  if (n.getTuplet()==null && n.getVoiceName().equals(note.getVoiceName()) && linkedListNotes.contains(n)){
-				  return n;
-			  }
-		  }
-		  return null; 
-	  }
-	  
+    private final LinkedList<LinkedList<Note>> map = new LinkedList<LinkedList<Note>>();
+    
+    public TupletBuilder(){}
+    
+    //Group note with TimeModification by measure in map
+    void visitNote(Note note, boolean newMeasure){
+      if(note.getTimeModification()!=null){
+        if (newMeasure)
+          map.add(new LinkedList<Note>());
+        map.getLast().add(note);
+      }
+    }
+    
+    
+    void completeTuplet(Tuplet tuplet, Note note, LinkedList<Note> linkedListNotes){
+      if(note!=null){
+        if (note.tupletElementXMLMaxNumber()>1){ //nested tuplet
+          boolean hasStart = false;
+          boolean firstStop=true; 
+          boolean hasStop=false;
+          Tuplet lastTuplet=tuplet;
+          List<TupletElementXML> tupletElementsXML=note.getTupletElementsXML();
+          for (TupletElementXML tupletElementXML: tupletElementsXML){  
+            switch(tupletElementXML.tupletElementXMLType()){
+            case START:
+              lastTuplet.addTuplet(new Tuplet());
+              lastTuplet.setActualType(tupletElementXML.getActualType());
+              lastTuplet.setNormalType(tupletElementXML.getNormalType());
+              lastTuplet=(Tuplet)lastTuplet.getFirst();
+              hasStart=true;
+              break;
+            case STOP: 
+              if (firstStop){
+                tuplet.addNote(note);
+                firstStop=false;
+                hasStop=true;
+              }
+              lastTuplet=tuplet.getParent();
+              break;
+            default: throw new AssertionError(tupletElementXML.tupletElementXMLType());
+            }
+          }
+          if (hasStart && hasStop)
+            throw new AssertionError("A note can't be at the beginning AND the end of tuplets. MusicXML file is corrupted.");
+          if(hasStart)	
+            tuplet.addNote(note);
+          if (lastTuplet!=null)//tuplet is not yet complete
+            completeTuplet(lastTuplet, nextNote(linkedListNotes,note),linkedListNotes);
+        }
+        else{
+          tuplet.addNote(note); 
+          if (tuplet.getNormalType()==null || tuplet.getActualType()==null){ 
+            TupletElementXML tupletElementXML=null;
+            if (note.getTupletElementsXML()!=null && note.getTupletElementsXML().size()==1) //1 max
+              note.getTupletElementsXML().get(0); 
+            if (tuplet.getParent()!=null && tupletElementXML!=null){
+              tuplet.setActualType(tupletElementXML.getActualType());
+              tuplet.setNormalType(tupletElementXML.getNormalType());
+            }
+          }
+          if (!tuplet.completed())
+            completeTuplet(tuplet, nextNote(linkedListNotes,note),linkedListNotes);
+        }
+      }
+      else LOG.warning("Tuplet can't be completed, Notes:"+tuplet);
+    }
+    
+    void buildTuplet(){
+      for (LinkedList<Note> linkedListNote: map){
+        Note note;
+        Note note2=null;
+        while((note=nextNote(linkedListNote,note2))!=null){ 
+          Tuplet tuplet=new Tuplet();
+          completeTuplet(tuplet, note,linkedListNote);
+          note2=note;
+        }
+      }
+      
+    }
+    
+    //  - return the first note(in the score) of the same voice than note, in linkedListNotes
+    // which doesn't have a tuplet. 
+    //  - return the first note of linkedListNotes, if note is null
+    // 	without looking at the voice or if it owns to a tuplet
+    //  - return null if there is not next notes without tuplet in linkedListNotes(same measure and timeModification)
+    
+    Note nextNote(LinkedList<Note> linkedListNotes, Note note){
+      if (note==null) return linkedListNotes.getFirst();
+      
+      final Fraction nextMoment = note.getMoment().add(note.getDuration());
+      final Collection<Note> notes = notesAt(nextMoment);
+      
+      for (Note n: notes){
+        if (n.getTuplet()==null && n.getVoiceName().equals(note.getVoiceName()) && linkedListNotes.contains(n)){
+          return n;
+        }
+      }
+      return null; 
+    }
+    
   }
 
   /** Returns a list of all Note objects at a given musical offset.
