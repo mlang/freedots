@@ -350,23 +350,22 @@ public final class Note implements RhythmicElement, freedots.music.TupletElement
 		private Fraction getType(Node node){
 			int num=0;
 			PowerOfTwo normalType=null;
+			num=Integer.parseInt(Score.getTextNode((Element)node,"tuplet-number").getWholeText());
 			for (Node node2 = node.getFirstChild(); node2 != null;
 			node2 = node2.getNextSibling()) {
 				if (node2.getNodeType() == Node.ELEMENT_NODE) {
-					if(node2.getNodeName().equals("tuplet-number")){
-						num=Integer.parseInt(node.getNodeValue());	
-					}
 					if(node2.getNodeName().equals("tuplet-type")){
-						String typeName=node.getNodeValue();
+						String typeName=node.getTextContent();
 						String santizedTypeName = typeName.trim().toLowerCase();
 						if (TYPE_MAP.containsKey(santizedTypeName))
 							normalType = TYPE_MAP.get(santizedTypeName);
 						else
 							LOG.warning("Illegal <type> content '"+typeName+"', "
-									+ "guessing using the duration element");
-					}	
+									+ "guessing using the duration element"	);
+					}
 				}
 			}
+						
 			return new Fraction(num*normalType.numerator(),normalType.denominator());
 		}
 		    		
