@@ -433,8 +433,7 @@ public final class Part {
     
     void completeTuplet(Tuplet tuplet, Note note, LinkedList<Note> linkedListNotes){
       if(note!=null){
-        if (note.getNotations()!=null){
-          if(note.getNotations().tupletElementXMLMaxNumber()>1){ //nested tuplet
+        if (note.getNotations()!=null && note.getNotations().tupletElementXMLMaxNumber()>1){ //nested tuplet
             System.out.println("Max number :"+note.getNotations().tupletElementXMLMaxNumber());
             boolean hasStart = false;
             boolean firstStop=true; 
@@ -445,9 +444,10 @@ public final class Part {
               switch(tupletElementXML.tupletElementXMLType()){
               case START:
                 lastTuplet.addTuplet(new Tuplet());
+                lastTuplet=(Tuplet)lastTuplet.getLast();
                 lastTuplet.setActualType(tupletElementXML.getActualType());
                 lastTuplet.setNormalType(tupletElementXML.getNormalType());
-                lastTuplet=(Tuplet)lastTuplet.getFirst();
+               
                 hasStart=true;
                 break;
               case STOP: 
@@ -464,7 +464,7 @@ public final class Part {
             if (hasStart && hasStop)
               throw new AssertionError("A note can't be at the beginning AND the end of tuplets. MusicXML file is corrupted.");
             if(hasStart)	
-              tuplet.addNote(note);
+              lastTuplet.addNote(note);
             if (lastTuplet!=null)//tuplet is not yet complete
               completeTuplet(lastTuplet, nextNote(linkedListNotes,note),linkedListNotes);
           }
@@ -472,7 +472,7 @@ public final class Part {
             tuplet.addNote(note); 
             if (tuplet.getNormalType()==null || tuplet.getActualType()==null){ 
               TupletElementXML tupletElementXML=null;
-              if (note.getNotations().getTupletElementsXML()!=null && note.getNotations().getTupletElementsXML().size()==1) //1 max
+              if (note.getNotations()!=null && note.getNotations().getTupletElementsXML()!=null && note.getNotations().getTupletElementsXML().size()==1) //1 max
                 note.getNotations().getTupletElementsXML().get(0); 
               if (tuplet.getParent()!=null && tupletElementXML!=null){
                 tuplet.setActualType(tupletElementXML.getActualType());
@@ -481,7 +481,7 @@ public final class Part {
             }
             if (!tuplet.completed())
               completeTuplet(tuplet, nextNote(linkedListNotes,note),linkedListNotes);
-          }
+          
         }
       }
       else LOG.warning("Tuplet can't be completed, Notes:"+tuplet);

@@ -50,13 +50,30 @@ public class Tuplet extends freedots.music.Tuplet {
 	    }
 	return actualType;
     }
-	
-    public Fraction getNormalType(){
+
+public Fraction getNormalType(){
 	if (normalType==null){
 	    return getNormal();
-	}
-	
+	    }
 	return normalType;
+    }
+	
+    public Fraction getFrac(){
+	Fraction sumFrac=new Fraction(0,1);
+	for(TupletElement tE: this){
+	    Fraction currentFrac=new Fraction(0,1);
+	    if (tE instanceof Tuplet){
+		currentFrac= ((Tuplet)tE).getNormalType();
+	    }
+	    else{
+	    	Note note=(Note)tE;
+		int den=-note.getAugmentedFraction().denominator();
+		int num=-note.getAugmentedFraction().numerator();
+		currentFrac= new Fraction(num,den);
+	    }
+	    sumFrac.add(currentFrac);
+	}
+	return sumFrac;
     }
     
     private Fraction getNormal(){
@@ -81,7 +98,9 @@ public class Tuplet extends freedots.music.Tuplet {
 
 
     public boolean completed(){
-	Fraction expectedFrac=this.getNormalType();
+	PowerOfTwo test=new PowerOfTwo(-3);
+	System.out.println("num "+test.numerator()+"den :"+test.denominator());
+	Fraction expectedFrac=this.getActualType();
 	Fraction sumFrac=new Fraction(0,1);
 	for (TupletElement tE: this){
 	    Fraction currentFrac=new Fraction(0,1);
@@ -91,9 +110,11 @@ public class Tuplet extends freedots.music.Tuplet {
 	    }
 	    else{
 		Note note=(Note)tE;
-		int den=((PowerOfTwo)note.getAugmentedFraction()).denominator();
-		int num=((PowerOfTwo)note.getAugmentedFraction()).numerator();
+		PowerOfTwo pot=new PowerOfTwo(note.getAugmentedFraction().getPower());
+		int den=pot.denominator();
+		int num=pot.numerator();
 		currentFrac=new Fraction(num,den);
+		System.out.println("power :"+note.getAugmentedFraction().getPower());
 	    }
 	    sumFrac=sumFrac.add(currentFrac);
 	}
