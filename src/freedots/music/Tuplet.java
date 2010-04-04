@@ -8,4 +8,12 @@ public class Tuplet extends java.util.LinkedList<TupletElement> implements Tuple
 		super();	
 	}
 	
+	public boolean isFirstNoteOfTuplet(TupletElement note) {
+	    try {
+	      return getFirst() == note;
+	    } catch (java.util.NoSuchElementException e) {
+	      return false;
+	    }
+	  }
+	
 }

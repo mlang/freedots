@@ -31,6 +31,7 @@ import freedots.music.AugmentedPowerOfTwo;
 import freedots.music.Fingering;
 import freedots.music.Ornament;
 import freedots.music.Slur;
+import freedots.music.Tuplet;
 import freedots.musicxml.Note;
 
 /** The braille representation of a note or rest.
@@ -122,6 +123,14 @@ public class BrailleNote extends BrailleList {
       add(new SlurSign()); add(new SlurSign());
     } else if (addSingleSlur) {
       add(new SlurSign());
+    }
+    
+    Tuplet tuplet=note.getTuplet();
+    if (tuplet!=null) { // We are part of some tuplet group
+    	if (tuplet.isFirstNoteOfTuplet(note)) {  
+    		add(new TupletSign());
+    		
+    	} // else do nothing since only first note of a tuplet needs prefix
     }
 
     if (allowTieSign && note.isTieStart()) add(new TieSign());
