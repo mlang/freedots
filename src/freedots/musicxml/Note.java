@@ -184,7 +184,7 @@ public final class Note implements RhythmicElement, freedots.music.TupletElement
                                                + "</accidental>");
           }
         } else if (child.getTagName().equals(TIME_MODIFICATION_ELEMENT)) {
-          timeModification = new TimeModification(child);
+           timeModification = new TimeModification(child);
         } else if (child.getTagName().equals(STAFF_ELEMENT)) {
           staffNumber = firstTextNode(child);
         } else if (child.getTagName().equals(NOTATIONS_ELEMENT)) {
@@ -402,59 +402,59 @@ public final class Note implements RhythmicElement, freedots.music.TupletElement
   
   class TimeModification {
 		
-		private Element element;
-		private int actualNotes, normalNotes;
-		private PowerOfTwo normalType=null;
-		
-		public TimeModification(Element element){
-			this.element=element;
-		    for (Node node = element.getFirstChild(); node != null;
-	         node = node.getNextSibling()) {
-		    	if (node.getNodeType() == Node.ELEMENT_NODE) {
-		    		if(node.getNodeName().equals("actual_notes")){
-		    			actualNotes=Integer.parseInt(node.getNodeValue());
-		    		}
-		    		if(node.getNodeName().equals("normal-notes")){
-		    			normalNotes=Integer.parseInt(node.getNodeValue());
-		    		}
-					if(	node.getNodeName().equals("normal-type")){
-						String typeName=node.getNodeValue();
-						String santizedTypeName = typeName.trim().toLowerCase();
-						if (TYPE_MAP.containsKey(santizedTypeName))
-							normalType = TYPE_MAP.get(santizedTypeName);
-						else
-							LOG.warning("Illegal <type> content '"+typeName+"', "
-					                      + "guessing using the duration element");
-					}
-			
-		    	}
-		    }
-		    if (normalType==null){
-		    	if (type != null) {
-		    	      String typeName = type.getTextContent();
-		    	      if (typeName != null) {
-		    	        String santizedTypeName = typeName.trim().toLowerCase();
-		    	        if (TYPE_MAP.containsKey(santizedTypeName))
-		    	          normalType = TYPE_MAP.get(santizedTypeName);
-		    	        else
-		    	          LOG.warning("Illegal <type> content '"+typeName+"', "
-		    	                      + "guessing using the duration element");
-		    	      }
-		    	}
-		    }
-		}
-		
-		public int getActualNotes(){
-			return actualNotes;
-		}
-		
-		public int getNormalNotes(){
-			return normalNotes;
-		}
-		
-		public PowerOfTwo getNormalType(){
-			return normalType;
-		}
+    private Element element;
+    private int actualNotes, normalNotes;
+    private PowerOfTwo normalType=null;
+    
+    public TimeModification(Element element){
+      this.element=element;
+      for (Node node = element.getFirstChild(); node != null;
+           node = node.getNextSibling()) {
+        if (node.getNodeType() == Node.ELEMENT_NODE) {
+          if(node.getNodeName().equals("actual_notes")){
+            actualNotes=Integer.parseInt(Score.getTextNode(element, "actual-notes").getWholeText());
+          }
+          if(node.getNodeName().equals("normal-notes")){
+            normalNotes=Integer.parseInt(Score.getTextNode(element, "normal-notes").getWholeText());
+          }
+          if(node.getNodeName().equals("normal-type")){
+            String typeName=node.getTextContent();
+            String santizedTypeName = typeName.trim().toLowerCase();
+            if (TYPE_MAP.containsKey(santizedTypeName))
+              normalType = TYPE_MAP.get(santizedTypeName);
+            else
+              LOG.warning("Illegal <type> content '"+typeName+"', "
+                          + "guessing using the duration element");
+          }
+          
+        }
+      }
+      if (normalType==null){
+        if (type != null) {
+          String typeName = type.getTextContent();
+          if (typeName != null) {
+            String santizedTypeName = typeName.trim().toLowerCase();
+            if (TYPE_MAP.containsKey(santizedTypeName))
+              normalType = TYPE_MAP.get(santizedTypeName);
+            else
+              LOG.warning("Illegal <type> content '"+typeName+"', "
+                          + "guessing using the duration element");
+          }
+        }
+      }
+    }
+    
+    public int getActualNotes(){
+      return actualNotes;
+    }
+    
+    public int getNormalNotes(){
+      return normalNotes;
+    }
+    
+    public PowerOfTwo getNormalType(){
+      return normalType;
+    }
   }
   
   static class Lyric implements freedots.music.Lyric {

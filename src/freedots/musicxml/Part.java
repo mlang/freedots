@@ -174,7 +174,7 @@ public final class Part {
               boolean addNoteToEventList = true;
 
               slurBuilder.visit(note);
-              tupletBuilder.visitNote(note,newMeasure);
+              //tupletBuilder.visitNote(note,newMeasure);
               newMeasure=false;
 
               if (currentChord != null) {
@@ -289,7 +289,7 @@ public final class Part {
     // Post processing
 
     slurBuilder.buildSlurs();
-    tupletBuilder.buildTuplet();
+    //tupletBuilder.buildTuplet();
 
     if (!score.encodingSupports(Note.ACCIDENTAL_ELEMENT)) {
       int staves = 1;
