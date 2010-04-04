@@ -443,11 +443,14 @@ public final class Part {
             for (TupletElementXML tupletElementXML: tupletElementsXML){  
               switch(tupletElementXML.tupletElementXMLType()){
               case START:
-                lastTuplet.addTuplet(new Tuplet());
-                lastTuplet=(Tuplet)lastTuplet.getLast();
+                if (tupletElementXML.tupletElementXMLNumber()!=1){
+                  lastTuplet.addTuplet(new Tuplet());
+                  lastTuplet=(Tuplet)lastTuplet.getLast();
+                }
                 lastTuplet.setActualType(tupletElementXML.getActualType());
                 lastTuplet.setNormalType(tupletElementXML.getNormalType());
-               
+            
+                  
                 hasStart=true;
                 break;
               case STOP: 
