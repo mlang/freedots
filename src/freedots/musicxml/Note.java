@@ -46,7 +46,8 @@ import freedots.music.Ornament;
 import freedots.music.Staff;
 import freedots.music.RhythmicElement;
 import freedots.music.Syllabic;
-import freedots.music.TupletElement;
+
+
 
 
 import org.w3c.dom.Document;
@@ -327,6 +328,135 @@ public final class Note implements RhythmicElement, freedots.music.TupletElement
   public Staff getStaff() { return staff; }
   public void setStaff(Staff staff) { this.staff = staff; }
 
+  static class TupletElementXML {
+		private Element element;
+		enum Type { START, STOP; }
+		private final Type type;
+		private final Integer number;
+		
+		public TupletElementXML(Element element){
+			this.element=element;
+			number=element.hasAttribute("number")?
+					new Integer(element.getAttribute("number")): new Integer(1);
+			type=	Enum.valueOf(Type.class,
+					element.getAttribute("type").trim().toUpperCase());
+		}
+		
+		public int tupletElementXMLNumber(){
+			return number;
+		}
+		
+		public Type tupletElementXMLType(){
+			return type;
+		}
+		
+		public Fraction getActualType(){
+			for (Node node = element.getFirstChild(); node != null;
+	        node = node.getNextSibling()) {
+		    	if (node.getNodeType() == Node.ELEMENT_NODE) {
+		    		if(node.getNodeName().equals("tuplet-actual")){
+		    			return getType(node);
+		    		}
+		    	}
+			}
+			return null;
+		}
+		
+		private Fraction getType(Node node){
+			int num=0;
+			PowerOfTwo normalType=null;
+			for (Node node2 = node.getFirstChild(); node2 != null;
+			node2 = node2.getNextSibling()) {
+				if (node2.getNodeType() == Node.ELEMENT_NODE) {
+					if(node2.getNodeName().equals("tuplet-number")){
+						num=Integer.parseInt(node.getNodeValue());	
+					}
+					if(node2.getNodeName().equals("tuplet-type")){
+						String typeName=node.getNodeValue();
+						String santizedTypeName = typeName.trim().toLowerCase();
+						if (TYPE_MAP.containsKey(santizedTypeName))
+							normalType = TYPE_MAP.get(santizedTypeName);
+						else
+							LOG.warning("Illegal <type> content '"+typeName+"', "
+									+ "guessing using the duration element");
+					}	
+				}
+			}
+			return new Fraction(num*normalType.numerator(),normalType.denominator());
+		}
+		    		
+		
+		public Fraction getNormalType(){
+			for (Node node = element.getFirstChild(); node != null;
+	        node = node.getNextSibling()) {
+		    	if (node.getNodeType() == Node.ELEMENT_NODE) {
+		    		if(node.getNodeName().equals("tuplet-normal")){
+		    			return getType(node);
+		    		}
+		    	}
+			}
+			return null;
+		}
+		
+	}
+  
+  class TimeModification {
+		
+		private Element element;
+		private int actualNotes, normalNotes;
+		private PowerOfTwo normalType=null;
+		
+		public TimeModification(Element element){
+			this.element=element;
+		    for (Node node = element.getFirstChild(); node != null;
+	         node = node.getNextSibling()) {
+		    	if (node.getNodeType() == Node.ELEMENT_NODE) {
+		    		if(node.getNodeName().equals("actual_notes")){
+		    			actualNotes=Integer.parseInt(node.getNodeValue());
+		    		}
+		    		if(node.getNodeName().equals("normal-notes")){
+		    			normalNotes=Integer.parseInt(node.getNodeValue());
+		    		}
+					if(	node.getNodeName().equals("normal-type")){
+						String typeName=node.getNodeValue();
+						String santizedTypeName = typeName.trim().toLowerCase();
+						if (TYPE_MAP.containsKey(santizedTypeName))
+							normalType = TYPE_MAP.get(santizedTypeName);
+						else
+							LOG.warning("Illegal <type> content '"+typeName+"', "
+					                      + "guessing using the duration element");
+					}
+			
+		    	}
+		    }
+		    if (normalType==null){
+		    	if (type != null) {
+		    	      String typeName = type.getTextContent();
+		    	      if (typeName != null) {
+		    	        String santizedTypeName = typeName.trim().toLowerCase();
+		    	        if (TYPE_MAP.containsKey(santizedTypeName))
+		    	          normalType = TYPE_MAP.get(santizedTypeName);
+		    	        else
+		    	          LOG.warning("Illegal <type> content '"+typeName+"', "
+		    	                      + "guessing using the duration element");
+		    	      }
+		    	}
+		    }
+		}
+		
+		public int getActualNotes(){
+			return actualNotes;
+		}
+		
+		public int getNormalNotes(){
+			return normalNotes;
+		}
+		
+		public PowerOfTwo getNormalType(){
+			return normalType;
+		}
+  }
+  
   static class Lyric implements freedots.music.Lyric {
     Element element;
 
