@@ -1,6 +1,7 @@
 package freedots.musicxml;
 import freedots.music.TupletElement;
 import freedots.math.Fraction;
+import freedots.math.PowerOfTwo;
 
 public class Tuplet extends freedots.music.Tuplet {
 		
@@ -90,8 +91,8 @@ public class Tuplet extends freedots.music.Tuplet {
 	    }
 	    else{
 		Note note=(Note)tE;
-		int den=-note.getAugmentedFraction().denominator();
-		int num=-note.getAugmentedFraction().numerator();
+		int den=((PowerOfTwo)note.getAugmentedFraction()).denominator();
+		int num=((PowerOfTwo)note.getAugmentedFraction()).numerator();
 		currentFrac=new Fraction(num,den);
 	    }
 	    sumFrac=sumFrac.add(currentFrac);
