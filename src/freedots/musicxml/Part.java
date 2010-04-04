@@ -175,7 +175,7 @@ public final class Part {
 
               slurBuilder.visit(note);
               tupletBuilder.visitNote(note,newMeasure);
-              newMeasure=false;
+              if (note.getTimeModification()!=null)newMeasure=false;
 
               if (currentChord != null) {
                 if (elementHasChild(musicdata, Note.CHORD_ELEMENT)) {
@@ -433,52 +433,55 @@ public final class Part {
     
     void completeTuplet(Tuplet tuplet, Note note, LinkedList<Note> linkedListNotes){
       if(note!=null){
-        if (note.getNotations().tupletElementXMLMaxNumber()>1){ //nested tuplet
-          boolean hasStart = false;
-          boolean firstStop=true; 
-          boolean hasStop=false;
-          Tuplet lastTuplet=tuplet;
-          List<TupletElementXML> tupletElementsXML=note.getNotations().getTupletElementsXML();
-          for (TupletElementXML tupletElementXML: tupletElementsXML){  
-            switch(tupletElementXML.tupletElementXMLType()){
-            case START:
-              lastTuplet.addTuplet(new Tuplet());
-              lastTuplet.setActualType(tupletElementXML.getActualType());
-              lastTuplet.setNormalType(tupletElementXML.getNormalType());
-              lastTuplet=(Tuplet)lastTuplet.getFirst();
-              hasStart=true;
-              break;
-            case STOP: 
-              if (firstStop){
-                tuplet.addNote(note);
-                firstStop=false;
-                hasStop=true;
+        if (note.getNotations()!=null){
+          if(note.getNotations().tupletElementXMLMaxNumber()>1){ //nested tuplet
+            System.out.println("Max number :"+note.getNotations().tupletElementXMLMaxNumber());
+            boolean hasStart = false;
+            boolean firstStop=true; 
+            boolean hasStop=false;
+            Tuplet lastTuplet=tuplet;
+            List<TupletElementXML> tupletElementsXML=note.getNotations().getTupletElementsXML();
+            for (TupletElementXML tupletElementXML: tupletElementsXML){  
+              switch(tupletElementXML.tupletElementXMLType()){
+              case START:
+                lastTuplet.addTuplet(new Tuplet());
+                lastTuplet.setActualType(tupletElementXML.getActualType());
+                lastTuplet.setNormalType(tupletElementXML.getNormalType());
+                lastTuplet=(Tuplet)lastTuplet.getFirst();
+                hasStart=true;
+                break;
+              case STOP: 
+                if (firstStop){
+                  tuplet.addNote(note);
+                  firstStop=false;
+                  hasStop=true;
+                }
+                lastTuplet=tuplet.getParent();
+                break;
+              default: throw new AssertionError(tupletElementXML.tupletElementXMLType());
               }
-              lastTuplet=tuplet.getParent();
-              break;
-            default: throw new AssertionError(tupletElementXML.tupletElementXMLType());
             }
+            if (hasStart && hasStop)
+              throw new AssertionError("A note can't be at the beginning AND the end of tuplets. MusicXML file is corrupted.");
+            if(hasStart)	
+              tuplet.addNote(note);
+            if (lastTuplet!=null)//tuplet is not yet complete
+              completeTuplet(lastTuplet, nextNote(linkedListNotes,note),linkedListNotes);
           }
-          if (hasStart && hasStop)
-            throw new AssertionError("A note can't be at the beginning AND the end of tuplets. MusicXML file is corrupted.");
-          if(hasStart)	
-            tuplet.addNote(note);
-          if (lastTuplet!=null)//tuplet is not yet complete
-            completeTuplet(lastTuplet, nextNote(linkedListNotes,note),linkedListNotes);
-        }
-        else{
-          tuplet.addNote(note); 
-          if (tuplet.getNormalType()==null || tuplet.getActualType()==null){ 
-            TupletElementXML tupletElementXML=null;
-            if (note.getNotations().getTupletElementsXML()!=null && note.getNotations().getTupletElementsXML().size()==1) //1 max
-              note.getNotations().getTupletElementsXML().get(0); 
-            if (tuplet.getParent()!=null && tupletElementXML!=null){
-              tuplet.setActualType(tupletElementXML.getActualType());
-              tuplet.setNormalType(tupletElementXML.getNormalType());
+          else{
+            tuplet.addNote(note); 
+            if (tuplet.getNormalType()==null || tuplet.getActualType()==null){ 
+              TupletElementXML tupletElementXML=null;
+              if (note.getNotations().getTupletElementsXML()!=null && note.getNotations().getTupletElementsXML().size()==1) //1 max
+                note.getNotations().getTupletElementsXML().get(0); 
+              if (tuplet.getParent()!=null && tupletElementXML!=null){
+                tuplet.setActualType(tupletElementXML.getActualType());
+                tuplet.setNormalType(tupletElementXML.getNormalType());
+              }
             }
+            if (!tuplet.completed())
+              completeTuplet(tuplet, nextNote(linkedListNotes,note),linkedListNotes);
           }
-          if (!tuplet.completed())
-            completeTuplet(tuplet, nextNote(linkedListNotes,note),linkedListNotes);
         }
       }
       else LOG.warning("Tuplet can't be completed, Notes:"+tuplet);
