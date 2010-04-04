@@ -408,16 +408,12 @@ public final class Note implements RhythmicElement, freedots.music.TupletElement
     
     public TimeModification(Element element){
       this.element=element;
-      // for (Node node = element.getFirstChild(); node != null;
-      //    node = node.getNextSibling()) {
-      //  if (node.getNodeType() == Node.ELEMENT_NODE) {
-          //  if(node.getNodeName().equals("actual_notes")){
-            actualNotes=Integer.parseInt(Score.getTextNode(element,"actual-notes").getWholeText());
-            // }
-            // if(node.getNodeName().equals("normal-notes")){
-            normalNotes=Integer.parseInt(Score.getTextNode(element, "normal-notes").getWholeText());
-            //  }
-            /*  if(node.getNodeName().equals("normal-type")){
+      actualNotes=Integer.parseInt(Score.getTextNode(element,"actual-notes").getWholeText());
+      normalNotes=Integer.parseInt(Score.getTextNode(element, "normal-notes").getWholeText());
+      for (Node node = element.getFirstChild(); node != null;
+           node = node.getNextSibling()) {
+        if (node.getNodeType() == Node.ELEMENT_NODE) {
+          if(node.getNodeName().equals("normal-type")){
             String typeName=node.getTextContent();
             String santizedTypeName = typeName.trim().toLowerCase();
             if (TYPE_MAP.containsKey(santizedTypeName))
@@ -425,9 +421,9 @@ public final class Note implements RhythmicElement, freedots.music.TupletElement
             else
               LOG.warning("Illegal <type> content '"+typeName+"', "
                           + "guessing using the duration element");
-                          }
+          }
           
-             }
+        }
       }
       if (normalType==null){
         if (type != null) {
@@ -441,7 +437,7 @@ public final class Note implements RhythmicElement, freedots.music.TupletElement
                           + "guessing using the duration element");
           }
         }
-      }*/
+      }
     }
     
     public int getActualNotes(){
