@@ -514,6 +514,10 @@ public final class Part {
           return n;
         }
       }
+      for(Note note1: linkedListNotes){
+    	  if (note1.getTuplet()!=null)
+    	  	return note1;
+      }
       return null; 
     }
     
