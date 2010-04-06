@@ -544,9 +544,9 @@ public final class Part {
     //  linkedListNotes(same measure and timeModification)
     Note nextNoteVoice(LinkedList<Note> linkedListNotes, Note note){
       Fraction currentMoment=note.getMoment();
-      final Fraction nextMoment = currentMoment.add(note.getDuration());  
+     
       for (Note n: linkedListNotes){
-    	  if (n.getTuplet()==null && (n.getMoment().compareTo(nextMoment)>0) 
+    	  if (n.getTuplet()==null && (n.getMoment().compareTo(currentMoment)>0) 
     			  && n.getVoiceName().equals(note.getVoiceName())){ 
           return n;
         } 
