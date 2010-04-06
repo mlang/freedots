@@ -340,7 +340,6 @@ public final class Note implements RhythmicElement, freedots.music.TupletElement
            node = node.getNextSibling()) {
         if (node.getNodeType() == Node.ELEMENT_NODE) {
           if(node.getNodeName().equals("tuplet-actual")){
-    System.out.println("Actual Type"+ getType(node));
             return getType(node);
           }
         }
@@ -375,7 +374,6 @@ public final class Note implements RhythmicElement, freedots.music.TupletElement
            node = node.getNextSibling()) {
         if (node.getNodeType() == Node.ELEMENT_NODE) {
           if(node.getNodeName().equals("tuplet-normal")){
-   System.out.println("Actual Type"+ getType(node));
             return getType(node);
           }
         }
