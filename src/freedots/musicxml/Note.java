@@ -385,7 +385,7 @@ public final class Note implements RhythmicElement, freedots.music.TupletElement
     
   }
   
-  class TimeModification {
+  public class TimeModification {
 		
     private Element element;
     private int actualNotes, normalNotes;

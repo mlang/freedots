@@ -459,7 +459,7 @@ public final class Part {
                   firstStop=false;
                   hasStop=true;
                 }
-                lastTuplet=tuplet.getParent();
+                lastTuplet=(Tuplet)tuplet.getParent();
                 break;
               default: throw new AssertionError(tupletElementXML.tupletElementXMLType());
               }

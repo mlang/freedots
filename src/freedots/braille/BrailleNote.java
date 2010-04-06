@@ -69,8 +69,15 @@ public class BrailleNote extends BrailleList {
 
     Tuplet tuplet=note.getTuplet();
     if (tuplet!=null) { // We are part of some tuplet group
-    	if (tuplet.isFirstNoteOfTuplet(note)) {  
-    		add(new TupletSign());
+    	if (tuplet.isFirstOfTuplet(note)) {
+    		add(new TupletSign(tuplet));
+    		Tuplet father=tuplet.getParent();
+    		while (father!=null && father.isFirstOfTuplet(tuplet)){
+    			addFirst(new TupletSign(father));
+    			tuplet=father;
+    			father=father.getParent();
+    		}
+    		
     		
     	} // else do nothing since only first note of a tuplet needs prefix
     }
