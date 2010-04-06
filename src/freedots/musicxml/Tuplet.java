@@ -37,7 +37,7 @@ public class Tuplet extends freedots.music.Tuplet {
 
     public boolean completed(){
 	
-	Fraction expectedFrac=this.getActualType();
+	Fraction expectedFrac=this.getActualType().simplify();
 	Fraction sumFrac=new Fraction(0,1);
 	for (TupletElement tE: this){
 		Fraction currentFrac=new Fraction(0,1);

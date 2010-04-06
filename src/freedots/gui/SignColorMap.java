@@ -61,6 +61,7 @@ public class SignColorMap extends HashMap<Class<? extends Sign>, Color> {
     put(BrailleChord.ChordTieSign.class, Color.lightGray);
     put(Text.class, new Color(160, 82, 45));
     put(TextPart.class, new Color(160, 82, 45));
+    put(TupletSign.class, new Color(153,0,153));
   }
 
   /** Returns the color to which the specified sign is mapped,

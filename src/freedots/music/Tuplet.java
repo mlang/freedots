@@ -58,7 +58,7 @@ public class Tuplet extends java.util.LinkedList<TupletElement> implements Tuple
 	    Note note=(Note)getFirst();
 	    int num=note.getTimeModification().getNormalNotes()*note.getTimeModification().getNormalType().numerator();
 	    int den=note.getTimeModification().getNormalType().denominator();
-	    return new Fraction(num,den).simplify();
+	    return new Fraction(num,den);
 	} 
 	return null;
     }
@@ -68,7 +68,7 @@ public class Tuplet extends java.util.LinkedList<TupletElement> implements Tuple
 	    Note note=(Note)getFirst();
 	    int num=note.getTimeModification().getActualNotes()*note.getTimeModification().getNormalType().numerator();
 	    int den=note.getTimeModification().getNormalType().denominator();
-	    return new Fraction(num,den).simplify();
+	    return new Fraction(num,den);
 	} 
 	return null;
     }
