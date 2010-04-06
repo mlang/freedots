@@ -534,7 +534,7 @@ public final class Part {
     		}
     	}
     	voiceList.add(firstNote.getVoiceName());
-    	if (firstNote.getTuplet()!=null)
+    	if (firstNote==linkedListNotes.getFirst() && firstNote.getTuplet()!=null)
     		return null;	
     	return firstNote;
     }
