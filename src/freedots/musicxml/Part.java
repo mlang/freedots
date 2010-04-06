@@ -542,17 +542,21 @@ public final class Part {
     //  - return the next note of linkedListNotes in the same voice
     //  - return null if there is not next notes without tuplet in
     //  linkedListNotes(same measure and timeModification)
-    Note nextNoteVoice(LinkedList<Note> linkedListNotes, Note note){
+    public Note nextNoteVoice(LinkedList<Note> linkedListNotes, Note note){
       Fraction currentMoment=note.getMoment();
-     
+      Note nextNote=null;
       for (Note n: linkedListNotes){
     	  if (n.getTuplet()==null && (n.getMoment().compareTo(currentMoment)>0) 
-    			  && n.getVoiceName().equals(note.getVoiceName())){ 
-          return n;
-        } 
-    	  
+    			  && n.getVoiceName().equals(note.getVoiceName())){
+    		  if (nextNote==null)
+    			  nextNote=n;
+    		  else if (n.getMoment().compareTo(nextNote.getMoment())<0)
+    			  nextNote=n;
+    	  } 	  
       } 
-      return null; 
+      if (nextNote==note)
+    	  return null;
+      return nextNote; 
     } 
   }
 
