@@ -448,9 +448,7 @@ public final class Part {
                   lastTuplet=(Tuplet)lastTuplet.getLast();
                 }
                 lastTuplet.setActualType(tupletElementXML.getActualType());
-                lastTuplet.setNormalType(tupletElementXML.getNormalType());
-            
-                  
+                lastTuplet.setNormalType(tupletElementXML.getNormalType());      
                 hasStart=true;
                 break;
               case STOP: 
@@ -469,7 +467,7 @@ public final class Part {
             if(hasStart)	
               lastTuplet.addNote(note);
             if (lastTuplet!=null)//tuplet is not yet complete
-              completeTuplet(lastTuplet, nextNote(linkedListNotes,note),linkedListNotes);
+              completeTuplet(lastTuplet, nextNoteOfTuplet(linkedListNotes,note),linkedListNotes);
           }
           else{
             tuplet.addNote(note); 
@@ -483,8 +481,7 @@ public final class Part {
               }
             }
             if (!tuplet.completed())
-              completeTuplet(tuplet, nextNote(linkedListNotes,note),linkedListNotes);
-          
+              completeTuplet(tuplet, nextNoteOfTuplet(linkedListNotes,note),linkedListNotes);
         }
       }
       else LOG.warning("Tuplet can't be completed, Notes:"+tuplet);
@@ -492,59 +489,71 @@ public final class Part {
     
     void buildTuplet(){
       for (LinkedList<Note> linkedListNote: map){
-        Note note=null;
-       
-        while((note=nextNote(linkedListNote,note))!=null){ 
-          Tuplet tuplet=new Tuplet();
-          completeTuplet(tuplet, note,linkedListNote);
-          while(!(tuplet.getLast() instanceof Note))
-            tuplet=(Tuplet)tuplet.getLast();
-          note=(Note)tuplet.getLast();
-        }
+    	  Note note=null;
+    	  List<String> voiceList=new LinkedList<String>();
+    	  	while((note=firstNoteVoice(linkedListNote,voiceList))!=null){ 
+    	  		while(note!=null){
+    	  			Tuplet tuplet=new Tuplet();
+    	  			completeTuplet(tuplet, note,linkedListNote);
+    	  			while(!(tuplet.getLast() instanceof Note))	
+    	  				tuplet=(Tuplet)tuplet.getLast();	
+    	  			note=(Note)tuplet.getLast();	
+    	  			note=nextNoteVoice(linkedListNote,note);
+    	  		}  		
+    	  	}
       }     
     }
     
-    //  - return the first note(in the score) of the same voice than note, in linkedListNotes
-    // which doesn't have a tuplet. 
-    //  - return the first note of linkedListNotes, if note is null
-    // 	without looking at the voice or if it owns to a tuplet
-    //  - return null if there is not next notes without tuplet in linkedListNotes(same measure and timeModification)
-    
-    Note nextNote(LinkedList<Note> linkedListNotes, Note note){
-      if (note==null) {//return linkedListNotes.getFirst();
-        Fraction minMoment=linkedListNotes.getFirst().getMoment();
-        System.out.println(minMoment);
-        Note note2=linkedListNotes.getFirst();
-        for (Note note1: linkedListNotes) {
-          if (note1.getMoment().compareTo(minMoment) < 0){
-            note2=note1;
-          }
-        }
-        System.out.println(note2);
-        return note2;
-      }
-      
-      
-      
-      final Fraction nextMoment = note.getMoment().add(note.getDuration());
-      
-      for (Note n: linkedListNotes){
-        if (n.getMoment().equals(nextMoment)){
-          if (n.getTuplet()==null && n.getVoiceName().equals(note.getVoiceName())){
-            System.out.println("next note of the tuplet");
-            return n;
-          }
-        }
-      }
-
-      for (Note n: linkedListNotes){
-        if (n.getTuplet()==null && (n.getMoment().compareTo(nextMoment)>0)){ System.out.println("first note of the next tuplet");
-          return n;
-        } 
-      } 
-      return null; 
+    // return next note after note of the tuplet which contains note
+    // (nextMoment, no tuplet, same voice)
+    // null otherwise
+    public Note nextNoteOfTuplet(LinkedList<Note> linkedListNotes, Note note){
+    	final Fraction nextMoment = note.getMoment().add(note.getDuration());
+    	for (Note n: linkedListNotes){
+    		if (n.getMoment().equals(nextMoment)){
+    			if (n.getTuplet()==null && n.getVoiceName().equals(note.getVoiceName())){
+    				return n;
+    			}
+    		}
+    	}
+    	return null;
     }
     
+    // return the first note(in the score) of linkedListNotes if it has not tuplet
+    // by voice
+    // null otherwise
+    public Note firstNoteVoice(LinkedList<Note> linkedListNotes, List<String> voiceList){
+    	
+    	Note firstNote=linkedListNotes.getFirst();
+    	Fraction minMoment=firstNote.getMoment();	
+    	
+    	for (Note note: linkedListNotes){
+    		if(note.getMoment().compareTo(minMoment)<0 && voiceList.contains(note.getVoiceName())){
+    			firstNote=note;
+    			minMoment=firstNote.getMoment();
+    		}
+    	}
+    	voiceList.add(firstNote.getVoiceName());
+    	if (firstNote.getTuplet()!=null)
+    		return null;	
+    	return firstNote;
+    }
+       
+    //  - return the next note of linkedListNotes in the same voice
+    //  - return null if there is not next notes without tuplet in
+    //  linkedListNotes(same measure and timeModification)
+    Note nextNoteVoice(LinkedList<Note> linkedListNotes, Note note){
+      Fraction currentMoment=note.getMoment();
+      final Fraction nextMoment = currentMoment.add(note.getDuration());  
+      for (Note n: linkedListNotes){
+    	  if (n.getTuplet()==null && (n.getMoment().compareTo(nextMoment)>0) 
+    			  && n.getVoiceName().equals(note.getVoiceName())){ 
+          return n;
+        } 
+    	  
+      } 
+      return null; 
+    } 
   }
 
   /** Returns a list of all Note objects at a given musical offset.
