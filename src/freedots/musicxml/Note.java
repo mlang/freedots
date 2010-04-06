@@ -612,8 +612,7 @@ public final class Note implements RhythmicElement, freedots.music.TupletElement
       if (tupletElementsXML!=null){
         for(TupletElementXML tupletElementXML: tupletElementsXML){
           if(tupletElementXML.tupletElementXMLNumber()>max)
-            max=tupletElementXML.tupletElementXMLNumber();
-          
+            max=tupletElementXML.tupletElementXMLNumber();        
         }
       }
       return max;

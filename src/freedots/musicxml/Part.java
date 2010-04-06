@@ -434,7 +434,6 @@ public final class Part {
     void completeTuplet(Tuplet tuplet, Note note, LinkedList<Note> linkedListNotes){
       if(note!=null){
         if (note.getNotations()!=null && note.getNotations().tupletElementXMLMaxNumber()>1){ //nested tuplet
-            System.out.println("Max number :"+note.getNotations().tupletElementXMLMaxNumber());
             boolean hasStart = false;
             boolean firstStop=true; 
             boolean hasStop=false;
