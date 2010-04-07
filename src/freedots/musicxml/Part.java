@@ -522,19 +522,26 @@ public final class Part {
     // by voice
     // null otherwise
     public Note firstNoteVoice(LinkedList<Note> linkedListNotes, List<String> voiceList){
-    	
-    	Note firstNote=linkedListNotes.getFirst();
-    	Fraction minMoment=firstNote.getMoment();	
-    	
+    	Note firstNote=null;
+    	Fraction minMoment=null;
+  //select a note in a voice never seen before
     	for (Note note: linkedListNotes){
-    		if(note.getMoment().compareTo(minMoment)<0 && voiceList.contains(note.getVoiceName())){
+    		if(!voiceList.contains(note.getVoiceName())){
     			firstNote=note;
     			minMoment=firstNote.getMoment();
+    			voiceList.add(firstNote.getVoiceName());
+    			break;
     		}
     	}
-    	voiceList.add(firstNote.getVoiceName());
-    	if (firstNote==linkedListNotes.getFirst() && firstNote.getTuplet()!=null)
-    		return null;	
+// select the first note in the same voice than firstNote	
+        if (firstNote!=null){
+        	for (Note note: linkedListNotes){
+        		if(note.getMoment().compareTo(minMoment)<0 && firstNote.getVoiceName().equals(note.getVoiceName()) ){
+        			firstNote=note;
+        			minMoment=firstNote.getMoment();
+        		}
+        	}
+        }
     	return firstNote;
     }
        
