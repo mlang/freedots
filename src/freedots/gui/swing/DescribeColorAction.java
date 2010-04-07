@@ -147,9 +147,9 @@ class ColorLegend extends JDialog {
     panText.setBorder(BorderFactory.createTitledBorder("Text"));
 
     JPanel panTuplet = new JPanel();
-    panText.setBackground(colorMap.get(TupletSign.class));
-    panText.setPreferredSize(new Dimension(100, 50));
-    panText.setBorder(BorderFactory.createTitledBorder("Tuplet"));
+    panTuplet.setBackground(colorMap.get(TupletSign.class));
+    panTuplet.setPreferredSize(new Dimension(100, 50));
+    panTuplet.setBorder(BorderFactory.createTitledBorder("Tuplet"));
 
     JPanel content = new JPanel();
     content.setBackground(Color.white);
