@@ -42,6 +42,7 @@ import freedots.braille.PitchAndValueSign;
 import freedots.braille.RestSign;
 import freedots.braille.SlurSign;
 import freedots.braille.Text;
+import freedots.braille.TupletSign;
 import freedots.gui.SignColorMap;
 
 /** Pops up a dialog to describe the different colors used for the various
@@ -145,6 +146,11 @@ class ColorLegend extends JDialog {
     panText.setPreferredSize(new Dimension(100, 50));
     panText.setBorder(BorderFactory.createTitledBorder("Text"));
 
+    JPanel panTuplet = new JPanel();
+    panTuplet.setBackground(colorMap.get(TupletSign.class));
+    panTuplet.setPreferredSize(new Dimension(100, 50));
+    panTuplet.setBorder(BorderFactory.createTitledBorder("Tuplet"));
+
     JPanel content = new JPanel();
     content.setBackground(Color.white);
     content.add(panAccidental);
@@ -158,6 +164,7 @@ class ColorLegend extends JDialog {
     content.add(panRest);
     content.add(panSlur);
     content.add(panText);
+    content.add(panTuplet);
 
     this.getContentPane().add(content, BorderLayout.CENTER);
   }

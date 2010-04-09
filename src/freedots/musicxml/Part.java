@@ -48,6 +48,7 @@ import freedots.music.StartBar;
 import freedots.music.EndBar;
 import freedots.music.TimeSignature;
 import freedots.music.TimeSignatureChange;
+import freedots.musicxml.Note.TupletElementXML;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -85,12 +86,16 @@ public final class Part {
     TimeSignature lastTimeSignature = null;
     int staffCount = 1;
     EndBar endbar = null;
+    boolean newMeasure=false;
 
     SlurBuilder slurBuilder = new SlurBuilder();
+    TupletBuilder tupletBuilder=new TupletBuilder();
+    
     for (Node partNode = part.getFirstChild(); partNode != null;
          partNode = partNode.getNextSibling()) {
       if (partNode.getNodeType() == Node.ELEMENT_NODE
        && "measure".equals(partNode.getNodeName())) {
+    	newMeasure = true;
         final Element xmlMeasure = (Element)partNode;
 
         StartBar startBar = new StartBar(measureOffset, ++measureNumber);
@@ -105,7 +110,7 @@ public final class Part {
         Fraction measureDuration = Fraction.ZERO;
 
         for (Node measureNode = xmlMeasure.getFirstChild();
-             measureNode != null; measureNode = measureNode.getNextSibling()) {
+             measureNode != null; measureNode = measureNode.getNextSibling()) {        
           if (measureNode.getNodeType() == Node.ELEMENT_NODE) {
             Element musicdata = (Element)measureNode;
             String tagName = musicdata.getTagName();
@@ -148,7 +153,8 @@ public final class Part {
               if (keys.size() > 0) {
                 for (Attributes.Key key: keys) {
                   if (key.getStaffName() == null)
-                    eventList.add(new GlobalKeyChange(measureOffset.add(offset), key));
+                    eventList.add(new GlobalKeyChange(measureOffset.add(offset),
+                                                      key));
                   else
                     eventList.add(new KeyChange(measureOffset.add(offset),
                                                 key,
@@ -169,6 +175,8 @@ public final class Part {
               boolean addNoteToEventList = true;
 
               slurBuilder.visit(note);
+              tupletBuilder.visitNote(note,newMeasure);
+              if (note.getTimeModification()!=null)newMeasure=false;
 
               if (currentChord != null) {
                 if (elementHasChild(musicdata, Note.CHORD_ELEMENT)) {
@@ -282,6 +290,7 @@ public final class Part {
     // Post processing
 
     slurBuilder.buildSlurs();
+    tupletBuilder.buildTuplet();
 
     if (!score.encodingSupports(Note.ACCIDENTAL_ELEMENT)) {
       int staves = 1;
@@ -362,7 +371,7 @@ public final class Part {
      */
     void buildSlurs() {
       if (slurMap.size() != 0)
-        LOG.warning("Untermiated slurs: "+slurMap.size());
+        LOG.warning("Unterminated slurs: "+slurMap.size());
 
       for (SlurBounds bounds: slurs) {
         Note note = bounds.begin();
@@ -406,6 +415,161 @@ public final class Part {
       Note end() { return end; }
       Collection<Note> other() { return other; }
     }
+  }
+  
+  private class TupletBuilder{
+    private final LinkedList<LinkedList<Note>> map = new LinkedList<LinkedList<Note>>();
+    
+    public TupletBuilder(){}
+    
+    //Group note with TimeModification by measure in map
+    void visitNote(Note note, boolean newMeasure){
+      if(note.getTimeModification()!=null){
+        if (newMeasure)
+          map.add(new LinkedList<Note>());
+        map.getLast().add(note);
+      }
+    }
+    
+    
+    void completeTuplet(Tuplet tuplet, Note note, LinkedList<Note> linkedListNotes){
+      if(note!=null){
+        if (note.getNotations()!=null && note.getNotations().tupletElementXMLMaxNumber()>1){ //nested tuplet
+            boolean hasStart = false;
+            boolean firstStop=true; 
+            boolean hasStop=false;
+            Tuplet lastTuplet=tuplet;
+            List<TupletElementXML> tupletElementsXML=note.getNotations().getTupletElementsXML();
+            for (TupletElementXML tupletElementXML: tupletElementsXML){  
+              switch(tupletElementXML.tupletElementXMLType()){
+              case START:
+                if (tupletElementXML.number() != 1) {
+                  lastTuplet.addTuplet(new Tuplet());
+                  lastTuplet = (Tuplet)lastTuplet.getLast();
+                }
+                lastTuplet.setActualType(tupletElementXML.getActualType());
+                lastTuplet.setNormalType(tupletElementXML.getNormalType());      
+                hasStart=true;
+                break;
+              case STOP: 
+                if (firstStop){
+                  tuplet.addNote(note);
+                  firstStop=false;
+                  hasStop=true;
+                }
+                lastTuplet=(Tuplet)tuplet.getParent();
+                break;
+              default: throw new AssertionError(tupletElementXML.tupletElementXMLType());
+              }
+            }
+            if (hasStart && hasStop)
+              throw new AssertionError("A note can't be at the beginning AND the end of tuplets. MusicXML file is corrupted.");
+            if (hasStart) lastTuplet.addNote(note);
+            if (lastTuplet != null) //tuplet is not yet complete
+              completeTuplet(lastTuplet, nextNoteOfTuplet(linkedListNotes,note),
+                             linkedListNotes);
+          }
+        else {
+          tuplet.addNote(note); 
+          if (tuplet.getNormalType()==null || tuplet.getActualType()==null){ 
+            TupletElementXML tupletElementXML=null;
+            if (note.getNotations() != null
+             && note.getNotations().getTupletElementsXML() != null
+             && note.getNotations().getTupletElementsXML().size() == 1) //1 max
+              note.getNotations().getTupletElementsXML().get(0);
+            if (tuplet.getParent() != null && tupletElementXML != null){
+              tuplet.setActualType(tupletElementXML.getActualType());
+              tuplet.setNormalType(tupletElementXML.getNormalType());
+            }
+          }
+          if (!tuplet.completed())
+            completeTuplet(tuplet, nextNoteOfTuplet(linkedListNotes,note),
+                           linkedListNotes);
+        }
+      }
+      else LOG.warning("Tuplet can't be completed, Notes:"+tuplet);
+    }
+
+    void buildTuplet(){
+      for (LinkedList<Note> linkedListNote: map){
+        Note note=null;
+          List<String> voiceList=new LinkedList<String>();
+          while((note=firstNoteVoice(linkedListNote,voiceList))!=null){ 
+            while(note!=null){
+              Tuplet tuplet=new Tuplet();
+              completeTuplet(tuplet, note,linkedListNote);
+              while(!(tuplet.getLast() instanceof Note))	
+                tuplet=(Tuplet)tuplet.getLast();	
+              note=(Note)tuplet.getLast();	
+              note=nextNoteVoice(linkedListNote,note);
+            }  		
+          }
+      }
+    }
+
+    // return next note after note of the tuplet which contains note
+    // (nextMoment, no tuplet, same voice)
+    // null otherwise
+    public Note nextNoteOfTuplet(LinkedList<Note> linkedListNotes, Note note) {
+      final Fraction nextMoment = note.getMoment().add(note.getDuration());
+      for (Note n: linkedListNotes){
+        if (n.getMoment().equals(nextMoment)) {
+          if (n.getTuplet() == null
+           && n.getVoiceName().equals(note.getVoiceName())){
+            return n;
+          }
+        }
+      }
+      return null;
+    }
+
+    // return the first note(in the score) of linkedListNotes if it has not tuplet
+    // by voice
+    // null otherwise
+    public Note firstNoteVoice(final LinkedList<Note> linkedListNotes,
+                               final List<String> voiceList) {
+      Note firstNote = null;
+      Fraction minMoment = null;
+      //select a note in a voice never seen before
+      for (Note note: linkedListNotes) {
+        if(!voiceList.contains(note.getVoiceName())){
+          firstNote = note;
+          minMoment = firstNote.getMoment();
+          voiceList.add(firstNote.getVoiceName());
+          break;
+        }
+      }
+      // select the first note in the same voice than firstNote	
+      if (firstNote != null){
+        for (Note note: linkedListNotes) {
+          if (note.getMoment().compareTo(minMoment)<0
+           && firstNote.getVoiceName().equals(note.getVoiceName())) {
+            firstNote = note;
+            minMoment = firstNote.getMoment();
+          }
+        }
+      }
+      return firstNote;
+    }
+
+    //  - return the next note of linkedListNotes in the same voice
+    //  - return null if there is not next notes without tuplet in
+    //  linkedListNotes(same measure and timeModification)
+    public Note nextNoteVoice(LinkedList<Note> linkedListNotes, Note note){
+      Fraction currentMoment = note.getMoment();
+      Note nextNote = null;
+      for (Note n: linkedListNotes) {
+        if (n.getTuplet() == null && (n.getMoment().compareTo(currentMoment)>0) 
+         && n.getVoiceName().equals(note.getVoiceName())) {
+          if (nextNote == null)
+            nextNote = n;
+          else if (n.getMoment().compareTo(nextNote.getMoment())<0)
+            nextNote = n;
+        } 	  
+      }
+      if (nextNote == note) return null;
+      return nextNote; 
+    } 
   }
 
   /** Returns a list of all Note objects at a given musical offset.

@@ -55,7 +55,7 @@ import org.w3c.dom.Text;
 
 /** A wrapper around (the most important) note element.
  */
-public final class Note implements RhythmicElement {
+public final class Note implements RhythmicElement, freedots.music.TupletElement {
   private static final Logger LOG = Logger.getLogger(Note.class);
 
   static final String ACCIDENTAL_ELEMENT = "accidental";
@@ -64,6 +64,7 @@ public final class Note implements RhythmicElement {
   private static final String NOTATIONS_ELEMENT = "notations";
   private static final String STAFF_ELEMENT = "staff";
   private static final String TIME_MODIFICATION_ELEMENT = "time-modification";
+  private static final String TUPLET_ELEMENT = "tuplet";
 
   private final int divisions, durationMultiplier;
   private final Element element;
@@ -97,6 +98,18 @@ public final class Note implements RhythmicElement {
         put("256th", new PowerOfTwo(-8));
       }
     });
+  public static PowerOfTwo parseType (Element type) {
+    assert type != null;
+    final String sanitizedTypeName = type.getTextContent().trim().toLowerCase();
+    if (TYPE_MAP.containsKey(sanitizedTypeName))
+      return TYPE_MAP.get(sanitizedTypeName);
+    else {
+      LOG.warning("Illegal <type> content '" + type.getTextContent() + "', "
+                  + "guessing using the duration element");
+      return null;
+    }
+  }
+
   private List<Element> dot = new ArrayList<Element>(3);
 
   private Accidental accidental = null;
@@ -112,12 +125,18 @@ public final class Note implements RhythmicElement {
     });
 
   private Element tie = null;
-  private Element timeModification = null;
+  private TimeModification timeModification = null;
+  public TimeModification getTimeModification () { return timeModification; }
 
   private Lyric lyric = null;
 
   private Notations notations = null;
+  
+  private Tuplet tuplet = null; //A note is in only one tuplet which can be in others
+  public Tuplet getTuplet() { return tuplet; }
+  void addTuplet(Tuplet tuplet) { this.tuplet=tuplet; }
 
+  
   Note(final Element element, final int divisions, final int durationMultiplier,
        final Part part) throws MusicXMLParseException {
     this.element = element;
@@ -163,7 +182,7 @@ public final class Note implements RhythmicElement {
                                                + "</accidental>");
           }
         } else if (child.getTagName().equals(TIME_MODIFICATION_ELEMENT)) {
-          timeModification = child;
+          timeModification = new TimeModification(child);
         } else if (child.getTagName().equals(STAFF_ELEMENT)) {
           staffNumber = firstTextNode(child);
         } else if (child.getTagName().equals(NOTATIONS_ELEMENT)) {
@@ -218,23 +237,13 @@ public final class Note implements RhythmicElement {
    */
   public AugmentedPowerOfTwo getAugmentedFraction() {
     PowerOfTwo base = null;
-    if (type != null) {
-      String typeName = type.getTextContent();
-      if (typeName != null) {
-        String santizedTypeName = typeName.trim().toLowerCase();
-        if (TYPE_MAP.containsKey(santizedTypeName))
-          base = TYPE_MAP.get(santizedTypeName);
-        else
-          LOG.warning("Illegal <type> content '"+typeName+"', "
-                      + "guessing using the duration element");
-      }
-    }
+    if (type != null) base = parseType(type);
     if (base != null) {
       int normalNotes = 1;
       int actualNotes = 1;
       if (timeModification != null) {
-        normalNotes = Integer.parseInt(Score.getTextNode(timeModification, "normal-notes").getWholeText());
-        actualNotes = Integer.parseInt(Score.getTextNode(timeModification, "actual-notes").getWholeText());
+        normalNotes = timeModification.getNormalNotes();
+        actualNotes = timeModification.getActualNotes();
       }
       return new AugmentedPowerOfTwo(base, dot.size(),
                                      normalNotes, actualNotes);
@@ -300,6 +309,102 @@ public final class Note implements RhythmicElement {
   public Staff getStaff() { return staff; }
   public void setStaff(Staff staff) { this.staff = staff; }
 
+  static class TupletElementXML {
+    private Element element;
+    enum Type { START, STOP; }
+    private final Type type;
+    private final Integer number;
+    
+    public TupletElementXML(Element element){
+      this.element=element;
+      number = element.hasAttribute("number")?
+        new Integer(element.getAttribute("number")): new Integer(1);
+      type = Enum.valueOf(Type.class,
+                          element.getAttribute("type").trim().toUpperCase());
+    }
+    
+    public int number () { return number; }
+    public Type tupletElementXMLType(){
+      return type;
+    }
+    
+    public Fraction getActualType () {
+      for (Node node = element.getFirstChild(); node != null;
+           node = node.getNextSibling()) {
+        if (node.getNodeType() == Node.ELEMENT_NODE) {
+          if (node.getNodeName().equals("tuplet-actual")){
+            return getType(node);
+          }
+        }
+      }
+      return null;
+    }
+    
+    private Fraction getType (Node node) {
+      int num=0;
+      PowerOfTwo normalType=null;
+      num = Integer.parseInt(Score.getTextNode((Element)node, "tuplet-number").getWholeText());
+      for (Node node2 = node.getFirstChild(); node2 != null;
+           node2 = node2.getNextSibling())
+        if (node2.getNodeType() == Node.ELEMENT_NODE)
+          if (node2.getNodeName().equals("tuplet-type"))
+            normalType = Note.parseType((Element)node2);
+      return new Fraction(num*normalType.numerator(),normalType.denominator());
+    }
+
+    public Fraction getNormalType () {
+      for (Node node = element.getFirstChild(); node != null;
+           node = node.getNextSibling()) {
+        if (node.getNodeType() == Node.ELEMENT_NODE) {
+          if (node.getNodeName().equals("tuplet-normal")) {
+            return getType(node);
+          }
+        }
+      }
+      return null;
+    }
+  }
+  
+  public class TimeModification {
+    private final Element element;
+    private int actualNotes, normalNotes;
+    private PowerOfTwo normalType = null;
+
+    public TimeModification(Element element) {
+      this.element = element;
+      for (Node node = element.getFirstChild(); node != null;
+           node = node.getNextSibling()) {
+        if (node.getNodeType() == Node.ELEMENT_NODE) {
+          Element child = (Element)node;
+          if (child.getTagName().equals("normal-notes")) {
+            normalNotes = Integer.parseInt(child.getTextContent());
+          } else if (child.getTagName().equals("actual-notes")) {
+            actualNotes = Integer.parseInt(child.getTextContent());
+          } else if (child.getTagName().equals("normal-type")) {
+            normalType = Note.parseType(child);
+          }
+        }
+      }
+      if (normalType == null) {
+        if (type != null) {
+          normalType = Note.parseType(type);
+        }
+      }
+    }
+    
+    public int getActualNotes(){
+      return actualNotes;
+    }
+    
+    public int getNormalNotes(){
+      return normalNotes;
+    }
+    
+    public PowerOfTwo getNormalType(){
+      return normalType;
+    }
+  }
+  
   static class Lyric implements freedots.music.Lyric {
     Element element;
 
@@ -453,7 +558,6 @@ public final class Note implements RhythmicElement {
           put("staccato", Articulation.staccato);
           put("staccatissimo", Articulation.staccatissimo);
           put("tenuto", Articulation.tenuto);
-          put("detached-legato", Articulation.mezzoStaccato);
         }
       });
 
@@ -468,6 +572,21 @@ public final class Note implements RhythmicElement {
     private Set<Articulation> articulations =
       EnumSet.noneOf(Articulation.class);
 
+    private List<TupletElementXML> tupletElementsXML=null;
+    
+    
+    public List<TupletElementXML> getTupletElementsXML() {return tupletElementsXML;}
+    public int tupletElementXMLMaxNumber(){
+      int max=0;
+      if (tupletElementsXML!=null){
+        for(TupletElementXML tupletElementXML: tupletElementsXML){
+          if (tupletElementXML.number() > max)
+            max = tupletElementXML.number();        
+        }
+      }
+      return max;
+    }
+
     Notations(Element element) {
       this.element = element;
 
@@ -479,6 +598,13 @@ public final class Note implements RhythmicElement {
             fermata = child;
           } else if (child.getTagName().equals(TECHNICAL_ELEMENT)) {
             technical = new Technical(child);
+          } else if (child.getTagName().equals(TUPLET_ELEMENT)) {
+            if (tupletElementsXML != null)
+              tupletElementsXML.add(new TupletElementXML(child));
+            else {	
+              tupletElementsXML = new ArrayList<TupletElementXML>();
+              tupletElementsXML.add(new TupletElementXML(child));
+            }
           } else if (child.getTagName().equals(ARTICULATIONS_ELEMENT)) {
             for (Node articulationNode = child.getFirstChild();
                  articulationNode != null;
@@ -594,7 +720,7 @@ public final class Note implements RhythmicElement {
         Fingering result = new Fingering();
 
         if (fingering != null) {
-          String[] items = fingering.getWholeText().trim().split("[- \t\n]+");
+          String[] items = fingering.getWholeText().trim().split("[ \t\n]+");
           List<Integer> fingers = new ArrayList<Integer>(items.length);
           for (String finger: items) {
             if (!finger.isEmpty()) fingers.add(Integer.valueOf(finger));

@@ -161,7 +161,7 @@ public final class Main extends JFrame
   }
 
   private boolean paused = false, begin = true;
-  	
+
   boolean startPlayback() {
     if (score != null) {
       // Play from the beginning
