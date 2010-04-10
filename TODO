@@ -63,28 +63,6 @@ an overhaul.  The aim is obviously to parse existing complicated
 MusicXML files with things like cross-staff-slurs and cross-voice-slurs
 such that the actual musical intent is preserved.
 
-The <slur> element inside <notations> is type start-stop-continue.
-The continue type is currently completely unimplemented.
-
-*** TODO Allow to query time-modification groups
-
-As it stands, we currently just know if a certain note is time-modified
-(for tripplets and alike), but we can not see the individual groups
-of notes, which we need for transcription.  In braille music, we need
-to prefix the first note of a tripplet with a certain sign, also subject
-to doubling.  Similarily to slurs, handle time-modification groups, but do not
-use the tuplet element, since that is optional in a sense.  (in MusicXML,
-the tuplet element is used to indicate the graphical bracket, which might
-be absent in some scores.  The time-modification element is necessary
-in all cases.  In braille music, the tripplet sign is required
-so that the resulting note values do make sense.  So we always want
-to indicate tuplets correctly, even if the score didn't specify
-them graphically.  Therefore, only trust time-modification, the
-tuplet element can be ignored for now (but would be nice to have
-for later ideas.))
-
-See [[*Tuplets][tuplets in braille transcription]].
-
 ** TODO Transposition
 
 *** TODO Handle the transpose element
@@ -137,25 +115,6 @@ mostly still a prototype.  Nothing is set in stone yet.
 
 Some of the changes below might also involve changing the freedots.musicxml
 package to fascilitate easier information retrieval.
-
-** TODO Tuplets
-
-MusicXML has two ways of specifying tuples.
-One is via the time-modification element, whcih affects the
-duration of the note during playback.
-The other is the <suplet> element inside of <notations> which
-is solely ment for graphical representation.
-This means programs might export MusicXML without the <tuplet>
-element (when there is no special graphical markup) but
-it always needs to use time-modification so that the timing is correct.
-Therefore, FreeDots should probably consider time-modification and not
-the <tuplet> element, since un-marked-up tuplets would lead to unclear braille.
-
-What we need is some way to group time-modified notes together
-such that the transcriber can ask if a certain note/chord
-is the first element of a tuplet group.  If so, it would
-emit the appropriate braille symbol for the particular tuplet.
-Note that tuplets are subject to doubling, as are most things in braille music.
 
 ** TODO Key and clef changes
 
