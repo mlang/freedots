@@ -724,7 +724,7 @@ public final class Note implements RhythmicElement, freedots.music.TupletElement
         Fingering result = new Fingering();
 
         if (fingering != null) {
-          String[] items = fingering.getWholeText().trim().split("[ \t\n]+");
+          String[] items = fingering.getWholeText().trim().split("[- \t\n]+");
           List<Integer> fingers = new ArrayList<Integer>(items.length);
           for (String finger: items) {
             if (!finger.isEmpty()) fingers.add(Integer.valueOf(finger));
