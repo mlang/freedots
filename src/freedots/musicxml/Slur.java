@@ -30,7 +30,7 @@ package freedots.musicxml;
  * of the slur.
  */
 public class Slur extends freedots.music.Slur<Note> {
-  Slur(final Note initialNote) { super(initialNote); }
+  Slur(final Note initialNote) { super((Note)initialNote); }
   @Override
   public final boolean add(final Note note) {
     if (super.add(note)) {
