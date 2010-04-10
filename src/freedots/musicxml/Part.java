@@ -471,17 +471,6 @@ public final class Part {
           }
         else {
           tuplet.addNote(note); 
-          if (tuplet.getNormalType()==null || tuplet.getActualType()==null){ 
-            TupletElementXML tupletElementXML=null;
-            if (note.getNotations() != null
-             && note.getNotations().getTupletElementsXML() != null
-             && note.getNotations().getTupletElementsXML().size() == 1) //1 max
-              note.getNotations().getTupletElementsXML().get(0);
-            if (tuplet.getParent() != null && tupletElementXML != null){
-              tuplet.setActualType(tupletElementXML.getActualType());
-              tuplet.setNormalType(tupletElementXML.getNormalType());
-            }
-          }
           if (!tuplet.completed())
             completeTuplet(tuplet, nextNoteOfTuplet(linkedListNotes,note),
                            linkedListNotes);
@@ -558,13 +547,17 @@ public final class Part {
     public Note nextNoteVoice(LinkedList<Note> linkedListNotes, Note note){
       Fraction currentMoment = note.getMoment();
       Note nextNote = null;
+      final Fraction nextMoment = note.getMoment().add(note.getDuration());
       for (Note n: linkedListNotes) {
         if (n.getTuplet() == null && (n.getMoment().compareTo(currentMoment)>0) 
          && n.getVoiceName().equals(note.getVoiceName())) {
+          if (n.getMoment().equals(nextMoment))
+            return n;
           if (nextNote == null)
             nextNote = n;
           else if (n.getMoment().compareTo(nextNote.getMoment())<0)
             nextNote = n;
+         
         } 	  
       }
       if (nextNote == note) return null;
