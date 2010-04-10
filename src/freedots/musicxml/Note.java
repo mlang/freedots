@@ -309,6 +309,8 @@ public final class Note implements RhythmicElement, freedots.music.TupletElement
   public Staff getStaff() { return staff; }
   public void setStaff(Staff staff) { this.staff = staff; }
 
+  /** A wrapper around MusicXML element tuplet
+   */
   static class TupletElementXML {
     private Element element;
     enum Type { START, STOP; }
@@ -365,6 +367,8 @@ public final class Note implements RhythmicElement, freedots.music.TupletElement
     }
   }
   
+  /** A wrapper around MusicXML element time-modification
+   */
   public class TimeModification {
     private final Element element;
     private int actualNotes, normalNotes;

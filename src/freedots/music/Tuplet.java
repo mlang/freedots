@@ -70,7 +70,10 @@ public class Tuplet extends java.util.LinkedList<TupletElement>
     }
     return normalType;
   }
-    
+   
+
+  /** Calcule NormalType with time-modification when it's not ambiguous 
+   */ 
   private Fraction getNormal () {
     if (getParent() == null && getFirst() instanceof Note) {
       final Note note = (Note)getFirst();
@@ -82,6 +85,8 @@ public class Tuplet extends java.util.LinkedList<TupletElement>
     return null;
   }
 
+ /** Calcule ActualType with time-modification when it's not ambiguous 
+   */ 
   private Fraction getActual () {
     if (getParent() == null && getFirst() instanceof Note) {
       final Note note = (Note)getFirst();

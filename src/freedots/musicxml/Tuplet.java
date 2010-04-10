@@ -50,6 +50,8 @@ public class Tuplet extends freedots.music.Tuplet {
     this.parent = tuplet;
   }
 
+  /** Check if tuplet is complete
+   */
   public boolean completed() {
     Fraction expectedFrac = this.getActualType().simplify();
     Fraction sumFrac = new Fraction(0,1);

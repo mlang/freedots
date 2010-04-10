@@ -417,12 +417,15 @@ public final class Part {
     }
   }
   
+  /** Build tuplets
+   */
   private class TupletBuilder{
     private final LinkedList<LinkedList<Note>> map = new LinkedList<LinkedList<Note>>();
     
     public TupletBuilder(){}
     
-    //Group note with TimeModification by measure in map
+    /** Group note with TimeModification by measure in map according to newMeasure
+     */
     void visitNote(Note note, boolean newMeasure){
       if(note.getTimeModification()!=null){
         if (newMeasure)
@@ -432,6 +435,8 @@ public final class Part {
     }
     
     
+    /** Complete tuplet with note and if necessary with others notes in linkedListNotes
+     */
     void completeTuplet(Tuplet tuplet, Note note, LinkedList<Note> linkedListNotes){
       if(note!=null){
         if (note.getNotations()!=null && note.getNotations().tupletElementXMLMaxNumber()>1){ //nested tuplet
@@ -479,6 +484,8 @@ public final class Part {
       else LOG.warning("Tuplet can't be completed, Notes:"+tuplet);
     }
 
+    /** Build tuplets of the score
+     */
     void buildTuplet(){
       for (LinkedList<Note> linkedListNote: map){
         Note note=null;
@@ -495,10 +502,11 @@ public final class Part {
           }
       }
     }
-
-    // return next note after note of the tuplet which contains note
-    // (nextMoment, no tuplet, same voice)
-    // null otherwise
+    
+    /** @return next note, after note, of the tuplet which contains note
+     * (nextMoment, no tuplet, same voice) in linkedListNotes
+     * null otherwise
+     */
     public Note nextNoteOfTuplet(LinkedList<Note> linkedListNotes, Note note) {
       final Fraction nextMoment = note.getMoment().add(note.getDuration());
       for (Note n: linkedListNotes){
@@ -512,9 +520,10 @@ public final class Part {
       return null;
     }
 
-    // return the first note(in the score) of linkedListNotes if it has not tuplet
-    // by voice
-    // null otherwise
+    /** @return the first note of the score in linkedListNotes which does not
+     * belong to a voice referenced in voiceList
+     * null otherwise
+     */
     public Note firstNoteVoice(final LinkedList<Note> linkedListNotes,
                                final List<String> voiceList) {
       Note firstNote = null;
@@ -541,9 +550,9 @@ public final class Part {
       return firstNote;
     }
 
-    //  - return the next note of linkedListNotes in the same voice
-    //  - return null if there is not next notes without tuplet in
-    //  linkedListNotes(same measure and timeModification)
+    /** @return the next note in linkedListNotes in the same voice than note
+     * null otherwise
+     */
     public Note nextNoteVoice(LinkedList<Note> linkedListNotes, Note note){
       Fraction currentMoment = note.getMoment();
       Note nextNote = null;
@@ -560,7 +569,6 @@ public final class Part {
          
         } 	  
       }
-      if (nextNote == note) return null;
       return nextNote; 
     } 
   }
