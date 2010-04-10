@@ -22,7 +22,6 @@
  */
 package freedots.braille;
 
-import freedots.music.AugmentedPowerOfTwo;
 import freedots.music.Tuplet;
 
 public class TupletSign extends Sign {
