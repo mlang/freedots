@@ -88,8 +88,8 @@ public final class Part {
     EndBar endbar = null;
     boolean newMeasure=false;
 
-    SlurBuilder slurBuilder = new SlurBuilder();
-    TupletBuilder tupletBuilder=new TupletBuilder();
+    final SlurBuilder slurBuilder = new SlurBuilder();
+    final TupletBuilder tupletBuilder = new TupletBuilder();
     
     for (Node partNode = part.getFirstChild(); partNode != null;
          partNode = partNode.getNextSibling()) {
@@ -113,7 +113,7 @@ public final class Part {
              measureNode != null; measureNode = measureNode.getNextSibling()) {        
           if (measureNode.getNodeType() == Node.ELEMENT_NODE) {
             Element musicdata = (Element)measureNode;
-            String tagName = musicdata.getTagName();
+            final String tagName = musicdata.getTagName();
             if ("attributes".equals(tagName)) {
               if (currentChord != null) {
                 offset = offset.add(currentChord.get(0).getDuration());
@@ -290,7 +290,7 @@ public final class Part {
     // Post processing
 
     slurBuilder.buildSlurs();
-    tupletBuilder.buildTuplet();
+    tupletBuilder.buildTuplets();
 
     if (!score.encodingSupports(Note.ACCIDENTAL_ELEMENT)) {
       int staves = 1;
@@ -486,20 +486,20 @@ public final class Part {
 
     /** Build tuplets of the score
      */
-    void buildTuplet(){
+    void buildTuplets() {
       for (LinkedList<Note> linkedListNote: map){
         Note note=null;
-          List<String> voiceList=new LinkedList<String>();
-          while((note=firstNoteVoice(linkedListNote,voiceList))!=null){ 
-            while(note!=null){
-              Tuplet tuplet=new Tuplet();
-              completeTuplet(tuplet, note,linkedListNote);
-              while(!(tuplet.getLast() instanceof Note))	
-                tuplet=(Tuplet)tuplet.getLast();	
-              note=(Note)tuplet.getLast();	
-              note=nextNoteVoice(linkedListNote,note);
-            }  		
+        List<String> voiceList=new LinkedList<String>();
+        while((note=firstNoteVoice(linkedListNote,voiceList))!=null){ 
+          while(note != null) {
+            Tuplet tuplet = new Tuplet();
+            completeTuplet(tuplet, note, linkedListNote);
+            while(!(tuplet.getLast() instanceof Note))	
+              tuplet=(Tuplet)tuplet.getLast();	
+            note = (Note)tuplet.getLast();	
+            note = nextNoteVoice(linkedListNote, note);
           }
+        }
       }
     }
     
