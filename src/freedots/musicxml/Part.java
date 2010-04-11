@@ -418,6 +418,9 @@ public final class Part {
   
   private class TupletBuilder{
     private final LinkedList<LinkedList<Note>> map = new LinkedList<LinkedList<Note>>();
+    private final Map<String, LinkedList<Tuplet>> tupletVoiceMap =
+        new HashMap<String, LinkedList<Tuplet>>();
+    private final LinkedList<String> voiceList=new LinkedList<String>();
     
     public TupletBuilder(){}
     
@@ -487,20 +490,48 @@ public final class Part {
     }
     
     void buildTuplet(){
-      for (LinkedList<Note> linkedListNote: map){
-    	  Note note=null;
-    	  List<String> voiceList=new LinkedList<String>();
-    	  	while((note=firstNoteVoice(linkedListNote,voiceList))!=null){ 
-    	  		while(note!=null){
-    	  			Tuplet tuplet=new Tuplet();
-    	  			completeTuplet(tuplet, note,linkedListNote);
-    	  			while(!(tuplet.getLast() instanceof Note))	
-    	  				tuplet=(Tuplet)tuplet.getLast();	
-    	  			note=(Note)tuplet.getLast();	
-    	  			note=nextNoteVoice(linkedListNote,note);
-    	  		}  		
-    	  	}
-      }     
+    	for (LinkedList<Note> linkedListNote: map){
+    		Note note=null;
+    		List<String> voiceMeasureList=new LinkedList<String>();
+    		while((note=firstNoteVoice(linkedListNote,voiceMeasureList))!=null){ 
+    			String currentVoice=note.getVoiceName();
+    			voiceMeasureList.add(currentVoice);
+    			while(note!=null){
+    				Tuplet tuplet=new Tuplet();
+    				completeTuplet(tuplet, note,linkedListNote);
+    				if (!tupletVoiceMap.containsKey(currentVoice)){
+    					tupletVoiceMap.put(currentVoice, new LinkedList<Tuplet>());
+    					voiceList.add(currentVoice);
+    				}
+    				tupletVoiceMap.get(currentVoice).add(tuplet);
+    				while(!(tuplet.getLast() instanceof Note))	
+    					tuplet=(Tuplet)tuplet.getLast();	
+    				note=(Note)tuplet.getLast();	
+    				note=nextNoteVoice(linkedListNote,note);
+    			}  		
+    		}
+    	}     
+    	buildTupletGroups();
+    }
+    
+    
+    void buildTupletGroups(){
+    	for(String voice: voiceList){
+    		LinkedList<Tuplet> tuplets=tupletVoiceMap.get(voice);
+    		Tuplet lastTuplet=null;
+    		TupletGroup currentTupletGroup=null;
+    		for (Tuplet tuplet: tuplets){    			
+    			if (lastTuplet!=null && tuplet.getType()==lastTuplet.getType() 
+    					&& lastTuplet.getNextMoment().equals(tuplet.getMoment())){
+    				if (lastTuplet.getTupletGroup()==null){
+    					currentTupletGroup=new TupletGroup();
+    					currentTupletGroup.addTuplet(lastTuplet);
+    				}
+    				currentTupletGroup.addTuplet(tuplet);
+    			}
+    			lastTuplet=tuplet;
+    		}
+    	}
     }
     
     // return next note after note of the tuplet which contains note
@@ -524,12 +555,11 @@ public final class Part {
     public Note firstNoteVoice(LinkedList<Note> linkedListNotes, List<String> voiceList){
     	Note firstNote=null;
     	Fraction minMoment=null;
-  //select a note in a voice never seen before
+  //select a note in a voice never seen before 
     	for (Note note: linkedListNotes){
     		if(!voiceList.contains(note.getVoiceName())){
     			firstNote=note;
     			minMoment=firstNote.getMoment();
-    			voiceList.add(firstNote.getVoiceName());
     			break;
     		}
     	}

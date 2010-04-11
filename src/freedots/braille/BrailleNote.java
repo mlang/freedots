@@ -73,6 +73,8 @@ public class BrailleNote extends BrailleList {
     		add(new TupletSign(tuplet));
     		Tuplet father=tuplet.getParent();
     		while (father!=null && father.isFirstOfTuplet(tuplet)){
+    			if (father.getTupletGroup()!=null)
+    				addFirst(new TupletSign(father));
     			addFirst(new TupletSign(father));
     			tuplet=father;
     			father=father.getParent();

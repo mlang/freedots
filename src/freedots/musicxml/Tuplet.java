@@ -7,10 +7,25 @@ public class Tuplet extends freedots.music.Tuplet {
 		
     
     
+  
     public Tuplet(){
     }
     
-   
+  
+    
+    public Fraction getNextMoment(){
+    	TupletElement tE=this.getLast();
+    	while (!(tE instanceof Note))
+    		tE=((Tuplet)tE).getLast();
+    	return ((Note)tE).getMoment().add(((Note)tE).getDuration());
+    }
+    
+    public Fraction getMoment(){
+    	TupletElement tE=this.getFirst();
+    	while (!(tE instanceof Note))
+    		tE=((Tuplet)tE).getFirst();
+    	return ((Note)tE).getMoment();
+    }
 	
     public final boolean addNote(final Note note) {
 	if (super.add(note)) {

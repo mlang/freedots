@@ -2,6 +2,7 @@ package freedots.music;
 
 import freedots.math.Fraction;
 import freedots.musicxml.Note;
+import freedots.musicxml.TupletGroup;
 
 
 
@@ -10,9 +11,18 @@ public class Tuplet extends java.util.LinkedList<TupletElement> implements Tuple
 	protected Tuplet parent=null; //if parent is null, the tuplet is the main tuplet
     protected Fraction actualType=null;
     protected Fraction normalType=null;
+    private TupletGroup tupletGroup;
 	
 	public Tuplet(){
 		super();	
+	}
+	
+	public TupletGroup getTupletGroup(){
+		return tupletGroup;
+	}
+	
+	public void setTupletGroup(TupletGroup tupletGroup){
+		this.tupletGroup=tupletGroup;
 	}
 	
 	public boolean isFirstOfTuplet(TupletElement tE) {
