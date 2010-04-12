@@ -29,11 +29,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpressionException;
-import javax.xml.xpath.XPathFactory;
-
 import freedots.logging.Logger;
 import freedots.math.Fraction;
 import freedots.music.Accidental;
@@ -48,6 +43,7 @@ import freedots.music.StartBar;
 import freedots.music.EndBar;
 import freedots.music.TimeSignature;
 import freedots.music.TimeSignatureChange;
+import freedots.music.TupletGroup;
 import freedots.musicxml.Note.TupletElementXML;
 
 import org.w3c.dom.Element;

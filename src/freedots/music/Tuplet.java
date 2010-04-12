@@ -2,7 +2,6 @@ package freedots.music;
 
 import freedots.math.Fraction;
 import freedots.musicxml.Note;
-import freedots.musicxml.TupletGroup;
 
 
 

@@ -32,7 +32,10 @@ import freedots.music.Fingering;
 import freedots.music.Ornament;
 import freedots.music.Slur;
 import freedots.music.Tuplet;
+import freedots.music.TupletGroup;
 import freedots.musicxml.Note;
+import freedots.music.TupletElement;
+
 
 /** The braille representation of a note or rest.
  * <p>
@@ -70,17 +73,30 @@ public class BrailleNote extends BrailleList {
     Tuplet tuplet=note.getTuplet();
     if (tuplet!=null) { // We are part of some tuplet group
     	if (tuplet.isFirstOfTuplet(note)) {
-    		add(new TupletSign(tuplet));
-    		Tuplet father=tuplet.getParent();
-    		while (father!=null && father.isFirstOfTuplet(tuplet)){
-    			if (father.getTupletGroup()!=null)
-    				addFirst(new TupletSign(father));
-    			addFirst(new TupletSign(father));
-    			tuplet=father;
-    			father=father.getParent();
+    		TupletGroup tG=tuplet.getTupletGroup();
+    		if (tG!=null && tG.size()>3){
+    			if (tG.isFirstOfTupletGroup(tuplet))
+    				add(new TupletSign(tG));
+    			if (tG.isLastOfTupletGroup(tuplet))
+    				add(new TupletSign(tuplet));
     		}
-    		
-    		
+    		else{
+    			add(new TupletSign(tuplet));
+    			Tuplet father=tuplet.getParent();
+    			tG=father.getTupletGroup();
+    			while (father!=null && father.isFirstOfTuplet(tuplet)){
+    				tG=father.getTupletGroup();
+    				if (tG!=null && tG.size()>3){
+    	    			if (tG.isFirstOfTupletGroup(tuplet))
+    	    				add(new TupletSign(tG));
+    	    			if (tG.isLastOfTupletGroup(tuplet))
+    	    				add(new TupletSign(tuplet));
+    	    		}
+    				else addFirst(new TupletSign(father));
+    				tuplet=father;
+    				father=father.getParent(); 				
+    			}
+    		}
     	} // else do nothing since only first note of a tuplet needs prefix
     }
     
