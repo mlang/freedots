@@ -433,55 +433,52 @@ public final class Part {
         map.getLast().add(note);
       }
     }
-    
-    
+
     /** Complete tuplet with note and if necessary with others notes in linkedListNotes
      */
     void completeTuplet(Tuplet tuplet, Note note, LinkedList<Note> linkedListNotes){
-      if(note!=null){
-        if (note.getNotations()!=null && note.getNotations().tupletElementXMLMaxNumber()>1){ //nested tuplet
-            boolean hasStart = false;
-            boolean firstStop=true; 
-            boolean hasStop=false;
-            Tuplet lastTuplet=tuplet;
-            List<TupletElementXML> tupletElementsXML=note.getNotations().getTupletElementsXML();
-            for (TupletElementXML tupletElementXML: tupletElementsXML){  
-              switch(tupletElementXML.tupletElementXMLType()){
-              case START:
-                if (tupletElementXML.number() != 1) {
-                  lastTuplet.addTuplet(new Tuplet());
-                  lastTuplet = (Tuplet)lastTuplet.getLast();
-                }
-                lastTuplet.setActualType(tupletElementXML.getActualType());
-                lastTuplet.setNormalType(tupletElementXML.getNormalType());      
-                hasStart=true;
-                break;
-              case STOP: 
-                if (firstStop){
-                  tuplet.addNote(note);
-                  firstStop=false;
-                  hasStop=true;
-                }
-                lastTuplet=(Tuplet)tuplet.getParent();
-                break;
-              default: throw new AssertionError(tupletElementXML.tupletElementXMLType());
+      if (note != null) {
+        final Note.Notations notations = note.getNotations();
+        if (notations != null && notations.tupletElementXMLMaxNumber()>1) { //nested tuplet
+          boolean hasStart = false;
+          boolean firstStop = true; 
+          boolean hasStop = false;
+          Tuplet lastTuplet = tuplet;
+          for (TupletElementXML tupletElementXML: notations.getTupletElementsXML()) {  
+            switch (tupletElementXML.type()) {
+            case START:
+              if (tupletElementXML.number() != 1) {
+                lastTuplet.addTuplet(new Tuplet());
+                lastTuplet = (Tuplet)lastTuplet.getLast();
               }
+              lastTuplet.setActualType(tupletElementXML.getActualType());
+              lastTuplet.setNormalType(tupletElementXML.getNormalType());      
+              hasStart = true;
+              break;
+            case STOP: 
+              if (firstStop) {
+                tuplet.addNote(note);
+                firstStop = false;
+                hasStop = true;
+              }
+              lastTuplet = (Tuplet)tuplet.getParent();
+              break;
+            default: throw new AssertionError(tupletElementXML.type());
             }
-            if (hasStart && hasStop)
-              throw new AssertionError("A note can't be at the beginning AND the end of tuplets. MusicXML file is corrupted.");
-            if (hasStart) lastTuplet.addNote(note);
-            if (lastTuplet != null) //tuplet is not yet complete
-              completeTuplet(lastTuplet, nextNoteOfTuplet(linkedListNotes,note),
-                             linkedListNotes);
           }
-        else {
+          if (hasStart && hasStop)
+            throw new AssertionError("A note can't be at the beginning AND the end of tuplets. MusicXML file is corrupted.");
+          if (hasStart) lastTuplet.addNote(note);
+          if (lastTuplet != null) //tuplet is not yet complete
+            completeTuplet(lastTuplet, nextNoteOfTuplet(linkedListNotes, note),
+                           linkedListNotes);
+        } else {
           tuplet.addNote(note); 
           if (!tuplet.completed())
-            completeTuplet(tuplet, nextNoteOfTuplet(linkedListNotes,note),
+            completeTuplet(tuplet, nextNoteOfTuplet(linkedListNotes, note),
                            linkedListNotes);
         }
-      }
-      else LOG.warning("Tuplet can't be completed, Notes:"+tuplet);
+      } else LOG.warning("Tuplet can't be completed, Notes:"+tuplet);
     }
 
     /** Build tuplets of the score

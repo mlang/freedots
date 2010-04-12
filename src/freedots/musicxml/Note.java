@@ -325,12 +325,10 @@ public final class Note implements RhythmicElement, freedots.music.TupletElement
                           element.getAttribute("type").trim().toUpperCase());
     }
     
-    public int number () { return number; }
-    public Type tupletElementXMLType(){
-      return type;
-    }
+    public int number() { return number; }
+    public Type type() { return type; }
     
-    public Fraction getActualType () {
+    public Fraction getActualType() {
       for (Node node = element.getFirstChild(); node != null;
            node = node.getNextSibling()) {
         if (node.getNodeType() == Node.ELEMENT_NODE) {
