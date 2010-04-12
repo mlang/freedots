@@ -23,15 +23,14 @@
 package freedots.music;
 
 import freedots.math.Fraction;
-import freedots.musicxml.Note;
 
-public class Tuplet extends java.util.LinkedList<TupletElement>
+public abstract class Tuplet extends java.util.LinkedList<TupletElement>
   implements TupletElement {
   protected Tuplet parent = null; //if parent is null, the tuplet is the main tuplet
   protected Fraction actualType = null;
   protected Fraction normalType = null;
 
-  public Tuplet () {
+  public Tuplet() {
     super();
   }
 
@@ -43,58 +42,49 @@ public class Tuplet extends java.util.LinkedList<TupletElement>
     }
   }
 
-  public int getType() {
-    return getActualType().numerator();
+  public int getType() { return getActualType().numerator(); }
+
+  public Tuplet getParent() { return parent; }
+  public void setParent(Tuplet tuplet) {
+    if (this.parent != null) throw new AssertionError("Trying to reparent tuplet");
+    this.parent = tuplet;
   }
 
-  public Tuplet getParent () { return parent; }
-
-  public void setActualType (Fraction actualType) {
+  public void setActualType(Fraction actualType) {
     this.actualType = actualType;
   }
 
-  public void setNormalType (Fraction normalType){
+  public void setNormalType(Fraction normalType) {
     this.normalType = normalType;
   }
 
-  public Fraction getActualType () {
+  public Fraction getActualType() {
     if (actualType == null) {
       setActualType(getActual());
     }
     return actualType;
   }
 
-  public Fraction getNormalType () {
+  public Fraction getNormalType() {
     if (normalType == null) {
       setNormalType(getNormal());
     }
     return normalType;
   }
    
+  public final boolean addTuplet(Tuplet tuplet) {
+    if (super.add(tuplet)) {
+      tuplet.setParent(this);  //A tuplet is only in one tuplet
+      return true;
+    }
+    return false;
+  }
 
   /** Calcule NormalType with time-modification when it's not ambiguous 
    */ 
-  private Fraction getNormal () {
-    if (getParent() == null && getFirst() instanceof Note) {
-      final Note note = (Note)getFirst();
-      final Note.TimeModification timeModification = note.getTimeModification();
-      return new Fraction(timeModification.getNormalNotes()
-                          * timeModification.getNormalType().numerator(),
-                          timeModification.getNormalType().denominator());
-    }
-    return null;
-  }
+  protected abstract Fraction getNormal();
 
- /** Calcule ActualType with time-modification when it's not ambiguous 
+  /** Calcule ActualType with time-modification when it's not ambiguous 
    */ 
-  private Fraction getActual () {
-    if (getParent() == null && getFirst() instanceof Note) {
-      final Note note = (Note)getFirst();
-      final Note.TimeModification timeModification = note.getTimeModification();
-      return new Fraction(timeModification.getActualNotes()
-                          * timeModification.getNormalType().numerator(),
-                          timeModification.getNormalType().denominator());
-    }
-    return null;
-  }
+  protected abstract Fraction getActual();
 }

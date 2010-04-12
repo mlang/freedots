@@ -30,6 +30,32 @@ public class Tuplet extends freedots.music.Tuplet {
   public Tuplet() {
   }
 
+  /** Calcule NormalType with time-modification when it's not ambiguous
+   */
+  protected Fraction getNormal() {
+    if (getParent() == null && getFirst() instanceof Note) {
+      final Note note = (Note)getFirst();
+      final Note.TimeModification timeModification = note.getTimeModification();
+      return new Fraction(timeModification.getNormalNotes()
+                          * timeModification.getNormalType().numerator(),
+                          timeModification.getNormalType().denominator());
+    }
+    return null;
+  }
+
+  /** Calcule ActualType with time-modification when it's not ambiguous
+   */
+  protected Fraction getActual() {
+    if (getParent() == null && getFirst() instanceof Note) {
+      final Note note = (Note)getFirst();
+      final Note.TimeModification timeModification = note.getTimeModification();
+      return new Fraction(timeModification.getActualNotes()
+                          * timeModification.getNormalType().numerator(),
+                          timeModification.getNormalType().denominator());
+    }
+    return null;
+  }
+
   public final boolean addNote(final Note note) {
     if (super.add(note)) {
       note.addTuplet(this);
@@ -38,25 +64,13 @@ public class Tuplet extends freedots.music.Tuplet {
     return false;
   }
 
-  public final boolean addTuplet(Tuplet tuplet) {	
-    if (super.add(tuplet)) {
-      tuplet.setParent(this);  //A tuplet is only in one tuplet
-      return true;
-    }
-    return false;
-  }
-
-  void setParent(Tuplet tuplet) {
-    this.parent = tuplet;
-  }
-
   /** Check if tuplet is complete
    */
   public boolean completed() {
     Fraction expectedFrac = this.getActualType().simplify();
-    Fraction sumFrac = new Fraction(0,1);
-    for (TupletElement tE: this ){
-      Fraction currentFrac=Fraction.ZERO;
+    Fraction sumFrac = Fraction.ZERO;
+    for (TupletElement tE: this) {
+      Fraction currentFrac = Fraction.ZERO;
       if (tE instanceof Tuplet) {
         Tuplet tuplet = (Tuplet)tE;
         currentFrac = tuplet.getNormalType();

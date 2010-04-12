@@ -369,12 +369,12 @@ public final class Note implements RhythmicElement, freedots.music.TupletElement
   
   /** A wrapper around MusicXML element time-modification
    */
-  public class TimeModification {
+  class TimeModification {
     private final Element element;
     private int actualNotes, normalNotes;
     private PowerOfTwo normalType = null;
 
-    public TimeModification(Element element) {
+    public TimeModification(final Element element) {
       this.element = element;
       for (Node node = element.getFirstChild(); node != null;
            node = node.getNextSibling()) {
@@ -396,15 +396,15 @@ public final class Note implements RhythmicElement, freedots.music.TupletElement
       }
     }
     
-    public int getActualNotes(){
+    public int getActualNotes() {
       return actualNotes;
     }
     
-    public int getNormalNotes(){
+    public int getNormalNotes() {
       return normalNotes;
     }
     
-    public PowerOfTwo getNormalType(){
+    public PowerOfTwo getNormalType() {
       return normalType;
     }
   }
