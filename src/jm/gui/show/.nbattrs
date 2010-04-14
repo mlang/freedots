@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE attributes PUBLIC "-//NetBeans//DTD DefaultAttributes 1.0//EN" "http://www.netbeans.org/dtds/attributes-1_0.dtd">
+<attributes version="1.0">
+    <fileobject name="ShowScore.java">
+        <attr name="class_dependency_java.awt.event.WindowListener" stringvalue="ShowScore"/>
+        <attr name="class_dependency_java.awt.Frame" stringvalue="ShowScore"/>
+        <attr name="class_dependency_java.awt.event.ActionListener" stringvalue="ShowScore"/>
+    </fileobject>
+    <fileobject name="ShowPanel.java">
+        <attr name="class_dependency_java.awt.ScrollPane" stringvalue="ShowPanel"/>
+    </fileobject>
+</attributes>

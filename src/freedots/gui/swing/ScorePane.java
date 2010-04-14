@@ -32,18 +32,22 @@ import jm.util.*;
 
 /** Displays the score in a text pane.
  */
-public class ScorePane extends javax.swing.JTextPane implements JMC{
-		
+public class ScorePane extends javax.swing.JPanel {
+	private Score score;
+	
 	ScorePane() {
-	    super();
+		super();
 	    setFont(new Font("DejaVu Serif", Font.PLAIN, 14));
-	    setEditable(false);
+	    //setEditable(false);
 	  
 		Note n = new Note(60, 0.25);
         Phrase phr = new Phrase();
         phr.addNote(n);
         
-        View.notate(phr);
+        //View.notate(phr);
+        this.score = new Score(new Part(phr));
+        score = new Score(new Part(phr));
+        setVisible(true);
 
 	}
 }

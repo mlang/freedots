@@ -13,7 +13,6 @@
   <property name="freedots.minimum.javaversion" value="1.6" />
 
   <path id="class.path">
-  	<pathelement location="jmusic/jMusic1.6.01.jar" />
   </path>
   <path id="class.path.test">
     <pathelement location="${lib.junit.jar}" />

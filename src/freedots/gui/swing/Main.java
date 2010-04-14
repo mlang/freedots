@@ -244,7 +244,7 @@ public ScorePane scorePane;
     textPane = new BraillePane();
     //Amelie
     scorePane = new ScorePane();
-    scorePane.setText("Part of the screen for score display");
+    //scorePane.setText("Part of the screen for score display");
     textPane.setSize(options.getPageWidth(), options.getPageHeight());
 
     final boolean scoreAvailable = transcriber.getScore() != null;    
