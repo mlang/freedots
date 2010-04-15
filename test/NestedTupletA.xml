@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE score-partwise PUBLIC "-//Recordare//DTD MusicXML 1.1 Partwise//EN"
+                                "http://www.musicxml.org/dtds/partwise.dtd">
+<score-partwise version="1.1">
+  <identification>
+    <encoding>
+      <software>Finale 2009 for Windows</software>
+      <software>Dolet 5 for Finale</software>
+      <encoding-date>2010-03-23</encoding-date>
+    </encoding>
+  </identification>
+  <defaults>
+    <scaling>
+      <millimeters>7.1967</millimeters>
+      <tenths>40</tenths>
+    </scaling>
+    <page-layout>
+      <page-height>1403</page-height>
+      <page-width>992</page-width>
+      <page-margins type="both">
+        <left-margin>60</left-margin>
+        <right-margin>60</right-margin>
+        <top-margin>60</top-margin>
+        <bottom-margin>60</bottom-margin>
+      </page-margins>
+    </page-layout>
+    <system-layout>
+      <system-margins>
+        <left-margin>95</left-margin>
+        <right-margin>283</right-margin>
+      </system-margins>
+      <system-distance>88</system-distance>
+      <top-system-distance>128</top-system-distance>
+    </system-layout>
+    <music-font font-family="Petrucci,music" font-size="20.4"/>
+    <word-font font-family="Times New Roman" font-size="8.5"/>
+  </defaults>
+  <part-list>
+    <score-part id="P1">
+      <part-name print-object="no">MusicXML Part</part-name>
+      <score-instrument id="P1-I1">
+        <instrument-name>Grand Piano</instrument-name>
+      </score-instrument>
+      <midi-instrument id="P1-I1">
+        <midi-channel>1</midi-channel>
+        <midi-program>1</midi-program>
+      </midi-instrument>
+    </score-part>
+  </part-list>
+  <!--=========================================================-->
+  <part id="P1">
+    <measure number="1" width="648">
+      <print/>
+      <attributes>
+        <divisions>36</divisions>
+        <key>
+          <fifths>0</fifths>
+          <mode>major</mode>
+        </key>
+        <time symbol="common">
+          <beats>4</beats>
+          <beat-type>4</beat-type>
+        </time>
+        <clef>
+          <sign>G</sign>
+          <line>2</line>
+        </clef>
+      </attributes>
+      <sound tempo="96"/>
+      <note default-x="69">
+        <pitch>
+          <step>C</step>
+          <octave>5</octave>
+        </pitch>
+        <duration>36</duration>
+        <voice>1</voice>
+        <type>quarter</type>
+        <stem default-y="-50">down</stem>
+      </note>
+      <note default-x="137">
+        <pitch>
+          <step>E</step>
+          <octave>5</octave>
+        </pitch>
+        <duration>12</duration>
+        <voice>1</voice>
+        <type>eighth</type>
+        <time-modification>
+          <actual-notes>3</actual-notes>
+          <normal-notes>2</normal-notes>
+        </time-modification>
+        <stem default-y="-40">down</stem>
+        <beam number="1">begin</beam>
+        <notations>
+          <tuplet bracket="no" number="1" show-number="none" type="start"/>
+          <slur bezier-x="9" bezier-y="10" default-x="16" default-y="18" number="1" placement="above" type="start"/>
+        </notations>
+      </note>
+      <direction placement="above">
+        <direction-type>
+          <words default-x="177" default-y="9" font-style="italic">3</words>
+        </direction-type>
+      </direction>
+      <note default-x="175">
+        <pitch>
+          <step>F</step>
+          <octave>5</octave>
+        </pitch>
+        <duration>12</duration>
+        <voice>1</voice>
+        <type>eighth</type>
+        <time-modification>
+          <actual-notes>3</actual-notes>
+          <normal-notes>2</normal-notes>
+        </time-modification>
+        <stem default-y="-35">down</stem>
+        <beam number="1">continue</beam>
+      </note>
+      <note default-x="214">
+        <pitch>
+          <step>G</step>
+          <octave>5</octave>
+        </pitch>
+        <duration>12</duration>
+        <voice>1</voice>
+        <type>eighth</type>
+        <time-modification>
+          <actual-notes>3</actual-notes>
+          <normal-notes>2</normal-notes>
+        </time-modification>
+        <stem default-y="-30">down</stem>
+        <beam number="1">end</beam>
+        <notations>
+          <tuplet number="1" type="stop"/>
+          <slur bezier-x="-10" bezier-y="9" default-x="-5" default-y="21" number="1" type="stop"/>
+        </notations>
+      </note>
+      <note default-x="253">
+        <pitch>
+          <step>F</step>
+          <octave>5</octave>
+        </pitch>
+        <duration>12</duration>
+        <voice>1</voice>
+        <type>eighth</type>
+        <time-modification>
+          <actual-notes>3</actual-notes>
+          <normal-notes>2</normal-notes>
+        </time-modification>
+        <stem default-y="-35">down</stem>
+        <beam number="1">begin</beam>
+        <notations>
+          <tuplet bracket="no" number="1" show-number="none" type="start"/>
+          <slur bezier-x="20" bezier-y="24" default-x="10" default-y="29" number="1" placement="above" type="start"/>
+        </notations>
+      </note>
+      <note default-x="292">
+        <pitch>
+          <step>E</step>
+          <octave>5</octave>
+        </pitch>
+        <duration>4</duration>
+        <voice>1</voice>
+        <type>16th</type>
+        <time-modification>
+          <actual-notes>9</actual-notes>
+          <normal-notes>4</normal-notes>
+        </time-modification>
+        <stem default-y="-38">down</stem>
+        <beam number="1">continue</beam>
+        <beam number="2">begin</beam>
+        <notations>
+          <tuplet bracket="no" number="2" show-number="none" type="start">
+            <tuplet-actual>
+              <tuplet-number>3</tuplet-number>
+              <tuplet-type>16th</tuplet-type>
+            </tuplet-actual>
+            <tuplet-normal>
+              <tuplet-number>2</tuplet-number>
+              <tuplet-type>16th</tuplet-type>
+            </tuplet-normal>
+          </tuplet>
+          <slur bezier-x="8" bezier-y="10" default-x="7" default-y="15" number="2" placement="above" type="start"/>
+        </notations>
+      </note>
+      <direction placement="above">
+        <direction-type>
+          <words default-x="320" default-y="28" font-style="italic">3</words>
+        </direction-type>
+      </direction>
+      <direction placement="above">
+        <direction-type>
+          <words default-x="320" default-y="7" font-style="italic">3</words>
+        </direction-type>
+      </direction>
+      <note default-x="318">
+        <pitch>
+          <step>F</step>
+          <octave>5</octave>
+        </pitch>
+        <duration>4</duration>
+        <voice>1</voice>
+        <type>16th</type>
+        <time-modification>
+          <actual-notes>9</actual-notes>
+          <normal-notes>4</normal-notes>
+        </time-modification>
+        <stem default-y="-40">down</stem>
+        <beam number="1">continue</beam>
+        <beam number="2">continue</beam>
+      </note>
+      <note default-x="345">
+        <pitch>
+          <step>E</step>
+          <octave>5</octave>
+        </pitch>
+        <duration>4</duration>
+        <voice>1</voice>
+        <type>16th</type>
+        <time-modification>
+          <actual-notes>9</actual-notes>
+          <normal-notes>4</normal-notes>
+        </time-modification>
+        <stem default-y="-43">down</stem>
+        <beam number="1">continue</beam>
+        <beam number="2">end</beam>
+        <notations>
+          <tuplet number="2" type="stop"/>
+          <slur bezier-x="-8" bezier-y="10" default-x="4" default-y="15" number="2" type="stop"/>
+        </notations>
+      </note>
+      <note default-x="372">
+        <pitch>
+          <step>D</step>
+          <octave>5</octave>
+        </pitch>
+        <duration>12</duration>
+        <voice>1</voice>
+        <type>eighth</type>
+        <time-modification>
+          <actual-notes>3</actual-notes>
+          <normal-notes>2</normal-notes>
+          <normal-type>eighth</normal-type>
+        </time-modification>
+        <stem default-y="-45">down</stem>
+        <beam number="1">end</beam>
+        <notations>
+          <tuplet number="1" type="stop"/>
+          <slur bezier-x="-19" bezier-y="25" default-x="7" default-y="27" number="1" type="stop"/>
+        </notations>
+      </note>
+      <note default-x="410">
+        <pitch>
+          <step>C</step>
+          <octave>5</octave>
+        </pitch>
+        <duration>36</duration>
+        <voice>1</voice>
+        <type>quarter</type>
+        <stem default-y="-50">down</stem>
+      </note>
+      <barline location="right">
+        <bar-style>light-light</bar-style>
+      </barline>
+    </measure>
+  </part>
+  <!--=========================================================-->
+</score-partwise>
