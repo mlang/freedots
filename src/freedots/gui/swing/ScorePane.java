@@ -44,7 +44,7 @@ public class ScorePane extends JPanel {
   private int scorePaneHeight = DEFAULT_SCORE_PANE_HEIGHT;
 	 
 	
-  private jm.music.data.Score2 score;
+  private jm.music.data.Score score;
   public Notate2 not;
   public JPanel panel;
 	
@@ -56,12 +56,14 @@ public class ScorePane extends JPanel {
 	    //setEditable(false);
 	    
 	  
-		jm.music.data.Note2 n = new jm.music.data.Note2(60, 0.25);
-		jm.music.data.Phrase2 phr = new jm.music.data.Phrase2();
+		Note n = new Note(60, 0.25);
+		Phrase phr = new Phrase();
+        phr.addNote(n);
+        n = new Note(64, 0.5);
         phr.addNote(n);
         
         // Avec View et Notate
-        jm.util.View.notate(phr);
+        View.notate(phr);
         
         // Avec Notate2
 	    //not = new Notate2(phr);

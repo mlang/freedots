@@ -34,7 +34,7 @@ import jm.music.data.*;
 import jm.midi.*;
 import jm.util.Read;
 import jm.util.Write;
-import jm.gui.cpn.Stave2;
+import jm.gui.cpn.Stave;
 import jm.util.Play;
 import jm.JMC;
 
@@ -52,11 +52,11 @@ import jm.JMC;
 public class Notate2 extends javax.swing.JPanel implements 
                 ActionListener, 
                 WindowListener, JMC {
-    private Score2 score;
+    private Score score;
     //private Stave stave;
     //private Phrase phrase;
-    private Phrase2[] phraseArray;
-    private Stave2[] staveArray;
+    private Phrase[] phraseArray;
+    private Stave[] staveArray;
     private int scrollHeight = 130, locationX = 0, locationY = 0;
     private Dialog keyDialog, timeDialog;
     private MenuItem keySig, open, openJmXml, openjm, play, stop, delete, clear, 
@@ -91,8 +91,8 @@ public class Notate2 extends javax.swing.JPanel implements
     private String fileNameFilter = "*.mid";
 
     private boolean     zoomed;
-    private Phrase2      beforeZoom = new Phrase2();
-    private Phrase2      afterZoom = new Phrase2();
+    private Phrase      beforeZoom = new Phrase();
+    private Phrase      afterZoom = new Phrase();
     /* The height of the notate window */
     private int height = 0;
     private int width = 700;
@@ -102,16 +102,16 @@ public class Notate2 extends javax.swing.JPanel implements
     }
 
     public Notate2() {
-        this(new Phrase2(), 0, 0);
+        this(new Phrase(), 0, 0);
         clearZoom();
     }
     
     public Notate2(int locX, int locY) {
-        this(new Phrase2(), locX, locY);
+        this(new Phrase(), locX, locY);
         clearZoom();
     }
     
-    public Notate2(Phrase2 phr) {
+    public Notate2(Phrase phr) {
         this(phr, 0, 0);
         clearZoom();
     }
@@ -120,18 +120,18 @@ public class Notate2 extends javax.swing.JPanel implements
         zoomed = false;
     }        
 
-    public Notate2(Phrase2 phrase, int locX, int locY) {
+    public Notate2(Phrase phrase, int locX, int locY) {
         super();
         clearZoom();
-        this.score = new Score2(new Part2(phrase));
+        this.score = new Score(new Part(phrase));
         locationX = locX;
         locationY = locY;
-        score = new Score2(new Part2(phrase));
+        score = new Score(new Part(phrase));
         setVisible(true);
         init();
     }
     
-    public Notate2(Score2 score, int locX, int locY) {
+    public Notate2(Score score, int locX, int locY) {
         super();
         clearZoom();
         this.score = score;
@@ -345,8 +345,8 @@ public class Notate2 extends javax.swing.JPanel implements
     
     private void setupArrays() {
         // set up arrays
-        phraseArray = new Phrase2[score.size()];
-        staveArray = new Stave2[score.size()];
+        phraseArray = new Phrase[score.size()];
+        staveArray = new Stave[score.size()];
 
         for (int i=0; i<staveArray.length; i++) {
             phraseArray[i] = score.getPart(i).getPhrase(0);
@@ -378,9 +378,9 @@ public class Notate2 extends javax.swing.JPanel implements
     }
     
     private void makeAppropriateStaves(){
-        Stave2[] tempStaveArray  = new Stave2[staveArray.length];
+        Stave[] tempStaveArray  = new Stave[staveArray.length];
         for(int i=0; i<score.size(); i++) {
-            Phrase2 currentPhrase = score.getPart(i).getPhrase(0);
+            Phrase currentPhrase = score.getPart(i).getPhrase(0);
             tempStaveArray[i] = new PianoStave();
             if(currentPhrase.getHighestPitch() < A6 &&
                 currentPhrase.getLowestPitch() > FS3) tempStaveArray[i] = new TrebleStave();
@@ -394,14 +394,14 @@ public class Notate2 extends javax.swing.JPanel implements
     }   
 
     private void makeTrebleStave() {
-        Stave2[] tempStaveArray  = new Stave2[score.size()];
+        Stave[] tempStaveArray  = new Stave[score.size()];
         for(int i=0; i<staveArray.length; i++) {
              tempStaveArray[i] = new TrebleStave();
         }
         updateAllStaves(tempStaveArray);
     }
     
-    private void updateAllStaves(Stave2[] tempStaveArray) {
+    private void updateAllStaves(Stave[] tempStaveArray) {
         int gridyVal = 0;
         int gridheightVal = 0;
         int totalHeight = 0;
@@ -442,7 +442,7 @@ public class Notate2 extends javax.swing.JPanel implements
     }        
 
     private void makeBassStave() {
-        Stave2[] tempStaveArray  = new Stave2[score.size()];
+        Stave[] tempStaveArray  = new Stave[score.size()];
         for(int i=0; i<staveArray.length; i++) {
              tempStaveArray[i] = new BassStave();
         }
@@ -469,7 +469,7 @@ public class Notate2 extends javax.swing.JPanel implements
     */
     
     private void makePianoStave() {
-        Stave2[] tempStaveArray  = new Stave2[score.size()];
+        Stave[] tempStaveArray  = new Stave[score.size()];
         for(int i=0; i<tempStaveArray.length; i++) {
              tempStaveArray[i] = new PianoStave();
         }
@@ -497,7 +497,7 @@ public class Notate2 extends javax.swing.JPanel implements
     */
         
     private void makeGrandStave() {
-        Stave2[] tempStaveArray  = new Stave2[score.size()];
+        Stave[] tempStaveArray  = new Stave[score.size()];
         for(int i=0; i<tempStaveArray.length; i++) {
              tempStaveArray[i] = new GrandStave();
         }
@@ -898,13 +898,13 @@ public class Notate2 extends javax.swing.JPanel implements
         return phr;
     }*/
     
-    private Score2 getLastMeasure() {
+    private Score getLastMeasure() {
         double beats = phraseArray[0].getNumerator();
         double endTime = score.getEndTime();
         int numbOfCompleteBars = (int)(endTime / beats);
         double startOflastBar = beats * numbOfCompleteBars;
         if (startOflastBar == endTime) startOflastBar -= beats;
-        Score2 oneBar = score.copy(startOflastBar, endTime);
+        Score oneBar = score.copy(startOflastBar, endTime);
         
         for(int i=0; i<oneBar.size();i++){
             oneBar.getPart(i).getPhrase(0).setStartTime(0.0);
@@ -931,7 +931,7 @@ public class Notate2 extends javax.swing.JPanel implements
         return answer * beatIncrement;                            
     }                            
     
-    private static void adjustTimeValues(Phrase2 phr) {
+    private static void adjustTimeValues(Phrase phr) {
         int i;
         double t, dt, st;
         for( i = 0; i < phr.size(); ++i) {        

@@ -27,10 +27,10 @@ import java.awt.Image;
 import java.awt.Toolkit;
 
 /**
- * Defines images for use with {@link Stave2} components loaded via an AWT
+ * Defines images for use with {@link Stave} components loaded via an AWT
  * Toolkit.
  *
- * @see     Stave2
+ * @see     Stave
  *
  * @author  Andrew Sorensen, Andrew Brown, Adam Kirby
  * @version 0.0.1, 8th July 2001
@@ -107,69 +107,69 @@ public class ToolkitImages implements Images {
     public ToolkitImages() {
         Toolkit toolkit = Toolkit.getDefaultToolkit();
         trebleClef = toolkit.getImage(
-                Stave2.class.getResource("graphics/trebleClef.gif"));
+                Stave.class.getResource("graphics/trebleClef.gif"));
         bassClef = toolkit.getImage(
-                Stave2.class.getResource("graphics/bassClef.gif"));
+                Stave.class.getResource("graphics/bassClef.gif"));
         crotchetDown = toolkit.getImage(
-                Stave2.class.getResource("graphics/crotchetDown.gif"));
+                Stave.class.getResource("graphics/crotchetDown.gif"));
         crotchetUp = toolkit.getImage(
-                Stave2.class.getResource("graphics/crotchetUp.gif"));
+                Stave.class.getResource("graphics/crotchetUp.gif"));
         quaverDown = toolkit.getImage(
-                Stave2.class.getResource("graphics/quaverDown.gif"));
+                Stave.class.getResource("graphics/quaverDown.gif"));
         quaverUp = toolkit.getImage(
-                Stave2.class.getResource("graphics/quaverUp.gif"));
+                Stave.class.getResource("graphics/quaverUp.gif"));
         semiquaverDown = toolkit.getImage(
-                Stave2.class.getResource("graphics/semiquaverDown.gif"));
+                Stave.class.getResource("graphics/semiquaverDown.gif"));
         semiquaverUp = toolkit.getImage(
-                Stave2.class.getResource("graphics/semiquaverUp.gif"));
+                Stave.class.getResource("graphics/semiquaverUp.gif"));
         minimDown = toolkit.getImage(
-                Stave2.class.getResource("graphics/minimDown.gif"));
+                Stave.class.getResource("graphics/minimDown.gif"));
         minimUp = toolkit.getImage(
-                Stave2.class.getResource("graphics/minimUp.gif"));
+                Stave.class.getResource("graphics/minimUp.gif"));
         semibreve = toolkit.getImage(
-                Stave2.class.getResource("graphics/semibreve.gif"));
+                Stave.class.getResource("graphics/semibreve.gif"));
         dot = toolkit.getImage(
-                Stave2.class.getResource("graphics/dot.gif"));
+                Stave.class.getResource("graphics/dot.gif"));
         semiquaverRest = toolkit.getImage(
-                Stave2.class.getResource("graphics/semiquaverRest.gif"));
+                Stave.class.getResource("graphics/semiquaverRest.gif"));
         quaverRest = toolkit.getImage(
-                Stave2.class.getResource("graphics/quaverRest.gif"));
+                Stave.class.getResource("graphics/quaverRest.gif"));
         crotchetRest = toolkit.getImage(
-                Stave2.class.getResource("graphics/crotchetRest.gif"));
+                Stave.class.getResource("graphics/crotchetRest.gif"));
         minimRest = toolkit.getImage(
-                Stave2.class.getResource("graphics/minimRest.gif"));
+                Stave.class.getResource("graphics/minimRest.gif"));
         semibreveRest = toolkit.getImage(
-                Stave2.class.getResource("graphics/semibreveRest.gif"));
+                Stave.class.getResource("graphics/semibreveRest.gif"));
         sharp = toolkit.getImage(
-                Stave2.class.getResource("graphics/sharp.gif"));
+                Stave.class.getResource("graphics/sharp.gif"));
         flat = toolkit.getImage(
-                Stave2.class.getResource("graphics/flat.gif"));
+                Stave.class.getResource("graphics/flat.gif"));
         natural = toolkit.getImage(
-                Stave2.class.getResource("graphics/natural.gif"));
+                Stave.class.getResource("graphics/natural.gif"));
         one = toolkit.getImage(
-                Stave2.class.getResource("graphics/one.gif"));
+                Stave.class.getResource("graphics/one.gif"));
         two = toolkit.getImage(
-                Stave2.class.getResource("graphics/two.gif"));
+                Stave.class.getResource("graphics/two.gif"));
         three = toolkit.getImage(
-                Stave2.class.getResource("graphics/three.gif"));
+                Stave.class.getResource("graphics/three.gif"));
         four = toolkit.getImage(
-                Stave2.class.getResource("graphics/four.gif"));
+                Stave.class.getResource("graphics/four.gif"));
         five = toolkit.getImage(
-                Stave2.class.getResource("graphics/five.gif"));
+                Stave.class.getResource("graphics/five.gif"));
         six = toolkit.getImage(
-                Stave2.class.getResource("graphics/six.gif"));
+                Stave.class.getResource("graphics/six.gif"));
         seven = toolkit.getImage(
-                Stave2.class.getResource("graphics/seven.gif"));
+                Stave.class.getResource("graphics/seven.gif"));
         eight = toolkit.getImage(
-                Stave2.class.getResource("graphics/eight.gif"));
+                Stave.class.getResource("graphics/eight.gif"));
         nine = toolkit.getImage(
-                Stave2.class.getResource("graphics/nine.gif"));
+                Stave.class.getResource("graphics/nine.gif"));
         delete = toolkit.getImage(
-                Stave2.class.getResource("graphics/delete.gif"));
+                Stave.class.getResource("graphics/delete.gif"));
         tieOver = toolkit.getImage(
-                Stave2.class.getResource("graphics/tieOver.gif"));
+                Stave.class.getResource("graphics/tieOver.gif"));
         tieUnder = toolkit.getImage(
-                Stave2.class.getResource("graphics/tieUnder.gif"));
+                Stave.class.getResource("graphics/tieUnder.gif"));
     }
 
     public Image getTrebleClef() {

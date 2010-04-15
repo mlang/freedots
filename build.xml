@@ -95,7 +95,7 @@
   	      <fileset dir="${src}/jm/gui/cpn/graphics">
   	      <include name="*.gif"/>
   	      </fileset>
-  	    </copy>
+  	</copy>
   </target>
 
   <!-- Testing framework -->

@@ -47,7 +47,7 @@ import jm.JMC;
 * @author Andrew Brown
 */
 
-public class Notate extends javax.swing.JPanel implements 
+public class Notate extends Frame implements 
                 ActionListener, 
                 WindowListener, JMC {
     private Score score;
@@ -122,7 +122,7 @@ public class Notate extends javax.swing.JPanel implements
         locationY = locY;
         score = new Score(new Part(phrase));
         setVisible(true);
-        //init();
+        init();
     }
     
     public Notate(Score score, int locX, int locY) {
@@ -132,9 +132,9 @@ public class Notate extends javax.swing.JPanel implements
         locationX = locX;
         locationY = locY;
         setVisible(true);
-        //init();
+        init();
     }
-/*    
+    
     public void init() {
         addWindowListener(this);
         // menus
@@ -203,7 +203,7 @@ public class Notate extends javax.swing.JPanel implements
         //-Features Added by Al C -----
 
         //------     
-        /*  
+          
         insertMidiFile = new MenuItem("Insert a MIDI file..." );
         insertMidiFile.addActionListener(this);
         features.add(insertMidiFile);
@@ -320,7 +320,7 @@ public class Notate extends javax.swing.JPanel implements
         setupArrays();
         makeAppropriateStaves();
                
-        this.pack();
+        //this.pack();
         this.setLocation(locationX, locationY);
        // calcHeight();
         //this.setSize(width, height + 40);
@@ -334,7 +334,7 @@ public class Notate extends javax.swing.JPanel implements
         }
         
         this.show();
-    }*/
+    }
     
     private void setupArrays() {
         // set up arrays
