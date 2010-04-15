@@ -23,6 +23,7 @@
 package freedots.gui.swing;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
@@ -48,6 +49,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
 import javax.swing.event.CaretEvent;
 
@@ -239,13 +241,17 @@ public final class Main extends JFrame
     if (midiPlayer != null) midiPlayer.close();
     System.exit(0);
   }
-public ScorePane scorePane;
+  public ScorePane scorePane;
+  public JSplitPane splitPane;
+  public JScrollPane textScrollPane;
+  public JScrollPane scoreScrollPane;
+  
   private JPanel createContentPane() {
     textPane = new BraillePane();
     //Amelie
     scorePane = new ScorePane();
     //scorePane.setText("Part of the screen for score display");
-    textPane.setSize(options.getPageWidth(), options.getPageHeight());
+    //textPane.setSize(options.getPageWidth(), options.getPageHeight());
 
     final boolean scoreAvailable = transcriber.getScore() != null;    
 
@@ -265,11 +271,19 @@ public ScorePane scorePane;
     // Lay out the content pane.
     JPanel contentPane = new JPanel();
     contentPane.setLayout(new BorderLayout());
-    //contentPane.add(new JScrollPane(textPane), BorderLayout.CENTER);
     
     //Amelie
-    contentPane.add(new JScrollPane(textPane), BorderLayout.WEST);
-    contentPane.add(new JScrollPane(scorePane), BorderLayout.EAST);
+    textScrollPane = new JScrollPane(textPane);
+    scoreScrollPane = new JScrollPane(scorePane);
+    splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true, textScrollPane, scoreScrollPane);
+    splitPane.setResizeWeight(0.5);
+    //Provide preferred sizes for the two components in the split pane
+    textScrollPane.setPreferredSize(
+    		new Dimension (textPane.getBraillePaneWidth(), textPane.getBraillePaneHeight()));
+    scoreScrollPane.setPreferredSize(
+    		new Dimension(scorePane.getScorePaneWidth(), scorePane.getScorePaneHeight()));
+
+    contentPane.add(splitPane, BorderLayout.CENTER);
 
     contentPane.add(new JScrollPane(logArea), BorderLayout.SOUTH);
 

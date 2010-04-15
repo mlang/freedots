@@ -25,30 +25,50 @@ package freedots.gui.swing;
 
 import java.awt.Font;
 
+import javax.swing.JLabel;
+
 
 import jm.JMC;
+import jm.gui.cpn.Notate2;
 import jm.music.data.*;
 import jm.util.*;
+import javax.swing.JPanel;
 
 /** Displays the score in a text pane.
  */
-public class ScorePane extends javax.swing.JPanel {
-	private Score score;
+public class ScorePane extends JPanel {
+  private static final int DEFAULT_SCORE_PANE_WIDTH = 450;
+  private static final int DEFAULT_SCORE_PANE_HEIGHT = 450;
+	  
+  private int scorePaneWidth = DEFAULT_SCORE_PANE_WIDTH;
+  private int scorePaneHeight = DEFAULT_SCORE_PANE_HEIGHT;
+	 
+	
+  private jm.music.data.Score2 score;
+  public Notate2 not;
+  public JPanel panel;
 	
 	ScorePane() {
-		super();
-	    setFont(new Font("DejaVu Serif", Font.PLAIN, 14));
+		//super();
+	    //setFont(new Font("DejaVu Serif", Font.PLAIN, 14));
+	    //JLabel label = new JLabel ("Part for the screen display");
+	    //add(label);
 	    //setEditable(false);
+	    
 	  
-		Note n = new Note(60, 0.25);
-        Phrase phr = new Phrase();
+		jm.music.data.Note2 n = new jm.music.data.Note2(60, 0.25);
+		jm.music.data.Phrase2 phr = new jm.music.data.Phrase2();
         phr.addNote(n);
         
-        //View.notate(phr);
-        this.score = new Score(new Part(phr));
-        score = new Score(new Part(phr));
-        setVisible(true);
-
+        // Avec View et Notate
+        jm.util.View.notate(phr);
+        
+        // Avec Notate2
+	    //not = new Notate2(phr);
+	    //panel = not.display();
 	}
+	
+  public int getScorePaneWidth() { return scorePaneWidth; }  
+  public int getScorePaneHeight() { return scorePaneHeight; }
 }
 

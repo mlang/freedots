@@ -43,6 +43,12 @@ import freedots.gui.SignColorMap;
  * braille music transcription rules.
  */
 final class BraillePane extends javax.swing.JTextPane {
+  private static final int DEFAULT_BRAILLE_PANE_WIDTH = 450;
+  private static final int DEFAULT_BRAILLE_PANE_HEIGHT = 450;
+  
+  private int braillePaneWidth = DEFAULT_BRAILLE_PANE_WIDTH;
+  private int braillePaneHeight = DEFAULT_BRAILLE_PANE_HEIGHT;
+  
   BraillePane() {
     super();
 
@@ -109,5 +115,7 @@ final class BraillePane extends javax.swing.JTextPane {
       }
     }
   }
+  public int getBraillePaneWidth() { return braillePaneWidth; }  
+  public int getBraillePaneHeight() { return braillePaneHeight; }
 }
 
