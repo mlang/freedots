@@ -90,6 +90,12 @@
         <include name="**/*.properties"/>
       </fileset>
     </copy>
+  	
+  	<copy todir="${build}/jm/gui/cpn/graphics/">
+  	      <fileset dir="${src}/jm/gui/cpn/graphics">
+  	      <include name="*.gif"/>
+  	      </fileset>
+  	    </copy>
   </target>
 
   <!-- Testing framework -->
