@@ -16,6 +16,7 @@ public class TupletSign extends Sign{
     public TupletSign(TupletGroup tupletGroup){
     	super(getSign(tupletGroup));
     	this.tupletGroup=tupletGroup;
+	this.tuplet=tupletGroup.getFirst();
         }
     
     public String getDescription(){
@@ -34,7 +35,7 @@ public class TupletSign extends Sign{
     	int type=tupletGroup.getType();
     	final int[] tupletDots = { 23, 25, 0, 26, 235, 2356};  //what the sign for a 4-uplet?
     	if (type==3 && tupletGroup.getFirst().getParent()==null)
-    	    return braille(23);
+    	    return braille(23,23);
     	return braille(456,tupletDots[type-2],456)+braille(tupletDots[type-2],3);		
         }
     
