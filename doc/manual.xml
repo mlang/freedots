@@ -408,18 +408,20 @@ being developed by <ulink url="http://www.recordare.com/">Recordare LLC</ulink>.
     </chapter>
     <chapter><title>How to create MusicXML scores?</title>
       <para>
-MusicXML is now supported by almost all commercial applications
-dealing with musical scores in one way or another.
+MusicXML is now supported by almost all commercial and a number of free
+applications dealing with musical scores in one way or another.
 There are basically two ways to obtain a score in MusicXML format.
 Either you already have it in some computerized form, then you need
 to investigate how to convert your data to MusicXML.  Many commercial
 notation editors offer a way to export to MusicXML these days.
 If you have the music on paper, you need some &omr; software
-to scan and recognize your music.
+to scan and recognize your music and then export to MusicXML.
       </para>
       <para>
 A list of applications that allow to save or export to MusicXML
-format can be found <ulink url="http://www.musicxml.org/xml/software.html#NowWrites">here</ulink>.
+format can be found
+<ulink url="http://www.musicxml.org/xml/software.html#NowWrites">on the
+recordare website</ulink>.
       </para>
       <sect1><title>Using Sibelius to create MusicXML documents</title>
       <sect2><title>Fingering</title>
