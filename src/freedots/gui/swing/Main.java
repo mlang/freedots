@@ -100,6 +100,9 @@ public final class Main extends JFrame
     final boolean scoreAvailable = score != null;
     fileSaveAsAction.setEnabled(scoreAvailable);
     playScoreAction.setEnabled(scoreAvailable);
+    
+    /*Jo*/
+    scorePane.displayScore(transcriber);
   }
 
   private JTextArea logArea;
@@ -115,6 +118,7 @@ public final class Main extends JFrame
     Object scoreObject = null;
     if (transcriber != null) {
       scoreObject = transcriber.getScoreObjectAtIndex(index);
+      
       final Sign brailleSign = transcriber.getSignAtIndex(index);
       if (statusBar != null && brailleSign != null) {
         setStatusMessage(brailleSign.toString() + ": "
@@ -248,7 +252,9 @@ public final class Main extends JFrame
   
   private JPanel createContentPane() {
     textPane = new BraillePane();
+    
     //Amelie
+    
     scorePane = new ScorePane();
     //scorePane.setText("Part of the screen for score display");
     //textPane.setSize(options.getPageWidth(), options.getPageHeight());
@@ -258,6 +264,8 @@ public final class Main extends JFrame
     if (scoreAvailable) {
       this.score = transcriber.getScore();
       textPane.setText(transcriber.getSigns()); 
+      
+
     } else textPane.setText(WELCOME_MESSAGE);
 
     fileSaveAsAction.setEnabled(scoreAvailable);
@@ -369,7 +377,6 @@ public final class Main extends JFrame
 
     helpMenu.add(new DescribeSignAction(this));
     
-    //Jo
     helpMenu.add(new DescribeColorAction(this));
 
     menuBar.add(helpMenu);
@@ -573,6 +580,9 @@ public final class Main extends JFrame
       if (objectPosition != -1) position = objectPosition;
     }
     textPane.setCaretPosition(position);
+    
+
+    
   }
 
   public void notifyLog() {

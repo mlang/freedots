@@ -34,6 +34,12 @@ import jm.music.data.*;
 import jm.util.*;
 import javax.swing.JPanel;
 
+import freedots.music.Event;
+import freedots.music.MusicList;
+import freedots.musicxml.Part;
+import freedots.musicxml.Pitch;
+import freedots.transcription.Transcriber;
+
 /** Displays the score in a text pane.
  */
 public class ScorePane extends JPanel {
@@ -47,6 +53,8 @@ public class ScorePane extends JPanel {
   private jm.music.data.Score score;
   public Notate2 not;
   public JPanel panel;
+  
+  public Phrase phr;
 	
 	ScorePane() {
 		//super();
@@ -54,8 +62,10 @@ public class ScorePane extends JPanel {
 	    //JLabel label = new JLabel ("Part for the screen display");
 	    //add(label);
 	    //setEditable(false);
+		
+		this.phr = new Phrase();
 	    
-	  
+	  /*
 		Note n = new Note(60, 0.25);
 		Phrase phr = new Phrase();
         phr.addNote(n);
@@ -65,9 +75,49 @@ public class ScorePane extends JPanel {
         // Avec View et Notate
         View.notate(phr);
         
+        */
+        
         // Avec Notate2
 	    //not = new Notate2(phr);
 	    //panel = not.display();
+	}
+	
+	void displayScore(Transcriber transcriber){
+				
+		freedots.musicxml.Score score = transcriber.getScore();
+		Object scoreObject = null;
+		int index;
+		
+		System.out.println("Score display");
+		
+		for(index = 100; index < 300; index ++){
+					
+			scoreObject = transcriber.getScoreObjectAtIndex(index);
+
+			if(scoreObject != null)
+				System.out.println("ScoreObject class : " + scoreObject.getClass().toString());
+		
+			if(scoreObject instanceof freedots.musicxml.Note){
+				freedots.musicxml.Note note = (freedots.musicxml.Note)scoreObject;
+				try{
+					int pitch = note.getPitch().getMIDIPitch();
+					float duration = note.getDuration().floatValue();
+				
+					System.out.println("Score display : Pitch et duration : " + pitch + " " + duration);
+			
+					Note n = new Note(pitch, duration);
+					phr.addNote(n);
+				}
+				catch(Exception e){ System.out.println(e.getMessage());}
+			}
+			
+		
+			
+		}
+		
+		System.out.println("Score display : on sort de la boucle");
+		
+		View.notate(phr);
 	}
 	
   public int getScorePaneWidth() { return scorePaneWidth; }  
