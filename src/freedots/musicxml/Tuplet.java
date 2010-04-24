@@ -79,7 +79,7 @@ public class Tuplet extends freedots.music.Tuplet {
         currentFrac =
           new Fraction(new PowerOfTwo(note.getAugmentedFraction().getPower()));
       }
-      sumFrac = sumFrac.add(currentFrac);	
+      sumFrac = sumFrac.add(currentFrac);
     }
     return sumFrac.equals(expectedFrac);
   }

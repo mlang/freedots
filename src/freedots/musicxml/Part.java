@@ -95,7 +95,7 @@ public final class Part {
          partNode = partNode.getNextSibling()) {
       if (partNode.getNodeType() == Node.ELEMENT_NODE
        && "measure".equals(partNode.getNodeName())) {
-    	newMeasure = true;
+        newMeasure = true;
         final Element xmlMeasure = (Element)partNode;
 
         StartBar startBar = new StartBar(measureOffset, ++measureNumber);
@@ -492,8 +492,8 @@ public final class Part {
             Tuplet tuplet = new Tuplet();
             completeTuplet(tuplet, note, linkedListNote);
             while(!(tuplet.getLast() instanceof Note))	
-              tuplet=(Tuplet)tuplet.getLast();	
-            note = (Note)tuplet.getLast();	
+              tuplet=(Tuplet)tuplet.getLast();
+            note = (Note)tuplet.getLast();
             note = nextNoteVoice(linkedListNote, note);
           }
         }

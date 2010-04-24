@@ -46,6 +46,8 @@ import freedots.music.TimeSignature;
 import freedots.musicxml.Part;
 import freedots.musicxml.Score;
 
+/** Transcription in bar over bar format.
+ */
 class BarOverBar implements Strategy {
   private static final Logger LOG = Logger.getLogger(BarOverBar.class);
 
@@ -56,6 +58,8 @@ class BarOverBar implements Strategy {
   private KeySignature initialKeySignature = null;
   private TimeSignature initialTimeSignature = null;
 
+  /** Run the format specific part of transcription.
+   */
   public void transcribe(Transcriber transcriber) {
     this.transcriber = transcriber;
     options = transcriber.getOptions();

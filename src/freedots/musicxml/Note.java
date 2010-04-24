@@ -603,7 +603,7 @@ public final class Note implements RhythmicElement, freedots.music.TupletElement
           } else if (child.getTagName().equals(TUPLET_ELEMENT)) {
             if (tupletElementsXML != null)
               tupletElementsXML.add(new TupletElementXML(child));
-            else {	
+            else {
               tupletElementsXML = new ArrayList<TupletElementXML>();
               tupletElementsXML.add(new TupletElementXML(child));
             }
