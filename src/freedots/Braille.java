@@ -37,13 +37,8 @@ import freedots.logging.Logger;
 @Deprecated
 public enum Braille {
   dot(3), wholeRest(134),
-  flat(126), natural(16), sharp(146),
 
   valueDistinction(126, 2),
-
-  numberSign(3456),
-
-  slur(14),
 
   // Piano pedal marks
   pedalPress(126, 14), pedalRelease(16, 14), pedalChange(16, 126, 14),
