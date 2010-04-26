@@ -22,6 +22,8 @@
  */
 package freedots.braille;
 
+/** A newline character.
+ */
 public class NewLine extends Sign {
   public NewLine() { super(LINE_SEPARATOR); }
   public String getDescription() { return "Starts a new line."; }

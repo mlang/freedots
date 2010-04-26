@@ -25,6 +25,8 @@ package freedots.braille;
 import freedots.music.Accidental;
 import freedots.music.KeySignature;
 
+/** Braille representation of a key signature.
+ */
 public class BrailleKeySignature extends RepeatASign {
   private final KeySignature keySignature;
 

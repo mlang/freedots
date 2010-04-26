@@ -26,9 +26,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import freedots.Braille;
 import freedots.braille.AlternativeEnding;
 import freedots.braille.ArtificialWholeRest;
+import freedots.braille.BrailleHarmony;
 import freedots.braille.BrailleKeySignature;
 import freedots.braille.BrailleList;
 import freedots.braille.BrailleSyllable;
@@ -44,7 +44,6 @@ import freedots.braille.RightHandPart;
 import freedots.braille.Text;
 import freedots.braille.TextPart;
 import freedots.math.Fraction;
-import freedots.music.AugmentedPowerOfTwo;
 import freedots.music.ClefChange;
 import freedots.music.EndBar;
 import freedots.music.Event;
@@ -261,17 +260,16 @@ class SectionBySection implements Strategy {
           boolean first = true;
           while (iterator.hasNext()) {
             HarmonyInfo current = iterator.next();
-            String chord = Braille.toString(current.getHarmony());
-            if (includeStems && iterator.hasNext())
-              chord += Braille.toString(AugmentedPowerOfTwo.decompose(current.getDuration(), AugmentedPowerOfTwo.SEMIBREVE));
-
+            BrailleHarmony chord = new BrailleHarmony(current.getHarmony(),
+                                                      (includeStems && iterator.hasNext()),
+                                                      current.getDuration());
             if (chord.length() <= transcriber.getRemainingColumns())
               // TODO: FIXME
-              transcriber.printString(new Text(chord));
+              transcriber.printString(chord);
             else {
               if (!first) transcriber.printString(new MusicHyphen());
               transcriber.newLine();
-              transcriber.printString(new Text(chord));
+              transcriber.printString(chord);
             }
             first = false;
           }

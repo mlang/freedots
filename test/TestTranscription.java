@@ -67,8 +67,8 @@ public class TestTranscription extends junit.framework.TestCase {
       + keyAndTimeSignature + NL
       + "  "
       + "⠠⠄" + "⠨⠋⠗⠑⠑⠙⠕⠞⠎ ⠨⠋⠗⠑⠑⠙⠕⠞⠎ ⠨⠋⠗⠑⠑⠙⠕⠞⠎" + "⠣⠅" + NL
-      + "⠒⠜⠨⠉maj⠼⠛⠨⠁m⠼⠛⠨⠙m⠼⠛⠨⠑m⠼⠛⠨⠋maj⠼⠛ ⠨nc " + NL
-      + "⠨⠋maj⠼⠛⠨⠑m⠼⠛⠨⠙m⠼⠛⠨⠑m⠼⠛⠨⠁" + "⠣⠅" + NL
+      + "⠒⠜⠨⠉maj⠼⠛⠨⠁⠍⠼⠛⠨⠙⠍⠼⠛⠨⠑⠍⠼⠛⠨⠋maj⠼⠛ ⠨nc " + NL
+      + "⠨⠋maj⠼⠛⠨⠑⠍⠼⠛⠨⠙⠍⠼⠛⠨⠑⠍⠼⠛⠨⠁" + "⠣⠅" + NL
       + NL;
     assertEquals(mxmlFile, transcriber.toString(), expectedResult);
   }

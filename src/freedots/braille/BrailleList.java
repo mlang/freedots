@@ -28,9 +28,15 @@ import java.util.Iterator;
  */
 public class BrailleList extends java.util.LinkedList<BrailleSequence>
                          implements BrailleSequence {
+  /** Constructs a new BrailleList object.
+   */
   public BrailleList() { super(); }
 
   private BrailleList parent = null;
+  /** Returns the parent of this {@code BrailleList}.
+   * @return {@code null} if this {@code BrailleList} has not been added to a
+   *         parent container yet.
+   */
   public final BrailleList getParent() { return parent; }
   public final void setParent(final BrailleList parent) {
     if (parent == null) throw new NullPointerException();

@@ -22,6 +22,8 @@
  */
 package freedots.braille;
 
+/** A sign which indicates the beginning of a number.
+ */
 public class NumberSign extends Sign {
   NumberSign() { super(braille(3456)); }
 

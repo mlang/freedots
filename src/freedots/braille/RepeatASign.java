@@ -22,6 +22,9 @@
  */
 package freedots.braille;
 
+/** Concatenate a number of repetitions of a given sign according to braille
+ *  music rules.
+ */
 public class RepeatASign extends BrailleList {
   private final Sign sign;
   private final int repetitions;

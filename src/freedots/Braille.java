@@ -24,15 +24,9 @@ package freedots;
 
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
-import freedots.braille.AccidentalSign;
 import freedots.logging.Logger;
-import freedots.music.Accidental;
-import freedots.music.AugmentedPowerOfTwo;
-import freedots.musicxml.Harmony;
 
 /** All the braille signs required for music and a few utility methods.
  * <p>
@@ -56,11 +50,6 @@ public enum Braille {
 
   fullMeasureInAccord(126, 345),
   partMeasureInAccord(46, 13), partMeasureInAccordDivision(5, 2),
-
-  upcase(46),
-  letterA(1), letterB(12), letterC(14), letterD(145), letterE(15), letterF(124),
-  letterG(1245), slash(5, 2), letterM(134),
-  artificialWholeRest(5, 134),
 
   // Stem signs are written after the notes (or chords) to which they belong
   wholeStem(456, 3), halfStem(456, 13),
@@ -97,37 +86,6 @@ public enum Braille {
     return cachedString;
   }
 
-  /**
-   * Concatenate a number of repetitions of this braille symbol according to
-   * braille music rules.
-   * @param amount number of repetitions
-   * @return the concatenated repetition as a String
-   */
-  public String repeat(final int amount) {
-    if (amount <= 0) return "";
-
-    String atom = toString();
-    if (amount == 1) return atom;
-    else if (amount == 2) return atom + atom;
-    else if (amount == 3) return atom + atom + atom;
-    else {
-      return numberSign.toString() + upperNumber(amount) + atom;
-    }
-  }
-
-  /** Format a number using the upper dots 1, 2, 4 and 5.
-   * @param number is the number to translate to braille
-   * @return the unicode braille representation of the number
-   */
-  public static String upperNumber(int number) {
-    String string = "";
-    while (number > 0) {
-      int digit = number % 10;
-      string = DIGITS[digit] + string;
-      number = number / 10;
-    }
-    return string;
-  }
   public static final Map<Character, Character> BRF_TABLE =
     Collections.unmodifiableMap(new HashMap<Character, Character>() {
       {
@@ -212,114 +170,5 @@ public enum Braille {
       bits |= 1 << (number - 1);
     }
     return bits;
-  }
-
-  private static final Braille[] DIGITS = {
-    digit0,
-    digit1, digit2, digit3,
-    digit4, digit5, digit6,
-    digit7, digit8, digit9
-  };
-  private static final Braille[] ENGLISH_STEPS = {
-    letterC, letterD, letterE, letterF, letterG, letterA, letterB
-  };
-
-
-  /** Formats a list of augmented musical fractions using stem and slur signs.
-   * This method is typically used together with
-   * {@link freedots.music.AugmentedPowerOfTwo#decompose} for annotating chord
-   * symbols with their duration.
-   * @see #toString(Harmony)
-   * @return a Unicode braille string
-   */
-  public static String toString(List<AugmentedPowerOfTwo> values) {
-    StringBuilder sb = new StringBuilder();
-    Iterator<AugmentedPowerOfTwo> iterator = values.iterator();
-    while (iterator.hasNext()) {
-      AugmentedPowerOfTwo v = iterator.next();
-      switch (v.getPower()) {
-      case 0: sb.append(wholeStem); break;
-      case -1: sb.append(halfStem); break;
-      case -2: sb.append(quarterStem); break;
-      case -3: sb.append(eighthStem); break;
-      case -4: sb.append(sixteenthStem); break;
-      case -5: sb.append(thirtysecondthStem); break;
-      default: LOG.warning("Unmapped power of two: " + v);
-      }
-      for (int i = 0; i < v.dots(); i++) sb.append(dot);
-
-      if (iterator.hasNext()) sb.append(slur);
-    }
-    return sb.toString();
-  }
-
-  /** Converts the given {@link freedots.musicxml.Harmony} instance to its
-   *  braille representation.
-   * @return a Unicode String with the braille music representation of the
-   * given chord symbol.
-   */
-  public static String toString(Harmony harmony) {
-    StringBuilder sb = new StringBuilder();
-    for (Harmony.HarmonyChord chord: harmony.getChords()) {
-      String kind = chord.getKind();
-      if ("none".equals(kind)) {
-        sb.append(upcase).append("nc");
-      } else {
-        sb.append(upcase).append(ENGLISH_STEPS[chord.getRootStep()])
-          .append(accidentalFromAlter(chord.getRootAlter()));
-        if ("major".equals(kind))
-          sb.append("");
-        else if ("minor".equals(kind))
-          sb.append(letterM);
-        else if ("augmented".equals(kind))
-          sb.append(sharp).append(numberSign).append(upperNumber(5));
-        else if ("diminished".equals(kind))
-          sb.append("dim");
-        else if ("dominant".equals(kind))
-          sb.append(numberSign).append(upperNumber(7));
-        else if ("suspended-second".equals(kind))
-          sb.append("sus").append(numberSign).append(upperNumber(2));
-        else if ("suspended-fourth".equals(kind))
-          sb.append("sus").append(numberSign).append(upperNumber(4));
-        else if ("major-sixth".equals(kind))
-          sb.append(numberSign).append(upperNumber(6));
-        else if ("major-seventh".equals(kind))
-          sb.append("maj").append(numberSign).append(upperNumber(7));
-        else if ("minor-seventh".equals(kind))
-          sb.append("m").append(numberSign).append(upperNumber(7));
-        else if ("diminished-seventh".equals(kind))
-          sb.append("dim").append(numberSign).append(upperNumber(7));
-        else if ("augmented-seventh".equals(kind))
-          sb.append(sharp).append(numberSign).append(upperNumber(5)).append(numberSign).append(upperNumber(7));
-        else if ("major-ninth".equals(kind))
-          sb.append("maj").append(numberSign).append(upperNumber(9));
-        else if ("minor-ninth".equals(kind))
-          sb.append(letterM).append(numberSign).append(upperNumber(9));
-        else if ("dominant-ninth".equals(kind))
-          sb.append(numberSign).append(upperNumber(9));
-        else if ("major-11th".equals(kind))
-          sb.append("maj").append(numberSign).append(upperNumber(11));
-        else if ("minor-11th".equals(kind))
-          sb.append(letterM).append(numberSign).append(upperNumber(11));
-        else if ("dominant-11th".equals(kind))
-          sb.append(numberSign).append(upperNumber(11));
-        else if ("dominant-13th".equals(kind))
-          sb.append(numberSign).append(upperNumber(13));
-        else LOG.warning("Unhandled harmony-chord kind '"+kind+"'");
-
-        for (Harmony.HarmonyChord.Degree degree: chord.getAlterations())
-          sb.append(accidentalFromAlter(degree.getAlter()))
-            .append(numberSign).append(upperNumber(degree.getValue()));
-
-        if (chord.hasBass())
-          sb.append(slash).append(ENGLISH_STEPS[chord.getBassStep()])
-            .append(accidentalFromAlter(chord.getBassAlter()));
-      }
-    }
-    return sb.toString();
-  }
-  private static CharSequence accidentalFromAlter(float alter) {
-    if (alter == 0) return new String();
-    return new AccidentalSign(Accidental.fromAlter(alter));
   }
 }
