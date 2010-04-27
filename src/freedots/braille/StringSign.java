@@ -22,33 +22,25 @@
  */
 package freedots.braille;
 
-import freedots.music.AugmentedPowerOfTwo;
+public class StringSign extends Sign {
+  private final int stringNumber;
 
-/** Signifies a rest of a certain duration.
- *
- * @see <a href="http://brl.org/music/code/bmb/chap04/index.html">Chapter 4:
- *      Rests</a>
- */
-public class RestSign extends Sign {
-  private final AugmentedPowerOfTwo value;
-
-  public RestSign(final AugmentedPowerOfTwo value) {
-    super(getSign(value));
-    this.value = value;
+  public StringSign(final int stringNumber) {
+    super(getSign(stringNumber));
+    this.stringNumber = stringNumber;
   }
-
   public String getDescription() {
-    return "A rest with duration " + value.toString();
+    return "Indicates the "+STRING_NAMES[stringNumber]+" string should be used";
   }
 
-  private static String getSign(final AugmentedPowerOfTwo value) {
-    final int power = value.getPower();
-    // FIXME: breve and long notes are not handled at all
-    final int log = Math.abs(power);
-    final int valueType = log > Math.abs(AugmentedPowerOfTwo.QUAVER.getPower())
-      ? log+AugmentedPowerOfTwo.SEMIQUAVER.getPower() : log;
-
-    final int[] restDots = { 134, 136, 1236, 1346 };
-    return braille(restDots[valueType]);
+  private static String getSign(final int stringNumber) {
+    if (stringNumber < 1) throw new IllegalArgumentException();
+    if (stringNumber >= STRING_SIGNS.length) throw new IllegalArgumentException();
+    return STRING_SIGNS[stringNumber - 1];
   }
+  private final static String[] STRING_SIGNS =
+    braille(146, new int[]{1, 12, 123, 2, 13, 23, 3});
+  private final static String[] STRING_NAMES = {
+    "first", "second", "third", "fourth", "fifth", "sixth", "seventh"
+  };
 }

@@ -97,7 +97,7 @@ class ColorLegend extends JDialog {
     panAccidental.setBorder(BorderFactory.createTitledBorder("Accidental"));
 
     JPanel panFinger = new JPanel();
-    panFinger.setBackground(colorMap.get(BrailleFingering.Finger.class));
+    panFinger.setBackground(colorMap.get(BrailleFingering.FingerSign.class));
     panFinger.setPreferredSize(new Dimension(100, 50));
     panFinger.setBorder(BorderFactory.createTitledBorder("Fingering"));
 

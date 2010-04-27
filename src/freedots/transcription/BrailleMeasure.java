@@ -34,10 +34,12 @@ import freedots.braille.BrailleList;
 import freedots.braille.BrailleNote;
 import freedots.braille.BrailleSequence;
 import freedots.braille.BrailleWords;
+import freedots.braille.RestSign;
 import freedots.braille.SimileSign;
 import freedots.braille.Text;
 import freedots.logging.Logger;
 import freedots.music.AbstractPitch;
+import freedots.music.AugmentedPowerOfTwo;
 import freedots.music.Event;
 import freedots.music.MusicList;
 import freedots.music.RhythmicElement;
@@ -257,7 +259,12 @@ class BrailleMeasure {
       }
 
       if (brailleVoices.size() == 0) {
-        state.append(Braille.wholeRest.toString());
+        state.append(new RestSign(new AugmentedPowerOfTwo(AugmentedPowerOfTwo.BREVE,
+                                                          0) {
+                                    public String getDescription() {
+                                      return "A whole measure rest";
+                                    }
+                                  }));
       }
 
       /* 5-12. The octave mark must be shown for the first note after an

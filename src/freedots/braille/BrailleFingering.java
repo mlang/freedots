@@ -40,7 +40,7 @@ public class BrailleFingering extends BrailleList {
 
     Iterator<Integer> iter = fingering.getFingers().iterator();
     while (iter.hasNext()) {
-      add(new Finger(iter.next()));
+      add(new FingerSign(iter.next()));
       if (iter.hasNext())
         add(new SlurSign() {
               @Override public String getDescription() {
@@ -54,10 +54,10 @@ public class BrailleFingering extends BrailleList {
     return "Fingering: " + fingering.toString();
   }
 
-  public static class Finger extends Sign {
+  public static class FingerSign extends Sign {
     private final int finger;
 
-    Finger(final int finger) {
+    FingerSign(final int finger) {
       super(getSign(finger));
       this.finger = finger;
     }
@@ -67,7 +67,7 @@ public class BrailleFingering extends BrailleList {
     private static String getSign(final int number) {
       return FINGERS[number - 1];
     }
-    private static final String[] FINGERS = new String[] {
+    private static final String[] FINGERS = {
       braille(1), braille(12), braille(123), braille(2), braille(13)
     };
   }

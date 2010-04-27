@@ -26,8 +26,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import freedots.logging.Logger;
-
 /** All the braille signs required for music and a few utility methods.
  * <p>
  * TODO: This class is an enum for purely historical reasons, there is actually
@@ -36,8 +34,6 @@ import freedots.logging.Logger;
  */
 @Deprecated
 public enum Braille {
-  dot(3), wholeRest(134),
-
   valueDistinction(126, 2),
 
   // Piano pedal marks
@@ -46,22 +42,8 @@ public enum Braille {
   fullMeasureInAccord(126, 345),
   partMeasureInAccord(46, 13), partMeasureInAccordDivision(5, 2),
 
-  // Stem signs are written after the notes (or chords) to which they belong
-  wholeStem(456, 3), halfStem(456, 13),
-  quarterStem(456, 1), eighthStem(456, 12), sixteenthStem(456, 123),
-  thirtysecondthStem(456, 2),
+  fermata(126, 123), fermataSquare(56, 126, 123), fermataTent(45, 126, 123);
 
-  fermata(126, 123), fermataSquare(56, 126, 123), fermataTent(45, 126, 123),
-
-  firstString(146, 1), secondString(146, 12), thirdString(146, 123),
-  fourthString(146, 2), fifthString(146, 13), sixthString(146, 23),
-  seventhString(146, 3),
-
-  // Digits written in the upper part of a cell
-  digit0(245), digit1(1), digit2(12), digit3(14), digit4(145),
-  digit5(15), digit6(124), digit7(1245), digit8(125), digit9(24);
-
-  private static final Logger LOG = Logger.getLogger(Braille.class);
   private int[] dots;
   private String cachedString;
 

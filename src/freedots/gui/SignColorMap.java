@@ -46,7 +46,7 @@ public class SignColorMap extends HashMap<Class<? extends Sign>, Color> {
 
   private void initializeDefaults() {
     put(AccidentalSign.class, Color.red);
-    put(BrailleFingering.Finger.class, new Color(205, 189, 7));
+    put(BrailleFingering.FingerSign.class, new Color(205, 189, 7));
     put(BrailleNote.GraceSign.class, Color.green);
     put(BrailleNote.OrnamentSign.class, Color.green);
     put(BrailleNote.ArticulationSign.class, new Color(0, 250, 154));
