@@ -47,7 +47,7 @@ public final class MIDIPlayer implements Closeable {
   public static final int SLEEP_TIME = 250;
 
   private Synthesizer synthesizer = MidiSystem.getSynthesizer();
-  private Sequencer sequencer = MidiSystem.getSequencer();
+  private Sequencer sequencer = MidiSystem.getSequencer(false);
 
   public MIDIPlayer(final MetaEventRelay metaEventRelay)
     throws MidiUnavailableException, InvalidMidiDataException,
