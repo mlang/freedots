@@ -42,15 +42,27 @@
   <target name="init">
     <!-- Create the time stamp -->
     <tstamp/>
-    <mkdir dir="${build}"/>
+    <echo>java.version: ${java.version}</echo>
+    <condition property="freedots.java.version.p">
+      <or>
+        <matches string="${java.version}" pattern="1\.6"/>
+      </or>
+    </condition>
+  </target>
+  <target name="freedots.java.warning"
+          depends="init" unless="freedots.java.version.p">
+    <echo>WARNING: Use of Java version ${java.version} not recommended.</echo>
   </target>
 
-  <target name="compile" depends="init" description="compile the source">
+  <target name="compile" depends="init,freedots.java.warning"
+          description="compile the source">
     <!-- Compile the java code from ${src} into ${build} -->
+    <mkdir dir="${build}"/>
     <javac srcdir="${src}"
            destdir="${build}" debug="true"
            source="${freedots.minimum.javaversion}"
-           target="${freedots.minimum.javaversion}">
+           target="${freedots.minimum.javaversion}"
+           includeantruntime="false">
       <classpath refid="class.path"/>
     </javac>
     <propertyfile file="${build}/compilation.properties">
@@ -101,7 +113,7 @@
   <target name="clean.compile.test">
     <delete> <fileset dir="${test}" includes="**/*.class" /> </delete>
   </target>
-  
+ 
   <target name="test" depends="compile.test"
           description="run the test suite">
     <junit fork="yes" forkmode="once" failureProperty="test.failure">
@@ -122,7 +134,7 @@
     </validate-musicxml>
   </target>
 
-  <target name="build.jar" depends="validate.scores, test"
+  <target name="build.jar" depends="test, validate.scores"
           description="generate the jar">
     <mkdir dir="${dist}"/>
     <jar jarfile="${dist}/FreeDots-${DSTAMP}.jar" basedir="${build}">
