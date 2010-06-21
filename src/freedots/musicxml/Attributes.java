@@ -83,6 +83,17 @@ public final class Attributes {
     }
     return keys;
   }
+  public Transpose getTranspose() {
+    for (Node node = element.getFirstChild(); node != null;
+         node = node.getNextSibling())
+      if (node.getNodeType() == Node.ELEMENT_NODE) {
+        Element child = (Element)node;
+        if ("transpose".equals(child.getTagName()))
+          return new Transpose(child);
+      }
+    return null;
+  }
+
   class Clef extends freedots.music.Clef {
     private Element element = null;
     private String staffNumber = null;
@@ -117,6 +128,21 @@ public final class Attributes {
       if (staffName.equals("")) staffName = null;
     }
     public String getStaffName() { return staffName; }
+  }
+
+  class Transpose {
+    private Element chromatic, diatonic, octaveChange, doubleDown;
+    Transpose(final Element element) {
+      for (Node node = element.getFirstChild(); node != null;
+           node = node.getNextSibling())
+        if (node.getNodeType() == Node.ELEMENT_NODE) {
+          Element child = (Element)node;
+          if ("chromatic".equals(child.getTagName())) chromatic = child;
+          else if ("diatonic".equals(child.getTagName())) diatonic = child;
+          else if ("octave-change".equals(child.getTagName())) octaveChange = child;
+          else if ("double".equals(child.getTagName())) doubleDown = child;
+        }
+    }
   }
 
   private static int getBeatsFromElement(Element element)

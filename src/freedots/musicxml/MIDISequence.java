@@ -233,7 +233,7 @@ public final class MIDISequence extends javax.sound.midi.Sequence {
     if (!note.isGrace()) {
       Pitch pitch = note.getPitch();
       int duration = toInteger(note.getDuration());
-      Set<Articulation> articulations = note.getArticulations();
+      final Set<Articulation> articulations = note.getArticulations();
       if (articulations.contains(Articulation.staccatissimo)) {
         duration /= 4;
       } else if (articulations.contains(Articulation.staccato)) {
@@ -241,7 +241,7 @@ public final class MIDISequence extends javax.sound.midi.Sequence {
       } else if (articulations.contains(Articulation.mezzoStaccato)) {
         duration -= duration / 4;
       }
-      Set<Ornament> ornaments = note.getOrnaments();
+      final Set<Ornament> ornaments = note.getOrnaments();
       if (metaEventRelay != null) {
         MetaMessage metaMessage = metaEventRelay.createMetaMessage(note);
         if (metaMessage != null) {

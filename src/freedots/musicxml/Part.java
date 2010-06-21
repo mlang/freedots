@@ -161,6 +161,9 @@ public final class Part {
                                                 Integer.parseInt(key.getStaffName()) - 1));
                 }
               }
+              Attributes.Transpose transpose = attributes.getTranspose();
+              if (transpose != null) {
+              }
             } else if ("note".equals(tagName)) {
               Note note = new Note(musicdata, divisions, durationMultiplier,
                                    this);
