@@ -50,6 +50,7 @@ class ValueInterpreter {
   private Set<Interpretation> interpretations = new HashSet<Interpretation>();
 
   ValueInterpreter(final MusicList music, final TimeSignature timeSignature) {
+    assert timeSignature != null;
     List<Set<RhythmicPossibility>>
     candidates = new ArrayList<Set<RhythmicPossibility>>();
     for (Event event : music) {

@@ -100,6 +100,7 @@ public final class Part {
 
         StartBar startBar = new StartBar(measureOffset, ++measureNumber);
         startBar.setStaffCount(staffCount);
+        startBar.setTimeSignature(timeSignature);
         eventList.add(startBar);
 
         boolean repeatBackward = false;
