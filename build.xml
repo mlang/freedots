@@ -239,7 +239,8 @@
 
   <!-- Google AppEngine -->
   <property name="gae.sdk.dir" location="../appengine-java-sdk-1.3.5" />
-  <import file="${gae.sdk.dir}/config/user/ant-macros.xml" />
+  <available file="${gae.sdk.dir}" type="dir" property="gae.sdk.present"/>
+  <import file="${gae.sdk.dir}/config/user/ant-macros.xml" optional="true"/>
   <path id="gae.classpath">
     <pathelement path="war/WEB-INF/classes" />
     <fileset dir="war/WEB-INF/lib">
@@ -249,7 +250,7 @@
       <include name="shared/**/*.jar" />
     </fileset>
   </path>
-  <target name="build.gae" depends="test">
+  <target name="build.gae" depends="test" if="gae.sdk.present">
     <copy todir="war/WEB-INF/lib" flatten="true">
       <fileset dir="${gae.sdk.dir}/lib/user">
         <include name="**/*.jar" />
