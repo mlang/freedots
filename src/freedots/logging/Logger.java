@@ -32,7 +32,6 @@ import java.util.logging.LogManager;
 import java.util.logging.LogRecord;
 
 public final class Logger extends java.util.logging.Logger {
-  private static LogManager manager;
   private static ArrayBlockingQueue<LogRecord> logQueue;
   private static final int LOG_QUEUE_SIZE = 1000;
 
@@ -55,21 +54,7 @@ public final class Logger extends java.util.logging.Logger {
    * @return the logger found or created
    */
   public static synchronized Logger getLogger(String name) {
-    // Lazy initialization if needed
-    if (manager == null) {
-      manager = LogManager.getLogManager();
-      setGlobalParameters();
-    }
-
-    Logger result = (Logger) manager.getLogger(name);
-
-    if (result == null) {
-      result = new Logger(name);
-      manager.addLogger(result);
-      result = (Logger) manager.getLogger(name);
-    }
-
-    return result;
+    return new Logger(name);
   }
 
   /**

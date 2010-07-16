@@ -1,3 +1,4 @@
+/* -*- c-basic-offset: 2; indent-tabs-mode: nil; -*- */
 package freedots.web;
 
 import java.io.BufferedWriter;
@@ -7,7 +8,6 @@ import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.util.logging.Logger;
 
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.parsers.ParserConfigurationException;
@@ -24,102 +24,99 @@ import freedots.musicxml.Score;
 import freedots.transcription.Transcriber;
 
 @SuppressWarnings("serial")
-public class MusicXML2BrailleServlet extends HttpServlet {
-	private static final Logger LOG = Logger
-			.getLogger(MusicXML2BrailleServlet.class.getName());
+public class MusicXML2BrailleServlet extends javax.servlet.http.HttpServlet {
+  private static final Logger LOG =
+    Logger.getLogger(MusicXML2BrailleServlet.class.getName());
 
-	public void doGet(HttpServletRequest req, HttpServletResponse resp)
-			throws IOException {
+  public void doGet(HttpServletRequest req,
+                    HttpServletResponse resp) throws IOException {
+    String uri = req.getParameter("uri");
+    if (uri != null && uri.length() > 0) {
+      URL url = new URL(uri);
+      String extension = "xml";
+      String ext = uri.substring(uri.length() - 3);
+      if (ext.compareTo("mxl") == 0) {
+        extension = ext;
+      }
 
-		String uri = req.getParameter("uri");
-		if (uri != null && uri.length() > 0) {
+      writeResult(url.openStream(), extension, 40, 25, Method.SectionBySection, resp);
+    } else {
+      LOG.info("Bad URI error");
+      resp.sendError(500);
+    }
+  }
 
-			URL url = new URL(uri);
-			String extension = "xml";
-			String ext = uri.substring(uri.length() - 3);
-			if(ext.compareTo("mxl") == 0){
-				extension = ext;
-			}
-			Score score = null;
-			try {
-				score = new Score(url.openStream(), extension);
-			} catch (XPathExpressionException e) {
-				LOG.info("XPathExpressionException error");
-				resp.sendError(500);
-			} catch (ParserConfigurationException e) {
-				LOG.info("ParserConfigurationException error");
-				resp.sendError(500);
-			} catch (SAXException e) {
-				LOG.info("SAXException error");
-				resp.sendError(500);
-			}
-			if (score != null) {
-				String[] args = {};
-				Options options = new Options(args);
-				options.setMethod(Method.SectionBySection);
-				Transcriber transcriber = new Transcriber(options);
-				transcriber.setScore(score);
-				String result = transcriber.toString();
-				writeResult(score, result, resp);
-			}
-		} else {
-			LOG.info("Bad URI error");
-			resp.sendError(500);
-		}
+  public void doPost(HttpServletRequest req,
+                     HttpServletResponse resp) throws IOException {
+    InputStream stream = null;
+    ServletFileUpload upload = new ServletFileUpload();
+    try {
+      FileItemIterator iterator = upload.getItemIterator(req);
+      while (iterator.hasNext()) {
+        final FileItemStream item = iterator.next();
+        if (item.getFieldName().compareTo("file.xml") == 0) {
+          stream = item.openStream();
+          break;
+        }
+      }
+    } catch (org.apache.commons.fileupload.FileUploadException e) {
+      LOG.info("FileUploadException error");
+      resp.sendError(500);
+    }
 
-	}
+    if (stream != null) {
+      writeResult(stream, "xml", 40, 25, Method.SectionBySection, resp);
+    } else {
+      resp.sendRedirect("/");
+    }
+  }
 
-	public void doPost(HttpServletRequest req, HttpServletResponse resp)
-			throws IOException {
-		Score score = null;
-		try {
-			ServletFileUpload upload = new ServletFileUpload();
-			FileItemIterator iterator = upload.getItemIterator(req);
-			while (iterator.hasNext()) {
-				FileItemStream item = iterator.next();
-				InputStream stream = item.openStream();
+  private void writeResult(InputStream stream, String extension,
+                           int width, int height, Method method,
+                           HttpServletResponse resp) throws IOException {
+    Score score = null;
+    try {
+      score = new Score(stream, extension);
+    } catch (XPathExpressionException e) {
+      LOG.info("XPathExpressionException error");
+      resp.sendError(500);
+    } catch (ParserConfigurationException e) {
+      LOG.info("ParserConfigurationException error");
+      resp.sendError(500);
+    } catch (SAXException e) {
+      LOG.info("SAXException error");
+      resp.sendError(500);
+    }
 
-				if (item.getFieldName().compareTo("file.xml") == 0) {
-					score = new Score(stream, "xml");
-					break;
-				}
-			}
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-		if (score != null) {
-			String[] args = {};
-			Options options = new Options(args);
-			options.setMethod(Method.SectionBySection);
-			Transcriber transcriber = new Transcriber(options);
-			transcriber.setScore(score);
-			String result = transcriber.toString();
+    if (score != null) {
+      String[] args = {};
+      Options options = new Options(args);
 
-			writeResult(score, result, resp);
-		} else {
-			resp.sendRedirect("/");
-		}
-	}
+      options.setPageWidth(width);
+      options.setPageHeight(height);
+      options.setMethod(method);
 
-	private void writeResult(Score score, String result,
-			HttpServletResponse resp) throws IOException {
-		String title = score.getMovementTitle();
-		String filename = "output.txt";
-		if (title != null && !title.isEmpty())
-			filename = title + ".txt";
+      final Transcriber transcriber = new Transcriber(options);
+      transcriber.setScore(score);
+      final String result = transcriber.toString();
 
-		resp.setHeader("Content-Type", "application/force-download; name=\""
-				+ filename + "\"");
-		resp.setHeader("Content-Transfer-Encoding", "binary");
-		resp.setHeader("Content-Disposition", "attachment; filename=\""
-				+ filename + "\"");
+      String title = score.getMovementTitle();
+      String filename = "output.txt";
+      if (title != null && !title.isEmpty()) filename = title + ".txt";
 
-		BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(resp
-				.getOutputStream(), "UTF-8"));
+      resp.setHeader("Content-Type", "application/force-download; name=\""
+                     + filename + "\"");
+      resp.setHeader("Content-Transfer-Encoding", "binary");
+      resp.setHeader("Content-Disposition", "attachment; filename=\""
+                     + filename + "\"");
 
-		writer.write(result);
-		writer.flush();
-		writer.close();
+      BufferedWriter writer =
+        new BufferedWriter(new OutputStreamWriter(resp.getOutputStream(),
+                                                  "UTF-8"));
 
-	}
+      writer.write(result);
+      writer.flush();
+      writer.close();
+    }
+  }
 }

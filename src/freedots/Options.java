@@ -142,11 +142,14 @@ public final class Options {
    * @see #DEFAULT_PAGE_HEIGHT
    */
   public int getPageHeight() { return pageHeight; }
+  public void setPageHeight(int height) { pageHeight = height; }
+
   /** Number of columns of a braille page.
    * @return {@code DEFAULT_PAGE_WIDTH} is no value was specified
    * @see #DEFAULT_PAGE_WIDTH
    */
   public int getPageWidth() { return pageWidth; }
+  public void setPageWidth(int width) { pageWidth = width; }
 
   boolean getWindowSystem() { return windowSystem; }
   void setWindowSystem(final boolean windowSystem) {
