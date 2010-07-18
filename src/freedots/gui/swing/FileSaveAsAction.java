@@ -37,6 +37,7 @@ import javax.swing.filechooser.FileFilter;
 import javax.swing.JOptionPane;
 
 import freedots.Braille;
+import freedots.braille.BrailleEncoding;
 import freedots.musicxml.MIDISequence;
 import freedots.musicxml.Score;
 import freedots.transcription.Transcriber;
@@ -187,17 +188,7 @@ public final class FileSaveAsAction extends javax.swing.AbstractAction {
     try {
       try {
         fileWriter = new FileWriter(file);
-        CharacterIterator
-        iterator = new StringCharacterIterator(transcriber.toString());
-        for(char c = iterator.first(); c != CharacterIterator.DONE;
-            c = iterator.next()) {
-          if (Braille.BRF_TABLE.containsKey(new Character(c))) {
-            final Character mapped = Braille.BRF_TABLE.get(new Character(c));
-            fileWriter = fileWriter.append(mapped);
-          } else {
-            fileWriter = fileWriter.append(c);
-          }
-        }
+        fileWriter.append(transcriber.toString(BrailleEncoding.NorthAmericanBrailleComputerCode));
       } finally {
         fileWriter.close();
       }

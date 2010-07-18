@@ -22,12 +22,16 @@
  */
 package freedots.transcription;
 
+import java.text.CharacterIterator;
+import java.text.StringCharacterIterator;
 import java.util.ArrayList;
 import java.util.List;
 
 import freedots.Options;
 
+import freedots.Braille;
 import freedots.braille.Sign;
+import freedots.braille.BrailleEncoding;
 import freedots.braille.BrailleList;
 import freedots.braille.BrailleSequence;
 import freedots.braille.NewLine;
@@ -256,12 +260,39 @@ public final class Transcriber {
     return strings;
   }
 
+  /** Converts transcription result to a string.
+   *
+   * @param encoding specifies the braille encoding to use.
+   */
+  public String toString(final BrailleEncoding encoding) {
+    final String string = strings.toString();
+    switch (encoding) {
+    case NorthAmericanBrailleComputerCode: {
+      final StringBuilder stringBuilder = new StringBuilder();
+      final CharacterIterator iterator = new StringCharacterIterator(string);
+      for(char c = iterator.first(); c != CharacterIterator.DONE;
+          c = iterator.next()) {
+        final Character ch = new Character(c);
+        if (Braille.BRF_TABLE.containsKey(ch)) {
+          final Character mapped = Braille.BRF_TABLE.get(ch);
+          stringBuilder.append(mapped);
+        } else {
+          stringBuilder.append(c);
+        }
+      }
+      return stringBuilder.toString();
+    }
+    case UnicodeBraille:
+    default:
+      return string;
+    }
+  }
   /** Converts transcription result to a plain string.
    *
    * @return result string of last transcription
    */
   @Override public String toString() {
-    return strings.toString();
+    return toString(BrailleEncoding.UnicodeBraille);
   }
 
   private List<Direction> alreadyPrintedDirections;
