@@ -9,7 +9,7 @@
 download a text file if the conversion is successful.</p>
 <form action="musicxml2braille" enctype="multipart/form-data" method="post">
 <div><input type="file" NAME="file.xml"></div>
-<div><select name="encoding">
+<div><select NAME="encoding">
        <option value="UnicodeBraille">Unicode braille (txt)</option>
        <option value="NorthAmericanBrailleComputerCode">Braille ASCII (brf)</option>
      </select>
