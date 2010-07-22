@@ -9,6 +9,11 @@
 download a text file if the conversion is successful.</p>
 <form action="musicxml2braille" enctype="multipart/form-data" method="post">
 <div><input type="file" NAME="file.xml"></div>
+<div><select name="encoding">
+       <option value="UnicodeBraille">Unicode braille (txt)</option>
+       <option value="NorthAmericanBrailleComputerCode">Braille ASCII (brf)</option>
+     </select>
+</div>
 <div><input type="submit" name="submit" value="Convert to Braille" onClick="pageTracker._trackEvent('Submit', 'Click');" /></div>
 </form>
 <br />

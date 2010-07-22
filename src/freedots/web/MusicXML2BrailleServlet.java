@@ -1,9 +1,11 @@
 /* -*- c-basic-offset: 2; indent-tabs-mode: nil; -*- */
 package freedots.web;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.util.logging.Logger;
@@ -20,6 +22,7 @@ import org.xml.sax.SAXException;
 
 import freedots.Options;
 import freedots.Options.Method;
+import freedots.braille.BrailleEncoding;
 import freedots.musicxml.Score;
 import freedots.transcription.Transcriber;
 
@@ -34,12 +37,28 @@ public class MusicXML2BrailleServlet extends javax.servlet.http.HttpServlet {
     if (uri != null && uri.length() > 0) {
       URL url = new URL(uri);
       String extension = "xml";
+      BrailleEncoding brailleEncoding = BrailleEncoding.UnicodeBraille;
+
       String ext = uri.substring(uri.length() - 3);
       if (ext.compareTo("mxl") == 0) {
         extension = ext;
       }
 
-      writeResult(url.openStream(), extension, 40, 25, Method.SectionBySection, resp);
+      String encodingParam = req.getParameter("encoding");
+      if (encodingParam != null && !encodingParam.isEmpty()) {
+        try {
+          brailleEncoding = Enum.valueOf(BrailleEncoding.class, encodingParam);
+        } catch (IllegalArgumentException e) {
+          LOG.info("Unknown encoding "+encodingParam+", falling back to default");
+        }
+      }
+
+      Score score = parseMusicXML(url.openStream(), extension);
+      if (score != null)
+        writeResult(score, 40, 25, Method.SectionBySection, brailleEncoding,
+                    resp);
+      else
+        resp.sendError(500);
     } else {
       LOG.info("Bad URI error");
       resp.sendError(500);
@@ -48,6 +67,8 @@ public class MusicXML2BrailleServlet extends javax.servlet.http.HttpServlet {
 
   public void doPost(HttpServletRequest req,
                      HttpServletResponse resp) throws IOException {
+    Score score = null;
+    BrailleEncoding brailleEncoding = BrailleEncoding.UnicodeBraille;
     InputStream stream = null;
     ServletFileUpload upload = new ServletFileUpload();
     try {
@@ -55,8 +76,18 @@ public class MusicXML2BrailleServlet extends javax.servlet.http.HttpServlet {
       while (iterator.hasNext()) {
         final FileItemStream item = iterator.next();
         if (item.getFieldName().compareTo("file.xml") == 0) {
-          stream = item.openStream();
-          break;
+          score = parseMusicXML(item.openStream(), "xml");
+        } else if (item.getFieldName().compareTo("encoding") == 0) {
+          final BufferedReader reader =
+            new BufferedReader(new InputStreamReader(item.openStream()));
+          final String line = reader.readLine();
+          if (line != null) {
+            try {
+              brailleEncoding = Enum.valueOf(BrailleEncoding.class, line);
+            } catch (IllegalArgumentException e) {
+              LOG.info("Unknown encoding "+line+", falling back to default");
+            }            
+          }
         }
       }
     } catch (org.apache.commons.fileupload.FileUploadException e) {
@@ -64,30 +95,32 @@ public class MusicXML2BrailleServlet extends javax.servlet.http.HttpServlet {
       resp.sendError(500);
     }
 
-    if (stream != null) {
-      writeResult(stream, "xml", 40, 25, Method.SectionBySection, resp);
+    if (score != null) {
+      writeResult(score, 40, 25, Method.SectionBySection, brailleEncoding,
+                  resp);
     } else {
       resp.sendRedirect("/");
     }
   }
 
-  private void writeResult(InputStream stream, String extension,
-                           int width, int height, Method method,
-                           HttpServletResponse resp) throws IOException {
+  private Score parseMusicXML(InputStream stream, String extension) throws IOException {
     Score score = null;
     try {
       score = new Score(stream, extension);
     } catch (XPathExpressionException e) {
       LOG.info("XPathExpressionException error");
-      resp.sendError(500);
     } catch (ParserConfigurationException e) {
       LOG.info("ParserConfigurationException error");
-      resp.sendError(500);
     } catch (SAXException e) {
       LOG.info("SAXException error");
-      resp.sendError(500);
     }
+    return score;
+  }
 
+  private void writeResult(Score score,
+                           int width, int height, Method method,
+                           BrailleEncoding encoding,
+                           HttpServletResponse resp) throws IOException {
     if (score != null) {
       String[] args = {};
       Options options = new Options(args);
@@ -98,11 +131,12 @@ public class MusicXML2BrailleServlet extends javax.servlet.http.HttpServlet {
 
       final Transcriber transcriber = new Transcriber(options);
       transcriber.setScore(score);
-      final String result = transcriber.toString();
+      final String result = transcriber.toString(encoding);
 
       String title = score.getMovementTitle();
-      String filename = "output.txt";
-      if (title != null && !title.isEmpty()) filename = title + ".txt";
+      String filename = "output."+encoding.getExtension();
+      if (title != null && !title.isEmpty())
+        filename = title + "."+encoding.getExtension();
 
       resp.setHeader("Content-Type", "application/force-download; name=\""
                      + filename + "\"");
