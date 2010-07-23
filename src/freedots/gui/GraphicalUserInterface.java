@@ -30,9 +30,4 @@ public interface GraphicalUserInterface {
    * Called after construction to start the main loop.
    */
   void run();
-
-  /**
-   * Called whenever some log record (or several) have arrived.
-   */
-  void notifyLog();
 }

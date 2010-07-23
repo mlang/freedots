@@ -27,6 +27,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.Map;
 
 import javax.xml.xpath.XPath;
@@ -34,7 +35,6 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
-import freedots.logging.Logger;
 import freedots.math.Fraction;
 import freedots.music.Accidental;
 import freedots.music.AccidentalContext;
@@ -57,7 +57,7 @@ import org.w3c.dom.NodeList;
 /** A wrapper around the MusicXML part element.
  */
 public final class Part {
-  private static final Logger LOG = Logger.getLogger(Part.class);
+  private static final Logger LOG = Logger.getLogger(Part.class.getName());
 
   private final Element scorePart;
 

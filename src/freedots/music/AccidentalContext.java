@@ -23,9 +23,8 @@
 package freedots.music;
 
 import java.util.HashMap;
+import java.util.logging.Logger;
 import java.util.Map;
-
-import freedots.logging.Logger;
 
 /**
  * Since about 1700, accidentals have been understood to continue for the
@@ -37,7 +36,7 @@ import freedots.logging.Logger;
  * accidental is tied to the same note across a barline.
  */
 public final class AccidentalContext {
-  private static final Logger LOG = Logger.getLogger(AccidentalContext.class);
+  private static final Logger LOG = Logger.getLogger(AccidentalContext.class.getName());
 
   private KeySignature keySignature;
   private Map<Integer, Accidental> ranks = new HashMap<Integer, Accidental>();

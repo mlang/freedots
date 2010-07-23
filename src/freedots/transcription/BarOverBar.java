@@ -23,6 +23,8 @@
 package freedots.transcription;
 
 import java.util.ArrayList;
+import java.util.logging.Logger;
+
 import freedots.braille.BrailleKeySignature;
 import freedots.braille.BrailleList;
 import freedots.braille.BrailleSequence;
@@ -34,7 +36,6 @@ import freedots.braille.Sign;
 import freedots.braille.SoloPart;
 import freedots.braille.Space;
 import freedots.braille.UpperDigits;
-import freedots.logging.Logger;
 import freedots.Options;
 import freedots.music.EndBar;
 import freedots.music.Event;
@@ -49,7 +50,7 @@ import freedots.musicxml.Score;
 /** Transcription in bar over bar format.
  */
 class BarOverBar implements Strategy {
-  private static final Logger LOG = Logger.getLogger(BarOverBar.class);
+  private static final Logger LOG = Logger.getLogger(BarOverBar.class.getName());
 
   private Transcriber transcriber;
   private Options options = null;

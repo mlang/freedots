@@ -264,7 +264,7 @@
            destdir="war/WEB-INF/classes" debug="true"
            source="${freedots.minimum.javaversion}"
            target="${freedots.minimum.javaversion}"
-           excludes="freedots/gui/, freedots/Main.java freedots/playback/"
+           excludes="freedots/gui/ freedots/Main.* freedots/musicxml/MIDISequence.* freedots/playback/"
            includeantruntime="false">
       <classpath refid="gae.classpath"/>
     </javac>

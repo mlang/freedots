@@ -23,8 +23,8 @@
 package freedots.braille;
 
 import java.util.Iterator;
+import java.util.logging.Logger;
 
-import freedots.logging.Logger;
 import freedots.math.Fraction;
 import freedots.music.Accidental;
 import freedots.music.AugmentedPowerOfTwo;
@@ -33,7 +33,7 @@ import freedots.musicxml.Harmony;
 /** Braille representation of a harmony chord.
  */
 public class BrailleHarmony extends BrailleList {
-  private static final Logger log = Logger.getLogger(BrailleHarmony.class);
+  private static final Logger log = Logger.getLogger(BrailleHarmony.class.getName());
   private final Harmony harmony;
   private final boolean withStems;
   public BrailleHarmony(final Harmony harmony,

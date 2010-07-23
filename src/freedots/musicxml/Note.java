@@ -27,10 +27,10 @@ import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.Map;
 import java.util.Set;
 
-import freedots.logging.Logger;
 import freedots.math.AbstractFraction;
 import freedots.math.Fraction;
 import freedots.math.PowerOfTwo;
@@ -56,7 +56,7 @@ import org.w3c.dom.Text;
 /** A wrapper around (the most important) note element.
  */
 public final class Note implements RhythmicElement, freedots.music.TupletElement {
-  private static final Logger LOG = Logger.getLogger(Note.class);
+  private static final Logger LOG = Logger.getLogger(Note.class.getName());
 
   static final String ACCIDENTAL_ELEMENT = "accidental";
   static final String CHORD_ELEMENT = "chord";

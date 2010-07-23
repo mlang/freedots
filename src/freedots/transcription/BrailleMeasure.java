@@ -25,6 +25,7 @@ package freedots.transcription;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.Set;
 
 import freedots.Braille;
@@ -37,7 +38,6 @@ import freedots.braille.BrailleWords;
 import freedots.braille.RestSign;
 import freedots.braille.SimileSign;
 import freedots.braille.Text;
-import freedots.logging.Logger;
 import freedots.music.AbstractPitch;
 import freedots.music.AugmentedPowerOfTwo;
 import freedots.music.Event;
@@ -50,7 +50,7 @@ import freedots.musicxml.Direction;
 import freedots.musicxml.Note;
 
 class BrailleMeasure {
-  private static final Logger LOG = Logger.getLogger(BrailleMeasure.class);
+  private static final Logger LOG = Logger.getLogger(BrailleMeasure.class.getName());
 
   private BrailleMeasure previous = null;
   private MusicList events = new MusicList();
