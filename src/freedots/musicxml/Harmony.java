@@ -24,15 +24,15 @@ package freedots.musicxml;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
-import freedots.logging.Logger;
 import freedots.math.Fraction;
 
 public final class Harmony extends AbstractDirection {
-  private static final Logger LOG = Logger.getLogger(Harmony.class);
+  private static final Logger LOG = Logger.getLogger(Harmony.class.getName());
 
   private final List<HarmonyChord> chords = new ArrayList<HarmonyChord>();
 

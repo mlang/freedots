@@ -53,7 +53,6 @@ import javax.swing.event.CaretEvent;
 
 import freedots.Options;
 import freedots.braille.Sign;
-import freedots.logging.Logger;
 import freedots.musicxml.Library;
 import freedots.musicxml.MIDISequence;
 import freedots.musicxml.Note;
@@ -100,7 +99,6 @@ public final class Main extends JFrame
     playScoreAction.setEnabled(scoreAvailable);
   }
 
-  private JTextArea logArea;
   private BraillePane textPane;
   
   private Object lastObject = null;
@@ -284,15 +282,11 @@ public final class Main extends JFrame
 
     textPane.addCaretListener(this);
 
-    logArea = new JTextArea(5, 60);
-    logArea.setEditable(false);
 
     // Lay out the content pane.
     JPanel contentPane = new JPanel();
     contentPane.setLayout(new BorderLayout());
     contentPane.add(new JScrollPane(textPane), BorderLayout.CENTER);
-
-    contentPane.add(new JScrollPane(logArea), BorderLayout.SOUTH);
 
     contentPane.add(statusBar, BorderLayout.SOUTH);
 
@@ -594,25 +588,5 @@ public final class Main extends JFrame
       if (objectPosition != -1) position = objectPosition;
     }
     textPane.setCaretPosition(position);
-  }
-
-  public void notifyLog() {
-    javax.swing.SwingUtilities.invokeLater
-      (new Runnable() {
-          public void run () {
-            final BlockingQueue<LogRecord> queue = Logger.getQueue();
-            while (queue.size() != 0) {
-              LogRecord record = queue.poll();
-              if (record != null) {
-                StringBuilder sb = new StringBuilder(256);
-                sb.append(record.getLevel().toString())
-                  .append(" - ")
-                  .append(record.getMessage())
-                  .append("\n");
-                logArea.append(sb.toString());
-              }
-            }
-          }
-        });
   }
 }

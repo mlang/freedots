@@ -22,8 +22,9 @@
  */
 package freedots.braille;
 
+import java.util.logging.Logger;
+
 import freedots.Options;
-import freedots.logging.Logger;
 import freedots.music.AbstractPitch;
 import freedots.music.Accidental;
 import freedots.music.Articulation;
@@ -43,7 +44,7 @@ import freedots.musicxml.Note;
  *      Notes and Values</a>
  */
 public class BrailleNote extends BrailleList {
-  private static final Logger log = Logger.getLogger(BrailleNote.class);
+  private static final Logger log = Logger.getLogger(BrailleNote.class.getName());
 
   private final Note note;
 
