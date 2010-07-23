@@ -29,14 +29,11 @@ import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
-import java.text.CharacterIterator;
-import java.text.StringCharacterIterator;
 import javax.sound.midi.MidiSystem;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.JOptionPane;
 
-import freedots.Braille;
 import freedots.braille.BrailleEncoding;
 import freedots.musicxml.MIDISequence;
 import freedots.musicxml.Score;

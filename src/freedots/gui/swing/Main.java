@@ -34,8 +34,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.InputStream;
-import java.util.concurrent.BlockingQueue;
-import java.util.logging.LogRecord;
 import javax.sound.midi.MidiUnavailableException;
 import javax.swing.Action;
 import javax.swing.ButtonGroup;
@@ -48,7 +46,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.event.CaretEvent;
 
 import freedots.Options;
