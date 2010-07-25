@@ -62,7 +62,10 @@ public final class HTMLOutput {
     Element style = document.createElement("style");
     style.setAttribute("type", "text/css");
     style.setAttribute("media", "all");
-    style.setTextContent(".freedots.braille.PitchAndValueSign {color: blue; }");
+    style.setTextContent(
+".freedots_braille_AccidentalSign { color: red; }\n" + 
+".freedots_braille_OctaveSign { color: pink; }\n" +
+".freedots_braille_PitchAndValueSign {color: blue; }\n");
     head.appendChild(style);
     html.appendChild(head);
 
@@ -98,7 +101,8 @@ public final class HTMLOutput {
 
   static void appendHTML(BrailleList braille, Element element) {
     Element span = element.getOwnerDocument().createElement("span");
-    span.setAttribute("class", braille.getClass().getName());
+    span.setAttribute("title", braille.getDescription());
+    span.setAttribute("class", braille.getClass().getName().replaceAll("\\.", "_"));
 
     for (BrailleSequence sequence: braille) {
       if (sequence instanceof NewLine) {
@@ -107,7 +111,7 @@ public final class HTMLOutput {
       } else if (sequence instanceof Sign) {
         Element container = element.getOwnerDocument().createElement("span");
         container.setAttribute("title", sequence.getDescription());
-        container.setAttribute("class", sequence.getClass().getName());
+        container.setAttribute("class", sequence.getClass().getName().replaceAll("\\.", "_"));
         String string = sequence.toString().replaceAll(" ", String.valueOf((char)160));
         container.setTextContent(string);
         span.appendChild(container);
