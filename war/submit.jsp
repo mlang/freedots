@@ -12,6 +12,7 @@ download a text file if the conversion is successful.</p>
 <div><select NAME="encoding">
        <option value="UnicodeBraille">Unicode braille (txt)</option>
        <option value="NorthAmericanBrailleComputerCode">Braille ASCII (brf)</option>
+       <option value="HTML>Annotated braille (html)</option>
      </select>
 </div>
 <div><input type="submit" name="submit" value="Convert to Braille" onClick="pageTracker._trackEvent('Submit', 'Click');" /></div>

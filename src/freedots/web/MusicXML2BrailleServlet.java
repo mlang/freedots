@@ -138,12 +138,15 @@ public class MusicXML2BrailleServlet extends javax.servlet.http.HttpServlet {
       if (title != null && !title.isEmpty())
         filename = title + "."+encoding.getExtension();
 
-      resp.setHeader("Content-Type", "application/force-download; name=\""
-                     + filename + "\"");
-      resp.setHeader("Content-Transfer-Encoding", "binary");
-      resp.setHeader("Content-Disposition", "attachment; filename=\""
-                     + filename + "\"");
-
+      if (encoding == BrailleEncoding.HTML) {
+        resp.setHeader("Content-Type", "text/html; charset=utf-8");
+      } else {
+        resp.setHeader("Content-Type", "application/force-download; name=\""
+                       + filename + "\"");
+        resp.setHeader("Content-Transfer-Encoding", "binary");
+        resp.setHeader("Content-Disposition", "attachment; filename=\""
+                       + filename + "\"");
+      }
       BufferedWriter writer =
         new BufferedWriter(new OutputStreamWriter(resp.getOutputStream(),
                                                   "UTF-8"));
