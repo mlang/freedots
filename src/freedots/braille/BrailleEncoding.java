@@ -23,7 +23,7 @@
 package freedots.braille;
 
 public enum BrailleEncoding {
-  UnicodeBraille("txt"), NorthAmericanBrailleComputerCode("brf");
+  UnicodeBraille("txt"), NorthAmericanBrailleComputerCode("brf"), HTML("html");
 
   private String extension;
 

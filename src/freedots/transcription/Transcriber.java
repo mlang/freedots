@@ -282,6 +282,14 @@ public final class Transcriber {
       }
       return stringBuilder.toString();
     }
+    case HTML: {
+      try {
+        return HTMLOutput.convert(strings);
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+      return null;
+    }
     case UnicodeBraille:
     default:
       return string;
