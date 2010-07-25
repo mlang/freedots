@@ -106,7 +106,7 @@ public final class HTMLOutput {
         span.appendChild(br);
       } else if (sequence instanceof Sign) {
         Element container = element.getOwnerDocument().createElement("span");
-        container.setAttribute("onmouseover", "window.status='"+sequence.getDescription()+"'; return true");
+        container.setAttribute("title", sequence.getDescription());
         container.setAttribute("class", sequence.getClass().getName());
         String string = sequence.toString().replaceAll(" ", String.valueOf((char)160));
         container.setTextContent(string);
