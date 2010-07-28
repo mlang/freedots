@@ -55,23 +55,41 @@ public final class HTMLOutput {
                                            "html", docType);
     Element html = document.getDocumentElement();
     Element head = document.createElement("head");
+    Element title = document.createElement("title");
+    head.appendChild(title);
+
     Element meta = document.createElement("meta");
-    meta.setAttribute("http-equiv", "Content-Type");
     meta.setAttribute("content", "text/html; charset=utf-8");
+    meta.setAttribute("http-equiv", "Content-Type");
     head.appendChild(meta);
     Element style = document.createElement("style");
     style.setAttribute("type", "text/css");
     style.setAttribute("media", "all");
     style.setTextContent(
+".Sign:hover { margin: -1px; border-style: solid; border-width: 1px; }\n" +
 ".freedots_braille_AccidentalSign { color: red; }\n" + 
+".freedots_braille_Dot { color: #5FAAB1; }\n" +
 ".freedots_braille_OctaveSign { color: pink; }\n" +
-".freedots_braille_PitchAndValueSign {color: blue; }\n");
+".freedots_braille_PitchAndValueSign { color: blue; }\n");
     head.appendChild(style);
     html.appendChild(head);
 
     Element body = document.createElement("body");
+    Element div = document.createElement("div");
+    appendHTML(braille, div);
+    body.appendChild(div);
 
-    appendHTML(braille, body);
+    Element p = document.createElement("p");
+    Element a = document.createElement("a");
+    Element img = document.createElement("img");
+    img.setAttribute("src", "http://www.w3.org/Icons/valid-xhtml10");
+    img.setAttribute("alt", "Valid XHTML 1.0 Strict");
+    img.setAttribute("height", "31");
+    img.setAttribute("width", "88");
+    a.setAttribute("href", "http://validator.w3.org/check?uri=referer");
+    a.appendChild(img);
+    p.appendChild(a);
+    body.appendChild(p);
 
     html.appendChild(body);
 
@@ -111,7 +129,7 @@ public final class HTMLOutput {
       } else if (sequence instanceof Sign) {
         Element container = element.getOwnerDocument().createElement("span");
         container.setAttribute("title", sequence.getDescription());
-        container.setAttribute("class", sequence.getClass().getName().replaceAll("\\.", "_"));
+        container.setAttribute("class", sequence.getClass().getName().replaceAll("\\.", "_") + " Sign");
         String string = sequence.toString().replaceAll(" ", String.valueOf((char)160));
         container.setTextContent(string);
         span.appendChild(container);
