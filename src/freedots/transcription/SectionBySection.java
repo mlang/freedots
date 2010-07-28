@@ -88,11 +88,13 @@ class SectionBySection implements Strategy {
       }
       BrailleTimeSignature bTimeSig =
         new BrailleTimeSignature(part.getTimeSignature());
-      transcriber.printString(new Text(directiveText) {
-                                @Override public String getDescription() {
-                                  return "A directive at the beginning";
-                                }
-                              });
+      if (!directiveText.isEmpty()) {
+        transcriber.printString(new Text(directiveText) {
+                                  @Override public String getDescription() {
+                                    return "A directive at the beginning";
+                                  }
+                                });
+      }
       // TODO: FIXME
       transcriber.printString(new BrailleKeySignature(part.getKeySignature()));
       transcriber.printString(bTimeSig);
