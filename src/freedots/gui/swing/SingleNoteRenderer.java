@@ -209,7 +209,7 @@ final class SingleNoteRenderer extends JPanel {
   public void setNote(Note note) {
     this.currentNote = note;
     //this.updateUI();
-    //this.repaint();
+    this.repaint();
   }
 
   private int toLevel(char c) {
