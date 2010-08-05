@@ -8,6 +8,11 @@
 
 	!include "MUI2.nsh"
 	!include "Library.nsh"
+	!include "WinMessages.nsh"
+
+;Add include directories
+!addplugindir nsis/plugins
+!addincludedir nsis/includes
 
 ;Include Font installation code
 	!include "FileFunc.nsh"
