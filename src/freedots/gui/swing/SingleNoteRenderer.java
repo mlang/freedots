@@ -58,7 +58,6 @@ final class SingleNoteRenderer extends JPanel {
   
   private int globalNotePos = 0;
   
-  
   private static final char TRANSPARENT = '-';
   private static final char[] CHARTABLE = new char[] {
     '#', // 0 Black
@@ -209,7 +208,8 @@ final class SingleNoteRenderer extends JPanel {
 
   public void setNote(Note note) {
     this.currentNote = note;
-    this.updateUI();
+    //this.updateUI();
+    //this.repaint();
   }
 
   private int toLevel(char c) {
@@ -336,9 +336,12 @@ final class SingleNoteRenderer extends JPanel {
     SingleIconSpecification iconSpec =
       noteDefs.get(currentNote.getAugmentedFraction().numerator()
                    +"/"+currentNote.getAugmentedFraction().denominator());
-
-    // First draw note head
-
+    
+    if (iconSpec==null) return;
+    
+        // First draw note head
+    if (icons.get(iconSpec.getNoteHeadImage())==null) return;
+    
     g2.drawImage(icons.get(iconSpec.getNoteHeadImage()), null,
                  notePosX, notePosY);
     // Eventually draw the stem
@@ -351,6 +354,7 @@ final class SingleNoteRenderer extends JPanel {
     // draw the flags, if any
     g2.drawImage(icons.get(iconSpec.getFlagsImage()), null,
                  notePosX, notePosY);
+    
   }
 
   public void paintComponent(Graphics g) {

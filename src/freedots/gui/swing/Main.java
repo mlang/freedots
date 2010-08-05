@@ -145,12 +145,24 @@ public final class Main extends JFrame
   private MetaEventRelay metaEventRelay = new MetaEventRelay(this);
   public void objectPlaying(Object object) {
     if (caretFollowsPlayback) {
-      int pos = transcriber.getIndexOfScoreObject(object);
+      final int pos = transcriber.getIndexOfScoreObject(object);
       if (pos >= 0) {
-        boolean old = autoPlay;
+      javax.swing.SwingUtilities.invokeLater(
+      new Runnable() {
+      
+      public void run()
+      {
+          boolean old = autoPlay;
         autoPlay = false;
         textPane.setCaretPosition(pos);
         autoPlay = old;
+      }
+      }
+      
+      
+      
+      );
+    
       }
     }
   }
