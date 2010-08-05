@@ -26,6 +26,6 @@ public class MusicHyphen extends Sign {
   public MusicHyphen() { super(braille(5)); }
 
   public String getDescription() {
-    return "Indicates that this measure is continued on the next line or page.";
+    return "Indicates that this measure is continued on the next line or page";
   }
 }

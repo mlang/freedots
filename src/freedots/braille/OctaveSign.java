@@ -36,7 +36,7 @@ public class OctaveSign extends Sign {
   public String getDescription() {
     return new StringBuilder()
       .append("Indicates that the following note belongs to the ")
-      .append(OCTAVE_NAMES[octave]).append(" octave.").toString();
+      .append(OCTAVE_NAMES[octave]).append(" octave").toString();
   } 
 
   private static final String[] OCTAVE_SIGNS = new String[] {

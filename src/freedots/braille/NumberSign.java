@@ -28,6 +28,6 @@ public class NumberSign extends Sign {
   NumberSign() { super(braille(3456)); }
 
   public String getDescription() {
-    return "Indicates the beginning of a number.";
+    return "Indicates the beginning of a number";
   }
 }

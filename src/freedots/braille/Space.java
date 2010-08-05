@@ -25,5 +25,5 @@ package freedots.braille;
 public class Space extends Sign {
   public Space() { super(" "); }
 
-  public String getDescription() { return "A blank cell."; }
+  public String getDescription() { return "A blank cell"; }
 }

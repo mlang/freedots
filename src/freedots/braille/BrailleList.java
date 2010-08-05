@@ -64,7 +64,7 @@ public class BrailleList extends java.util.LinkedList<BrailleSequence>
   @Override public void addLast(final BrailleSequence item) { add(item); }
 
   public String getDescription() {
-    return "Groups several signs as a logical unit.";
+    return "Groups several signs as a logical unit";
   }
 
   /** Checks if the last element of this list needs a guide dot after it.

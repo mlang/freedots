@@ -182,7 +182,7 @@ public class BrailleChord extends BrailleList {
   public static class ChordTieSign extends Sign {
     ChordTieSign() { super(braille(46, 14)); }
     public String getDescription() {
-      return "Indicates that all notes of a chord are tied to the next chord.";
+      return "Indicates that all notes of a chord are tied to the next chord";
     }
   }
 }

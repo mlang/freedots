@@ -26,7 +26,7 @@ package freedots.braille;
  */
 public class NewLine extends Sign {
   public NewLine() { super(LINE_SEPARATOR); }
-  public String getDescription() { return "Starts a new line."; }
+  public String getDescription() { return "Starts a new line"; }
 
   private static final String LINE_SEPARATOR =
     System.getProperty("line.separator");

@@ -172,7 +172,7 @@ public class BrailleHarmony extends BrailleList {
   static class StemSign extends Sign {
     StemSign(final String sign) { super(sign); }
     public String getDescription() {
-      return "Indicates a certain durational value.";
+      return "Indicates a certain durational value";
     }
   }
   static class WholeStemSign extends StemSign {

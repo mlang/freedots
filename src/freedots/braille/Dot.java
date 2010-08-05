@@ -24,5 +24,5 @@ package freedots.braille;
 
 public class Dot extends Sign {
   public Dot() { super(braille(3)); }
-  public String getDescription() { return "Prolongation dot."; }
+  public String getDescription() { return "Prolongation dot"; }
 }
