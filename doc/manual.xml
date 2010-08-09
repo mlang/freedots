@@ -546,21 +546,18 @@ or just a single note.
 	</varlistentry>
 	<varlistentry>
 	  <term><menuchoice>
-	    <shortcut>
-	      <keycombo><keycap>Ctrl</keycap><keycap>p</keycap></keycombo>
-	    </shortcut>
 	    <guimenu>File</guimenu>
-	    <guimenuitem>Play score</guimenuitem>
+	    <guimenuitem>Save as...</guimenuitem>
 	  </menuchoice></term>
-	  <listitem><para><action>Start playback of the whole score.</action></para></listitem>
+	  <listitem><para><action>Allows saving the currently open file to several file formats.</action></para></listitem>
 	</varlistentry>
-	<varlistentry>
+	<!-- varlistentry>
 	  <term><menuchoice>
 	    <guimenu>File</guimenu>
 	    <guimenuitem>Save as MIDI</guimenuitem>
 	  </menuchoice></term>
 	  <listitem><para><action>Export the currently opened MusicXML to a standard MIDI file.</action></para></listitem>
-	</varlistentry>
+	</varlistentry -->
 	<varlistentry>
 	  <term><menuchoice>
 	    <guimenu>File</guimenu>
@@ -568,6 +565,81 @@ or just a single note.
 	  </menuchoice></term>
 	  <listitem><para><action>Exit &App;</action></para></listitem>
 	</varlistentry>
+	
+	<varlistentry>
+	    <term><menuchoice>
+		<shortcut>
+		    <keycombo><keycap>Ctrl</keycap><keycap>f</keycap></keycombo>
+		</shortcut>
+		   <guimenu>Edit</guimenu>
+		   <guimenuitem>Fingering</guimenuitem>
+	    </menuchoice></term>
+	    <listitem><para><action>Allows adding fingering information.</action></para></listitem>
+	</varlistentry>
+	
+	
+	<varlistentry>
+	    <term><menuchoice>
+		   <guimenu>Transcription</guimenu>
+		   <guimenuitem>Section by Section</guimenuitem>
+	    </menuchoice></term>
+	    <listitem><para><action>T.b.d.</action></para></listitem>
+	</varlistentry>
+
+	<varlistentry>
+	    <term><menuchoice>
+		   <guimenu>Transcription</guimenu>
+		   <guimenuitem>Bar over Bar</guimenuitem>
+	    </menuchoice></term>
+	    <listitem><para><action>T.b.d.</action></para></listitem>
+	</varlistentry>
+	
+
+	<varlistentry>
+	    <term><menuchoice>
+		<shortcut>
+		    <keycombo><keycap>Ctrl</keycap><keycap>p</keycap></keycombo>
+		</shortcut>
+		   <guimenu>Playback</guimenu>
+		   <guimenuitem>Play/Pause score</guimenuitem>
+	    </menuchoice></term>
+	    <listitem><para><action>Toggles playing/pause of the currently opened score.</action></para></listitem>
+	</varlistentry>
+
+
+
+	<varlistentry>
+	    <term><menuchoice>
+		<shortcut>
+		    <keycombo><keycap>Ctrl</keycap><keycap>s</keycap></keycombo>
+		</shortcut>
+		   <guimenu>Playback</guimenu>
+		   <guimenuitem>Stop</guimenuitem>
+	    </menuchoice></term>
+	    <listitem><para><action>Stops playback of the currently opened score.</action></para></listitem>
+	</varlistentry>
+
+
+	<varlistentry>
+	    <term><menuchoice>
+		<shortcut>
+		    <keycombo><keycap>Ctrl</keycap><keycap>s</keycap></keycombo>
+		</shortcut>
+		   <guimenu>Playback</guimenu>
+		   <guimenuitem>Play on caret move</guimenuitem>
+	    </menuchoice></term>
+	    <listitem><para><action>If enabled, the note currenty under the cursor is played back upon cursor movement.</action></para></listitem>
+	</varlistentry>
+
+
+	<varlistentry>
+	    <term><menuchoice>
+		   <guimenu>Playback</guimenu>
+		   <guimenuitem>Caret follows playback</guimenuitem>
+	    </menuchoice></term>
+	    <listitem><para><action>If enabled, the cursor is moved in sync with the actual note playback.</action></para></listitem>
+	</varlistentry>
+
 	<varlistentry>
 	  <term><menuchoice>
 	    <shortcut>
@@ -578,6 +650,30 @@ or just a single note.
 	  <listitem><para>For your convenience, &App; ships with a few,
 freely distributable scores.  This menu allows you to choose one of the prepackaged scores for transcription and/or playback.</para></listitem>
 	</varlistentry>
+	
+	
+	<varlistentry>
+	    <term><menuchoice>
+	    <shortcut>
+	      <keycombo><keycap>F2</keycap></keycombo>
+	    </shortcut>
+
+	   <guimenu>Help</guimenu>
+	   <guimenuitem>Describe Sign</guimenuitem>
+	    </menuchoice></term>
+	    <listitem><para><action>Displays as textual description of the element currently under the cursor.</action></para></listitem>
+	</varlistentry>
+
+	<varlistentry>
+	    <term><menuchoice>
+	   <guimenu>Help</guimenu>
+	   <guimenuitem>Describe Colors</guimenuitem>
+	    </menuchoice></term>
+	    <listitem><para><action>Displays as table with all colors used in score syntax highlighting.</action></para></listitem>
+	</varlistentry>
+
+	
+	
       </variablelist>
     </chapter>
   </part>
