@@ -76,7 +76,9 @@ public class MusicXML2BrailleServlet extends javax.servlet.http.HttpServlet {
       while (iterator.hasNext()) {
         final FileItemStream item = iterator.next();
         if (item.getFieldName().compareTo("file.xml") == 0) {
-          score = parseMusicXML(item.openStream(), "xml");
+          String extension = "xml";
+          if (item.getName().endsWith(".mxl") extension = "mxl";
+          score = parseMusicXML(item.openStream(), extension);
         } else if (item.getFieldName().compareTo("encoding") == 0) {
           final BufferedReader reader =
             new BufferedReader(new InputStreamReader(item.openStream()));
