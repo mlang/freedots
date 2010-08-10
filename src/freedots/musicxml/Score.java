@@ -36,6 +36,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
+import java.util.Map;
+import java.util.HashMap;
+
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -119,24 +122,32 @@ public final class Score {
   private void parse (InputStream inputStream, String extension)
     throws ParserConfigurationException, IOException, SAXException,
            XPathExpressionException {
+           
+      Map<String,InputSource> Files = new HashMap<String,InputSource>();
+            String zipEntryName = null;
     if ("mxl".equalsIgnoreCase(extension)) {
-      String zipEntryName = null;
+
 
       ZipInputStream zipInputStream = new ZipInputStream(inputStream);
       ZipEntry zipEntry = null;
 
       while ((zipEntry = zipInputStream.getNextEntry()) != null) {
+
+          InputSource currentInputSource=getInputSourceFromZipInputStream(zipInputStream);
+          Files.put(zipEntry.getName(),currentInputSource);
+
         if ("META-INF/container.xml".equals(zipEntry.getName())) {
           Document
-          container = documentBuilder.parse(getInputSourceFromZipInputStream(zipInputStream));
+          container = documentBuilder.parse(currentInputSource);
           XPath xpath = xPathFactory.newXPath();
           zipEntryName = (String) xpath.evaluate("container/rootfiles/rootfile/@full-path",
                                                  container,
                                                  XPathConstants.STRING);
         } else if (zipEntry.getName().equals(zipEntryName))
-          document = documentBuilder.parse(getInputSourceFromZipInputStream(zipInputStream));
+          document = documentBuilder.parse(currentInputSource);
         zipInputStream.closeEntry();
       }
+     if (document==null && !(zipEntryName==null)) { document=documentBuilder.parse(Files.get(zipEntryName));}
     } else {
       document = documentBuilder.parse(inputStream);
     }
