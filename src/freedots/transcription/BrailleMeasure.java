@@ -35,6 +35,9 @@ import freedots.braille.BrailleList;
 import freedots.braille.BrailleNote;
 import freedots.braille.BrailleSequence;
 import freedots.braille.BrailleWords;
+import freedots.braille.FullMeasureInAccordSign;
+import freedots.braille.PartMeasureInAccordSign;
+import freedots.braille.PartMeasureInAccordDivisionSign;
 import freedots.braille.RestSign;
 import freedots.braille.SimileSign;
 import freedots.braille.Text;
@@ -84,12 +87,15 @@ class BrailleMeasure {
   public void unlinkPrevious() { previous = null; }
 
   private List<Object> brailleVoices = new ArrayList<Object>();
-
-  /**
-   * Find voice overlaps for part measure in-accord.
-   */
   private boolean fullSimile = false;
 
+  /**
+   * Detect simile and find voice overlaps for part measure in-accord.
+   * <p>
+   * This code is very hairy and definitely needs an overhaul.
+   * It is also incomplete as it does not handle individual voices repeating.
+   */
+   // TODO: Find a data structure to represent part/full measure in-accord
   public void process() {
     if (previous != null) {
       if (previous.getEvents().equalsIgnoreOffset(this.events)) {
@@ -179,6 +185,11 @@ class BrailleMeasure {
     BrailleList getHead() { return head; }
     BrailleList getTail() { return tail; }
   }
+
+  /** Actually performs the task of transcribing events given the amount
+   *  of remaining characters on this line.
+   * @see #tail
+   */
   public BrailleList head(int width, boolean lastLine) {
     State state = new State(width,
                             previous != null? previous.getFinalPitch(): null);
@@ -188,10 +199,9 @@ class BrailleMeasure {
     } else {
       for (int i = 0; i < brailleVoices.size(); i++) {
         if (brailleVoices.get(i) instanceof PartMeasureInAccord) {
-          PartMeasureInAccord pmia = (PartMeasureInAccord)brailleVoices.get(i);
+          final PartMeasureInAccord pmia = (PartMeasureInAccord)brailleVoices.get(i);
           if (i > 0) {
-            String braille = Braille.fullMeasureInAccord.toString();
-            state.append(braille);
+            state.append(new FullMeasureInAccordSign());
 
             /* The octave mark must be shown for
              * the first note after an in-accord.
@@ -201,13 +211,12 @@ class BrailleMeasure {
           MusicList pmiaHead = pmia.getHead();
           if (pmiaHead.size() > 0) {
             printNoteList(pmiaHead, state, null);
-            state.append(Braille.partMeasureInAccord.toString());
+            state.append(new PartMeasureInAccordSign());
           }
           for (int p = 0; p < pmia.getParts().size(); p++) {
             printNoteList(pmia.getParts().get(p), state, null);
             if (p < pmia.getParts().size() - 1) {
-              String braille = Braille.partMeasureInAccordDivision.toString();
-              state.append(braille);
+              state.append(new PartMeasureInAccordDivisionSign());
 
               /* The octave mark must be shown for
                * the first note after an in-accord.
@@ -217,7 +226,7 @@ class BrailleMeasure {
           }
           MusicList pmiaTail = pmia.getTail();
           if (pmiaTail.size() > 0) {
-            state.append(Braille.partMeasureInAccord.toString());
+            state.append(new PartMeasureInAccordSign());
             printNoteList(pmiaTail, state, null);
           }
         } else if (brailleVoices.get(i) instanceof FullMeasureInAccord) {
@@ -246,8 +255,7 @@ class BrailleMeasure {
             }
             printNoteList(fmia.getParts().get(p), state, splitPoint);
             if (p < fmia.getParts().size() - 1) {
-              String braille = Braille.fullMeasureInAccord.toString();
-              state.append(braille);
+              state.append(new FullMeasureInAccordSign());
 
               /* The octave mark must be shown for
                * the first note after an in-accord.

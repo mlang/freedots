@@ -99,6 +99,7 @@ class SectionBySection implements Strategy {
       transcriber.printString(new BrailleKeySignature(part.getKeySignature()));
       transcriber.printString(bTimeSig);
       transcriber.newLine();
+
       for (Section section:getSections(part)) transcribeSection(part, section);
       if (transcriber.getCurrentColumn() > 0) transcriber.newLine();
       transcriber.newLine();
@@ -184,6 +185,7 @@ class SectionBySection implements Strategy {
 
         boolean lastLine = transcriber.isLastLine();
         measure.process();
+
         BrailleList head = measure.head(charactersLeft, lastLine);
         BrailleList tail = measure.tail();
         if (head.length() <= tail.length() / 10) {
@@ -213,8 +215,8 @@ class SectionBySection implements Strategy {
         measure.add(event);
       }
     }
-
   }
+
   private void transcribeLyrics(Staff staff) {
     if (transcriber.getCurrentColumn() > 0) transcriber.newLine();
     transcriber.printString(new TextPart());
@@ -223,7 +225,7 @@ class SectionBySection implements Strategy {
       if (event instanceof Note) {
         Lyric lyric = ((Note)event).getLyric();
         if (lyric != null) {
-          String text = lyric.getText();
+          final String text = lyric.getText();
           if (text.length() <= transcriber.getRemainingColumns()) {
             transcriber.printString(new BrailleSyllable(text, (Note)event));
           } else {

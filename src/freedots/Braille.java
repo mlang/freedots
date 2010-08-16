@@ -39,9 +39,6 @@ public enum Braille {
   // Piano pedal marks
   pedalPress(126, 14), pedalRelease(16, 14), pedalChange(16, 126, 14),
 
-  fullMeasureInAccord(126, 345),
-  partMeasureInAccord(46, 13), partMeasureInAccordDivision(5, 2),
-
   fermata(126, 123), fermataSquare(56, 126, 123), fermataTent(45, 126, 123);
 
   private int[] dots;

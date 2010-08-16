@@ -75,9 +75,7 @@ public final class Transcriber {
   int getCurrentColumn() { return characterCount; }
   int getRemainingColumns() {
     final int charsUsed = strings.lengthSince(NewLine.class);
-    if (charsUsed != -1)
-      return options.getPageWidth() - charsUsed;
-    return options.getPageWidth() - strings.length();
+    return options.getPageWidth() - (charsUsed != -1? charsUsed: strings.length());
   }
 
   /** Find the braille sign at a given character index.
