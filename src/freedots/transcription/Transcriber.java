@@ -79,6 +79,7 @@ public final class Transcriber {
   }
 
   /** Find the braille sign at a given character index.
+   * @param index is the character index
    * @return null if index is out of range
    */
   public Sign getSignAtIndex(final int index) {
@@ -261,6 +262,7 @@ public final class Transcriber {
   /** Converts transcription result to a string.
    *
    * @param encoding specifies the braille encoding to use.
+   * @return the string representation of the given encoding
    */
   public String toString(final BrailleEncoding encoding) {
     final String string = strings.toString();

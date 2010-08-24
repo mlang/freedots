@@ -23,7 +23,6 @@
 package freedots.transcription;
 
 import java.io.StringWriter;
-import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.TransformerFactory;
@@ -35,7 +34,6 @@ import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.DocumentType;
 import org.w3c.dom.Element;
-import org.w3c.dom.Text;
 
 import freedots.Options;
 import freedots.braille.BrailleList;
@@ -43,9 +41,10 @@ import freedots.braille.BrailleSequence;
 import freedots.braille.NewLine;
 import freedots.braille.Sign;
 import freedots.musicxml.Score;
-import freedots.transcription.Transcriber;
 
 public final class HTMLOutput {
+  private HTMLOutput() {}
+
   public static String convert(BrailleList braille) throws javax.xml.parsers.ParserConfigurationException {
     DOMImplementation dom = DocumentBuilderFactory.newInstance().newDocumentBuilder().getDOMImplementation();
     DocumentType docType =
