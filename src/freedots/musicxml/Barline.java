@@ -55,7 +55,10 @@ final class Barline {
   }
   public int getEnding() {
     if (ending != null && ending.getAttribute("number").length() > 0) {
-      return Integer.parseInt(ending.getAttribute("number"));
+      try {
+        return Integer.parseInt(ending.getAttribute("number"));
+      } catch (NumberFormatException e) {
+      }
     }
     return 0;
   }
