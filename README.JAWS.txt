@@ -10,17 +10,18 @@ screen reader.
 Unicode Braille with JAWS For Windows:
 --------------------------------------
 
-As of version 10.0, JAWS For Windows still has no standard
+As of version 12, JAWS For Windows finally includes standard
 definitions for Unicode Braille.  If you are going to
-read FreeDots output files on Windows with JAWS,
+read FreeDots output files on Windows with a version of JAWS less then 12,
 you will need to append the definitions below
 to your .JBT file (JAWS Braille Table).
 Simply copy all text below the separation line till the
 end of this file, and paste it into your .JBT file.
 
-This definition should really be part of JAWS (and any other braille capable
-screen reader) by default.  Ask your redistributor to tell
-Freedom Scientific they should really ship this by default.
+The Unicode braille definitions should really be part of any braille capable
+screen reader by default.  If your screen reader
+does not handle Unicode Braille properly, tell your vendor
+about it.  They should finally arrive in the 21st century as well.
 
 -------------------------------------------------------------------------------
 U+2800=
