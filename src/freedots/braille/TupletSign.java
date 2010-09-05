@@ -29,7 +29,7 @@ public class TupletSign extends Sign {
 
   public TupletSign(Tuplet tuplet) {
     super(getSign(tuplet));
-    this.tuplet=tuplet;
+    this.tuplet = tuplet;
   }
 
   public String getDescription() {
@@ -37,11 +37,10 @@ public class TupletSign extends Sign {
   }
 
   private static String getSign(final Tuplet tuplet) {
-    int type=tuplet.getType();
+    int type = tuplet.getType();
     final int[] tupletDots = { 23, 25, 256, 26, 235, 2356, 236, 35};
     if (type == 3 && tuplet.getParent() == null)
       return braille(23);
-    return braille(456,tupletDots[type-2],3);
+    return braille(456, tupletDots[type-2], 3);
   }
 }
-

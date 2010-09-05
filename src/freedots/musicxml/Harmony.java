@@ -104,7 +104,7 @@ public final class Harmony extends AbstractDirection {
       LOG.warning("Unsupported harmony type without root-step");
       return 0;
     }
-    public float getRootAlter () {
+    public float getRootAlter() {
       if (rootAlter != null) {
         return Float.parseFloat(rootAlter.getTextContent());
       }

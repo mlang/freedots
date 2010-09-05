@@ -44,8 +44,6 @@ import freedots.musicxml.Note;
  *      Notes and Values</a>
  */
 public class BrailleNote extends BrailleList {
-  private static final Logger log = Logger.getLogger(BrailleNote.class.getName());
-
   private final Note note;
 
   /** Constructs a braille note and all of its composing signs.

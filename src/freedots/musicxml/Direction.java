@@ -53,10 +53,10 @@ public final class Direction extends AbstractDirection {
     }
   }
 
-  public boolean isDirective () {
+  public boolean isDirective() {
     return Score.YES.equalsIgnoreCase(element.getAttribute("directive"));
   }
-  public String getWords () {
+  public String getWords() {
     // There can be several words elements in several direction-type elements
     // TODO: Do we want to add a space when concatenating?
     StringBuilder sb = new StringBuilder();
@@ -75,7 +75,7 @@ public final class Direction extends AbstractDirection {
     return sb.toString();
   }
 
-  private boolean isPedalType (String type) {
+  private boolean isPedalType(String type) {
     for (Element directionType: directionTypes) {
       for (Node node = directionType.getFirstChild(); node != null;
            node = node.getNextSibling()) {
@@ -88,10 +88,10 @@ public final class Direction extends AbstractDirection {
     }
     return false;
   }
-  public boolean isPedalPress () {
+  public boolean isPedalPress() {
     return isPedalType("start");
   }
-  public boolean isPedalRelease () {
+  public boolean isPedalRelease() {
     return isPedalType("stop");
   }
 
@@ -99,7 +99,7 @@ public final class Direction extends AbstractDirection {
    * @return a list of found dynamics indicators, or null if no dynamics
    *         element was found in this direction.
    */
-  public List<String> getDynamics () {
+  public List<String> getDynamics() {
     List<String> dynamics = null;
     for (Element directionType: directionTypes) {
       for (Node node = directionType.getFirstChild(); node != null;

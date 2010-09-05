@@ -28,7 +28,8 @@ public class ArtificialWholeRest extends BrailleList {
   public ArtificialWholeRest() {
     super();
     add(new Dot5());
-    add(new RestSign(new AugmentedPowerOfTwo(AugmentedPowerOfTwo.SEMIBREVE, 0)));
+    add(new RestSign(new AugmentedPowerOfTwo(AugmentedPowerOfTwo.SEMIBREVE,
+                                             0)));
   }
 
   @Override public String getDescription() {

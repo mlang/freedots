@@ -495,7 +495,7 @@ public final class Part {
           while(note != null) {
             Tuplet tuplet = new Tuplet();
             completeTuplet(tuplet, note, linkedListNote);
-            while(!(tuplet.getLast() instanceof Note))	
+            while (!(tuplet.getLast() instanceof Note))
               tuplet=(Tuplet)tuplet.getLast();
             note = (Note)tuplet.getLast();
             note = nextNoteVoice(linkedListNote, note);
@@ -538,8 +538,8 @@ public final class Part {
           break;
         }
       }
-      // select the first note in the same voice than firstNote	
-      if (firstNote != null){
+      // select the first note in the same voice than firstNote
+      if (firstNote != null) {
         for (Note note: linkedListNotes) {
           if (note.getMoment().compareTo(minMoment)<0
            && firstNote.getVoiceName().equals(note.getVoiceName())) {
@@ -568,7 +568,7 @@ public final class Part {
           else if (n.getMoment().compareTo(nextNote.getMoment())<0)
             nextNote = n;
          
-        } 	  
+        }
       }
       return nextNote; 
     } 

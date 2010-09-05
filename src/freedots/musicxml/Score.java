@@ -119,35 +119,34 @@ public final class Score {
     parse(inputStream, extension);
   }
 
-  private void parse (InputStream inputStream, String extension)
+  private void parse(InputStream inputStream, String extension)
     throws ParserConfigurationException, IOException, SAXException,
            XPathExpressionException {
-           
-      Map<String,InputSource> Files = new HashMap<String,InputSource>();
-            String zipEntryName = null;
+    Map<String,InputSource> Files = new HashMap<String,InputSource>();
+    String zipEntryName = null;
     if ("mxl".equalsIgnoreCase(extension)) {
-
-
       ZipInputStream zipInputStream = new ZipInputStream(inputStream);
       ZipEntry zipEntry = null;
 
       while ((zipEntry = zipInputStream.getNextEntry()) != null) {
 
-          InputSource currentInputSource=getInputSourceFromZipInputStream(zipInputStream);
-          Files.put(zipEntry.getName(),currentInputSource);
+        InputSource currentInputSource=getInputSourceFromZipInputStream(zipInputStream);
+        Files.put(zipEntry.getName(),currentInputSource);
 
         if ("META-INF/container.xml".equals(zipEntry.getName())) {
-          Document
-          container = documentBuilder.parse(currentInputSource);
+          Document container =
+            documentBuilder.parse(currentInputSource);
           XPath xpath = xPathFactory.newXPath();
-          zipEntryName = (String) xpath.evaluate("container/rootfiles/rootfile/@full-path",
-                                                 container,
-                                                 XPathConstants.STRING);
+          zipEntryName =
+            (String) xpath.evaluate("container/rootfiles/rootfile/@full-path",
+                                    container, XPathConstants.STRING);
         } else if (zipEntry.getName().equals(zipEntryName))
           document = documentBuilder.parse(currentInputSource);
         zipInputStream.closeEntry();
       }
-     if (document==null && !(zipEntryName==null)) { document=documentBuilder.parse(Files.get(zipEntryName));}
+      if (document==null && !(zipEntryName==null)) {
+        document = documentBuilder.parse(Files.get(zipEntryName));
+      }
     } else {
       document = documentBuilder.parse(inputStream);
     }

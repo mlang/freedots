@@ -98,7 +98,7 @@ public final class Note implements RhythmicElement, freedots.music.TupletElement
         put("256th", new PowerOfTwo(-8));
       }
     });
-  public static PowerOfTwo parseType (Element type) {
+  public static PowerOfTwo parseType(Element type) {
     assert type != null;
     final String sanitizedTypeName = type.getTextContent().trim().toLowerCase();
     if (TYPE_MAP.containsKey(sanitizedTypeName))
@@ -126,7 +126,7 @@ public final class Note implements RhythmicElement, freedots.music.TupletElement
 
   private Element tie = null;
   private TimeModification timeModification = null;
-  public TimeModification getTimeModification () { return timeModification; }
+  public TimeModification getTimeModification() { return timeModification; }
 
   private Lyric lyric = null;
 
@@ -134,7 +134,7 @@ public final class Note implements RhythmicElement, freedots.music.TupletElement
   
   private Tuplet tuplet = null; //A note is in only one tuplet which can be in others
   public Tuplet getTuplet() { return tuplet; }
-  void addTuplet(Tuplet tuplet) { this.tuplet=tuplet; }
+  void addTuplet(Tuplet tuplet) { this.tuplet = tuplet; }
 
   
   Note(final Element element, final int divisions, final int durationMultiplier,

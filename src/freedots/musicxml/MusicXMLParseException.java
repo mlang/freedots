@@ -25,6 +25,6 @@ package freedots.musicxml;
 /** Exception raised when we encounter invalid MusicXML.
  */
 class MusicXMLParseException extends RuntimeException {
-  public MusicXMLParseException () { super(); }
+  public MusicXMLParseException() { super(); }
   public MusicXMLParseException(final String message) { super(message); }
 }

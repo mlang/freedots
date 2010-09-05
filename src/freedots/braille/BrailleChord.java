@@ -42,6 +42,7 @@ public class BrailleChord extends BrailleList {
 
   /** Constructs the braille representation of the given chord.
    * @param chord is essentially a list of notes
+   * @param comparator specifies how the list of notes should be sorted
    * @param lastPitch is used to decide if an {@link OctaveSign octave sign}
    *        should be printed.  It should be {@code null} if an octave sign
    *        should be printed regardless of the previous pitch.
@@ -96,7 +97,8 @@ public class BrailleChord extends BrailleList {
   public static class ChordStep extends BrailleList {
     private final Note note;
 
-    ChordStep(final Note note, final Note relativeTo, final boolean allowTieSign) {
+    ChordStep(final Note note, final Note relativeTo,
+              final boolean allowTieSign) {
       super();
       this.note = note;
 

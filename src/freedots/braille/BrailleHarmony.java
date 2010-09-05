@@ -33,7 +33,7 @@ import freedots.musicxml.Harmony;
 /** Braille representation of a harmony chord.
  */
 public class BrailleHarmony extends BrailleList {
-  private static final Logger log = Logger.getLogger(BrailleHarmony.class.getName());
+  private static final Logger LOG = Logger.getLogger(BrailleHarmony.class.getName());
   private final Harmony harmony;
   private final boolean withStems;
   public BrailleHarmony(final Harmony harmony,
@@ -100,7 +100,7 @@ public class BrailleHarmony extends BrailleList {
           add(new UpperNumber(11));
         else if ("dominant-13th".equals(kind))
           add(new UpperNumber(13));
-        else log.warning("Unhandled harmony-chord kind '"+kind+"'");
+        else LOG.warning("Unhandled harmony-chord kind '"+kind+"'");
 
         for (Harmony.HarmonyChord.Degree degree: chord.getAlterations()) {
           addAccidentalFromAlter(degree.getAlter());
@@ -127,7 +127,7 @@ public class BrailleHarmony extends BrailleList {
         case -3: add(new EighthStemSign()); break;
         case -4: add(new SixteenthStemSign()); break;
         case -5: add(new ThirtysecondthStemSign()); break;
-        default: log.warning("Unmapped power of two: " + v);
+        default: LOG.warning("Unmapped power of two: " + v);
         }
         for (int i = 0; i < v.dots(); i++) add(new Dot());
 
