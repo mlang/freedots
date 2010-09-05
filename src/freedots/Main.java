@@ -27,6 +27,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
+import java.net.MalformedURLException;
 import java.util.logging.Logger;
 import java.util.ResourceBundle;
 import javax.sound.midi.MidiSystem;
@@ -77,6 +78,10 @@ public final class Main {
       } catch (ParserConfigurationException e) {
         // TODO Auto-generated catch block
         e.printStackTrace();
+      } catch (MalformedURLException e) {
+        e.printStackTrace();
+        System.err.println("Make sure your XML is valid");
+        System.exit(3);
       } catch (IOException e) {
         e.printStackTrace();
         System.err.println("Unable to open score file: "+options.getLocation());
