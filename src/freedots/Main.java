@@ -78,6 +78,7 @@ public final class Main {
         // TODO Auto-generated catch block
         e.printStackTrace();
       } catch (IOException e) {
+        e.printStackTrace();
         System.err.println("Unable to open score file: "+options.getLocation());
         System.exit(2);
       } catch (SAXParseException e) {
