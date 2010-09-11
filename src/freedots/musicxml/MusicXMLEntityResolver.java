@@ -42,6 +42,7 @@ class MusicXMLEntityResolver implements org.xml.sax.EntityResolver {
   private static final Map<String, String>
   PUBLIC_ID_MAP = Collections.unmodifiableMap(new HashMap<String, String>() {
       {
+        put("-//Recordare//DTD MusicXML 0.7b Partwise//EN", "partwise.dtd");
         put("-//Recordare//DTD MusicXML 1.0 Partwise//EN", "partwise.dtd");
         put("-//Recordare//DTD MusicXML 1.1 Partwise//EN", "partwise.dtd");
         put("-//Recordare//DTD MusicXML 2.0 Partwise//EN", "partwise.dtd");
