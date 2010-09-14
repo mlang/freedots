@@ -65,12 +65,6 @@ such that the actual musical intent is preserved.
 
 ** TODO Transposition
 
-*** TODO Handle the transpose element
-
-MusicXML has a <transpose> element which is used in various
-situations around transposing instruments.  This element is currently
-unsupported, should be imlemented (see scores/bwv999.xml).
-
 *** TODO Allow on-the-fly transposition of a score
 
 The user should be able to transpose a given score to a different

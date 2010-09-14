@@ -84,9 +84,10 @@ public final class Part {
     int measureNumber = 0;
     Fraction measureOffset = Fraction.ZERO;
     TimeSignature lastTimeSignature = null;
+    Attributes.Transpose currentTranspose = null;
     int staffCount = 1;
     EndBar endbar = null;
-    boolean newMeasure=false;
+    boolean newMeasure = false;
 
     final SlurBuilder slurBuilder = new SlurBuilder();
     final TupletBuilder tupletBuilder = new TupletBuilder();
@@ -164,10 +165,11 @@ public final class Part {
               }
               Attributes.Transpose transpose = attributes.getTranspose();
               if (transpose != null) {
+                currentTranspose = transpose;
               }
             } else if ("note".equals(tagName)) {
               Note note = new Note(musicdata, divisions, durationMultiplier,
-                                   this);
+                                   currentTranspose, this);
 
               if (currentChord != null
                && !elementHasChild(musicdata, Note.CHORD_ELEMENT)) {
@@ -226,7 +228,7 @@ public final class Part {
               }
               Note invisibleRest = new Note(musicdata,
                                             divisions, durationMultiplier,
-                                            this);
+                                            currentTranspose, this);
               invisibleRest.setMoment(measureOffset.add(offset));
               eventList.add(invisibleRest);
               offset = offset.add(invisibleRest.getDuration());

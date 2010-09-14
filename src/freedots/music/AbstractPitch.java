@@ -39,7 +39,7 @@ public abstract class AbstractPitch implements Comparable<AbstractPitch> {
    */
   public abstract int getOctave();
 
-  public final int getMIDIPitch() {
+  public int getMIDIPitch() {
     int midiPitch = (getOctave()+1) * CHROMATIC_STEPS
                   + STEP_TO_CHROMATIC[getStep()]
                   + getAlter();

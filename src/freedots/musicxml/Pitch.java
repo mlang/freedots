@@ -31,14 +31,27 @@ public final class Pitch extends freedots.music.AbstractPitch {
   private Element element;
   private Text step, alter, octave;
 
-  Pitch(final Element element) throws MusicXMLParseException {
+  private Attributes.Transpose transpose = null;
+
+  Pitch(final Element element, Attributes.Transpose transpose) throws MusicXMLParseException {
     this.element = element;
+    this.transpose = transpose;
+
     step = Score.getTextNode(element, "step");
     alter = Score.getTextNode(element, "alter");
     octave = Score.getTextNode(element, "octave");
     if (step == null || octave == null) {
       throw new MusicXMLParseException("Missing step or octave element");
     }
+  }
+  @Override
+  public int getMIDIPitch() {
+    int midiPitch = super.getMIDIPitch();
+    if (transpose != null) {
+      midiPitch = midiPitch + transpose.getChromatic()
+                + (transpose.getOctaveChange() * 12);
+    }
+    return midiPitch;
   }
   public int getStep() {
     return convertStep(step.getWholeText());

@@ -130,7 +130,7 @@ public final class Attributes {
     public String getStaffName() { return staffName; }
   }
 
-  class Transpose {
+  final class Transpose {
     private Element chromatic, diatonic, octaveChange, doubleDown;
     Transpose(final Element element) {
       for (Node node = element.getFirstChild(); node != null;
@@ -142,6 +142,16 @@ public final class Attributes {
           else if ("octave-change".equals(child.getTagName())) octaveChange = child;
           else if ("double".equals(child.getTagName())) doubleDown = child;
         }
+    }
+    public int getChromatic() {
+      if (chromatic != null)
+        return Integer.parseInt(chromatic.getTextContent());
+      return 0;
+    }
+    public int getOctaveChange() {
+      if (octaveChange != null)
+        return Integer.parseInt(octaveChange.getTextContent());
+      return 0;
     }
   }
 

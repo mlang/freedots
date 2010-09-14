@@ -136,12 +136,15 @@ public final class Note implements RhythmicElement, freedots.music.TupletElement
   public Tuplet getTuplet() { return tuplet; }
   void addTuplet(Tuplet tuplet) { this.tuplet = tuplet; }
 
+  private Attributes.Transpose transpose = null;
   
   Note(final Element element, final int divisions, final int durationMultiplier,
-       final Part part) throws MusicXMLParseException {
+       final Attributes.Transpose transpose, final Part part)
+    throws MusicXMLParseException {
     this.element = element;
     this.divisions = divisions;
     this.durationMultiplier = durationMultiplier;
+    this.transpose = transpose;
     this.part = part;
 
     parseDOM();
@@ -157,7 +160,7 @@ public final class Note implements RhythmicElement, freedots.music.TupletElement
         if (child.getTagName().equals("grace")) {
           grace = child;
         } else if (child.getTagName().equals("pitch")) {
-          pitch = new Pitch(child);
+          pitch = new Pitch(child, transpose);
         } else if (child.getTagName().equals("unpitched")) {
           unpitched = new Unpitched(child);
         } else if (child.getTagName().equals("duration")) {
