@@ -425,15 +425,15 @@ public final class Part {
   
   /** Build tuplets
    */
-  private class TupletBuilder{
+  private class TupletBuilder {
     private final LinkedList<LinkedList<Note>> map = new LinkedList<LinkedList<Note>>();
     
-    public TupletBuilder(){}
+    public TupletBuilder() { }
     
     /** Group note with TimeModification by measure in map according to newMeasure
      */
-    void visitNote(Note note, boolean newMeasure){
-      if(note.getTimeModification()!=null){
+    void visitNote(Note note, boolean newMeasure) {
+      if (note.getTimeModification() != null) {
         if (newMeasure)
           map.add(new LinkedList<Note>());
         map.getLast().add(note);

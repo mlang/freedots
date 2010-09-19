@@ -43,6 +43,7 @@ import freedots.braille.PostDottedDoubleBarSign;
 import freedots.braille.RightHandPart;
 import freedots.braille.Text;
 import freedots.braille.TextPart;
+import freedots.braille.LowerRange;
 import freedots.math.Fraction;
 import freedots.music.ClefChange;
 import freedots.music.EndBar;
@@ -100,7 +101,9 @@ class SectionBySection implements Strategy {
       transcriber.printString(bTimeSig);
       transcriber.newLine();
 
-      for (Section section:getSections(part)) transcribeSection(part, section);
+      List<Section> sections = getSections(part);
+      for (Section section: sections)
+        transcribeSection(part, section, sections.size() > 1);
       if (transcriber.getCurrentColumn() > 0) transcriber.newLine();
       transcriber.newLine();
     }
@@ -109,13 +112,21 @@ class SectionBySection implements Strategy {
   /** Transcribes a section of music (possibly consisting of several staves
    *  and including lyrics and chords).
    */
-  private void transcribeSection(final Part part, final Section section) {
+  private void transcribeSection(final Part part, final Section section,
+                                 final boolean numbering) {
     final int staffCount = section.getStaffCount();
     for (int staffIndex = 0; staffIndex < staffCount; staffIndex++) {
       final Staff staff = section.getStaff(staffIndex);
 
       if (transcriber.getCurrentColumn() > 0) transcriber.newLine();
-      transcriber.indentTo(2);
+
+      if (numbering && staffIndex == 0) {
+        transcriber.printString(new LowerRange(section.getFirstMeasureNumber(),
+                                               section.getLastMeasureNumber()));
+        transcriber.spaceOrNewLine();
+      } else {
+        transcriber.indentTo(2);
+      }
 
       int chordDirection = -1;
       if (staffCount == 1 && staff.containsHarmony()) {
@@ -337,9 +348,26 @@ class SectionBySection implements Strategy {
    */
   private class Section extends MusicList {
     private Part part;
+    private StartBar firstMeasure = null, lastMeasure = null;
     Section(final Part part) {
       super();
       this.part = part;
+    }
+    @Override
+    public boolean add(Event newElement) {
+      if (newElement instanceof StartBar) {
+        StartBar startBar = (StartBar)newElement;
+        if (firstMeasure == null) firstMeasure = startBar;
+        else lastMeasure = startBar;
+      }
+      return super.add(newElement);
+    }
+    public int getFirstMeasureNumber() {
+      return firstMeasure.getMeasureNumber();
+    }
+    public int getLastMeasureNumber() {
+      if (lastMeasure != null) return lastMeasure.getMeasureNumber();
+      return getFirstMeasureNumber();
     }
     @Override
     public Staff getStaff(final int index) {

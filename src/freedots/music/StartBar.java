@@ -25,11 +25,12 @@ package freedots.music;
 import freedots.math.Fraction;
 
 public class StartBar extends VerticalEvent {
-  int measureNumber;
+  private int measureNumber;
   public StartBar(final Fraction moment, final int measureNumber) {
     super(moment);
     this.measureNumber = measureNumber;
   }
+  public int getMeasureNumber() { return measureNumber; }
 
   private int staffCount;
   public int getStaffCount() { return staffCount; }
