@@ -9,7 +9,7 @@
 			<encoder>Claudio Sacco</encoder>
 			<software>Sibelius 6.1</software>
 			<software>Dolet 5.1 for Sibelius</software>
-			<encoding-date>2009-11-01</encoding-date>
+			<encoding-date>2010-09-19</encoding-date>
 			<supports element='accidental' type='no'/>
 			<supports element='transpose' type='no'/>
 			<supports attribute='new-page' element='print' type='yes' value='yes'/>
@@ -1312,7 +1312,7 @@
 			</note>
 			<direction>
 				<direction-type>
-					<words default-y='-121' relative-x='-30' font-style='normal'>pp </words>
+					<words default-y='-72' relative-x='-6' font-style='normal'>pp </words>
 					<words font-style='italic'>espress.</words>
 				</direction-type>
 				<staff>1</staff>
@@ -4266,7 +4266,7 @@
 			</note>
 			<direction>
 				<direction-type>
-					<wedge type='crescendo' number='1' default-y='-108' relative-x='12'/>
+					<wedge type='crescendo' number='1' default-y='-84' relative-x='12'/>
 				</direction-type>
 				<staff>1</staff>
 			</direction>
@@ -4383,7 +4383,7 @@
 		<measure number='16'>
 			<direction>
 				<direction-type>
-					<wedge type='crescendo' number='1' default-y='-108' relative-x='12'/>
+					<wedge type='crescendo' number='1' default-y='-5' relative-x='12'/>
 				</direction-type>
 				<staff>1</staff>
 			</direction>
@@ -5336,7 +5336,7 @@
 		</measure>
 <!--=========================================================-->
 		<measure number='19'>
-			<print new-page='yes'/>
+			<print new-system='yes'/>
 			<note>
 				<pitch>
 					<step>B</step>
@@ -6494,7 +6494,7 @@
 		</measure>
 <!--=========================================================-->
 		<measure number='23'>
-			<print new-system='yes'/>
+			<print new-page='yes'/>
 			<note>
 				<pitch>
 					<step>F</step>
@@ -8115,15 +8115,15 @@
 		</measure>
 <!--=========================================================-->
 		<measure number='28'>
-			<note print-object='no'>
+			<note>
 				<rest/>
-				<duration>384</duration>
+				<duration>768</duration>
 				<voice>1</voice>
-				<type>eighth</type>
+				<type>quarter</type>
 				<staff>1</staff>
 			</note>
 			<backup>
-				<duration>384</duration>
+				<duration>768</duration>
 			</backup>
 			<note>
 				<pitch>
@@ -8163,19 +8163,6 @@
 					<slur type='start' number='1'/>
 				</notations>
 			</note>
-			<backup>
-				<duration>128</duration>
-			</backup>
-			<note>
-				<rest/>
-				<duration>384</duration>
-				<voice>1</voice>
-				<type>eighth</type>
-				<staff>1</staff>
-			</note>
-			<backup>
-				<duration>256</duration>
-			</backup>
 			<note>
 				<pitch>
 					<step>D</step>
@@ -8723,15 +8710,15 @@
 		</measure>
 <!--=========================================================-->
 		<measure number='30'>
-			<note print-object='no'>
+			<note>
 				<rest/>
-				<duration>384</duration>
+				<duration>768</duration>
 				<voice>1</voice>
-				<type>eighth</type>
+				<type>quarter</type>
 				<staff>1</staff>
 			</note>
 			<backup>
-				<duration>384</duration>
+				<duration>768</duration>
 			</backup>
 			<note>
 				<pitch>
@@ -8769,19 +8756,6 @@
 					<slur type='start' number='1'/>
 				</notations>
 			</note>
-			<backup>
-				<duration>128</duration>
-			</backup>
-			<note>
-				<rest/>
-				<duration>384</duration>
-				<voice>1</voice>
-				<type>eighth</type>
-				<staff>1</staff>
-			</note>
-			<backup>
-				<duration>256</duration>
-			</backup>
 			<note>
 				<pitch>
 					<step>G</step>
@@ -12039,7 +12013,7 @@
 		</measure>
 <!--=========================================================-->
 		<measure number='42'>
-			<print new-page='yes'/>
+			<print new-system='yes'/>
 			<note print-object='no'>
 				<rest/>
 				<duration>1536</duration>
@@ -14465,7 +14439,7 @@
 		</measure>
 <!--=========================================================-->
 		<measure number='50'>
-			<print new-system='yes'/>
+			<print new-page='yes'/>
 			<note>
 				<pitch>
 					<step>D</step>
@@ -19430,7 +19404,7 @@
 		</measure>
 <!--=========================================================-->
 		<measure number='66'>
-			<print new-page='yes'/>
+			<print new-system='yes'/>
 			<note>
 				<pitch>
 					<step>C</step>
