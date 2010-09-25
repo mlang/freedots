@@ -7,9 +7,9 @@
 		<rights>Creative Commons Attribution-ShareAlike 3.0</rights>
 		<encoding>
 			<encoder>Claudio Sacco</encoder>
-			<software>Sibelius 6.1</software>
+			<software>Sibelius 6.2</software>
 			<software>Dolet 5.1 for Sibelius</software>
-			<encoding-date>2010-09-19</encoding-date>
+			<encoding-date>2010-09-25</encoding-date>
 			<supports element='accidental' type='no'/>
 			<supports element='transpose' type='no'/>
 			<supports attribute='new-page' element='print' type='yes' value='yes'/>
@@ -17586,8 +17586,7 @@
 			</backup>
 			<note>
 				<pitch>
-					<step>G</step>
-					<alter>1</alter>
+					<step>E</step>
 					<octave>3</octave>
 				</pitch>
 				<duration>256</duration>
