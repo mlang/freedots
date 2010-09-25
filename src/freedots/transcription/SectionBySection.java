@@ -44,6 +44,7 @@ import freedots.braille.RightHandPart;
 import freedots.braille.Text;
 import freedots.braille.TextPart;
 import freedots.braille.LowerRange;
+import freedots.braille.UpperNumber;
 import freedots.math.Fraction;
 import freedots.music.ClefChange;
 import freedots.music.EndBar;
@@ -103,7 +104,8 @@ class SectionBySection implements Strategy {
 
       List<Section> sections = getSections(part);
       for (Section section: sections)
-        transcribeSection(part, section, sections.size() > 1);
+        transcribeSection(part, section, sections.indexOf(section) + 1,
+                                         sections.size() > 1);
       if (transcriber.getCurrentColumn() > 0) transcriber.newLine();
       transcriber.newLine();
     }
@@ -113,6 +115,7 @@ class SectionBySection implements Strategy {
    *  and including lyrics and chords).
    */
   private void transcribeSection(final Part part, final Section section,
+                                 final int sectionNumber,
                                  final boolean numbering) {
     final int staffCount = section.getStaffCount();
     for (int staffIndex = 0; staffIndex < staffCount; staffIndex++) {
@@ -121,6 +124,8 @@ class SectionBySection implements Strategy {
       if (transcriber.getCurrentColumn() > 0) transcriber.newLine();
 
       if (numbering && staffIndex == 0) {
+        transcriber.printString(new UpperNumber(sectionNumber));
+        transcriber.spaceOrNewLine();
         transcriber.printString(new LowerRange(section.getFirstMeasureNumber(),
                                                section.getLastMeasureNumber()));
         transcriber.spaceOrNewLine();
