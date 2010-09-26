@@ -97,7 +97,7 @@ public final class Main extends JFrame
   }
 
   private BraillePane textPane;
-  
+ 
   private Object lastObject = null;
 
   private boolean autoPlay = false;
@@ -120,7 +120,6 @@ public final class Main extends JFrame
         && scoreObject instanceof Note && !((Note)scoreObject).isRest();
       editFingeringAction.setEnabled(isPitchedNote);
       if (scoreObject != null) {
-
         if (scoreObject instanceof Note) {
           Note note = (Note)scoreObject;
 
@@ -147,22 +146,16 @@ public final class Main extends JFrame
     if (caretFollowsPlayback) {
       final int pos = transcriber.getIndexOfScoreObject(object);
       if (pos >= 0) {
-      javax.swing.SwingUtilities.invokeLater(
-      new Runnable() {
-      
-      public void run()
-      {
-          boolean old = autoPlay;
-        autoPlay = false;
-        textPane.setCaretPosition(pos);
-        autoPlay = old;
-      }
-      }
-      
-      
-      
-      );
-    
+        javax.swing.SwingUtilities.invokeLater(
+          new Runnable() {
+            public void run() {
+              boolean old = autoPlay;
+              autoPlay = false;
+              textPane.setCaretPosition(pos);
+              autoPlay = old;
+            }
+          }
+        );
       }
     }
   }
@@ -326,8 +319,24 @@ public final class Main extends JFrame
 
     menuBar.add(editMenu);
 
-    JMenu transcriptionMenu = new JMenu("Transcription");
-    transcriptionMenu.setMnemonic(KeyEvent.VK_T);
+    menuBar.add(createTranscriptionMenu());
+    menuBar.add(createPlaybackMenu());
+    menuBar.add(createLibraryMenu());
+
+    JMenu helpMenu = new JMenu("Help");
+    helpMenu.setMnemonic(KeyEvent.VK_H);
+
+    helpMenu.add(new DescribeSignAction(this));
+    helpMenu.add(new DescribeColorAction(this));
+
+    menuBar.add(helpMenu);
+
+    return menuBar;
+  }
+
+  private JMenu createTranscriptionMenu() {
+    JMenu menu = new JMenu("Transcription");
+    menu.setMnemonic(KeyEvent.VK_T);
 
     JRadioButtonMenuItem sectionBySectionItem =
       new JRadioButtonMenuItem("Section by Section");
@@ -354,8 +363,8 @@ public final class Main extends JFrame
           triggerTranscription();
         }
       });
-    transcriptionMenu.add(sectionBySectionItem);
-    transcriptionMenu.add(barOverBarItem);
+    menu.add(sectionBySectionItem);
+    menu.add(barOverBarItem);
 
     JCheckBoxMenuItem showFingeringItem =
       new JCheckBoxMenuItem("Show fingering");
@@ -366,25 +375,9 @@ public final class Main extends JFrame
         triggerTranscription();
       }
     });
-    transcriptionMenu.add(showFingeringItem);
+    menu.add(showFingeringItem);
 
-    menuBar.add(transcriptionMenu);
-
-    menuBar.add(createPlaybackMenu());
-
-    menuBar.add(createLibraryMenu());
-
-    JMenu helpMenu = new JMenu("Help");
-    helpMenu.setMnemonic(KeyEvent.VK_H);
-
-    helpMenu.add(new DescribeSignAction(this));
-    
-    //Jo
-    helpMenu.add(new DescribeColorAction(this));
-
-    menuBar.add(helpMenu);
-
-    return menuBar;
+    return menu;
   }
 
   private JMenu createPlaybackMenu() {
