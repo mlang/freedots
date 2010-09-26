@@ -81,7 +81,7 @@ public final class Part {
     final int divisions = score.getDivisions();
     int durationMultiplier = 1;
 
-    int measureNumber = 0;
+    int measureNumber = 1;
     Fraction measureOffset = Fraction.ZERO;
     TimeSignature lastTimeSignature = null;
     Attributes.Transpose currentTranspose = null;
@@ -99,7 +99,7 @@ public final class Part {
         newMeasure = true;
         final Element xmlMeasure = (Element)partNode;
 
-        StartBar startBar = new StartBar(measureOffset, ++measureNumber);
+        StartBar startBar = new StartBar(measureOffset, measureNumber++);
         startBar.setStaffCount(staffCount);
         startBar.setTimeSignature(timeSignature);
         eventList.add(startBar);
@@ -273,6 +273,10 @@ public final class Part {
         if (xmlMeasure.getAttribute("implicit").equalsIgnoreCase(Score.YES)
          && measureDuration.compareTo(timeSignature) < 0) {
           measureOffset = measureOffset.add(measureDuration);
+          if (measureNumber == 2) {
+            measureNumber = 1;
+            startBar.setMeasureNumber(0);
+          }
         } else {
           if (measureDuration.compareTo(activeTimeSignature) != 0) {
             LOG.warning("Incomplete measure "

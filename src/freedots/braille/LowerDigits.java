@@ -29,10 +29,14 @@ public class LowerDigits extends BrailleList {
     super();
     this.number = number;
 
-    while (number > 0) {
-      final int digit = number % 10;
-      addFirst(new LowerDigit(digit));
-      number = number / 10;
+    if (number == 0) {
+      add(new LowerDigit(number));
+    } else {
+      while (number > 0) {
+        final int digit = number % 10;
+        addFirst(new LowerDigit(digit));
+        number = number / 10;
+      }
     }
   }
 

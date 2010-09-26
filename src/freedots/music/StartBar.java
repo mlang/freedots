@@ -31,7 +31,7 @@ public class StartBar extends VerticalEvent {
     this.measureNumber = measureNumber;
   }
   public int getMeasureNumber() { return measureNumber; }
-
+  public void setMeasureNumber(final int number) { this.measureNumber = number; }
   private int staffCount;
   public int getStaffCount() { return staffCount; }
   public void setStaffCount(int staffCount) { this.staffCount = staffCount; }
