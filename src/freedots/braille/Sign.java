@@ -92,6 +92,9 @@ public abstract class Sign implements BrailleSequence, Cloneable {
   protected static String braille(int dots1, int dots2, int dots3) {
     return braille(dots1) + braille(dots2) + braille(dots3);
   }
+  protected static String braille(int dots1, int dots2, int dots3, int dots4) {
+    return braille(dots1) + braille(dots2) + braille(dots3) + braille(dots4);
+  }
   protected static String[] braille(int dots, int[] dotsArray) {
     String[] result = new String[dotsArray.length];
     for (int index = 0; index < result.length; index++) {

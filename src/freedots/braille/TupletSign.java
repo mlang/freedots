@@ -41,6 +41,11 @@ public class TupletSign extends Sign {
     final int[] tupletDots = { 23, 25, 256, 26, 235, 2356, 236, 35};
     if (type == 3 && tuplet.getParent() == null)
       return braille(23);
+    if (type == 10) return braille(456, 2, 356, 3);
+    if (type == 11) return braille(456, 2, 2, 3);
+    if (type == 12) return braille(456, 2, 23, 3);
+    if (type == 13) return braille(456, 2, 25, 3);
+    if (type == 14) return braille(456, 2, 256, 3);
     return braille(456, tupletDots[type-2], 3);
   }
 }
