@@ -11,6 +11,7 @@
   <property name="freedots.jar.main.class" value="freedots.Main"/>
   <property name="freedots.version" value="0.6" />
   <property name="freedots.minimum.javaversion" value="1.6" />
+  <tstamp/>
 
   <path id="class.path">
   </path>
