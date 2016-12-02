@@ -25,6 +25,8 @@
   <presetdef name="validate-musicxml">
     <schemavalidate noNamespaceFile="xsd/musicxml.xsd"
                     failonerror="true" warn="true">
+      <dtd publicId="-//Recordare//DTD MusicXML 0.6b Partwise//EN"
+           location="dtd/musicxml/1.0/partwise.dtd"/>
       <dtd publicId="-//Recordare//DTD MusicXML 1.0 Partwise//EN"
            location="dtd/musicxml/1.0/partwise.dtd"/>
       <dtd publicId="-//Recordare//DTD MusicXML 1.1 Partwise//EN"
