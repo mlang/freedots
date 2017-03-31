@@ -76,10 +76,10 @@
 
     <!-- Copy resources into build directory -->
     <copy todir="${build}/freedots/musicxml">
-      <fileset dir="dtd/musicxml/2.0">
-        <include name="*.dtd"/>
-        <include name="*.mod"/>
-        <include name="*.ent"/>
+      <fileset dir="dtd/musicxml">
+        <include name="**/*.dtd"/>
+        <include name="**/*.mod"/>
+        <include name="**/*.ent"/>
       </fileset>	    
     </copy>
 
