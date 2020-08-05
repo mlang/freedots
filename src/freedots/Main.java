@@ -60,6 +60,7 @@ public final class Main {
    * @param args Arguments from the command-line
    */
   public static void main(final String[] args) {
+    macSetup();
     Options options = null;
     try {
       options = new Options(args);
@@ -67,6 +68,7 @@ public final class Main {
       System.err.println("File not found: "+exception.getMessage());
       System.exit(1);
     }
+
     Transcriber transcriber = new Transcriber(options);
     if (options.getLocation() != null) {
       Score score = null;
@@ -146,6 +148,13 @@ public final class Main {
     }
   }
 
+   // Setup to use native features on OS X
+  private static void macSetup() {
+        if (System.getProperty("os.name").equals("Mac OS X")) {
+      System.setProperty("apple.laf.useScreenMenuBar", "true");
+      System.setProperty("com.apple.mrj.application.apple.menu.about.name", "Freedots");
+    }
+   };
   // Constants from build.xml
   public static final String VERSION;
   static {
