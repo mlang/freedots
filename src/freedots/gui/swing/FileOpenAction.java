@@ -24,15 +24,17 @@ package freedots.gui.swing;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.awt.FileDialog;
+import java.awt.Frame;
+import java.awt.Toolkit;
 import java.io.File;
-
+import java.io.FilenameFilter;
 import javax.swing.JFileChooser;
 import javax.swing.KeyStroke;
 import javax.swing.filechooser.FileFilter;
-
 import freedots.musicxml.Score;
 
-/**
+ /**
  * An action for selecting and loading MusicXML documents.
  */
 @SuppressWarnings("serial")
@@ -49,29 +51,18 @@ public final class FileOpenAction extends javax.swing.AbstractAction {
     putValue(SHORT_DESCRIPTION, "Open an existing MusicXML file");
     putValue(MNEMONIC_KEY, KeyEvent.VK_O);
     putValue(ACCELERATOR_KEY,
-             KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
+             KeyStroke.getKeyStroke(KeyEvent.VK_O, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
   }
-  /** Launches a file open dialog and loads the selected file.
+/** Launches a file open dialog and loads the selected file.
    * @see java.awt.event.ActionListener#actionPerformed
    */
   public void actionPerformed(final ActionEvent event) {
-    JFileChooser fileChooser = new JFileChooser();
-    fileChooser.setAcceptAllFileFilterUsed(false);
-    fileChooser.setFileFilter(new FileFilter() {
-      @Override
-      public boolean accept(final File file) {
-        return file.isDirectory() || file.getName().matches(".*\\.(mxl|xml)");
-      }
-      @Override
-      public String getDescription() {
-        return "*.mxl, *.xml";
-      }
-    });
-    fileChooser.showOpenDialog(gui);
+    File file = selectFile();
+    String filename = file.getName();
     try {
       gui.setStatusMessage("Loading "
-                           + fileChooser.getSelectedFile().toString() + "...");
-      Score newScore = new Score(fileChooser.getSelectedFile().toString());
+                           + filename + "...");
+      Score newScore = new Score(file.getPath());
       gui.setStatusMessage("Transcribing to braille...");
       gui.setScore(newScore);
       gui.setStatusMessage("Ready");
@@ -79,7 +70,36 @@ public final class FileOpenAction extends javax.swing.AbstractAction {
     catch (javax.xml.parsers.ParserConfigurationException exception) {
       exception.printStackTrace();
     } catch (Exception exception) {
-      exception.printStackTrace();
+        exception.printStackTrace();
     }
+  }
+
+  public File selectFile() {
+    String osName = System.getProperty("os.name");
+    File file = null;
+    if (osName.equals("Mac OS X")) {
+      FileDialog fd = new FileDialog(new Frame(), "Choose a file", FileDialog.LOAD);
+      fd.setFile("*.xml");
+      fd.setVisible(true);
+      String fileName = fd.getDirectory() + "/" + fd.getFile();
+      file = new File(fileName);
+    }
+    else {
+      JFileChooser fileChooser = new JFileChooser();
+      fileChooser.setAcceptAllFileFilterUsed(false);
+      fileChooser.setFileFilter(new FileFilter() {
+        @Override
+        public boolean accept(final File file) {
+            return file.isDirectory() || file.getName().matches(".*\\.(mxl|xml)");
+        }
+        @Override
+        public String getDescription() {
+            return "*.mxl, *.xml";
+        }
+      });
+      fileChooser.showOpenDialog(gui);
+      file = fileChooser.getSelectedFile();
+    }
+    return file;
   }
 }

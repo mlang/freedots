@@ -22,6 +22,7 @@
  */
 package freedots.gui.swing;
 
+import java.awt.*;
 import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.FontFormatException;
@@ -34,6 +35,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.InputStream;
+import javax.swing.UIManager;
 import javax.sound.midi.MidiUnavailableException;
 import javax.swing.Action;
 import javax.swing.ButtonGroup;
@@ -66,8 +68,9 @@ public final class Main extends JFrame
   implements javax.swing.event.CaretListener,
              freedots.gui.GraphicalUserInterface,
              freedots.playback.PlaybackObserver {
+  private static final String metaKey = (System.getProperty("os.name").equals("Mac OS X") ? "Command" : "CTRL");
   private static final String WELCOME_MESSAGE =
-    "Use \"File -> Open\" (Ctrl+O) to open a new score";
+    String.format("Use \"File -> Open\" (%sKey+O) to open a new score", metaKey);
 
   private Score score;
   public Score getScore() { return score; }
@@ -211,7 +214,6 @@ public final class Main extends JFrame
   public Main(final Transcriber transcriber) {
     super("FreeDots " + freedots.Main.VERSION);
     this.transcriber = transcriber;
-
     try {
       MIDIPlayer player = new MIDIPlayer(metaEventRelay);
       midiPlayer = player;
@@ -533,7 +535,6 @@ public final class Main extends JFrame
     classicalMenu.add(lvBeethovenMenu);
 
     libraryMenu.add(classicalMenu);
-
     JMenu fakebookMenu = new JMenu("Fakebook");
     fakebookMenu.setMnemonic(KeyEvent.VK_F);
 
@@ -591,4 +592,5 @@ public final class Main extends JFrame
     }
     textPane.setCaretPosition(position);
   }
+
 }
