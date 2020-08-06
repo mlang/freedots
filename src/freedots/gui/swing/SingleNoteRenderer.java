@@ -274,8 +274,7 @@ final class SingleNoteRenderer extends JPanel {
   
   protected void drawKey(Graphics g) {
     int keyType = currentNote.getActiveKeySignature().getType();
-    String iconNameBase = null;
-    
+    String iconNameBase = null;    
     if (keyType==0) {
       // at least move the followign note by some pixels right, to make it look sexier.
       globalNotePos+=4;
@@ -287,9 +286,8 @@ final class SingleNoteRenderer extends JPanel {
     }
 
     if (keyType<0) {
-      iconNameBase = "KEY_FLAT_"+keyType;
-    }
-    
+      iconNameBase = "KEY_FLAT_"+(-keyType);
+    }    
     Graphics2D g2 = (Graphics2D)g;
     g2.drawImage(icons.get(iconNameBase), null, 25+4, 0);
     globalNotePos += icons.get(iconNameBase).getWidth() + 8;
