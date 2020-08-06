@@ -62,7 +62,7 @@ public final class FileOpenAction extends javax.swing.AbstractAction {
     try {
       gui.setStatusMessage("Loading "
                            + filename + "...");
-      Score newScore = new Score(filename);
+      Score newScore = new Score(file.getPath());
       gui.setStatusMessage("Transcribing to braille...");
       gui.setScore(newScore);
       gui.setStatusMessage("Ready");

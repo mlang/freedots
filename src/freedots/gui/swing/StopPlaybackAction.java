@@ -24,7 +24,7 @@ package freedots.gui.swing;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-
+import java.awt.Toolkit;
 import javax.swing.KeyStroke;
 
 @SuppressWarnings("serial")
@@ -35,7 +35,7 @@ public final class StopPlaybackAction extends javax.swing.AbstractAction {
     this.gui = gui;
     putValue(SHORT_DESCRIPTION, "Stop playback");
     putValue(ACCELERATOR_KEY,
-             KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
+      KeyStroke.getKeyStroke(KeyEvent.VK_S, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
   }
   /** Stops playback.
    * @see java.awt.event.EventListener#actionPerformed
