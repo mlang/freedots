@@ -24,6 +24,7 @@ package freedots.gui.swing;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.awt.Toolkit;
 
 import javax.swing.KeyStroke;
 
@@ -35,7 +36,7 @@ final class PlayScoreAction extends javax.swing.AbstractAction {
     this.gui = gui;
     putValue(SHORT_DESCRIPTION, "Play score or pause playback");
     putValue(ACCELERATOR_KEY,
-             KeyStroke.getKeyStroke(KeyEvent.VK_P, ActionEvent.CTRL_MASK));
+      KeyStroke.getKeyStroke(KeyEvent.VK_P, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
   }
   /** Starts playback of the currently loaded score.
    * @see java.awt.event.EventListener#actionPerformed
